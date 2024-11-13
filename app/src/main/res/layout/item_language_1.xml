@@ -5,15 +5,15 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:textSize="@dimen/_14sp"
+            android:textSize="@dimen/text_size_12"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/colorTextTitle"
+            android:textColor="@color/blue"
             android:id="@+id/tv_language"
-            android:paddingVertical="@dimen/_10dp"
+            android:paddingVertical="@dimen/pad_12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_16dp"
+            android:paddingHorizontal="@dimen/pad_16dp"
             android:text="@string/english"/>
     </LinearLayout>
 </layout>
