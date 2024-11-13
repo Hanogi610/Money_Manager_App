@@ -13,7 +13,6 @@ abstract class BaseActivity<BD : ViewDataBinding, VM : BaseViewModel> :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewModel = getVM()
     }
 
