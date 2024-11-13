@@ -1,6 +1,7 @@
 package com.example.money_manager_app.utils
 
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 fun ImageView.loadImage(resDrawable: Int) {
     Glide.with(this)

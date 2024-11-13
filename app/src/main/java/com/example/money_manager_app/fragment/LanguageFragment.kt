@@ -95,7 +95,7 @@ class LanguageFragment : BaseFragment<FragmentLanguageBinding, LanguageViewModel
             }
 
 //            if (directory == null) {
-//                appNavigation.openLanguageToIntroduceScreen()
+//                appNavigation.openLanguageToInnitAccountScreen()
 //            } else {
 //                appNavigation.openLanguageToHomeScreen()
 //            }

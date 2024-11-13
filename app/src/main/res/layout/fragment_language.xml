@@ -4,23 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_gradient">
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_slash"/>
+            android:layout_height="match_parent"/>
 
         <TextView
             android:id="@+id/tvSelectLanguage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_your_language"
-            android:textColor="@color/colorWhite"
             android:textSize="@dimen/_24sp"
             android:layout_marginTop="@dimen/_16dp"
-            android:fontFamily="@font/poppins_semi_bold"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -29,7 +25,7 @@
             android:id="@+id/ivDone"
             android:layout_width="@dimen/_28dp"
             android:layout_height="@dimen/_28dp"
-            android:src="@drawable/ic_done_inactive"
+            android:src="@drawable/baseline_done_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:contentDescription="@string/done"
@@ -41,17 +37,11 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@id/tvSelectLanguage"
-            app:layout_constraintBottom_toTopOf="@id/bannerAds"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="6"
             tools:listitem="@layout/item_language_2"
             android:layout_marginTop="@dimen/_32dp" />
 
-        <include
-            android:id="@+id/bannerAds"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_280dp"
-            layout="@layout/layout_native_ad_bottom_with_loading"
-            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

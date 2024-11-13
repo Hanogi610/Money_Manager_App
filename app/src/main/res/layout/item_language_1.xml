@@ -8,7 +8,6 @@
             android:textSize="@dimen/_14sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:textColor="@color/colorTextTitle"
             android:id="@+id/tv_language"
             android:paddingVertical="@dimen/_10dp"
             android:layout_width="wrap_content"

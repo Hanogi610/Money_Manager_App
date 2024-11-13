@@ -2,6 +2,8 @@ package com.example.money_manager_app.di
 
 import com.example.money_manager_app.base.navigation.BaseNavigator
 import com.example.money_manager_app.base.navigation.BaseNavigatorImpl
+import com.example.money_manager_app.navigation.AppNavigation
+import com.example.money_manager_app.navigation.AppNavigationImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,5 +20,5 @@ abstract class NavigationModule {
 
     @Binds
     @ActivityScoped
-    abstract fun provideAppNavigation(navigation: AppNavigatorImpl): AppNavigation
+    abstract fun provideAppNavigation(navigation: AppNavigationImpl): AppNavigation
 }
