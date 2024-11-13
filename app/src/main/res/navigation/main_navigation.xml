@@ -28,7 +28,7 @@
         android:id="@+id/innitAccountFragment"
         android:name="com.example.money_manager_app.fragment.InnitAccountFragment"
         android:label="fragment_innit_account"
-        tools:layout="@layout/fragment_introduce" >
+        tools:layout="@layout/fragment_innit_account" >
         <action
             android:id="@+id/action_innitAccountFragment_to_homeFragment"
             app:destination="@id/homeFragment" />

@@ -73,6 +73,10 @@ dependencies {
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    // Glide
+    implementation(libs.glide)
+    kapt(libs.glideCompiler)
+
     implementation("ir.mahozad.android:pie-chart:0.7.0")
 }
 kapt {

@@ -1,39 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Money Manager</string>
-    <string name="skip">Skip</string>
-    <string name="initial_amount">Initial Amount</string>
-    <string name="create_amount_hint">How much money do you have in your cash wallet?</string>
-    <string name="escape">Escape</string>
-    <string name="pick_currency">Select Currency</string>
-    <string name="pick_currency_hint">What is your favourite currency?</string>
-    <string name="currency_picker">Select currency</string>
-    <string name="next">Next</string>
-    <string name="create_account">Add Account</string>
-    <string name="create_name_hint">Choose a name for your account.</string>
-    <string name="name">Name</string>
+    <string name="app_name">Money_Manager_App</string>
     <string name="done">Done</string>
-    <string name="camera">Camera</string>
-    <string name="cancel">Cancel</string>
-    <string name="caret">Caret</string>
-    <string name="previous">Previous</string>
-    <string name="transaction">Transaction</string>
-    <string name="calendar">Calendar</string>
-    <string name="statistic">Statistic</string>
-    <string name="wallet">Wallet</string>
-    <string name="selected">Selected</string>
-    <string name="select_account">Select Account</string>
-    <string name= "save">SAVE</string>
-    <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
-    <string name="currency">Currency</string>
-    <string name="account_name_hint">Account\'s name</string>
-    <string name="income">Income</string>
-    <string name="expense">Expense</string>
-    <string name="total">Total</string>
-    <string name="dash">-</string>
-    <string name="empty_category">No Categories</string>
-    <string name="empty_category_hint">Tap the + button to add categories.</string>
-    <string name="english">English</string>
     <string name="select_your_language">Select your language</string>
+    <string name="english">English\n</string>
 </resources>
