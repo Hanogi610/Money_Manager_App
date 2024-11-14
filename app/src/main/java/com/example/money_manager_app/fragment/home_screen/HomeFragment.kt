@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.home_screen
+package com.example.money_manager_app.fragment.home_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,10 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.moneymanager.R
 import com.example.money_manager_app.data.model.entity.enums.WalletType
-import com.example.moneymanager.databinding.FragmentHomeBinding
-import com.example.moneymanager.ui.MainViewModel
 import kotlinx.coroutines.launch
 
 

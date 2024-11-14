@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moneymanager.data.model.entity.AccountWithWallet
+import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.moneymanager.databinding.AccountItemBinding
 
 class AccountAdapter(

@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneymanager.R
 import com.example.moneymanager.core.toFormattedDateString
-import com.example.moneymanager.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.moneymanager.databinding.FragmentDebtDetailBinding
 import com.example.moneymanager.ui.MainViewModel

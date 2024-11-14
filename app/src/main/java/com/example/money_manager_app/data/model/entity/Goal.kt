@@ -1,9 +1,10 @@
-package com.example.moneymanager.data.model.entity
+package com.example.money_manager_app.data.model.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.money_manager_app.data.model.entity.Account
 
 @Entity(
     tableName = "goal", foreignKeys = [ForeignKey(

@@ -1,12 +1,12 @@
-package com.example.moneymanager.data.model.entity
+package com.example.money_manager_app.data.model.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.moneymanager.core.WalletTypeConverter
 import com.example.money_manager_app.data.model.entity.enums.WalletType
+import com.example.money_manager_app.utils.WalletTypeConverter
 
 @Entity(
     tableName = "wallet", foreignKeys = [ForeignKey(

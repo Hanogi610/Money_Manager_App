@@ -1,15 +1,15 @@
 package com.example.moneymanager.di
 
-import com.example.moneymanager.data.repository.AccountRepository
-import com.example.moneymanager.data.repository.AccountRepositoryImpl
-import com.example.moneymanager.data.repository.DebtRepository
-import com.example.moneymanager.data.repository.DebtRepositoryImpl
-import com.example.moneymanager.data.repository.DebtTransactionRepository
-import com.example.moneymanager.data.repository.DebtTransactionRepositoryImpl
-import com.example.moneymanager.data.repository.TransferRepository
-import com.example.moneymanager.data.repository.TransferRepositoryImpl
-import com.example.moneymanager.data.repository.WalletRepository
-import com.example.moneymanager.data.repository.WalletRepositoryImpl
+import com.example.money_manager_app.data.repository.AccountRepository
+import com.example.money_manager_app.data.repository.AccountRepositoryImpl
+import com.example.money_manager_app.data.repository.DebtRepository
+import com.example.money_manager_app.data.repository.DebtRepositoryImpl
+import com.example.money_manager_app.data.repository.DebtTransactionRepository
+import com.example.money_manager_app.data.repository.DebtTransactionRepositoryImpl
+import com.example.money_manager_app.data.repository.TransferRepository
+import com.example.money_manager_app.data.repository.TransferRepositoryImpl
+import com.example.money_manager_app.data.repository.WalletRepository
+import com.example.money_manager_app.data.repository.WalletRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

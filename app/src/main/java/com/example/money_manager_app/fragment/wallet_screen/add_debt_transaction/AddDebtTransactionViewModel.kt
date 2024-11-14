@@ -2,8 +2,8 @@ package com.example.moneymanager.ui.wallet_screen.add_debt_transaction
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.moneymanager.data.model.entity.DebtTransaction
-import com.example.moneymanager.data.repository.DebtTransactionRepository
+import com.example.money_manager_app.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.repository.DebtTransactionRepository
 import com.example.moneymanager.di.AppDispatchers
 import com.example.moneymanager.di.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel

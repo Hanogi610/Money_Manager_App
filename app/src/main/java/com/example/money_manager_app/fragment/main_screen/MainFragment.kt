@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.main_screen
+package com.example.money_manager_app.fragment.main_screen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,9 +13,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moneymanager.R
-import com.example.moneymanager.data.model.entity.AccountWithWallet
+import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.moneymanager.databinding.FragmentMainBinding
 import com.example.moneymanager.ui.MainViewModel
+import com.example.moneymanager.ui.main_screen.MainScreenViewModel
 import com.example.moneymanager.ui.main_screen.adapter.MainPagerAdapter
 import com.example.moneymanager.ui.main_screen.fragment.AccountSelectorBottomSheet
 import kotlinx.coroutines.launch

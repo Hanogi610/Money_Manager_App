@@ -2,7 +2,7 @@ package com.example.money_manager_app.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import com.example.moneymanager.data.model.entity.Transfer
+import com.example.money_manager_app.data.model.entity.Transfer
 
 @Dao
 interface TransferDao {

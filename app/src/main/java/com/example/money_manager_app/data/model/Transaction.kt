@@ -1,4 +1,4 @@
-package com.example.moneymanager.data.model
+package com.example.money_manager_app.data.model
 
 open class Transaction(
     open val id: Long,

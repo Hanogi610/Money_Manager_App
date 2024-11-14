@@ -1,4 +1,4 @@
-package com.example.moneymanager.data
+package com.example.money_manager_app.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -7,14 +7,14 @@ import com.example.money_manager_app.data.dao.DebtDao
 import com.example.money_manager_app.data.dao.DebtTransactionDao
 import com.example.money_manager_app.data.dao.TransferDao
 import com.example.money_manager_app.data.dao.WalletDao
-import com.example.moneymanager.data.model.entity.Account
-import com.example.moneymanager.data.model.entity.Budget
-import com.example.moneymanager.data.model.entity.Debt
-import com.example.moneymanager.data.model.entity.DebtTransaction
-import com.example.moneymanager.data.model.entity.DepositAndWithdraw
-import com.example.moneymanager.data.model.entity.Goal
-import com.example.moneymanager.data.model.entity.Transfer
-import com.example.moneymanager.data.model.entity.Wallet
+import com.example.money_manager_app.data.model.entity.Account
+import com.example.money_manager_app.data.model.entity.Budget
+import com.example.money_manager_app.data.model.entity.Debt
+import com.example.money_manager_app.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.model.entity.DepositAndWithdraw
+import com.example.money_manager_app.data.model.entity.Goal
+import com.example.money_manager_app.data.model.entity.Transfer
+import com.example.money_manager_app.data.model.entity.Wallet
 
 @Database(
     entities = [

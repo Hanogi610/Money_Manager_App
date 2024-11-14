@@ -1,4 +1,4 @@
-package com.example.moneymanager.data.model.entity
+package com.example.money_manager_app.data.model.entity
 
 data class AddTransfer(
     val amount : Double,

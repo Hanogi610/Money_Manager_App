@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.money_manager_app.fragment.HomeFragment"
+        android:name="com.example.money_manager_app.fragment.home_screen.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
