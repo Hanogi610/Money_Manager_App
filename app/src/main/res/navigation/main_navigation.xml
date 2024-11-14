@@ -22,7 +22,11 @@
         android:id="@+id/languageFragment"
         android:name="com.example.money_manager_app.fragment.LanguageFragment"
         android:label="fragment_language"
-        tools:layout="@layout/fragment_language" />
+        tools:layout="@layout/fragment_language" >
+        <action
+            android:id="@+id/action_languageFragment_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.money_manager_app.fragment.HomeFragment"
@@ -32,7 +36,8 @@
         android:id="@+id/passwordFragment"
         android:name="com.example.money_manager_app.fragment.PasswordFragment"
         android:label="fragment_password"
-        tools:layout="@layout/fragment_password" />
+        tools:layout="@layout/fragment_password" >
+    </fragment>
     <fragment
         android:id="@+id/createAccountFragment"
         android:name="com.example.money_manager_app.fragment.CreateAccountFragment"
