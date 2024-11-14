@@ -1,10 +1,10 @@
-package com.example.money_manager_app.viewmodel
+package com.example.money_manager_app.fragment.language.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.datasource.LanguageDataSource
-import com.example.money_manager_app.fragment.LocaleHelper
+import com.example.money_manager_app.fragment.language.LocaleHelper
 import com.example.money_manager_app.model.LanguageModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

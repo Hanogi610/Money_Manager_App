@@ -1,4 +1,4 @@
-package com.example.money_manager_app.fragment
+package com.example.money_manager_app.fragment.language
 
 import android.content.Context
 import android.content.res.Configuration
@@ -6,11 +6,11 @@ import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
-import com.example.money_manager_app.adapter.LanguageAdapter
+import com.example.money_manager_app.fragment.language.adapter.LanguageAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.databinding.FragmentLanguageBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
-import com.example.money_manager_app.viewmodel.LanguageViewModel
+import com.example.money_manager_app.fragment.language.viewmodel.LanguageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 

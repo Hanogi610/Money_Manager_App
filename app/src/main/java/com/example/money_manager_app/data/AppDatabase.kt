@@ -2,11 +2,11 @@ package com.example.moneymanager.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.moneymanager.data.dao.AccountDao
-import com.example.moneymanager.data.dao.DebtDao
-import com.example.moneymanager.data.dao.DebtTransactionDao
-import com.example.moneymanager.data.dao.TransferDao
-import com.example.moneymanager.data.dao.WalletDao
+import com.example.money_manager_app.data.dao.AccountDao
+import com.example.money_manager_app.data.dao.DebtDao
+import com.example.money_manager_app.data.dao.DebtTransactionDao
+import com.example.money_manager_app.data.dao.TransferDao
+import com.example.money_manager_app.data.dao.WalletDao
 import com.example.moneymanager.data.model.entity.Account
 import com.example.moneymanager.data.model.entity.Budget
 import com.example.moneymanager.data.model.entity.Debt

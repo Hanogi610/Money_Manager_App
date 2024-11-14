@@ -16,12 +16,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.moneymanager.R
 import com.example.moneymanager.core.toDateTimestamp
 import com.example.moneymanager.core.toTimeTimestamp
 import com.example.moneymanager.data.model.entity.DebtTransaction
-import com.example.moneymanager.data.model.entity.enums.DebtActionType
-import com.example.moneymanager.data.model.entity.enums.DebtType
+import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.moneymanager.databinding.FragmentAddDebtTransactionBinding
 import com.example.moneymanager.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.example.moneymanager.data.dao
+package com.example.money_manager_app.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

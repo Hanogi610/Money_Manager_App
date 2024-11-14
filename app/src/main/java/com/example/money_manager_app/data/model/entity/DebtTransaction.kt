@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.moneymanager.core.DebtActionTypeConverter
 import com.example.moneymanager.data.model.Transaction
-import com.example.moneymanager.data.model.entity.enums.DebtActionType
+import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 
 @Entity(
     tableName = "debt_transaction", foreignKeys = [ForeignKey(

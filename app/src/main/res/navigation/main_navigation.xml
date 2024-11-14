@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/languageFragment"
-        android:name="com.example.money_manager_app.fragment.LanguageFragment"
+        android:name="com.example.money_manager_app.fragment.language.LanguageFragment"
         android:label="fragment_language"
         tools:layout="@layout/fragment_language" >
         <action

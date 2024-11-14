@@ -1,6 +1,6 @@
 package com.example.moneymanager.data.repository
 
-import com.example.moneymanager.data.dao.DebtTransactionDao
+import com.example.money_manager_app.data.dao.DebtTransactionDao
 import com.example.moneymanager.data.model.entity.DebtTransaction
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

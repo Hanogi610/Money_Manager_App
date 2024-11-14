@@ -1,6 +1,6 @@
 package com.example.moneymanager.data.repository
 
-import com.example.moneymanager.data.dao.TransferDao
+import com.example.money_manager_app.data.dao.TransferDao
 import com.example.moneymanager.data.model.entity.Transfer
 import javax.inject.Inject
 

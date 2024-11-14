@@ -1,4 +1,4 @@
-package com.example.money_manager_app.adapter
+package com.example.money_manager_app.fragment.language.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

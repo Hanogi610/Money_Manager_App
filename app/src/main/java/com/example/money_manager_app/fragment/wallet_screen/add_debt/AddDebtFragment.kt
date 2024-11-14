@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -22,7 +21,7 @@ import com.example.moneymanager.core.ColorHelper
 import com.example.moneymanager.core.toDateTimestamp
 import com.example.moneymanager.core.toTimeTimestamp
 import com.example.moneymanager.data.model.entity.Debt
-import com.example.moneymanager.data.model.entity.enums.DebtType
+import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.moneymanager.databinding.FragmentAddDebtBinding
 import com.example.moneymanager.ui.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,7 +1,7 @@
-package com.example.moneymanager.data.model.entity.enums
+package com.example.money_manager_app.data.model.entity.enums
 
 import androidx.annotation.StringRes
-import com.example.moneymanager.R
+import com.example.money_manager_app.R
 
 enum class Currency(
     val id: Int, @StringRes val nameRes: Int, @StringRes val symbolRes: Int

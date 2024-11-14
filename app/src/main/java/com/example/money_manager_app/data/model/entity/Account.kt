@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 import androidx.room.TypeConverters
 import com.example.moneymanager.core.CurrencyTypeConverter
-import com.example.moneymanager.data.model.entity.enums.Currency
+import com.example.money_manager_app.data.model.entity.enums.Currency
 
 @Entity(tableName = "account")
 data class Account(

@@ -1,10 +1,10 @@
 package com.example.money_manager_app.utils
 
 import androidx.room.TypeConverter
-import com.example.moneymanager.data.model.entity.enums.Currency
-import com.example.moneymanager.data.model.entity.enums.DebtActionType
-import com.example.moneymanager.data.model.entity.enums.GoalInputType
-import com.example.moneymanager.data.model.entity.enums.WalletType
+import com.example.money_manager_app.data.model.entity.enums.Currency
+import com.example.money_manager_app.data.model.entity.enums.DebtActionType
+import com.example.money_manager_app.data.model.entity.enums.GoalInputType
+import com.example.money_manager_app.data.model.entity.enums.WalletType
 import java.sql.Time
 import java.util.Calendar
 import java.util.Date

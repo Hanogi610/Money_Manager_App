@@ -6,7 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.moneymanager.core.GoalInputTypeConverter
-import com.example.moneymanager.data.model.entity.enums.GoalInputType
+import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 
 @Entity(
     tableName = "deposit_and_withdraw", foreignKeys = [ForeignKey(
