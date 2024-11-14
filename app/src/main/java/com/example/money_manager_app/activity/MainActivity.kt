@@ -64,7 +64,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
                 val navGraph = navController.navInflater.inflate(R.navigation.main_navigation)
                 val startDestination = when (languageStart) {
-                    LanguageStart.NOT_INITIALIZED -> R.id.languageFragment
+                    LanguageStart.NOT_INITIALIZED -> R.id.passcodeFragment
                     LanguageStart.INITIALIZED -> R.id.passcodeFragment
                 }
                 navGraph.setStartDestination(startDestination)

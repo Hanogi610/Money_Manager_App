@@ -31,7 +31,8 @@ class SplashScreenFragment : BaseFragmentNotRequireViewModel<FragmentSplashScree
             val isFirstTime = appPreferences.getIsFirstTime().firstOrNull() ?: true
 
             if (isFirstTime) {
-                appNavigation.openSplashToLanguageScreen()
+//                appNavigation.openSplashToLanguageScreen()
+                appNavigation.openSplashToInnitAccountScreen()
             } else {
                 appNavigation.openSplashToInnitAccountScreen()
             }

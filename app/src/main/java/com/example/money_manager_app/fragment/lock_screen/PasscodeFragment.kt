@@ -30,7 +30,7 @@ class PasscodeFragment : Fragment() {
 
         setupPasscodeInput()
         setupNumericKeyboard()
-//        setUpNumberActionButton()
+        setUpNumberActionButton()
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()

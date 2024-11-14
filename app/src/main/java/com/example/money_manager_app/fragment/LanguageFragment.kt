@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
 import com.example.money_manager_app.adapter.LanguageAdapter
 import com.example.money_manager_app.adapter.LanguageAdapter.Companion.VIEW_TYPE_2
@@ -15,7 +14,6 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import com.example.money_manager_app.databinding.FragmentLanguageBinding
 import com.example.money_manager_app.static_data.LanguageDataSource
-import com.example.money_manager_app.utils.setOnSafeClickListener
 
 class LanguageFragment : BaseFragment<FragmentLanguageBinding, LanguageViewModel>(R.layout.fragment_language) {
 
