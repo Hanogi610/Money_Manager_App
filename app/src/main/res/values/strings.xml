@@ -5,7 +5,6 @@
     <string name="english">English\n</string>
     <string name="money_manager">MONEY MANAGER</string>
     <string name="simplify_your_finances">Simplify Your Finances</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="_1">1</string>
     <string name="_2">2</string>
@@ -17,14 +16,122 @@
     <string name="_8">8</string>
     <string name="_9">9</string>
     <string name="_0">0</string>
-    <string name="enter_your_pass_code">Enter your pass code</string>
-    <string name="subtract">-</string>
+    <string name="search">Search</string>
+    <string name="filter_options">Filter options</string>
+    <string name="date">Date</string>
+    <string name="select_date">Select Date</string>
+    <string name="wallet">Wallet</string>
+    <string name="category">Category</string>
+    <string name="description">Description</string>
+    <string name="enter_description">Enter description</string>
+    <string name="amount">Amount</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
+    <string name="min_amount">Minimum amount</string>
+    <string name="max_amount">Maximum amount</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+    <string name="uk_flag">UK Flag</string>
+    <string name="vietnam_flag" translatable="false">Vietnam Flag</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="tieng_viet" translatable="false">(Tiếng Việt)</string>
+    <string name="hindi">(हिंदी)</string>
+    <string name="hindi_en" translatable="false">Hindi</string>
+    <string name="india_flag" translatable="false">India Flag</string>
+    <string name="chinese" translatable="false">(中文)</string>
+    <string name="chinese_en" translatable="false">Chinese</string>
+    <string name="china_flag" translatable="false">China Flag</string>
+    <string name="english_bracet" translatable="false">(English)</string>
+    <string name="add_account">Add Account</string>
+    <string name="choose_a_name_for_your_account">Choose a name for your account.</string>
+    <string name="name">Name</string>
+    <string name="next">Next</string>
+    <string name="select_currency">Select Currency</string>
+    <string name="favorite_currency_prompt">What is your favourite currency?</string>
+    <string name="skip">SKIP</string>
+    <string name="initial_amount">Initial Amount</string>
+    <string name="cash_wallet_prompt">How much money do you have in your cash wallet?</string>
+    <string name="amount_hint" translatable="false">%1$s 0</string>
+    <string name="money_amount" translatable="false">%1$s %2$.3f</string>
+    <string name="balance">Balance: </string>
+    <string name="add_expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="transfer">Transfer</string>
+    <string name="save">Save</string>
+    <string name="memo">Memo</string>
+    <string name="from_wallet">From Wallet</string>
+    <string name="to_wallet">To Wallet</string>
+    <string name="currency_cny">CNY</string>
+    <string name="currency_cny_symbol" translatable="false">¥</string>
+    <string name="currency_inr">INR</string>
+    <string name="currency_inr_symbol" translatable="false">₹</string>
+    <string name="currency_vnd">VND</string>
+    <string name="currency_vnd_symbol" translatable="false">₫</string>
     <string name="currency_usd">USD</string>
-    <string name="currency_inr">Rupee</string>
-    <string name="currency_inr_symbol">₹</string>
-    <string name="currency_vnd">Vnd</string>
-    <string name="currency_vnd_symbol">₫</string>
-    <string name="currency_cny">Renminbi</string>
-    <string name="currency_cny_symbol">¥</string>
-    <string name="currency_usd_symbol">$</string>
+    <string name="currency_usd_symbol" translatable="false">$</string>
+    <string name="vn_language_code" translatable="false">vi</string>
+    <string name="enter_your_pass_code">Enter your pass code</string>
+    <string name="incorrect_pass_code">Incorrect pass code</string>
+    <string name="passcode_does_not_match">Passcode does not match</string>
+    <string name="please_enter_6_digit_passcode">Please enter a 6-digit passcode</string>
+    <string name="passcode_saved">Passcode saved</string>
+    <string name="home">Home</string>
+    <string name="calendar">Calendar</string>
+    <string name="statistic">Statistic</string>
+    <string name="detail_day">Detail</string>
+    <string name="select_category">Select Category</string>
+
+    <string-array name="wallet_options">
+        <item>Cash</item>
+        <item>Credit Card</item>
+        <item>Bank Account</item>
+        <item>Mobile Wallet</item>
+    </string-array>
+
+    <string-array name="debt_type_options">
+        <item>Payable</item>
+        <item>Receivable</item>
+    </string-array>
+
+    <string-array name="category_options">
+        <item>Groceries</item>
+        <item>Rent</item>
+        <item>Utilities</item>
+        <item>Entertainment</item>
+        <item>Miscellaneous</item>
+    </string-array>
+    <string name="india_language_code" translatable="false">hi</string>
+    <string name="english_language_code" translatable="false">en</string>
+    <string name="china_language_code" translatable="false">zh</string>
+    <string name="select_account">Select account</string>
+    <string name="hinted_passcode" translatable="false">-</string>
+    <string name="confirm_your_pass_code">Confirm your pass code</string>
+
+    <string-array name="select_camera_and_gallery">
+        <item>Camera</item>
+        <item>Gallery</item>
+    </string-array>
+    <string-array name="color_options">
+        <item>Red</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Yellow</item>
+        <item>Purple</item>
+    </string-array>
+    <string name="add_fab" translatable="false">Add FAB</string>
+    <string name="manager">Manager (%1$d)</string>
+    <string name="add_wallet">Add Wallet</string>
+    <string name="goal">Goal</string>
+    <string name="debt">Debt</string>
+    <string name="add_debt">Add Debt</string>
+    <string name="add_goal">Add Goal</string>
+    <string name="add_budget">Add Budget</string>
+    <string name="budget">Budget</string>
+    <string name="who_do_you_lend_from">Who do you lend from?</string>
+    <string name="who_do_you_borrow_to">Who do you borrow to?</string>
+    <string name="what_was_it_for">What was it for?</string>
+    <string name="i_owe_s">I owe %1$s</string>
+    <string name="i_lend_s">I lend %1$s</string>
+    <string name="debt_transaction_name" translatable="false">%1$s: %2$s</string>
 </resources>
