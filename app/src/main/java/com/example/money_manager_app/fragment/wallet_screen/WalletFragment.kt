@@ -1,6 +1,5 @@
 package com.example.moneymanager.ui.wallet_screen
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,15 +14,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneymanager.R
-import com.example.moneymanager.data.model.entity.Debt
-import com.example.moneymanager.data.model.entity.DebtDetail
-import com.example.moneymanager.data.model.entity.Wallet
+import com.example.money_manager_app.data.model.entity.Debt
+import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.moneymanager.databinding.FragmentWalletBinding
 import com.example.moneymanager.ui.MainViewModel
 import com.example.moneymanager.ui.wallet_screen.adapter.DebtAdapter
 import com.example.moneymanager.ui.wallet_screen.adapter.WalletAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import ir.mahozad.android.PieChart
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint

@@ -6,8 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.moneymanager.data.model.entity.Debt
-import com.example.moneymanager.data.model.entity.DebtDetail
+import com.example.money_manager_app.data.model.entity.Debt
+import com.example.money_manager_app.data.model.entity.DebtDetail
 import kotlinx.coroutines.flow.Flow
 
 @Dao

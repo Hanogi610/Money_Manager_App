@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moneymanager.R
 import com.example.moneymanager.core.toFormattedTimeString
-import com.example.moneymanager.data.model.entity.DebtTransaction
-import com.example.moneymanager.data.model.entity.Wallet
+import com.example.money_manager_app.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.moneymanager.databinding.DateHeaderItemBinding
 import com.example.moneymanager.databinding.DebtTransactionItemBinding
 import com.example.moneymanager.ui.wallet_screen.debt_detail.DebtListItem

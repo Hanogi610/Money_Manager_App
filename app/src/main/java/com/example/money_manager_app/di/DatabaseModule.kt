@@ -2,7 +2,7 @@ package com.example.moneymanager.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.moneymanager.data.AppDatabase
+import com.example.money_manager_app.data.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.moneymanager.data.model.entity.Account
-import com.example.moneymanager.data.model.entity.AccountWithWallet
+import com.example.money_manager_app.data.model.entity.Account
+import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import kotlinx.coroutines.flow.Flow
 
 @Dao

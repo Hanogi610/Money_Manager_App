@@ -1,13 +1,13 @@
-package com.example.moneymanager.data.model.entity
+package com.example.money_manager_app.data.model.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.moneymanager.core.DebtActionTypeConverter
-import com.example.moneymanager.data.model.Transaction
+import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
+import com.example.money_manager_app.utils.DebtActionTypeConverter
 
 @Entity(
     tableName = "debt_transaction", foreignKeys = [ForeignKey(

@@ -1,8 +1,8 @@
-package com.example.moneymanager.data.repository
+package com.example.money_manager_app.data.repository
 
 import com.example.money_manager_app.data.dao.AccountDao
-import com.example.moneymanager.data.model.entity.Account
-import com.example.moneymanager.data.model.entity.AccountWithWallet
+import com.example.money_manager_app.data.model.entity.Account
+import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
