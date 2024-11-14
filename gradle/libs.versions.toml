@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.1"
+agp = "8.4.0"
 hiltAndroid = "2.51.1"
 kotlin = "1.9.23"
 coreKtx = "1.13.1"
@@ -11,6 +11,8 @@ glide = "4.16.0"
 material = "1.12.0"
 activity = "1.9.1"
 constraintlayout = "2.1.4"
+passcodeview = "0.1.2"
+pieChart = "0.7.0"
 roomRuntime = "2.6.1"
 navigationFragmentKtx = "2.8.2"
 navigationUiKtx = "2.8.2"
@@ -19,13 +21,15 @@ lifecycleLivedataKtx = "2.8.6"
 lifecycleViewmodelKtx = "2.8.6"
 fragmentKtx = "1.8.2"
 dataStore = "1.1.1"
-
+securityCrypto = "1.0.0"
+lottie = "6.5.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
+androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -44,6 +48,9 @@ glideCompiler = { module = "com.github.bumptech.glide:ksp", version.ref = "glide
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+passcodeview = { module = "com.hanks:passcodeview", version.ref = "passcodeview" }
+pie-chart = { module = "ir.mahozad.android:pie-chart", version.ref = "pieChart" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

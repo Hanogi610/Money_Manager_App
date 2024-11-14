@@ -1,33 +1,32 @@
 package com.example.money_manager_app.pref
 
-import android.content.Context
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 import javax.inject.Singleton
 
+
 @Singleton
-class AppPreferences @Inject constructor(
-    @ApplicationContext context: Context
-) : BasePreferencesImpl(context) {
+interface AppPreferences {
 
-    private object PreferencesKeys {
-        val PREF_PARAM_LANGUAGE = stringPreferencesKey("PREF_PARAM_LANGUAGE")
-        val PREF_PARAM_FIRST_TIME = booleanPreferencesKey("PREF_PARAM_FIRST_TIME")
-    }
+    fun get(key: String): String?
 
-    fun getLanguage(): Flow<String?> = getValue(PreferencesKeys.PREF_PARAM_LANGUAGE)
+    fun get(key: String, default: Int): Int
 
-    suspend fun setLanguage(locale: String) {
-        putValue(PreferencesKeys.PREF_PARAM_LANGUAGE, locale)
-    }
+    fun get(key: String, default: Boolean): Boolean
 
-    fun getIsFirstTime(): Flow<Boolean?> = getValue(PreferencesKeys.PREF_PARAM_FIRST_TIME)
+    fun put(key: String, value: String)
 
-    suspend fun setIsFirstTime(isFirstTime: Boolean) {
-        putValue(PreferencesKeys.PREF_PARAM_FIRST_TIME, isFirstTime)
-    }
+    fun put(key: String, value: Int)
+
+    fun put(key: String, value: Boolean)
+
+    fun clear()
+
+    fun remove(key: String)
+
+    fun isFirstTimeLaunch() : Boolean
+
+    fun setFirstTimeLaunch(isFirstTimeLaunch: Boolean)
+
+    fun getLanguage() : String
+
+    fun setLanguage(language: String)
 }

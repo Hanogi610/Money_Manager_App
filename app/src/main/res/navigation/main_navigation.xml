@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="com.example.money_manager_app.fragment.SplashScreenFragment"
+        android:name="com.example.money_manager_app.fragment.SplashFragment"
         android:label="fragment_splash_screen"
-        tools:layout="@layout/fragment_splash_screen" >
+        tools:layout="@layout/fragment_splash" >
         <action
             android:id="@+id/action_splashScreenFragment_to_languageFragment"
             app:destination="@id/languageFragment"
@@ -17,38 +17,25 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/action_splashScreenFragment_to_innitAccountFragment"
-            app:destination="@id/innitAccountFragment" />
-        <action
-            android:id="@+id/action_splashScreenFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/innitAccountFragment"
-        android:name="com.example.money_manager_app.fragment.InnitAccountFragment"
-        android:label="fragment_innit_account"
-        tools:layout="@layout/fragment_innit_account" >
-        <action
-            android:id="@+id/action_innitAccountFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/languageFragment"
         android:name="com.example.money_manager_app.fragment.LanguageFragment"
         android:label="fragment_language"
-        tools:layout="@layout/fragment_language" >
-        <action
-            android:id="@+id/action_languageFragment_to_innitAccountFragment"
-            app:destination="@id/innitAccountFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_language" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.money_manager_app.fragment.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_homeFragment_to_innitAccountFragment"
-            app:destination="@id/innitAccountFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="com.example.money_manager_app.fragment.PasswordFragment"
+        android:label="fragment_password"
+        tools:layout="@layout/fragment_password" />
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.example.money_manager_app.fragment.CreateAccountFragment"
+        android:label="fragment_create_account"
+        tools:layout="@layout/fragment_create_account" />
 </navigation>

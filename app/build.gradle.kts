@@ -57,9 +57,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
-    implementation(libs.material.calendar.view)
-    implementation (libs.autofittextview)
     implementation(libs.dataStore)
+    implementation(libs.androidx.security.crypto)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,6 +68,7 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
+
     //noinspection KaptUsageInsteadOfKsp
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
@@ -76,8 +76,9 @@ dependencies {
     // Glide
     implementation(libs.glide)
     kapt(libs.glideCompiler)
+    implementation(libs.lottie)
 
-    implementation("ir.mahozad.android:pie-chart:0.7.0")
+    implementation(libs.pie.chart)
 }
 kapt {
     correctErrorTypes = true
