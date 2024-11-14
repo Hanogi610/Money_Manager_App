@@ -10,7 +10,7 @@ import javax.inject.Inject
 class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
     AppNavigation {
     override fun openSplashToInnitAccountScreen(bundle: Bundle?) {
-        openScreen(R.id.action_splashScreenFragment_to_innitAccountFragment, bundle)
+        openScreen(R.id.action_splashScreenFragment_to_languageFragment, bundle)
     }
 
     override fun openSplashToLanguageScreen(bundle: Bundle?) {
@@ -18,7 +18,7 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
     }
 
     override fun openLanguageToInnitAccountScreen(bundle: Bundle?) {
-        openScreen(R.id.action_languageFragment_to_innitAccountFragment, bundle)
+        openScreen(R.id.action_languageFragment_to_passcodeFragment, bundle)
     }
 
     override fun openInnitAccountToHomeScreen(bundle: Bundle?) {
@@ -26,11 +26,11 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
     }
 
     override fun openHomeToInnitAccountScreen(bundle: Bundle?) {
-        openScreen(R.id.action_homeFragment_to_innitAccountFragment, bundle)
+        openScreen(R.id.action_homeFragment_to_addAccountFragment, bundle)
     }
 
     override fun openSplashToHomeScreen(bundle: Bundle?) {
-        openScreen(R.id.action_splashScreenFragment_to_homeFragment, bundle)
+        TODO("Not yet implemented")
     }
 
 

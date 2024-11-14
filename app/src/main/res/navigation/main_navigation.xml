@@ -17,21 +17,7 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_right" />
-        <action
-            android:id="@+id/action_splashScreenFragment_to_innitAccountFragment"
-            app:destination="@id/innitAccountFragment" />
-        <action
-            android:id="@+id/action_splashScreenFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/innitAccountFragment"
-        android:name="com.example.money_manager_app.fragment.InnitAccountFragment"
-        android:label="fragment_innit_account"
-        tools:layout="@layout/fragment_innit_account" >
-        <action
-            android:id="@+id/action_innitAccountFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/languageFragment"
@@ -39,16 +25,66 @@
         android:label="fragment_language"
         tools:layout="@layout/fragment_language" >
         <action
-            android:id="@+id/action_languageFragment_to_innitAccountFragment"
+            android:id="@+id/action_languageFragment_to_passcodeFragment"
+            app:destination="@id/passcodeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passcodeFragment"
+        android:name="com.example.money_manager_app.fragment.lock_screen.PasscodeFragment"
+        tools:layout="@layout/fragment_passcode"
+        android:label="PasscodeFragment" >
+        <action
+            android:id="@+id/action_passcodeFragment_to_confirmPasscodeFragment"
+            app:destination="@id/confirmPasscodeFragment" />
+        <action
+            android:id="@+id/action_passcodeFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmPasscodeFragment"
+        android:name="com.example.money_manager_app.fragment.lock_screen.ConfirmPasscodeFragment"
+        tools:layout="@layout/fragment_confirm_passcode"
+        android:label="ConfirmPasscodeFragment" >
+        <action
+            android:id="@+id/action_confirmPasscodeFragment_to_addAccountFragment"
+            app:destination="@id/addAccountFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/innitAccountFragment"
+        android:name="com.example.money_manager_app.fragment.init_amount.InnitAccountFragment"
+        tools:layout="@layout/fragment_innit_account"
+        android:label="InnitAccountFragment" >
+        <action
+            android:id="@+id/action_innitAccountFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAccountFragment"
+        android:name="com.example.moneymanager.fragment.add_account.AddAccountFragment"
+        tools:layout="@layout/fragment_add_account"
+        android:label="AddAccountFragment" >
+        <action
+            android:id="@+id/action_addAccountFragment_to_currencySelectionFragment"
+            app:destination="@id/currencySelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/currencySelectionFragment"
+        android:name="com.example.moneymanager.fragment.currency_selection.CurrencySelectionFragment"
+        tools:layout="@layout/fragment_currency_selection"
+        android:label="CurrencySelectionFragment" >
+        <action
+            android:id="@+id/action_currencySelectionFragment_to_innitAccountFragment"
             app:destination="@id/innitAccountFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.money_manager_app.fragment.HomeFragment"
+        android:name="com.example.money_manager_app.fragment.home_screen.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_innitAccountFragment"
-            app:destination="@id/innitAccountFragment" />
+            android:id="@+id/action_homeFragment_to_addAccountFragment"
+            app:destination="@id/addAccountFragment" />
     </fragment>
+
+
 </navigation>

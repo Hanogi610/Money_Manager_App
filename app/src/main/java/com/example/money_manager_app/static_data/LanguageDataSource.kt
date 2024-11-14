@@ -5,9 +5,9 @@ import com.example.money_manager_app.model.LanguageModel
 
 object LanguageDataSource {
     fun getLanguageList() = listOf(
-        LanguageModel(R.drawable.ic_english, "English", "en", true),
-        LanguageModel(R.drawable.ic_china, "China", "zh"),
-        LanguageModel(R.drawable.ic_india, "India", "hi"),
-        LanguageModel(R.drawable.ic_vietnam, "Vietnam", "vi")
+        LanguageModel(R.drawable.us_flag, "English", "en", true),
+        LanguageModel(R.drawable.us_flag, "China", "zh"),
+        LanguageModel(R.drawable.us_flag, "India", "hi"),
+        LanguageModel(R.drawable.vn_flag, "Vietnam", "vi")
     )
 }

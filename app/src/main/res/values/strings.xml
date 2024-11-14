@@ -23,17 +23,58 @@
     <string name="wallet">Wallet</string>
     <string name="selected">Selected</string>
     <string name="select_account">Select Account</string>
-    <string name= "save">SAVE</string>
+    <string name="save">SAVE</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="currency">Currency</string>
     <string name="account_name_hint">Account\'s name</string>
     <string name="income">Income</string>
     <string name="expense">Expense</string>
+    <string name="transfer">Transfer</string>
     <string name="total">Total</string>
     <string name="dash">-</string>
+    <string name="date">Date</string>
+    <string name="amount">Amount</string>
+    <string name="description">Description</string>
+    <string name="confirm_your_pass_code">Confirm your pass code</string>
+    <string name="category">Category</string>
+    <string name="memo">Memo</string>
+    <string name="from_wallet">From Wallet</string>
+    <string name="to_wallet">To Wallet</string>
+    <string name="hinted_passcode" translatable="false">-</string>
+    <string name="enter_your_pass_code">Enter your pass code</string>
     <string name="empty_category">No Categories</string>
     <string name="empty_category_hint">Tap the + button to add categories.</string>
     <string name="english">English</string>
     <string name="select_your_language">Select your language</string>
+    <string name="currency_cny">CNY</string>
+    <string name="currency_cny_symbol" translatable="false">¥</string>
+    <string name="currency_inr">INR</string>
+    <string name="currency_inr_symbol" translatable="false">₹</string>
+    <string name="currency_vnd">VND</string>
+    <string name="currency_vnd_symbol" translatable="false">₫</string>
+    <string name="add_account">Add Account</string>
+    <string name="currency_usd">USD</string>
+    <string name="currency_usd_symbol" translatable="false">$</string>
+    <string name="choose_a_name_for_your">Choose a name for your account</string>
+    <string name="favorite_currency_prompt" >What is your favourite currency?</string>
+    <string name="incorrect_pass_code">Incorrect pass code</string>
+    <string name="passcode_saved">Passcode saved</string>
+    <string name="passcode_does_not_match">Passcode does not match</string>
+    <string name="please_enter_6_digit_passcode">Please enter a 6-digit passcode</string>
+    <string name="vietnam_flag" translatable="false">Vietnam Flag</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="tieng_viet" translatable="false">(Tiếng Việt)</string>
+    <string name="hindi">(हिंदी)</string>
+    <string name="hindi_en" translatable="false">Hindi</string>
+    <string name="india_flag" translatable="false">India Flag</string>
+    <string name="chinese" translatable="false">(中文)</string>
+    <string name="chinese_en" translatable="false">Chinese</string>
+    <string name="china_flag" translatable="false">China Flag</string>
+    <string name="india_language_code" translatable="false">hi</string>
+    <string name="english_language_code" translatable="false">en</string>
+    <string name="china_language_code" translatable="false">zh</string>
+    <string name="uk_flag">UK Flag</string>
+    <string name="english_bracet" translatable="false">(English)</string>
+    <string name="vn_language_code" translatable="false">vi</string>
 </resources>

@@ -55,8 +55,7 @@ class LanguageFragment : BaseFragment<FragmentLanguageBinding, LanguageViewModel
             getVM().selectLanguage()
         }
 
-        binding.rvLanguage.layoutManager = LinearLayoutManager(context)
-        binding.rvLanguage.adapter = adapter
+
 
 //        showAds(
 //            loadingLayout = binding.bannerAds.loadingView,
@@ -86,20 +85,6 @@ class LanguageFragment : BaseFragment<FragmentLanguageBinding, LanguageViewModel
     override fun setOnClick() {
         super.setOnClick()
 
-        binding.ivDone.setOnSafeClickListener {
-            LocaleHelper.setLocale(requireContext(), language)
-
-            lifecycleScope.launch {
-                appPreferences.setLanguage(language)
-                appPreferences.setIsFirstTime(false)
-            }
-
-//            if (directory == null) {
-//                appNavigation.openLanguageToInnitAccountScreen()
-//            } else {
-//                appNavigation.openLanguageToHomeScreen()
-//            }
-        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.example.money_manager_app.fragment
+package com.example.money_manager_app.fragment.home_screen
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.money_manager_app.R
+import com.example.money_manager_app.fragment.HomeViewModel
 
 class HomeFragment : Fragment() {
 

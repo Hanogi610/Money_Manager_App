@@ -12,11 +12,13 @@ import javax.inject.Inject
 class MoneyManagerApplication : BaseApplication() {
     @Inject
     lateinit var appPreferences: AppPreferences
+
     override fun onCreate() {
         super.onCreate()
         setAppLocale()
 //        createChannelNotification(this)
     }
+
     private fun setAppLocale() {
         runBlocking {
             val languageCode = appPreferences.getLanguage().firstOrNull()
