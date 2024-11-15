@@ -18,8 +18,8 @@ abstract class BaseFragment<BD : ViewDataBinding, VM : BaseViewModel>(@LayoutRes
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-//        viewModel.isLoading.observe(viewLifecycleOwner) {
-//            showHideLoading(it)
-//        }
+        viewModel.isLoading.observe(viewLifecycleOwner) {
+            showHideLoading(it)
+        }
     }
 }

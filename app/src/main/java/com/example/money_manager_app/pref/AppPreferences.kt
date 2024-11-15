@@ -1,9 +1,5 @@
 package com.example.money_manager_app.pref
 
-import javax.inject.Singleton
-
-
-@Singleton
 interface AppPreferences {
 
     fun get(key: String): String?
@@ -29,4 +25,8 @@ interface AppPreferences {
     fun getLanguage() : String
 
     fun setLanguage(language: String)
+
+    fun getPassword() : String
+
+    fun setPassword(password: String)
 }

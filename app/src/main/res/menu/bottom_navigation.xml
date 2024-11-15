@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:icon="@drawable/transaction"
-        android:id="@+id/action_transaction"
-        android:title="@string/transaction"/>
+        android:icon="@drawable/ic_home"
+        android:id="@+id/action_home"
+        android:title="@string/home"/>
     <item
-        android:icon="@drawable/calendar"
+        android:icon="@drawable/ic_calendar"
         android:id="@+id/action_calender"
         android:title="@string/calendar"/>
     <item
-        android:icon="@drawable/statistic"
+        android:icon="@drawable/ic_graph"
         android:id="@+id/action_statistic"
         android:title="@string/statistic"/>
     <item
-        android:icon="@drawable/wallet"
+        android:icon="@drawable/ic_wallet"
         android:id="@+id/action_wallet"
         android:title="@string/wallet"/>
+    <item
+        android:title=""/>
 </menu>

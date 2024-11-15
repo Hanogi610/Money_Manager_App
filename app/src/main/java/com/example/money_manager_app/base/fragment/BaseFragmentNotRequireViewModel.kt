@@ -7,6 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.example.money_manager_app.base.activity.BaseActivityNotRequireViewModel
 import com.example.money_manager_app.navigation.AppNavigation
 import com.example.money_manager_app.pref.AppPreferences
 import javax.inject.Inject
@@ -80,6 +81,16 @@ abstract class BaseFragmentNotRequireViewModel<BD : ViewDataBinding>(@LayoutRes 
 
     open fun bindingStateView() {
         //do nothing
+    }
+
+    fun showHideLoading(isShow: Boolean) {
+        if (activity != null && activity is BaseActivityNotRequireViewModel<*>) {
+            if (isShow) {
+                (activity as BaseActivityNotRequireViewModel<*>?)!!.showLoading()
+            } else {
+                (activity as BaseActivityNotRequireViewModel<*>?)!!.hiddenLoading()
+            }
+        }
     }
 
     override fun onDestroyView() {
