@@ -7,10 +7,7 @@ import androidx.security.crypto.MasterKeys
 import com.example.money_manager_app.utils.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
-import javax.inject.Singleton
 
-
-@Singleton
 class AppPreferencesImpl @Inject constructor(
     @ApplicationContext context: Context
 ) : AppPreferences {
@@ -18,6 +15,7 @@ class AppPreferencesImpl @Inject constructor(
     companion object {
         const val PREF_PARAM_IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH"
         const val PREF_PARAM_LANGUAGE = "LANGUAGE"
+        const val PREF_PARAM_PASSWORD = "PASSWORD"
     }
 
     private var masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
@@ -78,5 +76,11 @@ class AppPreferencesImpl @Inject constructor(
 
     override fun setLanguage(language: String) {
         put(PREF_PARAM_LANGUAGE, language)
+    }
+
+    override fun getPassword(): String = get(PREF_PARAM_PASSWORD) ?: ""
+
+    override fun setPassword(password: String) {
+        put(PREF_PARAM_PASSWORD, password)
     }
 }

@@ -1,6 +1,5 @@
 package com.example.money_manager_app.fragment
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.example.money_manager_app.R
@@ -10,7 +9,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashFragment : BaseFragmentNotRequireViewModel<FragmentSplashBinding>(R.layout.fragment_splash) {
 
@@ -28,7 +26,7 @@ class SplashFragment : BaseFragmentNotRequireViewModel<FragmentSplashBinding>(R.
             if (isFirstTime) {
                 appNavigation.openSplashToLanguageScreen()
             } else {
-                appNavigation.openSplashToInnitAccountScreen()
+                appNavigation.openSplashToPasswordScreen()
             }
         }
     }

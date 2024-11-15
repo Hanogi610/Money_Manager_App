@@ -10,6 +10,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.example.money_manager_app.custom.LoadingDialog
 
 abstract class BaseActivityNotRequireViewModel<BD : ViewDataBinding> : AppCompatActivity() {
 
@@ -29,17 +30,17 @@ abstract class BaseActivityNotRequireViewModel<BD : ViewDataBinding> : AppCompat
     override fun onDestroy() {
         _binding?.unbind()
         _binding = null
-//        LoadingDialog.getInstance(this)?.destroyLoadingDialog()
+        LoadingDialog.getInstance(this)?.destroyLoadingDialog()
         super.onDestroy()
     }
 
-//    fun showLoading() {
-//        LoadingDialog.getInstance(this)?.show()
-//    }
-//
-//    fun hiddenLoading() {
-//        LoadingDialog.getInstance(this)?.hidden()
-//    }
+    fun showLoading() {
+        LoadingDialog.getInstance(this)?.show()
+    }
+
+    fun hiddenLoading() {
+        LoadingDialog.getInstance(this)?.hidden()
+    }
 
     /**
      * Close SoftKeyboard when user click out of EditText
