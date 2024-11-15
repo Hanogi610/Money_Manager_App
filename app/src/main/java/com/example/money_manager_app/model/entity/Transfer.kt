@@ -27,5 +27,4 @@ data class Transfer(
     @ColumnInfo(name = "transfer_time") val transferTime: Long,
     @ColumnInfo(name = "type_of_expenditure") val typeOfExpenditure: String,
     @ColumnInfo(name = "type_icon_category") val typeIconCategory: String,
-
 )
