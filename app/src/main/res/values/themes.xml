@@ -6,4 +6,8 @@
 
         <item name="android:fontFamily">@font/sfprodisplay_medium</item>
     </style>
+    <style name="Base.Theme.MoneyManager" parent="Theme.Material3.Light.NoActionBar">
+        <item name="color">@color/white</item>
+        <item name="android:windowFullscreen">false</item>
+    </style>
 </resources>

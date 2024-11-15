@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.dataStore)
     implementation(libs.androidx.security.crypto)
+    implementation (libs.lottie.v520)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.add
+package com.example.moneymanager.fragment.add
 
 import android.app.AlertDialog
 import android.content.pm.PackageManager
@@ -17,9 +17,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.moneymanager.R
+import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.entity.AddTransfer
-import com.example.moneymanager.databinding.FragmentAddExpenseBinding
+import com.example.money_manager_app.databinding.FragmentAddExpenseBinding
+import com.example.moneymanager.ui.add.AddViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

@@ -1,96 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.detail.DetailDayFragment">
-
-    <RelativeLayout
-        android:id="@+id/llDetailDay"
+<layout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:src="@drawable/ic_back"
-            android:layout_width="@dimen/icon_size_large"
-            android:layout_height="@dimen/icon_size_large"/>
-        <TextView
-            android:id="@+id/tv_title"
-            android:text="@string/detail_day"
-            android:layout_centerInParent="true"
-            android:textSize="@dimen/text_size_20"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/llDetailDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:src="@drawable/ic_back"
+                android:layout_width="@dimen/_48dp"
+                android:layout_height="@dimen/_48dp"/>
+            <TextView
+                android:id="@+id/tv_title"
+                android:text="@string/detail_day"
+                android:layout_centerInParent="true"
+                android:textSize="@dimen/_20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/llDetailDayContent"
+            android:layout_below="@+id/llDetailDay"
+            android:layout_width="match_parent"
+            android:layout_marginRight="@dimen/_16dp"
+            android:layout_marginLeft="@dimen/_16dp"
+            android:padding="@dimen/_12dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_detail_day">
+
+            <LinearLayout
+                android:id="@+id/ll_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="09"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:textSize="@dimen/_32sp" />
+                <LinearLayout
+                    android:layout_marginLeft="@dimen/_8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tv_day_of_week"
+                        android:text="Thứ tư"
+                        android:textSize="@dimen/_12sp"
+                        android:textColor="@color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/tv_month_year"
+                        android:text="th12 2024"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_total_money_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="đ 3.795.000"
+                android:textColor="@color/white"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/_16sp" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_12dp"
+            android:layout_below="@+id/llDetailDayContent"
+            android:layout_marginLeft="@dimen/_12dp"
+            android:layout_marginRight="@dimen/_12dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/llDetailDayContent"
-        android:layout_below="@+id/llDetailDay"
-        android:layout_width="match_parent"
-        android:layout_marginRight="@dimen/margin_medium"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:padding="@dimen/padding_normal"
-        android:layout_height="wrap_content"
-        android:background="@drawable/custom_detail_day">
-
-        <LinearLayout
-            android:id="@+id/ll_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="09"
-                android:textColor="@color/white"
-                android:gravity="center"
-                android:textSize="@dimen/text_size_32" />
-            <LinearLayout
-                android:layout_marginLeft="@dimen/margin_small"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tv_day_of_week"
-                    android:text="Thứ tư"
-                    android:textSize="@dimen/text_size_12"
-                    android:textColor="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/tv_month_year"
-                    android:text="th12 2024"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_total_money_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="đ 3.795.000"
-            android:textColor="@color/white"
-            android:layout_centerVertical="true"
-            android:textSize="@dimen/text_size_16" />
-
-    </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="@dimen/margin_normal"
-        android:layout_below="@+id/llDetailDayContent"
-        android:layout_marginLeft="@dimen/margin_normal"
-        android:layout_marginRight="@dimen/margin_normal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-</RelativeLayout>
+</layout>

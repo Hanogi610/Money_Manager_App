@@ -46,7 +46,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:contentDescription="balance visibility toggle"
-            android:src="@drawable/ic_hide"
+            android:src="@drawable/ic_remove_red_eye"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/balanceLabel" />
 
