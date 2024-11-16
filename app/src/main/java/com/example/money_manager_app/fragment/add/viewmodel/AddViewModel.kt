@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.add
+package com.example.money_manager_app.fragment.add.viewmodel
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -6,8 +6,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.icu.util.Calendar
 import android.os.Environment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.entity.AddTransfer
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.repository.TransferRepository
@@ -29,7 +29,7 @@ import javax.inject.Inject
 class AddViewModel @Inject constructor(
     private val repository: TransferRepository,
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
-)  : ViewModel() {
+)  : BaseViewModel() {
 
     private val _addTransfer = MutableStateFlow(AddTransfer())
     val addTransfer: StateFlow<AddTransfer> get() = _addTransfer

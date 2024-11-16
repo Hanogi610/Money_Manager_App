@@ -1,33 +1,27 @@
-package com.example.moneymanager.fragment.add
+package com.example.money_manager_app.fragment.add.view
 
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
+import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewModel
 import com.example.money_manager_app.data.model.entity.AddTransfer
-import com.example.money_manager_app.databinding.FragmentAddExpenseBinding
-import com.example.moneymanager.ui.add.AddViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.money_manager_app.databinding.FragmentAddIncomeBinding
+import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
-class AddExpenseFragment : Fragment() {
-    private var _binding: FragmentAddExpenseBinding? = null
-    private val binding get() = _binding!!
+class AddIncomeFragment : BaseFragmentNotRequireViewModel<FragmentAddIncomeBinding>(R.layout.fragment_add_income) {
     private val viewModel: AddViewModel by activityViewModels()
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
@@ -45,17 +39,9 @@ class AddExpenseFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAddExpenseBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.updateDateTime()
         navGraph()
         pickDate()
         pickTime()
@@ -67,35 +53,6 @@ class AddExpenseFragment : Fragment() {
         back()
     }
 
-    fun back(){
-        binding.ivBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
-
-    fun selectCategory(){
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.category_options,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.spCategory.adapter = adapter
-        }
-    }
-
-    fun selectWallet(){
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.wallet_options,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.spWallet.adapter = adapter
-        }
-    }
-
     fun saveTranfer() {
         binding.tvSave.setOnClickListener {
             val amountText = binding.etAmount.text.toString()
@@ -105,45 +62,15 @@ class AddExpenseFragment : Fragment() {
                 val time = binding.etTime.text.toString()
                 val date = binding.etDate.text.toString()
                 val getbitmap = viewModel.getBitmap()
-                var linkimg = viewModel.saveDrawableToAppStorage(requireContext(), getbitmap)
-                if(linkimg == null){
-                    linkimg = ""
-                }
-                val type_icon_category = binding.spCategory.selectedItem.toString()
-                val typeOfExpenditure = "Expense"
-                val toWallet = 0
-                val fromWallet = 1
-                val typeDebt = ""
-                val typeColor = ""
-                val transfer = AddTransfer(
-                    amount,
-                    description,
-                    typeOfExpenditure,
-                    toWallet.toLong(),
-                    fromWallet.toLong(),
-                    linkimg,
-                    date,
-                    time,
-                    typeDebt,
-                    type_icon_category,
-                    typeColor,
-                    "",
-                    0.0
-                )
-                viewModel.saveIncomeAndExpense(transfer)
+                val imagePath = viewModel.saveDrawableToAppStorage(requireContext(), getbitmap)
+                val category = binding.spCategory.selectedItem.toString()
+                val typeOfExpenditure = "Income"
+                val idWallet = 1L
+                val incomeAndExpense = AddTransfer()
+                viewModel.saveIncomeAndExpense(incomeAndExpense)
             } else {
                 Log.e("AddExpenseFragment", "Amount is empty")
             }
-        }
-    }
-
-    fun navGraph(){
-        val controller_nav =findNavController()
-        binding.tvIncome.setOnClickListener {
-            controller_nav.navigate(R.id.addIncomeFragment)
-        }
-        binding.tvTransfer.setOnClickListener{
-            controller_nav.navigate(R.id.addTranferFragment)
         }
     }
 
@@ -222,8 +149,42 @@ class AddExpenseFragment : Fragment() {
         val description = binding.etDescription.text.toString()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun navGraph() {
+        val controller_nav = findNavController()
+        binding.tvAddExpense.setOnClickListener {
+            controller_nav.navigate(R.id.addExpenseFragment)
+        }
+        binding.tvTransfer.setOnClickListener {
+            controller_nav.navigate(R.id.addTranferFragment)
+        }
     }
+
+    fun selectCategory(){
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.category_options,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spCategory.adapter = adapter
+        }
+    }
+
+    fun selectWallet(){
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.wallet_options,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spWallet.adapter = adapter
+        }
+    }
+
+    fun back(){
+        binding.ivBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
 }
