@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.moneymanager.R
-import com.example.moneymanager.databinding.FragmentAddTranferBinding
+import com.example.money_manager_app.R
+import com.example.money_manager_app.databinding.FragmentAddTranferBinding
 
 
 class AddTranferFragment : Fragment() {
