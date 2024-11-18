@@ -79,7 +79,9 @@ dependencies {
     kapt(libs.glideCompiler)
     implementation(libs.lottie)
 
-    implementation(libs.pie.chart)
+    implementation (libs.mpandroidchart)
+
+    implementation(libs.circleprogress)
 }
 kapt {
     correctErrorTypes = true

@@ -18,7 +18,7 @@ import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.moneymanager.databinding.FragmentDebtDetailBinding
 import com.example.moneymanager.ui.MainViewModel
-import com.example.moneymanager.ui.wallet_screen.adapter.DebtTransactionAdapter
+import com.example.money_manager_app.fragment.wallet.adapter.DebtTransactionAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

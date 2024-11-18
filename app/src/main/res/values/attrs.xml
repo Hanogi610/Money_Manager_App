@@ -32,4 +32,6 @@
     </attr>
     <attr name="emptyCategory" format="reference">
     </attr>
+    <attr name="progressBar" format="reference">
+    </attr>
 </resources>

@@ -765,5 +765,8 @@
     <dimen name="_minus8dp">-8dp</dimen>
     <dimen name="_minus9dp">-9dp</dimen>
     <dimen name="_2ddp">2dp</dimen>
+    <dimen name="category_wrapper_size">40dp</dimen>
+    <dimen name="category_image_big_size">36dp</dimen>
+    <dimen name="progress_height">8dp</dimen>
 
 </resources>

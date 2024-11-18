@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.wallet_screen
+package com.example.money_manager_app.fragment.wallet.add_wallet
 
 import androidx.lifecycle.ViewModel
 

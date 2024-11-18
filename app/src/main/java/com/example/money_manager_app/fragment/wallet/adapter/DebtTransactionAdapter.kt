@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.wallet_screen.adapter
+package com.example.money_manager_app.fragment.wallet.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

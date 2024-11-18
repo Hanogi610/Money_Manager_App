@@ -1,28 +1,28 @@
-package com.example.moneymanager.ui.wallet_screen.adapter
+package com.example.money_manager_app.fragment.wallet.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moneymanager.R
+import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtDetail
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.data.model.entity.enums.DebtType
-import com.example.moneymanager.databinding.AddNewItemBinding
-import com.example.moneymanager.databinding.DebtItemBinding
+import com.example.money_manager_app.databinding.AddNewItemBinding
+import com.example.money_manager_app.databinding.DebtItemBinding
 
 class DebtAdapter(
     private val context: Context,
     private val currentCurrencySymbol: String,
     private val onItemClick: (Debt) -> Unit,
     private val onAddNewClick: () -> Unit
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var debts: List<DebtDetail> = emptyList()
+) : ListAdapter<DebtDetail, RecyclerView.ViewHolder>(DebtDiffCallback()) {
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == debts.size) TYPE_ADD_NEW else TYPE_ITEM
+        return if (position == currentList.size) TYPE_ADD_NEW else TYPE_ITEM
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -36,7 +36,7 @@ class DebtAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == TYPE_ITEM) {
-            val debt = debts[position]
+            val debt = getItem(position)
             (holder as DebtViewHolder).bind(debt)
         } else if (holder is AddDebtViewHolder) {
             // No binding required for the "Add Debt" button
@@ -44,7 +44,7 @@ class DebtAdapter(
     }
 
     override fun getItemCount(): Int {
-        return debts.size + 1
+        return currentList.size + 1
     }
 
     inner class AddDebtViewHolder(val binding: AddNewItemBinding) :
@@ -73,30 +73,18 @@ class DebtAdapter(
         }
     }
 
-    fun setDebts(debts: List<DebtDetail>) {
-        val diffCallback = DebtDiffCallback(this.debts, debts)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-        this.debts = debts
-        diffResult.dispatchUpdatesTo(this)
-    }
-
     companion object {
         private const val TYPE_ITEM = 0
         private const val TYPE_ADD_NEW = 1
     }
 }
 
-class DebtDiffCallback(
-    private val oldList: List<DebtDetail>, private val newList: List<DebtDetail>
-) : DiffUtil.Callback() {
-    override fun getOldListSize(): Int = oldList.size
-    override fun getNewListSize(): Int = newList.size
-
-    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].debt.id == newList[newItemPosition].debt.id
+class DebtDiffCallback : DiffUtil.ItemCallback<DebtDetail>() {
+    override fun areItemsTheSame(oldItem: DebtDetail, newItem: DebtDetail): Boolean {
+        return oldItem.debt.id == newItem.debt.id
     }
 
-    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition] == newList[newItemPosition]
+    override fun areContentsTheSame(oldItem: DebtDetail, newItem: DebtDetail): Boolean {
+        return oldItem == newItem
     }
 }

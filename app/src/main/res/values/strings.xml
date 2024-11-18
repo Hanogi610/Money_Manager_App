@@ -137,4 +137,13 @@
     <string name="i_lend_s">I lend %1$s</string>
     <string name="debt_transaction_name" translatable="false">%1$s: %2$s</string>
     <string name="subtract">-</string>
+    <string name="left">Left</string>
+    <string name="paid">Paid</string>
+    <string name="saved">Saved</string>
+    <string name="remain">Remain</string>
+    <string name="goal_date">Goal date</string>
+    <string name="deposit">Deposit</string>
+    <string name="withdraw">Withdraw</string>
+    <string name="spent">Spent</string>
+    <string name="period">Period</string>
 </resources>
