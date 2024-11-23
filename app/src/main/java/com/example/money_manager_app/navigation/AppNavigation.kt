@@ -8,4 +8,8 @@ interface AppNavigation : BaseNavigator {
     fun openSplashToPasswordScreen(bundle: Bundle? = null)
     fun openLanguageToPasswordScreen(bundle: Bundle? = null)
     fun openPasswordToCreateAccountScreen(bundle: Bundle? = null)
+    fun openMainScreenToAddDebtScreen(bundle: Bundle? = null)
+    fun openMainScreenToDebtDetailScreen(bundle: Bundle? = null)
+    fun openDebDetailToAddDebtTransactionScreen(bundle: Bundle? = null)
+    fun openMainScreenToGoalDetailScreen(bundle: Bundle? = null)
 }

@@ -1,5 +1,6 @@
 package com.example.money_manager_app.data.model.entity
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -10,7 +11,9 @@ import androidx.room.TypeConverters
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.money_manager_app.utils.DebtTypeConverter
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(
     tableName = "debt", foreignKeys = [ForeignKey(
         entity = Account::class,
@@ -35,7 +38,7 @@ data class Debt(
     val description: String,
     @ColumnInfo(name = "wallet_id") val walletId: Long,
     @ColumnInfo(name = "color_id") val colorId: Int,
-) : Transaction(id, name, amount, accountId)
+) : Transaction(id, name, amount, accountId), Parcelable
 
 data class DebtDetail(
     @Embedded val debt: Debt,

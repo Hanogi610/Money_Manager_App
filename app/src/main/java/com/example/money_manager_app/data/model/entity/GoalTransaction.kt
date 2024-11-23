@@ -6,14 +6,14 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.money_manager_app.data.model.SubTransaction
-import com.example.money_manager_app.data.model.entity.enums.DebtActionType
-import com.example.money_manager_app.utils.DebtActionTypeConverter
+import com.example.money_manager_app.data.model.entity.enums.GoalInputType
+import com.example.money_manager_app.utils.GoalInputTypeConverter
 
 @Entity(
-    tableName = "debt_transaction", foreignKeys = [ForeignKey(
-        entity = Debt::class,
+    tableName = "goal_transaction", foreignKeys = [ForeignKey(
+        entity = Goal::class,
         parentColumns = ["id"],
-        childColumns = ["debt_id"],
+        childColumns = ["goal_id"],
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = Wallet::class,
@@ -27,14 +27,14 @@ import com.example.money_manager_app.utils.DebtActionTypeConverter
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class DebtTransaction(
+data class GoalTransaction(
     @PrimaryKey(autoGenerate = true) override val id: Long = 0,
     override val name: String,
     @ColumnInfo(name = "account_id") override val accountId: Long,
-    @ColumnInfo(name = "debt_id") val debtId: Long,
+    @ColumnInfo(name = "goal_id") val goalId: Long,
     @ColumnInfo(name = "wallet_id") override val walletId: Long,
     override val amount: Double,
-    @TypeConverters(DebtActionTypeConverter::class) val action: DebtActionType,
+    @TypeConverters(GoalInputTypeConverter::class) val type: GoalInputType? = GoalInputType.DEPOSIT,
     override val date: Long? = System.currentTimeMillis(),
     override val time: Long? = System.currentTimeMillis(),
 ) : SubTransaction(id, name, amount, accountId, walletId, date, time)

@@ -58,15 +58,15 @@ class DebtAdapter(
     inner class DebtViewHolder(val binding: DebtItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(debt: DebtDetail) {
-            binding.debtName.text = if (debt.debt.type == DebtType.PAYABLE) context.getString(
+            binding.nameLabel.text = if (debt.debt.type == DebtType.PAYABLE) context.getString(
                 R.string.i_owe_s, debt.debt.name
             ) else context.getString(R.string.i_lend_s, debt.debt.name)
-            binding.debtDescription.text = debt.debt.description
+            binding.detailLabel.text = debt.debt.description
             val currentAmount =
                 debt.debt.amount - debt.transactions.filter { it.action == DebtActionType.REPAYMENT }
                     .sumOf { it.amount } + debt.transactions.filter { it.action == DebtActionType.INTEREST || it.action == DebtActionType.DEBT_INCREASE }
                     .sumOf { it.amount }
-            binding.debtAmount.text =
+            binding.amountLabel.text =
                 context.getString(R.string.money_amount, currentCurrencySymbol, currentAmount)
 
             binding.root.setOnClickListener { onItemClick(debt.debt) }
@@ -78,6 +78,7 @@ class DebtAdapter(
         private const val TYPE_ADD_NEW = 1
     }
 }
+
 
 class DebtDiffCallback : DiffUtil.ItemCallback<DebtDetail>() {
     override fun areItemsTheSame(oldItem: DebtDetail, newItem: DebtDetail): Boolean {

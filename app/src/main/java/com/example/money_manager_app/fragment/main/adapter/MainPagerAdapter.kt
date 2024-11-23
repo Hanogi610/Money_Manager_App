@@ -5,7 +5,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.moneymanager.ui.calendar_screen.CalendarFragment
 import com.example.money_manager_app.fragment.home.HomeFragment
 import com.example.moneymanager.ui.statistic_screen.StatisticFragment
-import com.example.moneymanager.ui.wallet_screen.WalletFragment
+import com.example.money_manager_app.fragment.wallet.WalletFragment
 
 class MainPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 4  // Number of tabs

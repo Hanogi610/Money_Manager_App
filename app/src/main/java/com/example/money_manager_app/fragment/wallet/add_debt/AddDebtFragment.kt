@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.wallet_screen.add_debt
+package com.example.money_manager_app.fragment.wallet.add_debt
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -9,21 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.moneymanager.R
-import com.example.moneymanager.core.ColorHelper
-import com.example.moneymanager.core.toDateTimestamp
-import com.example.moneymanager.core.toTimeTimestamp
+import com.example.money_manager_app.R
+import com.example.money_manager_app.activity.MainViewModel
+import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.enums.DebtType
-import com.example.moneymanager.databinding.FragmentAddDebtBinding
-import com.example.moneymanager.ui.MainViewModel
+import com.example.money_manager_app.databinding.FragmentAddDebtBinding
+import com.example.money_manager_app.utils.ColorHelper
+import com.example.money_manager_app.utils.setOnSafeClickListener
+import com.example.money_manager_app.utils.toDateTimestamp
+import com.example.money_manager_app.utils.toTimeTimestamp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -31,57 +32,44 @@ import java.util.Calendar
 import java.util.Locale
 
 @AndroidEntryPoint
-class AddDebtFragment : Fragment() {
+class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R.layout.fragment_add_debt) {
 
-    private var _binding: FragmentAddDebtBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: AddDebtViewModel by viewModels()
+    private var debt: Debt? = null
     private val mainViewModel: MainViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun getVM(): AddDebtViewModel {
+        val vm: AddDebtViewModel by viewModels()
+        return vm
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAddDebtBinding.inflate(inflater, container, false)
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
 
-        binding.backArrowButton.setOnClickListener {
-            findNavController().popBackStack()
+        arguments?.let {
+            debt = it.getParcelable<Debt>("debt")
         }
+    }
 
-        // Set up the spinner with the enum values
+    override fun initToolbar() {
+        super.initToolbar()
+        binding.backArrowButton.setOnClickListener {
+            appNavigation.navigateUp()
+        }
         val debtTypeAdapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
             DebtType.entries.map { it.name }
         )
         binding.spinnerDebtType.adapter = debtTypeAdapter
-        binding.spinnerDebtType.setSelection(0) // Set default value as first option
+        binding.spinnerDebtType.setSelection(0)
+    }
 
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.accounts.collect { accounts ->
-                    val wallets = accounts.flatMap { it.wallets }
-                    val walletNames = wallets.map { it.name }
-                    val walletAdapter = ArrayAdapter(
-                        requireContext(),
-                        android.R.layout.simple_spinner_item,
-                        walletNames
-                    )
-                    binding.walletSpinner.adapter = walletAdapter
-                }
-            }
-        }
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
 
-        // Set initial date and time to current date and time
         val calendar = Calendar.getInstance()
         binding.dateTextView.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
         binding.timeTextView.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
 
-        // Open date picker and convert date to long
         binding.dateTextView.setOnClickListener {
             val datePicker = DatePickerDialog(
                 requireContext(),
@@ -97,7 +85,6 @@ class AddDebtFragment : Fragment() {
             datePicker.show()
         }
 
-        // Open time picker and convert time to long
         binding.timeTextView.setOnClickListener {
             val timePicker = TimePickerDialog(
                 requireContext(),
@@ -114,7 +101,6 @@ class AddDebtFragment : Fragment() {
             timePicker.show()
         }
 
-        // Set up the spinner with color options
         val colorOptions = resources.getStringArray(R.array.color_options)
         val colorAdapter = ArrayAdapter(
             requireContext(),
@@ -122,30 +108,47 @@ class AddDebtFragment : Fragment() {
             colorOptions
         )
         binding.colorSpinner.adapter = colorAdapter
-        binding.colorSpinner.setSelection(0) // Set default value as first option
+        binding.colorSpinner.setSelection(0)
 
         // Add TextWatchers to EditTexts
         binding.editTextName.addTextChangedListener(textWatcher)
         binding.editTextDescription.addTextChangedListener(textWatcher)
         binding.editTextAmount.addTextChangedListener(textWatcher)
+    }
 
-        // Check if the currentDebt is null or not for adding/editing
+    override fun bindingStateView() {
+        super.bindingStateView()
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.currentDebt.collect { currentDebt: Debt? ->
-                    if (currentDebt != null) {
+                mainViewModel.accounts.collect { accounts ->
+                    val wallets = accounts.flatMap { it.wallets }
+                    val walletNames = wallets.map { it.name }
+                    val walletAdapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_item,
+                        walletNames
+                    )
+                    binding.walletSpinner.adapter = walletAdapter
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getVM().debt.collect{ debt ->
+                    if (debt != null) {
                         // Editing an existing debt
-                        populateFieldsWithDebtData(currentDebt)
-                        binding.saveButton.setOnClickListener {
-                            val updatedDebt = buildDebtFromFields(currentDebt.id) // Use currentDebt.id for update
-                            viewModel.editDebt(updatedDebt)
+                        populateFieldsWithDebtData(debt.debt)
+                        binding.saveButton.setOnSafeClickListener {
+                            val updatedDebt = buildDebtFromFields(debt.debt.id)
+                            getVM().editDebt(updatedDebt)
                             findNavController().popBackStack()
                         }
                     } else {
                         // Adding a new debt
-                        binding.saveButton.setOnClickListener {
+                        binding.saveButton.setOnSafeClickListener {
                             val newDebt = buildDebtFromFields()
-                            viewModel.addDebt(newDebt)
+                            getVM().addDebt(newDebt)
                             findNavController().popBackStack()
                         }
                     }
@@ -153,7 +156,6 @@ class AddDebtFragment : Fragment() {
             }
         }
 
-        return binding.root
     }
 
     private val textWatcher = object : TextWatcher {
@@ -222,10 +224,5 @@ class AddDebtFragment : Fragment() {
             walletId = selectedWalletId, // Set the wallet ID
             colorId = selectedColorId // Set the color ID
         )
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 }

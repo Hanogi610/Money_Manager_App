@@ -11,8 +11,8 @@ import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.entity.AddTransfer
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.repository.TransferRepository
-import com.example.moneymanager.di.AppDispatchers
-import com.example.moneymanager.di.Dispatcher
+import com.example.money_manager_app.di.AppDispatchers
+import com.example.money_manager_app.di.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow

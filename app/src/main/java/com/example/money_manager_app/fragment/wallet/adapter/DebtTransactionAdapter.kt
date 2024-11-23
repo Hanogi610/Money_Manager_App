@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moneymanager.R
-import com.example.moneymanager.core.toFormattedTimeString
+import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.Wallet
-import com.example.moneymanager.databinding.DateHeaderItemBinding
-import com.example.moneymanager.databinding.DebtTransactionItemBinding
-import com.example.moneymanager.ui.wallet_screen.debt_detail.DebtListItem
+import com.example.money_manager_app.databinding.DateHeaderItemBinding
+import com.example.money_manager_app.databinding.TransactionItemBinding
+import com.example.money_manager_app.fragment.wallet.debt_detail.DebtListItem
+import com.example.money_manager_app.utils.toFormattedTimeString
 
 class DebtTransactionAdapter(
     private val context: Context,
@@ -35,10 +35,15 @@ class DebtTransactionAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == VIEW_TYPE_DATE_HEADER) {
-            val binding = DateHeaderItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding =
+                DateHeaderItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             DateHeaderViewHolder(binding)
         } else {
-            val binding = DebtTransactionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val binding = TransactionItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             TransactionViewHolder(binding)
         }
     }
@@ -52,16 +57,23 @@ class DebtTransactionAdapter(
 
     override fun getItemCount() = items.size
 
-    inner class DateHeaderViewHolder(private val binding: DateHeaderItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class DateHeaderViewHolder(private val binding: DateHeaderItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(header: DebtListItem.DateHeader) {
             binding.dateTextView.text = header.date
         }
     }
 
-    inner class TransactionViewHolder(private val binding: DebtTransactionItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class TransactionViewHolder(private val binding: TransactionItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: DebtTransaction) {
-            binding.transactionTypeTextView.text = context.getString(R.string.debt_transaction_name, transaction.action.toString(), transaction.name)
-            binding.transactionAmount.text = context.getString(R.string.money_amount, currencySymbol, transaction.amount)
+            binding.transactionTypeTextView.text = context.getString(
+                R.string.debt_transaction_name,
+                transaction.action.toString(),
+                transaction.name
+            )
+            binding.transactionAmount.text =
+                context.getString(R.string.money_amount, currencySymbol, transaction.amount)
             binding.transactionTime.text = transaction.time.toFormattedTimeString()
             binding.walletName.text = wallets.find { it.id == transaction.walletId }?.name
         }
@@ -79,8 +91,7 @@ class DebtTransactionAdapter(
 
 
 class DebtListItemDiffCallback(
-    private val oldList: List<DebtListItem>,
-    private val newList: List<DebtListItem>
+    private val oldList: List<DebtListItem>, private val newList: List<DebtListItem>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize() = oldList.size

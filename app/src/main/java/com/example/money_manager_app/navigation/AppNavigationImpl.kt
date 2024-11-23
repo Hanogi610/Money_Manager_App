@@ -25,4 +25,20 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
     override fun openPasswordToCreateAccountScreen(bundle: Bundle?) {
         openScreen(R.id.action_passwordFragment_to_createAccountFragment, bundle)
     }
+
+    override fun openMainScreenToAddDebtScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_addDebtFragment, bundle)
+    }
+
+    override fun openMainScreenToDebtDetailScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_debtDetailFragment, bundle)
+    }
+
+    override fun openDebDetailToAddDebtTransactionScreen(bundle: Bundle?) {
+        openScreen(R.id.action_debtDetailFragment_to_addDebtTransactionFragment, bundle)
+    }
+
+    override fun openMainScreenToGoalDetailScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_goalDetailFragment, bundle)
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.wallet_screen.add_debt_transaction
+package com.example.money_manager_app.fragment.wallet.add_debt_transaction
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -16,12 +16,19 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import com.example.money_manager_app.R
 import com.example.moneymanager.core.toDateTimestamp
 import com.example.moneymanager.core.toTimeTimestamp
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
+import com.example.money_manager_app.databinding.FragmentAddDebtTransactionBinding
+import com.example.money_manager_app.fragment.wallet.WalletViewModel
+import com.example.money_manager_app.utils.toDateTimestamp
+import com.example.money_manager_app.utils.toTimeTimestamp
 import com.example.moneymanager.databinding.FragmentAddDebtTransactionBinding
 import com.example.moneymanager.ui.MainViewModel
+import com.example.moneymanager.ui.wallet_screen.add_debt_transaction.AddDebtTransactionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -31,7 +38,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class AddDebtTransactionFragment : Fragment() {
 
-    private val mainViewModel: MainViewModel by activityViewModels()
+    private val mainViewModel: WalletViewModel by navGraphViewModels(R.id.)
     private val viewModel: AddDebtTransactionViewModel by viewModels()
     private var _binding: FragmentAddDebtTransactionBinding? = null
     private val binding get() = _binding!!

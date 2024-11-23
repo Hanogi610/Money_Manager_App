@@ -3,6 +3,8 @@ package com.example.moneymanager.di
 import android.content.Context
 import androidx.room.Room
 import com.example.money_manager_app.data.AppDatabase
+import com.example.money_manager_app.di.AppDispatchers
+import com.example.money_manager_app.di.Dispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,4 +52,12 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDebtTransactionDao(appDatabase: AppDatabase) = appDatabase.debtTransactionDao()
+
+    @Provides
+    @Singleton
+    fun provideGoalDao(appDatabase: AppDatabase) = appDatabase.goalDao()
+
+    @Provides
+    @Singleton
+    fun provideGoalTransactionDao(appDatabase: AppDatabase) = appDatabase.goalTransactionDao()
 }

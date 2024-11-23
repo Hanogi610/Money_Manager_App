@@ -92,5 +92,35 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.money_manager_app.fragment.main.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_debtDetailFragment"
+            app:destination="@id/debtDetailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addDebtFragment"
+            app:destination="@id/addDebtFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_goalDetailFragment"
+            app:destination="@id/goalDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/debtDetailFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.debt_detail.DebtDetailFragment"
+        android:label="DebtDetailFragment" >
+        <action
+            android:id="@+id/action_debtDetailFragment_to_addDebtTransactionFragment"
+            app:destination="@id/addDebtTransactionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDebtTransactionFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.add_debt_transaction.AddDebtTransactionFragment"
+        android:label="AddDebtTransactionFragment" />
+    <fragment
+        android:id="@+id/addDebtFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.add_debt.AddDebtFragment"
+        android:label="AddDebtFragment" />
+    <fragment
+        android:id="@+id/goalDetailFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.goal_detail.GoalDetailFragment"
+        android:label="GoalDetailFragment" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.wallet_screen
+package com.example.money_manager_app.fragment.wallet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,31 +13,36 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.moneymanager.R
+import com.example.money_manager_app.R
+import com.example.money_manager_app.activity.MainViewModel
+import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Debt
+import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.data.model.entity.Wallet
-import com.example.moneymanager.databinding.FragmentWalletBinding
-import com.example.moneymanager.ui.MainViewModel
+import com.example.money_manager_app.databinding.FragmentWalletBinding
 import com.example.money_manager_app.fragment.wallet.adapter.DebtAdapter
+import com.example.money_manager_app.fragment.wallet.adapter.GoalAdapter
+import com.example.money_manager_app.navigation.AppNavigation
 import com.example.moneymanager.ui.wallet_screen.adapter.WalletAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class WalletFragment : Fragment() {
+class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.layout.fragment_wallet) {
 
-    private var _binding: FragmentWalletBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: WalletViewModel by viewModels()
+    override fun getVM(): WalletViewModel {
+        val vm: WalletViewModel by viewModels()
+        return vm
+    }
+
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var walletAdapter: WalletAdapter
     private lateinit var debtAdapter: DebtAdapter
+    private lateinit var goalAdapter: GoalAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        // Inflate the layout for this fragment
-        _binding = FragmentWalletBinding.inflate(inflater, container, false)
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
 
         val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
         val currencySymbol = getString(currentCurrency.symbolRes)
@@ -46,18 +51,26 @@ class WalletFragment : Fragment() {
         binding.walletRecyclerView.adapter = walletAdapter
         binding.walletRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        debtAdapter = DebtAdapter(requireContext(), currencySymbol, ::onDebtItemClick, ::onAddDebtClick)
+        debtAdapter = DebtAdapter(requireContext(),currencySymbol,::onDebtItemClick,::onAddDebtClick)
         binding.debtRecyclerView.adapter = debtAdapter
         binding.debtRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        goalAdapter = GoalAdapter(requireContext(),::onGoalItemClick,::onAddGoalClick)
+        binding.goalRecyclerView.adapter = goalAdapter
+        binding.goalRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+    }
+
+    override fun bindingStateView() {
+        super.bindingStateView()
+
         mainViewModel.currentAccount.value?.account?.id?.let {
-            viewModel.getWallets(it)
-            viewModel.getDebts(it)
+            getVM().getWallets(it)
+            getVM().getDebts(it)
         }
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.wallets.collect { wallets ->
+                getVM().wallets.collect { wallets ->
                     walletAdapter.setWallets(wallets)
                     binding.managerTextView.text = getString(R.string.manager, wallets.size)
                 }
@@ -66,30 +79,41 @@ class WalletFragment : Fragment() {
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.debts.collect { debts ->
-                    debtAdapter.setDebts(debts)
+                getVM().debts.collect { debts ->
+                    debtAdapter.submitList(debts)
                     binding.debtManagerTextView.text = getString(R.string.manager, debts.size)
                 }
             }
         }
 
-//        binding.pieChart.slices = listOf(
-//            PieChart.Slice(0.2f, Color.BLUE),
-//            PieChart.Slice(0.4f, Color.MAGENTA),
-//            PieChart.Slice(0.3f, Color.YELLOW),
-//            PieChart.Slice(0.1f, Color.CYAN)
-//        )
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getVM().goals.collect { goals ->
+                    goalAdapter.submitList(goals)
+                    binding.goalManagerTextView.text = getString(R.string.manager, goals.size)
+                }
+            }
+        }
+    }
 
-        return binding.root
+    private fun onGoalItemClick(goal: Goal) {
+        appNavigation.openMainScreenToGoalDetailScreen(Bundle().apply {
+            putParcelable("goal", goal)
+        })
+    }
+
+    private fun onAddGoalClick() {
+//        appNavigation.openMainScreenToAddGoalScreen()
     }
 
     private fun onDebtItemClick(debt: Debt) {
-        mainViewModel.setCurrentDebt(debt)
-        findNavController().navigate(R.id.action_mainFragment_to_debtDetailFragment)
+        appNavigation.openMainScreenToDebtDetailScreen(Bundle().apply {
+            putParcelable("debt", debt)
+        })
     }
 
     private fun onAddDebtClick() {
-        findNavController().navigate(R.id.action_mainFragment_to_addDebtFragment)
+        appNavigation.openMainScreenToAddDebtScreen()
     }
 
     private fun onAddWalletClick() {
@@ -99,10 +123,4 @@ class WalletFragment : Fragment() {
     private fun onWalletItemClick(wallet: Wallet) {
         TODO("Not yet implemented")
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
 }

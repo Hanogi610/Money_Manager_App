@@ -10,8 +10,8 @@ import com.example.money_manager_app.data.model.entity.enums.Currency
 import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.data.repository.AccountRepository
 import com.example.money_manager_app.data.repository.WalletRepository
-import com.example.moneymanager.di.AppDispatchers
-import com.example.moneymanager.di.Dispatcher
+import com.example.money_manager_app.di.AppDispatchers
+import com.example.money_manager_app.di.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch

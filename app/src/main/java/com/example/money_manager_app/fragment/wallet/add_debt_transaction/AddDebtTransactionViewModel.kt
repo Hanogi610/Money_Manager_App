@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.repository.DebtTransactionRepository
-import com.example.moneymanager.di.AppDispatchers
-import com.example.moneymanager.di.Dispatcher
+import com.example.money_manager_app.di.AppDispatchers
+import com.example.money_manager_app.di.Dispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch

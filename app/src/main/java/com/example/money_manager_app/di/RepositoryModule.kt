@@ -1,4 +1,4 @@
-package com.example.moneymanager.di
+package com.example.money_manager_app.di
 
 import com.example.money_manager_app.data.repository.AccountRepository
 import com.example.money_manager_app.data.repository.AccountRepositoryImpl
@@ -6,6 +6,10 @@ import com.example.money_manager_app.data.repository.DebtRepository
 import com.example.money_manager_app.data.repository.DebtRepositoryImpl
 import com.example.money_manager_app.data.repository.DebtTransactionRepository
 import com.example.money_manager_app.data.repository.DebtTransactionRepositoryImpl
+import com.example.money_manager_app.data.repository.GoalRepository
+import com.example.money_manager_app.data.repository.GoalRepositoryImpl
+import com.example.money_manager_app.data.repository.GoalTransactionRepository
+import com.example.money_manager_app.data.repository.GoalTransactionRepositoryImpl
 import com.example.money_manager_app.data.repository.TransferRepository
 import com.example.money_manager_app.data.repository.TransferRepositoryImpl
 import com.example.money_manager_app.data.repository.WalletRepository
@@ -38,4 +42,12 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindDebtTransactionRepository(debtTransactionRepositoryImpl: DebtTransactionRepositoryImpl): DebtTransactionRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindGoalRepository(goalRepositoryImpl: GoalRepositoryImpl): GoalRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindGoalTransactionRepository(goalTransactionRepositoryImpl: GoalTransactionRepositoryImpl): GoalTransactionRepository
 }
