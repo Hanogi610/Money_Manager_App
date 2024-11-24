@@ -5,7 +5,7 @@ open class Transaction(
     open val iconId: Int?,
     open val name: String,
     open val amount: Double,
-    open val colorId: Int,
+    open val colorId: Int?,
     open val accountId: Long,
     open val walletId: Long,
     open val date: Long,

@@ -219,7 +219,8 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R
             time = binding.timeTextView.text.toString().toTimeTimestamp(),
             description = binding.editTextDescription.text.toString(),
             walletId = selectedWalletId, // Set the wallet ID
-            colorId = selectedColorId // Set the color ID
+            colorId = R.color.color_1,
+
         )
     }
 }

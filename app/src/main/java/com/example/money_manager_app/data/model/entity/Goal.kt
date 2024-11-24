@@ -7,6 +7,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
+import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.Transaction
 import kotlinx.parcelize.Parcelize
 
@@ -24,7 +25,7 @@ data class Goal(
     val name: String,
     @ColumnInfo(name = "account_id") val accountId: Long,
     @ColumnInfo(name = "target_date") val targetDate: Long,
-    @ColumnInfo(name = "color_id") val colorId: Int,
+    @ColumnInfo(name = "color_id") val colorId: Int? = R.color.color_1,
     @ColumnInfo(name = "goal_amount") val amount: Double,
 ) : Parcelable
 
