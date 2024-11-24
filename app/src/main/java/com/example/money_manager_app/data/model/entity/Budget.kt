@@ -35,3 +35,4 @@ data class Budget(
     @TypeConverters(CategoryTypeConverter::class)
     val categoryType: CategoryType
 )
+//
