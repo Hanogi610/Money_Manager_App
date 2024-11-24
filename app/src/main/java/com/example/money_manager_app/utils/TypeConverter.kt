@@ -1,9 +1,11 @@
 package com.example.money_manager_app.utils
 
 import androidx.room.TypeConverter
+import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import com.example.money_manager_app.data.model.entity.enums.Currency
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.data.model.entity.enums.GoalInputType
+import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.data.model.entity.enums.WalletType
 import java.sql.Time
 import java.util.Calendar
@@ -101,6 +103,30 @@ class DebtTypeConverter {
     @TypeConverter
     fun toDebtType(value: String): DebtActionType {
         return DebtActionType.valueOf(value)
+    }
+}
+
+class PeriodTypeConverter {
+    @TypeConverter
+    fun fromPeriodType(periodType: PeriodType): String {
+        return periodType.name
+    }
+
+    @TypeConverter
+    fun toPeriodType(value: String): PeriodType {
+        return PeriodType.valueOf(value)
+    }
+}
+
+class CategoryTypeConverter {
+    @TypeConverter
+    fun fromCategoryType(categoryType: CategoryType): String {
+        return categoryType.name
+    }
+
+    @TypeConverter
+    fun toCategoryType(value: String): CategoryType {
+        return CategoryType.valueOf(value)
     }
 }
 

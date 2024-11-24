@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.SubTransaction
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.utils.DebtActionTypeConverter
@@ -29,9 +30,9 @@ import com.example.money_manager_app.utils.DebtActionTypeConverter
 )
 data class DebtTransaction(
     @PrimaryKey(autoGenerate = true) override val id: Long = 0,
-    @ColumnInfo(name = "icon_id") override val iconId: Int,
+    @ColumnInfo(name = "icon_id") override val iconId: Int ? = R.drawable.wallet_11,
     override val name: String,
-    @ColumnInfo(name = "color_id") override val colorId: Int,
+    @ColumnInfo(name = "color_id") override val colorId: Int ? = R.color.color_1,
     @ColumnInfo(name = "account_id") override val accountId: Long,
     @ColumnInfo(name = "debt_id") val debtId: Long,
     @ColumnInfo(name = "wallet_id") override val walletId: Long,

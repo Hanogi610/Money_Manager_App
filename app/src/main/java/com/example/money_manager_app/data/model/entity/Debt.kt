@@ -8,6 +8,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import androidx.room.TypeConverters
+import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.money_manager_app.utils.DebtTypeConverter
@@ -29,7 +30,7 @@ import kotlinx.parcelize.Parcelize
 )
 data class Debt(
     @PrimaryKey(autoGenerate = true) override val id: Long = 0,
-    @ColumnInfo(name = "icon_id") override val iconId: Int,
+    @ColumnInfo(name = "icon_id") override val iconId: Int ? = R.drawable.wallet_6,
     override val name: String,
     override val amount: Double,
     @ColumnInfo(name = "account_id") override val accountId: Long,
@@ -38,7 +39,7 @@ data class Debt(
     val time: Long,
     val description: String,
     @ColumnInfo(name = "wallet_id")override val walletId: Long,
-    @ColumnInfo(name = "color_id")override val colorId: Int,
+    @ColumnInfo(name = "color_id")override val colorId: Int? = R.color.color_1,
 ) : Transaction(id, iconId, name, amount, colorId, accountId, walletId, date), Parcelable
 
 data class DebtDetail(
