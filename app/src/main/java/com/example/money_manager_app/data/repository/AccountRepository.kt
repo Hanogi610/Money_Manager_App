@@ -8,6 +8,7 @@ import javax.inject.Inject
 
 interface AccountRepository {
     fun getAccount() : Flow<List<AccountWithWallet>>
+    fun getAccountById(accountId: Long) : Flow<AccountWithWallet>
     suspend fun insertAccount(account: Account) : Long
 }
 
@@ -21,4 +22,7 @@ class AccountRepositoryImpl @Inject constructor(
         return accountDao.insertAccount(account)
     }
 
+    override fun getAccountById(accountId: Long): Flow<AccountWithWallet> {
+        return accountDao.getAccountById(accountId)
+    }
 }

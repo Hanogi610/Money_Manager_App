@@ -64,6 +64,14 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
         openScreen(R.id.action_debtDetailFragment_to_addDebtFragment, bundle)
     }
 
+    override fun openCreateAccountToMainScreen(bundle: Bundle?) {
+        openScreen(R.id.action_createAccountFragment_to_mainFragment, bundle)
+    }
+
+    override fun openPasswordToMainScreen(bundle: Bundle?) {
+        openScreen(R.id.action_passwordFragment_to_mainFragment, bundle)
+    }
+
     companion object {
         private const val TAG = "AppNavigationImpl"
     }

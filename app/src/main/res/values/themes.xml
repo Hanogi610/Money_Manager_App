@@ -3,32 +3,5 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:fontFamily">@font/sfprodisplay_medium</item>
-        <item name="buttonStyle">@style/Widget.MoneyManager.Button</item>
-    </style>
-
-    <style name="Base.Theme.MoneyManager" parent="Theme.Material3.Light.NoActionBar">
-        <item name="color">@color/white</item>
-        <item name="android:windowFullscreen">false</item>
-    </style>
-
-    <!-- Custom button style -->
-    <style name="Widget.MoneyManager.Button" parent="Widget.Material3.Button">
-        <!-- Default button color -->
-        <item name="android:backgroundTint">@color/color_1</item>
-        <!-- Default text color -->
-        <item name="android:textColor">@color/white</item>
-        <!-- Rounded corners -->
-        <item name="shapeAppearance">@style/ShapeAppearance.MoneyManager.Button</item>
-        <!-- Default button padding -->
-        <item name="android:paddingHorizontal">16dp</item>
-        <item name="android:paddingVertical">8dp</item>
-        <!-- Smaller text size -->
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <!-- ShapeAppearance for rounded corners -->
-    <style name="ShapeAppearance.MoneyManager.Button" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
     </style>
 </resources>

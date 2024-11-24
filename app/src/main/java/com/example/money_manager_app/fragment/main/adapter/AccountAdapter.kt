@@ -11,7 +11,6 @@ import com.example.money_manager_app.databinding.AccountItemBinding
 
 class AccountAdapter(
     private val context: Context,
-    private val currencySymbol: String,
     private val accounts: List<AccountWithWallet>,
     private val currentAccount: AccountWithWallet,
     private val onAccountSelected: (AccountWithWallet) -> Unit
@@ -35,6 +34,7 @@ class AccountAdapter(
 
         fun bind(account: AccountWithWallet, isSelect: Boolean = false) {
             binding.accountName.text = account.account.nameAccount
+            val currencySymbol = context.getString(account.account.currency.symbolRes)
             binding.accountBalance.text = context.getString(R.string.money_amount, currencySymbol , account.wallets.sumOf { it.amount })
             binding.checkIcon.visibility = if (isSelect) View.VISIBLE else View.GONE
 

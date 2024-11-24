@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action_passwordFragment_to_createAccountFragment"
             app:destination="@id/createAccountFragment" />
+        <action
+            android:id="@+id/action_passwordFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/createAccountFragment"

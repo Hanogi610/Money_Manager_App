@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.main_screen.fragment
+package com.example.money_manager_app.fragment.main.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -18,8 +18,6 @@ class AccountSelectorBottomSheet(
     private val onAddAccount: () -> Unit
 ) : BaseBottomSheet<AccountSelectionBottomSheetBinding>() {
 
-    private val mainViewModel: MainViewModel by activityViewModels()
-
     override fun getLayoutId(): Int {
         return R.layout.account_selection_bottom_sheet
     }
@@ -29,11 +27,8 @@ class AccountSelectorBottomSheet(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val currentCurrencySymbol =
-            getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
         accountAdapter = AccountAdapter(
             requireContext(),
-            currentCurrencySymbol,
             accounts,
             currentAccount
         ) { account ->

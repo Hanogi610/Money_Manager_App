@@ -1,5 +1,6 @@
 package com.example.money_manager_app.fragment.create_account.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -25,8 +26,10 @@ class CreateAccountViewModel @Inject constructor(
     private val walletRepository: WalletRepository
 ): BaseViewModel() {
     private var _name = ""
-    private var _currency = Currency.USD
+    private var _currency = MutableLiveData(Currency.USD)
+    val currency: LiveData<Currency> get() = _currency
     private var _initAmount = 0.0
+    private var _accountId : Long? = null
 
     private val _isEnterName = MutableLiveData<Boolean>()
     val isEnterName: LiveData<Boolean> get() = _isEnterName
@@ -45,16 +48,18 @@ class CreateAccountViewModel @Inject constructor(
 
     fun setName(name: String) {
         _name = name
+        Log.d("hoangph", "setName() called with: name = $name")
         _currentPage.value = 1
     }
 
-    fun setCurrency(currency: Currency) {
-        _currency = currency
-        _currentPage.value = 2
+    fun getName(): String {
+        return _name
     }
 
-    fun getCurrency(): Currency {
-        return _currency
+    fun setCurrency(currency: Currency) {
+        _currency.value = currency
+        Log.d("hoangph", "setCurrency() called with: currency = $currency")
+        _currentPage.value = 2
     }
 
     fun setInitAmount(initAmount: Double) {
@@ -66,24 +71,7 @@ class CreateAccountViewModel @Inject constructor(
         _isEnterName.value = name.isNotEmpty()
     }
 
-    fun addAccount() {
-        viewModelScope.launch(ioDispatcher) {
-            if (_name.isNotEmpty()) {
-                val accountId = accountRepository.insertAccount(
-                    Account(
-                        nameAccount = _name, currency = _currency
-                    )
-                )
-                walletRepository.insertWallet(
-                    Wallet(
-                        accountId = accountId,
-                        amount = _initAmount,
-                        walletType = WalletType.GENERAL,
-                        name = "General",
-                        isExcluded = false
-                    )
-                )
-            }
-        }
+    fun getInitAmount(): Double {
+        return _initAmount
     }
 }

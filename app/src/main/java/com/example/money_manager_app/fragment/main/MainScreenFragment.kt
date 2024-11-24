@@ -14,9 +14,11 @@ import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.money_manager_app.databinding.FragmentMainScreenBinding
 import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.moneymanager.ui.main_screen.adapter.MainPagerAdapter
-import com.example.moneymanager.ui.main_screen.fragment.AccountSelectorBottomSheet
+import com.example.money_manager_app.fragment.main.fragment.AccountSelectorBottomSheet
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainScreenFragment :
     BaseFragment<FragmentMainScreenBinding, MainScreenViewModel>(R.layout.fragment_main_screen) {
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -25,7 +27,6 @@ class MainScreenFragment :
         val vm: MainScreenViewModel by viewModels()
         return vm
     }
-
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
@@ -118,16 +119,21 @@ class MainScreenFragment :
         val accountSelector = AccountSelectorBottomSheet(accounts,
             currentAccount,
             { account -> selectAccount(account) },
-            { addAccount() })
+            ::addAccount)
 
         accountSelector.show(parentFragmentManager, "AccountSelectorBottomSheet")
     }
 
     private fun selectAccount(account: AccountWithWallet) {
         mainViewModel.setCurrentAccount(account)
+
     }
 
     private fun addAccount() {
         appNavigation.openMainScreenToCreateAccountScreen()
+    }
+
+    companion object {
+        private const val TAG = "MainScreenFragment"
     }
 }

@@ -6,27 +6,25 @@ import android.os.Handler
 import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.databinding.FragmentPasswordBinding
 import com.example.money_manager_app.fragment.password.viewmodel.PasswordType
 import com.example.money_manager_app.fragment.password.viewmodel.PasswordViewmodel
-import com.example.money_manager_app.utils.setOnSafeClickListener
+import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PasswordFragment : BaseFragment<FragmentPasswordBinding, PasswordViewmodel>(R.layout.fragment_password) {
+class PasswordFragment :
+    BaseFragment<FragmentPasswordBinding, PasswordViewmodel>(R.layout.fragment_password) {
 
     private var numbersInput: MutableList<TextView> = mutableListOf()
-
     private var numberDisplay: MutableList<EditText> = mutableListOf()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun getVM(): PasswordViewmodel {
         val viewModel: PasswordViewmodel by viewModels()
@@ -101,27 +99,38 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding, PasswordViewmodel
                 PasswordType.CREATE -> {
                     binding.tvInput.setText(R.string.enter_your_pass_code)
                 }
+
                 PasswordType.CONFIRM -> {
                     getVM().reset()
                     binding.tvInput.setText(R.string.confirm_your_pass_code)
                 }
+
                 PasswordType.CHECK -> {
                     binding.tvInput.setText(R.string.confirm_your_pass_code)
                 }
+
                 else -> {
                     binding.tvInput.setText(R.string.confirm_your_pass_code)
                 }
             }
         }
 
-        getVM().isPasswordCorrect.observe(viewLifecycleOwner) {
-            if (it) {
-                appNavigation.openPasswordToCreateAccountScreen()
+        getVM().isPasswordCorrect.observe(viewLifecycleOwner) { isCorrect ->
+            if (isCorrect) {
+                if (mainViewModel.currentAccount.value == null) {
+                    appNavigation.openPasswordToCreateAccountScreen()
+                } else {
+                    appNavigation.openPasswordToMainScreen()
+                }
             } else {
                 isPasswordIncorrect()
 
                 val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-                vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
+                vibrator.vibrate(
+                    VibrationEffect.createOneShot(
+                        500, VibrationEffect.DEFAULT_AMPLITUDE
+                    )
+                )
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     resetNumberDisplay()
@@ -146,5 +155,4 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding, PasswordViewmodel
     companion object {
         private const val TAG = "PasswordFragment"
     }
-
 }

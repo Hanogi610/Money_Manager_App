@@ -14,6 +14,10 @@ interface AppPreferences {
 
     fun put(key: String, value: Boolean)
 
+    fun put(key: String, value: Long)
+
+    fun get(key: String, default: Long): Long
+
     fun clear()
 
     fun remove(key: String)
@@ -29,4 +33,8 @@ interface AppPreferences {
     fun getPassword() : String
 
     fun setPassword(password: String)
+
+    fun setCurrentAccount(accountId: Long)
+
+    fun getCurrentAccount() : Long
 }

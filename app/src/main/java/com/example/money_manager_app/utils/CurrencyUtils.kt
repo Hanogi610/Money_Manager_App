@@ -1,6 +1,7 @@
 package com.example.money_manager_app.utils
 
 import android.content.Context
+import android.util.Log
 import com.example.money_manager_app.data.model.entity.enums.Currency
 
 fun getCurrencyName(context: Context, currency: Currency): String {
@@ -8,5 +9,6 @@ fun getCurrencyName(context: Context, currency: Currency): String {
 }
 
 fun getCurrencySymbol(context: Context, currency: Currency): String {
+    Log.d("hoangph", "getCurrencySymbol() called with: context = $context, currency = $currency")
     return context.getString(currency.symbolRes)
 }

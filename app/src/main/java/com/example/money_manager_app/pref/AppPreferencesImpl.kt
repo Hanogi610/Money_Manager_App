@@ -44,6 +44,14 @@ class AppPreferencesImpl @Inject constructor(
         editor.apply()
     }
 
+    override fun get(key: String, default: Long) = mPrefs.getLong(key, default)
+
+    override fun put(key: String, value: Long) {
+        val editor: SharedPreferences.Editor = mPrefs.edit()
+        editor.putLong(key, value)
+        editor.apply()
+    }
+
     override fun get(key: String, default: Int) = mPrefs.getInt(key, default)
 
     override fun put(key: String, value: Boolean) {
@@ -83,4 +91,11 @@ class AppPreferencesImpl @Inject constructor(
     override fun setPassword(password: String) {
         put(PREF_PARAM_PASSWORD, password)
     }
+
+    override fun setCurrentAccount(accountId: Long) {
+        put(Constants.Preferences.PREF_PARAM_CURRENT_ACCOUNT, accountId)
+    }
+
+    override fun getCurrentAccount(): Long = get(Constants.Preferences.PREF_PARAM_CURRENT_ACCOUNT, 0L) 
+
 }

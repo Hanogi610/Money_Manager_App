@@ -17,4 +17,6 @@ interface AppNavigation : BaseNavigator {
     fun openMainScreenToCreateAccountScreen(bundle: Bundle? = null)
     fun openGoalDetailToAddGoalScreen(bundle: Bundle? = null)
     fun openDebtDetailToAddDebtScreen(bundle: Bundle? = null)
+    fun openCreateAccountToMainScreen(bundle: Bundle? = null)
+    fun openPasswordToMainScreen(bundle: Bundle? = null)
 }

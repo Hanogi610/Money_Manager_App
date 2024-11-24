@@ -3,12 +3,15 @@ package com.example.money_manager_app.fragment.create_account.view
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import com.example.money_manager_app.R
 import com.example.money_manager_app.fragment.create_account.viewmodel.CreateAccountViewModel
 import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewModel
+import com.example.money_manager_app.data.model.entity.Account
 import com.example.money_manager_app.data.model.entity.enums.Currency
 import com.example.money_manager_app.databinding.FragmentCreateAccountDetailBinding
 import com.example.money_manager_app.fragment.create_account.view.CreateAccountFragment.Companion.ARG_ADD_ACCOUNT
@@ -17,6 +20,7 @@ import com.example.money_manager_app.fragment.create_account.view.CreateAccountF
 import com.example.money_manager_app.utils.getCurrencyName
 import com.example.money_manager_app.utils.getCurrencySymbol
 import com.example.money_manager_app.utils.setOnSafeClickListener
+import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +28,7 @@ class CreateAccountDetailFragment :
     BaseFragmentNotRequireViewModel<FragmentCreateAccountDetailBinding>(R.layout.fragment_create_account_detail) {
 
     private val createAccountViewModel: CreateAccountViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private var viewType: Int = ARG_ADD_ACCOUNT
 
     companion object {
@@ -53,9 +58,9 @@ class CreateAccountDetailFragment :
                 binding.tvSubtitle.text = getString(R.string.choose_a_name_for_your_account)
                 binding.etAccountName.visibility = View.VISIBLE
                 binding.ivThumbnail.setImageResource(R.drawable.img_add_acount)
-                binding.ivThumnailContent.setImageResource(R.drawable.ic_user)
+                binding.ivThumbnailContent.setImageResource(R.drawable.ic_user)
                 binding.btnNext.setOnSafeClickListener {
-                    createAccountViewModel.setName(binding.etAmount.text.toString())
+                    createAccountViewModel.setName(binding.etAccountName.text.toString())
                 }
 
                 binding.btnNext.isClickable = false
@@ -74,11 +79,12 @@ class CreateAccountDetailFragment :
             }
 
             ARG_SELECT_CURRENCY -> {
+                binding.btnNext.isClickable = true
                 binding.spinnerCurrency.visibility = View.VISIBLE
                 binding.tvTitle.text = getString(R.string.select_currency)
                 binding.tvSubtitle.text = getString(R.string.favorite_currency_prompt)
                 binding.ivThumbnail.setImageResource(R.drawable.img_select_currency)
-                binding.ivThumnailContent.setImageResource(R.drawable.ic_money)
+                binding.ivThumbnailContent.setImageResource(R.drawable.ic_money)
                 val currencies = Currency.entries.map {
                     "${it.name} - ${
                         getCurrencyName(
@@ -90,28 +96,32 @@ class CreateAccountDetailFragment :
                     ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, currencies)
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 binding.spinnerCurrency.adapter = adapter
-                binding.spinnerCurrency.setOnSafeClickListener {
-                    val currency = Currency.fromId(binding.spinnerCurrency.selectedItemPosition + 1)
-                    currency?.let {
-                        createAccountViewModel.setCurrency(currency)
-                    }
+                binding.btnNext.setOnSafeClickListener {
+                    createAccountViewModel.setCurrency(Currency.entries[binding.spinnerCurrency.selectedItemPosition])
                 }
+
             }
 
             ARG_INIT_AMOUNT -> {
-                binding.etAmount.visibility = View.VISIBLE
+                binding.amountWrapper.visibility = View.VISIBLE
                 binding.tvTitle.text = getString(R.string.initial_amount)
                 binding.tvSubtitle.text = getString(R.string.cash_wallet_prompt)
                 binding.btnNext.text = getString(R.string.done)
                 binding.ivThumbnail.setImageResource(R.drawable.img_iniatial_account)
-                binding.ivThumnailContent.setImageResource(R.drawable.ic_user)
-                binding.tvCurrency.text = getCurrencySymbol(
-                    requireContext(),
-                    createAccountViewModel.getCurrency()
-                )
+                binding.ivThumbnailContent.setImageResource(R.drawable.ic_user)
+                createAccountViewModel.currency.observe(viewLifecycleOwner) {
+                    binding.tvCurrency.text = getCurrencySymbol(requireContext(), it)
+                }
+                binding.btnNext.isClickable = true
                 binding.btnNext.setOnSafeClickListener {
                     createAccountViewModel.setInitAmount(binding.etAmount.text.toString().toDouble())
-                    createAccountViewModel.addAccount()
+                    mainViewModel.insertAccount(
+                        Account(
+                            nameAccount = createAccountViewModel.getName(),
+                            currency = createAccountViewModel.currency.value!!,
+                        ),
+                        createAccountViewModel.getInitAmount()
+                    )
                 }
             }
         }

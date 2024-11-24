@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.create_account.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import com.example.money_manager_app.R
@@ -9,6 +10,7 @@ import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewMod
 import com.example.money_manager_app.databinding.FragmentCreateAccountBinding
 import com.example.money_manager_app.fragment.create_account.adapter.CreateAccountPagerAdapter
 import com.example.money_manager_app.utils.setOnSafeClickListener
+import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -17,6 +19,7 @@ class CreateAccountFragment :
 
     private lateinit var adapter: CreateAccountPagerAdapter
     private val createAccountViewModel: CreateAccountViewModel by activityViewModels()
+
 
     private val fragments = listOf(
         CreateAccountDetailFragment.newInstance(ARG_ADD_ACCOUNT),
@@ -41,7 +44,7 @@ class CreateAccountFragment :
                 1 -> binding.viewPager.currentItem = 1
                 2 -> binding.viewPager.currentItem = 2
                 else -> {
-                    // TODO: Go to next page
+                    appNavigation.openCreateAccountToMainScreen()
                 }
             }
         }
@@ -59,6 +62,7 @@ class CreateAccountFragment :
         const val ARG_ADD_ACCOUNT = 0
         const val ARG_SELECT_CURRENCY = 1
         const val ARG_INIT_AMOUNT = 2
+        const val TAG = "CreateAccountFragment"
     }
 
 }

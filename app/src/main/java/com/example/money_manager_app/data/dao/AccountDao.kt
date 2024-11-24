@@ -13,8 +13,9 @@ interface AccountDao {
     @Query("SELECT * FROM account")
     fun getAccount() : Flow<List<AccountWithWallet>>
 
+    @Query("SELECT * FROM account WHERE id = :accountId")
+    fun getAccountById(accountId: Long) : Flow<AccountWithWallet>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAccount(account: Account) : Long
-
-
 }

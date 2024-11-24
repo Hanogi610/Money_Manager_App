@@ -1,10 +1,12 @@
 package com.example.money_manager_app.adapter
 
 import android.content.Context
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.FrameLayout
 import com.example.money_manager_app.R
 
 class ColorSpinnerAdapter(
@@ -24,8 +26,8 @@ class ColorSpinnerAdapter(
         val view = convertView ?: LayoutInflater.from(context)
             .inflate(R.layout.spinner_item_color, parent, false)
 
-        val colorView: View = view.findViewById(R.id.colorView)
-        colorView.setBackgroundColor(colors[position])
+        val colorView: FrameLayout = view.findViewById(R.id.colorView)
+        colorView.background = ColorDrawable(context.getColor(colors[position]))
 
         return view
     }

@@ -40,7 +40,7 @@
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/dayOfWeekLabel" />
+            app:layout_constraintStart_toEndOf="@id/dayOfMonthLabel" />
 
         <TextView
             android:id="@+id/totalAmountLabel"
