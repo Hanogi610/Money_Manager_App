@@ -29,16 +29,17 @@ import kotlinx.parcelize.Parcelize
 )
 data class Debt(
     @PrimaryKey(autoGenerate = true) override val id: Long = 0,
+    @ColumnInfo(name = "icon_id") override val iconId: Int,
     override val name: String,
     override val amount: Double,
     @ColumnInfo(name = "account_id") override val accountId: Long,
     @TypeConverters(DebtTypeConverter::class) val type: DebtType,
-    val date: Long,
+    override val date: Long,
     val time: Long,
     val description: String,
-    @ColumnInfo(name = "wallet_id") val walletId: Long,
-    @ColumnInfo(name = "color_id") val colorId: Int,
-) : Transaction(id, name, amount, accountId), Parcelable
+    @ColumnInfo(name = "wallet_id")override val walletId: Long,
+    @ColumnInfo(name = "color_id")override val colorId: Int,
+) : Transaction(id, iconId, name, amount, colorId, accountId, walletId, date), Parcelable
 
 data class DebtDetail(
     @Embedded val debt: Debt,

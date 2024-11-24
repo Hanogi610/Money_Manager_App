@@ -29,12 +29,14 @@ import com.example.money_manager_app.utils.GoalInputTypeConverter
 )
 data class GoalTransaction(
     @PrimaryKey(autoGenerate = true) override val id: Long = 0,
+    @ColumnInfo(name = "icon_id") override val iconId: Int,
     override val name: String,
     @ColumnInfo(name = "account_id") override val accountId: Long,
+    @ColumnInfo(name = "color_id") override val colorId: Int,
     @ColumnInfo(name = "goal_id") val goalId: Long,
     @ColumnInfo(name = "wallet_id") override val walletId: Long,
     override val amount: Double,
     @TypeConverters(GoalInputTypeConverter::class) val type: GoalInputType? = GoalInputType.DEPOSIT,
-    override val date: Long? = System.currentTimeMillis(),
-    override val time: Long? = System.currentTimeMillis(),
-) : SubTransaction(id, name, amount, accountId, walletId, date, time)
+    override val date: Long = System.currentTimeMillis(),
+    override val time: Long = System.currentTimeMillis(),
+) : SubTransaction(id, iconId, name, amount, colorId, accountId, walletId, date, time)

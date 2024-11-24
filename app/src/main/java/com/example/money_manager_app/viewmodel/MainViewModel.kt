@@ -1,4 +1,4 @@
-package com.example.money_manager_app.activity
+package com.example.money_manager_app.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel

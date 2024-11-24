@@ -12,4 +12,6 @@ interface AppNavigation : BaseNavigator {
     fun openMainScreenToDebtDetailScreen(bundle: Bundle? = null)
     fun openDebDetailToAddDebtTransactionScreen(bundle: Bundle? = null)
     fun openMainScreenToGoalDetailScreen(bundle: Bundle? = null)
+    fun openGoalDetailToAddGoalTransactionScreen(bundle: Bundle? = null)
+    fun openGoalDetailToAddGoalScreen(bundle: Bundle? = null)
 }

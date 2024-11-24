@@ -24,7 +24,7 @@ data class Goal(
     val name: String,
     @ColumnInfo(name = "account_id") val accountId: Long,
     @ColumnInfo(name = "target_date") val targetDate: Long,
-    @ColumnInfo(name = "type_color") val typeColor: String,
+    @ColumnInfo(name = "color_id") val colorId: Int,
     @ColumnInfo(name = "goal_amount") val amount: Double,
 ) : Parcelable
 

@@ -41,4 +41,12 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
     override fun openMainScreenToGoalDetailScreen(bundle: Bundle?) {
         openScreen(R.id.action_mainFragment_to_goalDetailFragment, bundle)
     }
+
+    override fun openGoalDetailToAddGoalTransactionScreen(bundle: Bundle?) {
+        openScreen(R.id.action_goalDetailFragment_to_addGoalTransactionFragment, bundle)
+    }
+
+    override fun openGoalDetailToAddGoalScreen(bundle: Bundle?) {
+        openScreen(R.id.action_goalDetailFragment_to_addGoalFragment, bundle)
+    }
 }

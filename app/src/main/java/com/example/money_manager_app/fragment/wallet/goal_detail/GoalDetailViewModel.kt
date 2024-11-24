@@ -2,13 +2,11 @@ package com.example.money_manager_app.fragment.wallet.goal_detail
 
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
+import com.example.money_manager_app.data.model.TransactionListItem
 import com.example.money_manager_app.data.model.entity.GoalDetail
-import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 import com.example.money_manager_app.data.repository.GoalRepository
-import com.example.money_manager_app.utils.formatToDayOfMonth
-import com.example.money_manager_app.utils.formatToDayOfWeek
-import com.example.money_manager_app.utils.formatToMonthYear
+import com.example.money_manager_app.utils.groupTransactionsByDate
 import com.example.money_manager_app.utils.toFormattedDateString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,9 +26,6 @@ class GoalDetailViewModel @Inject constructor(
     private val _goalDetailItem = MutableStateFlow<GoalDetailItem?>(null)
     val goalDetailItem: StateFlow<GoalDetailItem?> get() = _goalDetailItem
 
-    private val _goalListItems = MutableStateFlow<List<GoalListItem>>(emptyList())
-    val goalListItems: StateFlow<List<GoalListItem>> get() = _goalListItems
-
     fun getGoalDetail(goalId: Long) {
         viewModelScope.launch {
             goalRepository.getGoalById(goalId).collect {
@@ -42,6 +37,12 @@ class GoalDetailViewModel @Inject constructor(
         }
     }
 
+    fun deleteGoal() {
+        viewModelScope.launch {
+            goalRepository.deleteGoal(_goal.value!!.goal)
+        }
+    }
+
     private fun convertGoalDetailToGoalDetailItem(goalDetail: GoalDetail): GoalDetailItem {
         val saveAmount = goalDetail.transactions.filter { it.type == GoalInputType.DEPOSIT }
             .sumOf { it.amount } - goalDetail.transactions.filter { it.type == GoalInputType.WITHDRAW }
@@ -49,7 +50,7 @@ class GoalDetailViewModel @Inject constructor(
         val remainAmount = goalDetail.goal.amount - saveAmount
         val goalDate = goalDetail.goal.targetDate.toFormattedDateString()
         val daysLeft = calculateDaysLeft(goalDetail.goal.targetDate)
-        val groupedTransactions = groupTransactionsByDate(goalDetail.transactions)
+        val groupedTransactions = goalDetail.transactions.groupTransactionsByDate()
         return GoalDetailItem(
             title = goalDetail.goal.name,
             saveAmount = saveAmount,
@@ -67,55 +68,6 @@ class GoalDetailViewModel @Inject constructor(
         val daysLeft = TimeUnit.MILLISECONDS.toDays(diffInMillis)
         return daysLeft.toString()
     }
-
-    private fun groupTransactionsByDate(transactions: List<GoalTransaction>): List<GoalListItem> {
-        val groupedList = mutableListOf<GoalListItem>()
-        var lastDate: String? = null
-        var dailyTotal = 0.0
-
-        for (transaction in transactions) {
-            val dayOfMonth = transaction.transactionDate.formatToDayOfMonth()
-            val dayOfWeek = transaction.transactionDate.formatToDayOfWeek()
-            val monthYear = transaction.transactionDate.formatToMonthYear()
-
-            if (dayOfMonth != lastDate) {
-                if (lastDate != null) {
-                    groupedList.add(
-                        GoalListItem.DateHeader(
-                            lastDate,
-                            dayOfWeek,
-                            monthYear,
-                            dailyTotal
-                        )
-                    )
-                }
-                lastDate = dayOfMonth
-                dailyTotal = 0.0
-            }
-
-            dailyTotal += if (transaction.type == GoalInputType.DEPOSIT) {
-                transaction.amount
-            } else {
-                -transaction.amount
-            }
-
-            groupedList.add(GoalListItem.GoalTransactionItem(transaction))
-        }
-
-        // Add the last date header
-        if (lastDate != null) {
-            groupedList.add(
-                GoalListItem.DateHeader(
-                    lastDate,
-                    transactions.last().transactionDate.formatToDayOfWeek(),
-                    transactions.last().transactionDate.formatToMonthYear(),
-                    dailyTotal
-                )
-            )
-        }
-
-        return groupedList
-    }
 }
 
 data class GoalDetailItem(
@@ -125,6 +77,6 @@ data class GoalDetailItem(
     val amountGoal: Double,
     val goalDate: String,
     val daysLeft: String,
-    val transactions: List<GoalListItem>,
+    val transactions: List<TransactionListItem>,
     val progress: Int = ((saveAmount / amountGoal) * 100).toInt()
 )

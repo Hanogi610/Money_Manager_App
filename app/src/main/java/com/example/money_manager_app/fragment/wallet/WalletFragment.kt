@@ -1,20 +1,15 @@
 package com.example.money_manager_app.fragment.wallet
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
-import com.example.money_manager_app.activity.MainViewModel
+import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.Goal
@@ -22,11 +17,9 @@ import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.databinding.FragmentWalletBinding
 import com.example.money_manager_app.fragment.wallet.adapter.DebtAdapter
 import com.example.money_manager_app.fragment.wallet.adapter.GoalAdapter
-import com.example.money_manager_app.navigation.AppNavigation
 import com.example.moneymanager.ui.wallet_screen.adapter.WalletAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.layout.fragment_wallet) {

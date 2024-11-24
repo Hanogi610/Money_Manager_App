@@ -2,10 +2,12 @@ package com.example.money_manager_app.data.model
 
 open class SubTransaction(
     override val id: Long,
+    override val iconId: Int,
     override val name: String,
     override val amount: Double,
+    override val colorId: Int,
     override val accountId: Long,
-    open val walletId: Long,
-    open val date: Long?,
-    open val time: Long?,
-) : Transaction(id, name, amount, accountId)
+    override val walletId: Long,
+    override val date: Long,
+    open val time: Long,
+) : Transaction(id, iconId, name, amount, colorId, accountId, walletId, date)

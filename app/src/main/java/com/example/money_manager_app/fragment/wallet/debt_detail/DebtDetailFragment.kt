@@ -6,22 +6,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
-import com.example.money_manager_app.activity.MainViewModel
+import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Debt
-import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.databinding.FragmentDebtDetailBinding
 import com.example.money_manager_app.fragment.wallet.adapter.DebtTransactionAdapter
-import com.example.money_manager_app.navigation.AppNavigation
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toFormattedDateString
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DebtDetailFragment :
@@ -127,31 +123,8 @@ class DebtDetailFragment :
 
     }
 
-    private fun groupTransactionsByDate(transactions: List<DebtTransaction>): List<DebtListItem> {
-        val groupedList = mutableListOf<DebtListItem>()
-        var lastDate: String? = null
-
-        for (transaction in transactions) {
-            // Use toFormattedDateString to format the date
-            val formattedDate = transaction.date.toFormattedDateString("dd MMM yyyy")
-
-            if (formattedDate != lastDate) {
-                groupedList.add(DebtListItem.DateHeader(formattedDate))
-                lastDate = formattedDate
-            }
-
-            groupedList.add(DebtListItem.DebtTransactionItem(transaction))
-        }
-
-        return groupedList
-    }
-
     companion object {
         private const val TAG = "DebtDetailFragment"
     }
 }
 
-sealed class DebtListItem {
-    data class DateHeader(val date: String) : DebtListItem()
-    data class DebtTransactionItem(val transaction: DebtTransaction) : DebtListItem()
-}
