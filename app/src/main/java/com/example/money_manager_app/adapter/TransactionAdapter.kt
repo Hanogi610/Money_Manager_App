@@ -16,12 +16,14 @@ import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 import com.example.money_manager_app.databinding.DateHeaderItemBinding
 import com.example.money_manager_app.databinding.TransactionItemBinding
+import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toFormattedTimeString
 
 class TransactionAdapter(
     private val context: Context,
     private val currencySymbol: String,
-    private val wallets: List<Wallet>
+    private val wallets: List<Wallet>,
+    private val onTransactionClick: (Transaction) -> Unit = {}
 ) : ListAdapter<TransactionListItem, RecyclerView.ViewHolder>(TransactionListItemDiffCallback()) {
 
     companion object {
@@ -107,6 +109,9 @@ class TransactionAdapter(
             }
             binding.transactionTime.text = transaction.date.toFormattedTimeString()
             binding.walletName.text = wallets.find { it.id == transaction.walletId }?.name
+            binding.root.setOnSafeClickListener {
+                onTransactionClick(transaction)
+            }
         }
     }
 }

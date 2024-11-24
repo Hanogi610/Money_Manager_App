@@ -8,12 +8,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
-import com.example.money_manager_app.viewmodel.MainViewModel
+import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.databinding.FragmentGoalDetailBinding
-import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.utils.setOnSafeClickListener
+import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -46,7 +46,11 @@ class GoalDetailFragment :
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
 
         binding.apply {
-            transactionAdapter = TransactionAdapter(requireContext(),currentCurrencySymbol, mainViewModel.currentAccount.value!!.wallets)
+            transactionAdapter = TransactionAdapter(
+                requireContext(),
+                currentCurrencySymbol,
+                mainViewModel.currentAccount.value!!.wallets
+            )
             goalTransactionRv.adapter = transactionAdapter
             goalTransactionRv.layoutManager = LinearLayoutManager(requireContext())
         }
@@ -61,8 +65,16 @@ class GoalDetailFragment :
                     it?.let {
                         binding.apply {
                             nameLabel.text = it.title
-                            saveLabel.text = getString(R.string.money_amount, currentCurrencySymbol, it.saveAmount)
-                            remainLabel.text = getString(R.string.money_amount, currentCurrencySymbol, it.remainAmount)
+                            saveLabel.text = getString(
+                                R.string.money_amount,
+                                currentCurrencySymbol,
+                                it.saveAmount
+                            )
+                            remainLabel.text = getString(
+                                R.string.money_amount,
+                                currentCurrencySymbol,
+                                it.remainAmount
+                            )
                             goalDateLabel.text = it.goalDate
                             timeLabel.text = it.daysLeft
                             progressBar.progress = it.progress

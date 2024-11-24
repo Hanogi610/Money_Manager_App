@@ -8,14 +8,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
-import com.example.money_manager_app.viewmodel.MainViewModel
+import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Debt
-import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.databinding.FragmentDebtDetailBinding
-import com.example.money_manager_app.fragment.wallet.adapter.DebtTransactionAdapter
 import com.example.money_manager_app.utils.setOnSafeClickListener
-import com.example.money_manager_app.utils.toFormattedDateString
+import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,7 +28,7 @@ class DebtDetailFragment :
     }
 
     private val mainViewModel: MainViewModel by activityViewModels()
-    private lateinit var debtTransactionAdapter: DebtTransactionAdapter
+    private lateinit var adapter: TransactionAdapter
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
@@ -53,10 +51,10 @@ class DebtDetailFragment :
         super.initView(savedInstanceState)
         val currentCurrencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
-        debtTransactionAdapter = DebtTransactionAdapter(
+        adapter = TransactionAdapter(
             requireContext(), currentCurrencySymbol, mainViewModel.currentAccount.value!!.wallets
         )
-        binding.debtTransactionRv.adapter = debtTransactionAdapter
+        binding.debtTransactionRv.adapter = adapter
         binding.debtTransactionRv.layoutManager = LinearLayoutManager(requireContext())
     }
 
@@ -68,37 +66,23 @@ class DebtDetailFragment :
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getVM().debtInfo.collect {
+                getVM().debtDetailItem.collect {
                     it?.let {
                         binding.apply {
-                            nameLabel.text = it.debt.name
-                            descriptionLabel.text = it.debt.description
-                            val paidAmount =
-                                it.transactions.filter { action -> action.action == DebtActionType.REPAYMENT }
-                                    .sumOf { transaction -> transaction.amount }
-                            spentLabel.text =
-                                getString(R.string.money_amount, currentCurrencySymbol, paidAmount)
-                            remainLabel.text = getString(
+                            nameLabel.text = it.title
+                            descriptionLabel.text = it.description
+                            spentLabel.text = getString(
                                 R.string.money_amount,
                                 currentCurrencySymbol,
-                                it.debt.amount - paidAmount
+                                it.paidAmount
                             )
-                            progressBar.progress =
-                                ((paidAmount.toFloat() / it.debt.amount) * 100).toInt()
-                            amountLabel.text = getString(
-                                R.string.money_amount, currentCurrencySymbol, it.debt.amount
-                            )
-                            dateLabel.text = it.debt.date.toFormattedDateString()
+                            progressBar.progress = it.progress
+                            dateLabel.text = it.date
                             walletLabel.text =
-                                mainViewModel.currentAccount.value!!.wallets.find { wallet -> wallet.id == it.debt.walletId }?.name
+                                mainViewModel.currentAccount.value!!.wallets.find { wallet -> wallet.id == it.walletId }?.name
+                            adapter.submitList(it.transactions)
                         }
                     }
-                    debtTransactionAdapter.updateItems(
-                        groupTransactionsByDate(
-                            it?.transactions ?: emptyList()
-                        )
-                    )
-
                 }
             }
         }
