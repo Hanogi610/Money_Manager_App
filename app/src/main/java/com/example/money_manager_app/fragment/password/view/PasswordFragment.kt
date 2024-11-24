@@ -7,7 +7,10 @@ import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.databinding.FragmentPasswordBinding
@@ -15,30 +18,15 @@ import com.example.money_manager_app.fragment.password.viewmodel.PasswordType
 import com.example.money_manager_app.fragment.password.viewmodel.PasswordViewmodel
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PasswordFragment : BaseFragment<FragmentPasswordBinding, PasswordViewmodel>(R.layout.fragment_password) {
 
-    private val numbersInput = mutableListOf(
-        binding.keyboard.number1,
-        binding.keyboard.number2,
-        binding.keyboard.number3,
-        binding.keyboard.number4,
-        binding.keyboard.number5,
-        binding.keyboard.number6,
-        binding.keyboard.number7,
-        binding.keyboard.number8,
-        binding.keyboard.number9,
-    )
+    private var numbersInput: MutableList<TextView> = mutableListOf()
 
-    private val numberDisplay = mutableListOf(
-        binding.pc1,
-        binding.pc2,
-        binding.pc3,
-        binding.pc3,
-        binding.pc4,
-        binding.pc5,
-    )
+    private var numberDisplay: MutableList<EditText> = mutableListOf()
 
     override fun getVM(): PasswordViewmodel {
         val viewModel: PasswordViewmodel by viewModels()
@@ -47,19 +35,40 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding, PasswordViewmodel
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        Log.d(TAG, "initView: 1")
-        numbersInput.forEachIndexed { _, numberInput ->
-            numberInput.setOnSafeClickListener {
-                getVM().addNumber(numberInput.text.toString())
-            }
-        }
+
+        numbersInput = mutableListOf(
+            binding.number1,
+            binding.number2,
+            binding.number3,
+            binding.number4,
+            binding.number5,
+            binding.number6,
+            binding.number7,
+            binding.number8,
+            binding.number9,
+        )
+
+        numberDisplay = mutableListOf(
+            binding.pc1,
+            binding.pc2,
+            binding.pc3,
+            binding.pc4,
+            binding.pc5,
+            binding.pc6,
+        )
     }
 
     override fun setOnClick() {
         super.setOnClick()
 
-        binding.keyboard.backspace.setOnSafeClickListener {
+        binding.backspace.setOnClickListener {
             getVM().deleteNumber()
+        }
+
+        numbersInput.forEachIndexed { _, numberInput ->
+            numberInput.setOnClickListener {
+                getVM().addNumber(numberInput.text.toString())
+            }
         }
     }
 
@@ -93,6 +102,7 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding, PasswordViewmodel
                     binding.tvInput.setText(R.string.enter_your_pass_code)
                 }
                 PasswordType.CONFIRM -> {
+                    getVM().reset()
                     binding.tvInput.setText(R.string.confirm_your_pass_code)
                 }
                 PasswordType.CHECK -> {
@@ -108,17 +118,31 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding, PasswordViewmodel
             if (it) {
                 appNavigation.openPasswordToCreateAccountScreen()
             } else {
-                binding.groupIncoming.isActivated = true
+                isPasswordIncorrect()
 
                 val vibrator = context?.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
                 vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE))
 
                 Handler(Looper.getMainLooper()).postDelayed({
+                    resetNumberDisplay()
                     getVM().reset()
                 }, 1000)
             }
         }
     }
+
+    private fun resetNumberDisplay() {
+        numberDisplay.forEach {
+            it.isActivated = false
+        }
+    }
+
+    private fun isPasswordIncorrect() {
+        numberDisplay.forEach {
+            it.isActivated = true
+        }
+    }
+
     companion object {
         private const val TAG = "PasswordFragment"
     }

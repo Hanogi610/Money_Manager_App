@@ -9,6 +9,7 @@
     <color name="gray_light">#A6A6A6</color>
     <color name="gray_dark">#D4D4D4</color>
     <color name="password_incorrect">#E2151C</color>
+    <color name="password_correct">#5DE215</color>
     <color name="secondary_text">#4D4D4D</color>
     <color name="primary_transparent">#3F9AD7</color>
     <color name="red">#F7313E</color>

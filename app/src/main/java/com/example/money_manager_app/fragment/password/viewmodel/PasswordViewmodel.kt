@@ -1,5 +1,6 @@
 package com.example.money_manager_app.fragment.password.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.pref.AppPreferences
@@ -45,6 +46,8 @@ class PasswordViewmodel @Inject constructor(
         val numbers = _numbersEnter.value ?: return
         val cursor = _currentCursor.value ?: return
         val type = _currentPasswordType.value ?: return
+
+        Log.d("hainv", "addNumber: $number $cursor $type")
 
         numbers[cursor] = number
 
