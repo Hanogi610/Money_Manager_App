@@ -6,7 +6,7 @@
         android:title="@string/home"/>
     <item
         android:icon="@drawable/ic_calendar"
-        android:id="@+id/action_calender"
+        android:id="@+id/action_calendar"
         android:title="@string/calendar"/>
     <item
         android:icon="@drawable/ic_graph"

@@ -91,7 +91,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.money_manager_app.fragment.main.MainFragment"
+        android:name="com.example.money_manager_app.fragment.main.MainScreenFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_debtDetailFragment"
@@ -102,6 +102,12 @@
         <action
             android:id="@+id/action_mainFragment_to_goalDetailFragment"
             app:destination="@id/goalDetailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addGoalFragment"
+            app:destination="@id/addGoalFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
     </fragment>
     <fragment
         android:id="@+id/debtDetailFragment"
@@ -110,6 +116,9 @@
         <action
             android:id="@+id/action_debtDetailFragment_to_addDebtTransactionFragment"
             app:destination="@id/addDebtTransactionFragment" />
+        <action
+            android:id="@+id/action_debtDetailFragment_to_addDebtFragment"
+            app:destination="@id/addDebtFragment" />
     </fragment>
     <fragment
         android:id="@+id/addDebtTransactionFragment"
@@ -122,5 +131,20 @@
     <fragment
         android:id="@+id/goalDetailFragment"
         android:name="com.example.money_manager_app.fragment.wallet.goal_detail.GoalDetailFragment"
-        android:label="GoalDetailFragment" />
+        android:label="GoalDetailFragment" >
+        <action
+            android:id="@+id/action_goalDetailFragment_to_addGoalTransactionFragment"
+            app:destination="@id/addGoalTransactionFragment" />
+        <action
+            android:id="@+id/action_goalDetailFragment_to_addGoalFragment"
+            app:destination="@id/addGoalFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addGoalFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.add_goal.AddGoalFragment"
+        android:label="AddGoalFragment" />
+    <fragment
+        android:id="@+id/addGoalTransactionFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.add_goal_transaction.AddGoalTransactionFragment"
+        android:label="AddGoalTransactionFragment" />
 </navigation>

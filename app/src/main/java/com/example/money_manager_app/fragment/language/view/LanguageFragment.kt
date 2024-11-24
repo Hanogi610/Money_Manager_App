@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.language.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
@@ -37,7 +38,7 @@ class LanguageFragment : BaseFragment<FragmentLanguageBinding, LanguageViewModel
 
         binding.tvDone.setOnSafeClickListener {
             getVM().changeLanguage()
-
+            Log.d(TAG, "setOnClick: 1")
             appNavigation.openSplashToPasswordScreen()
         }
     }
@@ -46,7 +47,12 @@ class LanguageFragment : BaseFragment<FragmentLanguageBinding, LanguageViewModel
         super.bindingStateView()
 
         getVM().languages.observe(viewLifecycleOwner) {
+            Log.d(TAG, "bindingStateView: 1")
             adapter.submitList(it)
         }
+    }
+
+    companion object {
+        private const val TAG = "LanguageFragment"
     }
 }

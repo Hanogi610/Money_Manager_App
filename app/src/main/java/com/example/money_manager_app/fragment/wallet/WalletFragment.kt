@@ -17,7 +17,7 @@ import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.databinding.FragmentWalletBinding
 import com.example.money_manager_app.fragment.wallet.adapter.DebtAdapter
 import com.example.money_manager_app.fragment.wallet.adapter.GoalAdapter
-import com.example.moneymanager.ui.wallet_screen.adapter.WalletAdapter
+import com.example.money_manager_app.fragment.wallet.adapter.WalletAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -96,7 +96,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
     }
 
     private fun onAddGoalClick() {
-//        appNavigation.openMainScreenToAddGoalScreen()
+        appNavigation.openMainScreenToAddGoalScreen()
     }
 
     private fun onDebtItemClick(debt: Debt) {

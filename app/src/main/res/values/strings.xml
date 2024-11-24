@@ -152,6 +152,7 @@
     <string name="back">Back</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="color">Color</string>
     <string-array name="spinner_color">
         <item>#34BFFF</item>
         <item>#0097E6</item>

@@ -119,23 +119,23 @@ class AddViewModel @Inject constructor(
                 val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
                 val transferDate = dateFormat.parse(newAddTransfer.transferDate)
                 val transferTime = timeFormat.parse(newAddTransfer.transferTime)
-                repository.insertTransfer(
-                    Transfer(
-                        fromWallet = newAddTransfer.fromWallet,
-                        toWallet = newAddTransfer.toWallet,
-                        amount = newAddTransfer.amount,
-                        fee = newAddTransfer.fee,
-                        description = newAddTransfer.description,
-                        linkImg = newAddTransfer.linkImg,
-                        transferDate = transferDate!!.time,
-                        transferTime = transferTime!!.time,
-                        typeOfExpenditure = newAddTransfer.typeOfExpenditure,
-                        typeDebt = newAddTransfer.typeDebt,
-                        typeIconCategory = newAddTransfer.typeIconCategory,
-                        typeColor = newAddTransfer.typeColor,
-                        typeIconWallet = newAddTransfer.typeIconWallet
-                    )
-                )
+//                repository.insertTransfer(
+//                    Transfer(
+//                        fromWallet = newAddTransfer.fromWallet,
+//                        toWallet = newAddTransfer.toWallet,
+//                        amount = newAddTransfer.amount,
+//                        fee = newAddTransfer.fee,
+//                        description = newAddTransfer.description,
+//                        linkImg = newAddTransfer.linkImg,
+//                        transferDate = transferDate!!.time,
+//                        transferTime = transferTime!!.time,
+//                        typeOfExpenditure = newAddTransfer.typeOfExpenditure,
+//                        typeDebt = newAddTransfer.typeDebt,
+//                        typeIconCategory = newAddTransfer.typeIconCategory,
+//                        typeColor = newAddTransfer.typeColor,
+//                        typeIconWallet = newAddTransfer.typeIconWallet
+//                    )
+//                )
             }
         }
     }

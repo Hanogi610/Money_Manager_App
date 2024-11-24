@@ -3,6 +3,7 @@ package com.example.money_manager_app.fragment.create_account.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.money_manager_app.R
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.entity.Account
 import com.example.money_manager_app.data.model.entity.Wallet
@@ -78,8 +79,6 @@ class CreateAccountViewModel @Inject constructor(
                         accountId = accountId,
                         amount = _initAmount,
                         walletType = WalletType.GENERAL,
-                        iconId = "ic_general",
-                        colorId = "color_general",
                         name = "General",
                         isExcluded = false
                     )

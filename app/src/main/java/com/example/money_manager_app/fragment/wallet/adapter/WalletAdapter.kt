@@ -1,14 +1,14 @@
-package com.example.moneymanager.ui.wallet_screen.adapter
+package com.example.money_manager_app.fragment.wallet.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moneymanager.R
+import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.entity.Wallet
-import com.example.moneymanager.databinding.AddNewWalletItemBinding
-import com.example.moneymanager.databinding.WalletItemBinding
+import com.example.money_manager_app.databinding.AddNewWalletItemBinding
+import com.example.money_manager_app.databinding.WalletItemBinding
 
 class WalletAdapter(
     private val context: Context,

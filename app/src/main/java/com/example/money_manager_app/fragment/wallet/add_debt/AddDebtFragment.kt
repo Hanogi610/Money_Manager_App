@@ -13,12 +13,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
+import com.example.money_manager_app.adapter.ColorSpinnerAdapter
 import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.money_manager_app.databinding.FragmentAddDebtBinding
-import com.example.money_manager_app.utils.ColorHelper
+import com.example.money_manager_app.utils.ColorUtils
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.utils.toTimeTimestamp
@@ -99,11 +100,7 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R
         }
 
         val colorOptions = resources.getStringArray(R.array.color_options)
-        val colorAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            colorOptions
-        )
+        val colorAdapter = ColorSpinnerAdapter(requireContext(), ColorUtils.getColors())
         binding.colorSpinner.adapter = colorAdapter
         binding.colorSpinner.setSelection(0)
 
@@ -182,23 +179,13 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R
         binding.timeTextView.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(debt.time)
         binding.spinnerDebtType.setSelection(DebtType.valueOf(debt.type.name).ordinal)
         binding.walletSpinner.setSelection(getWalletIndex(debt.walletId))
-        binding.colorSpinner.setSelection(getColorIndex(debt.colorId))
+        debt.colorId?.let { ColorUtils.getColors()[it] }
+            ?.let { binding.colorSpinner.setSelection(it) }
     }
 
     private fun getWalletIndex(walletId: Long): Int {
         val wallets = mainViewModel.currentAccount.value?.wallets.orEmpty()
         return wallets.indexOfFirst { it.id == walletId }.takeIf { it >= 0 } ?: 0
-    }
-
-    private fun getColorIndex(colorId: Int): Int {
-        // Get the color name from the color value using the helper function
-        val colorName = ColorHelper.getColorIdByValue(colorId)
-
-        // If the color name is found, find its index in the color options array
-        val colorOptions = resources.getStringArray(R.array.color_options)
-        return colorName?.let {
-            colorOptions.indexOf(it).takeIf { it >= 0 } ?: 0 // Return the index or default to 0
-        } ?: 0 // Default to 0 if color name is not found
     }
 
     private fun buildDebtFromFields(debtId: Long? = null): Debt {
@@ -207,7 +194,6 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R
         val selectedWalletId = selectedWallet?.id ?: 0 // Default to 0 if not found
 
         val selectedColorName = binding.colorSpinner.selectedItem.toString()
-        val selectedColorId = ColorHelper.getColorById(selectedColorName)
 
         return Debt(
             id = debtId ?: 0, // Use existing debt id if editing, otherwise 0 for new debt
@@ -220,7 +206,6 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R
             description = binding.editTextDescription.text.toString(),
             walletId = selectedWalletId, // Set the wallet ID
             colorId = R.color.color_1,
-
         )
     }
 }

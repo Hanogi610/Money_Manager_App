@@ -1,6 +1,7 @@
 package com.example.money_manager_app.base.navigation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.navigation.NavController
 
@@ -10,6 +11,7 @@ abstract class BaseNavigatorImpl : BaseNavigator {
 
     override fun bind(navController: NavController) {
         this.navController = navController
+        Log.d(TAG, "bind: $navController")
     }
 
     override fun unbind() {
@@ -19,6 +21,7 @@ abstract class BaseNavigatorImpl : BaseNavigator {
     override fun openScreen(
         @IdRes id: Int, bundle: Bundle?
     ) {
+        Log.d(TAG, "openScreen: $navController")
         navController?.navigate(id, bundle)
     }
 
@@ -35,5 +38,8 @@ abstract class BaseNavigatorImpl : BaseNavigator {
         if (navGraph != null) {
             navController?.graph = navGraph
         }
+    }
+    companion object {
+        private const val TAG = "BaseNavigatorImpl"
     }
 }
