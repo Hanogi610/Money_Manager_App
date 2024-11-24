@@ -13,7 +13,6 @@ import com.example.money_manager_app.data.model.entity.Account
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
-import com.example.money_manager_app.data.model.entity.DepositAndWithdraw
 import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
@@ -21,7 +20,7 @@ import com.example.money_manager_app.data.model.entity.Wallet
 
 @Database(
     entities = [
-        Account::class, Budget::class, DepositAndWithdraw::class, Goal::class,
+        Account::class, Budget::class, Goal::class,
         Transfer::class, Wallet::class, Debt::class, DebtTransaction::class, GoalTransaction::class
     ],
     version = 1,
