@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import androidx.fragment.app.viewModels
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
@@ -46,7 +47,7 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding, PasswordViewmodel
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-
+        Log.d(TAG, "initView: 1")
         numbersInput.forEachIndexed { _, numberInput ->
             numberInput.setOnSafeClickListener {
                 getVM().addNumber(numberInput.text.toString())
@@ -117,6 +118,9 @@ class PasswordFragment : BaseFragment<FragmentPasswordBinding, PasswordViewmodel
                 }, 1000)
             }
         }
+    }
+    companion object {
+        private const val TAG = "PasswordFragment"
     }
 
 }

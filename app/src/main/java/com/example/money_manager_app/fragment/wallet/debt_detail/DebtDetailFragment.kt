@@ -92,7 +92,7 @@ class DebtDetailFragment :
         super.setOnClick()
         binding.editButton.setOnSafeClickListener {
             val debtToSent = getVM().debtInfo.value!!.debt
-            appNavigation.openDebDetailToAddDebtTransactionScreen(Bundle().apply {
+            appNavigation.openDebtDetailToAddDebtScreen(Bundle().apply {
                 putParcelable("debt", debtToSent)
             })
         }
@@ -102,7 +102,7 @@ class DebtDetailFragment :
         }
 
         binding.addDebtAction.setOnSafeClickListener {
-            appNavigation.openDebDetailToAddDebtTransactionScreen()
+            appNavigation.openDebtDetailToAddDebtTransactionScreen()
         }
 
     }

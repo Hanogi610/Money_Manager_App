@@ -1,38 +1,42 @@
 package com.example.moneymanager.ui.main_screen.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.money_manager_app.R
+import com.example.money_manager_app.base.BaseBottomSheet
 import com.example.money_manager_app.data.model.entity.AccountWithWallet
-import com.example.moneymanager.databinding.AccountSelectionBottomSheetBinding
-import com.example.moneymanager.ui.main_screen.adapter.AccountAdapter
+import com.example.money_manager_app.databinding.AccountSelectionBottomSheetBinding
+import com.example.money_manager_app.fragment.main.adapter.AccountAdapter
+import com.example.money_manager_app.viewmodel.MainViewModel
 
 class AccountSelectorBottomSheet(
     private val accounts: List<AccountWithWallet>,
     private val currentAccount: AccountWithWallet,
     private val onAccountSelected: (AccountWithWallet) -> Unit,
     private val onAddAccount: () -> Unit
-) : BottomSheetDialogFragment() {
+) : BaseBottomSheet<AccountSelectionBottomSheetBinding>() {
 
-    private var _binding: AccountSelectionBottomSheetBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var accountAdapter: AccountAdapter
+    private val mainViewModel: MainViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = AccountSelectionBottomSheetBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun getLayoutId(): Int {
+        return R.layout.account_selection_bottom_sheet
     }
+
+    private lateinit var accountAdapter: AccountAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        accountAdapter = AccountAdapter(accounts, currentAccount) { account ->
+        val currentCurrencySymbol =
+            getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
+        accountAdapter = AccountAdapter(
+            requireContext(),
+            currentCurrencySymbol,
+            accounts,
+            currentAccount
+        ) { account ->
             onAccountSelected(account)
             dismiss()
         }
@@ -42,14 +46,9 @@ class AccountSelectorBottomSheet(
             adapter = accountAdapter
         }
 
-        binding.addAccount.setOnClickListener{
+        binding.addAccount.setOnClickListener {
             onAddAccount()
             dismiss()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

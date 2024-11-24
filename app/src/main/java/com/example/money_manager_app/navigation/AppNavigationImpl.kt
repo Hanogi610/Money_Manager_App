@@ -1,6 +1,7 @@
 package com.example.money_manager_app.navigation
 
 import android.os.Bundle
+import android.util.Log
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.navigation.BaseNavigatorImpl
 import dagger.hilt.android.scopes.ActivityScoped
@@ -15,6 +16,7 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
     }
 
     override fun openSplashToPasswordScreen(bundle: Bundle?) {
+        Log.d(TAG, "openSplashToPasswordScreen: 1")
         openScreen(R.id.action_splashScreenFragment_to_passwordFragment, bundle)
     }
 
@@ -34,7 +36,7 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
         openScreen(R.id.action_mainFragment_to_debtDetailFragment, bundle)
     }
 
-    override fun openDebDetailToAddDebtTransactionScreen(bundle: Bundle?) {
+    override fun openDebtDetailToAddDebtTransactionScreen(bundle: Bundle?) {
         openScreen(R.id.action_debtDetailFragment_to_addDebtTransactionFragment, bundle)
     }
 
@@ -46,7 +48,23 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
         openScreen(R.id.action_goalDetailFragment_to_addGoalTransactionFragment, bundle)
     }
 
+    override fun openMainScreenToAddGoalScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_addGoalFragment, bundle)
+    }
+
+    override fun openMainScreenToCreateAccountScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_createAccountFragment, bundle)
+    }
+
     override fun openGoalDetailToAddGoalScreen(bundle: Bundle?) {
         openScreen(R.id.action_goalDetailFragment_to_addGoalFragment, bundle)
+    }
+
+    override fun openDebtDetailToAddDebtScreen(bundle: Bundle?) {
+        openScreen(R.id.action_debtDetailFragment_to_addDebtFragment, bundle)
+    }
+
+    companion object {
+        private const val TAG = "AppNavigationImpl"
     }
 }

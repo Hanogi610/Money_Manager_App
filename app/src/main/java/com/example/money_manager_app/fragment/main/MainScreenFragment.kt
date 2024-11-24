@@ -1,10 +1,6 @@
 package com.example.money_manager_app.fragment.main
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,26 +8,26 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.example.moneymanager.R
+import com.example.money_manager_app.R
+import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.AccountWithWallet
-import com.example.moneymanager.databinding.FragmentMainBinding
-import com.example.moneymanager.ui.MainViewModel
-import com.example.moneymanager.ui.main_screen.MainScreenViewModel
+import com.example.money_manager_app.databinding.FragmentMainScreenBinding
+import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.moneymanager.ui.main_screen.adapter.MainPagerAdapter
 import com.example.moneymanager.ui.main_screen.fragment.AccountSelectorBottomSheet
 import kotlinx.coroutines.launch
 
-class MainFragment : Fragment() {
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: MainScreenViewModel by viewModels()
+class MainScreenFragment :
+    BaseFragment<FragmentMainScreenBinding, MainScreenViewModel>(R.layout.fragment_main_screen) {
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var vpAdapter: MainPagerAdapter
+    override fun getVM(): MainScreenViewModel {
+        val vm: MainScreenViewModel by viewModels()
+        return vm
+    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
 
         vpAdapter = MainPagerAdapter(this)
         binding.mainViewPager.adapter = vpAdapter // Make sure to set the adapter
@@ -39,10 +35,10 @@ class MainFragment : Fragment() {
         // Synchronize BottomNavigationView with ViewPager2
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.navigation_home -> binding.mainViewPager.currentItem = 0
-                R.id.navigation_calendar -> binding.mainViewPager.currentItem = 1
-                R.id.navigation_statistic -> binding.mainViewPager.currentItem = 2
-                R.id.navigation_wallet -> binding.mainViewPager.currentItem = 3
+                R.id.action_home -> binding.mainViewPager.currentItem = 0
+                R.id.action_calendar -> binding.mainViewPager.currentItem = 1
+                R.id.action_statistic -> binding.mainViewPager.currentItem = 2
+                R.id.action_wallet -> binding.mainViewPager.currentItem = 3
             }
             true
         }
@@ -51,18 +47,18 @@ class MainFragment : Fragment() {
         binding.mainViewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                viewModel.setCurrentFragmentId(position)
+                getVM().setCurrentFragmentId(position)
                 when (position) {
-                    0 -> binding.bottomNavigation.selectedItemId = R.id.navigation_home
-                    1 -> binding.bottomNavigation.selectedItemId = R.id.navigation_calendar
-                    2 -> binding.bottomNavigation.selectedItemId = R.id.navigation_statistic
-                    3 -> binding.bottomNavigation.selectedItemId = R.id.navigation_wallet
+                    0 -> binding.bottomNavigation.selectedItemId = R.id.action_home
+                    1 -> binding.bottomNavigation.selectedItemId = R.id.action_calendar
+                    2 -> binding.bottomNavigation.selectedItemId = R.id.action_statistic
+                    3 -> binding.bottomNavigation.selectedItemId = R.id.action_wallet
                 }
             }
         })
 
         binding.addFab.setOnClickListener {
-            when (viewModel.currentFragmentId.value) {
+            when (getVM().currentFragmentId.value) {
                 0 -> {
                     // Action for Home Fragment
                     findNavController().navigate(R.id.addExpenseFragment)
@@ -70,7 +66,7 @@ class MainFragment : Fragment() {
 
                 1 -> {
                     // Action for Calendar Fragment
-                    findNavController().navigate(R.id.calendarFragment)
+//                    findNavController().navigate(R.id.calendarFragment)
                 }
 
                 2 -> {
@@ -100,6 +96,10 @@ class MainFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun bindingStateView() {
+        super.bindingStateView()
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -110,8 +110,6 @@ class MainFragment : Fragment() {
                 }
             }
         }
-
-        return binding.root
     }
 
     private fun openAccountSelector(
@@ -130,12 +128,6 @@ class MainFragment : Fragment() {
     }
 
     private fun addAccount() {
-        // Add account
-        findNavController().navigate(R.id.action_mainFragment_to_addAccountFragment)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        appNavigation.openMainScreenToCreateAccountScreen()
     }
 }

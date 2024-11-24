@@ -44,9 +44,7 @@ android {
         schemaDirectory("$projectDir/schemas")
     }
 }
-
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -54,13 +52,12 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.dataStore)
     implementation(libs.androidx.security.crypto)
-    implementation (libs.lottie.v520)
+    implementation(libs.lottie.v520)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -69,8 +66,6 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     implementation(libs.androidx.room.runtime)
-    annotationProcessor(libs.androidx.room.compiler)
-
     //noinspection KaptUsageInsteadOfKsp
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
@@ -80,10 +75,11 @@ dependencies {
     kapt(libs.glideCompiler)
     implementation(libs.lottie)
 
-    implementation (libs.mpandroidchart)
+    implementation(libs.mpandroidchart)
 
     implementation(libs.circleprogress)
 }
+
 kapt {
     correctErrorTypes = true
 }

@@ -1,24 +1,17 @@
-package com.example.moneymanager.ui.search.fragment
+package com.example.money_manager_app.fragment.search.fragment
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.example.moneymanager.databinding.FilterBottomSheetBinding
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.example.money_manager_app.R
+import com.example.money_manager_app.base.BaseBottomSheet
+import com.example.money_manager_app.databinding.FilterBottomSheetBinding
 import java.util.Calendar
 
-class FilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding>() {
 
-    private var _binding: FilterBottomSheetBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FilterBottomSheetBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun getLayoutId(): Int {
+        return R.layout.filter_bottom_sheet
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,10 +65,5 @@ class FilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         // Add filter logic here...
         dismiss()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

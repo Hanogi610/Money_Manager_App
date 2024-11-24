@@ -1,7 +1,7 @@
-package com.example.moneymanager.ui.search
+package com.example.money_maLnager_app.fragment.search
 
-import androidx.lifecycle.ViewModel
+import com.example.money_manager_app.base.BaseViewModel
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel : BaseViewModel() {
     // TODO: Implement the ViewModel
 }

@@ -6,23 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.moneymanager.databinding.FragmentAddWalletBinding
+import com.example.money_manager_app.R
+import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.databinding.FragmentAddWalletBinding
 
-class AddWalletFragment : Fragment() {
+class AddWalletFragment :
+    BaseFragment<FragmentAddWalletBinding, AddWalletViewModel>(R.layout.fragment_add_wallet) {
 
-    private var _binding: FragmentAddWalletBinding? = null
-    private val binding get() = _binding!!
-
-    private val viewModel: AddWalletViewModel by viewModels()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAddWalletBinding.inflate(inflater, container, false)
-
-
-
-        return binding.root
+    override fun getVM(): AddWalletViewModel {
+        val viewModel: AddWalletViewModel by viewModels()
+        return viewModel
     }
+
 }

@@ -1,14 +1,13 @@
-package com.example.moneymanager.ui.selecticon
+package com.example.money_manager_app.selecticon
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.moneymanager.R
-import com.example.moneymanager.databinding.FragmentSelectIncomeExpenseBinding
+import com.example.money_manager_app.databinding.FragmentSelectIncomeExpenseBinding
 
-class Select_income_expenseFragment : Fragment() {
+class SelectIncomeExpenseFragment : Fragment() {
     private val _binding: FragmentSelectIncomeExpenseBinding? = null
     private val binding get() = _binding!!
 
