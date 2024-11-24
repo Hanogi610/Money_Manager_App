@@ -60,7 +60,6 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
         groupedList.add(TransactionListItem.TransactionItem(transaction))
     }
 
-    // Add the last date header
     if (lastDate != null) {
         groupedList.add(
             TransactionListItem.DateHeader(
