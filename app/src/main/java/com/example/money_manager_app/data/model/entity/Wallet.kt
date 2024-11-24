@@ -22,7 +22,7 @@ data class Wallet(
     @ColumnInfo(name = "amount") val amount: Double,
     @ColumnInfo(name = "account_id") val accountId: Long,
     @TypeConverters(WalletTypeConverter::class)
-    @ColumnInfo(name = "type_wallet_name") val typeWallet: WalletType,
+    @ColumnInfo(name = "wallet_type") val walletType: WalletType,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "icon_id") val iconId: Int ?= R.drawable.wallet_14,
     @ColumnInfo(name = "color_id") val colorId: Int ?= R.color.color_1,

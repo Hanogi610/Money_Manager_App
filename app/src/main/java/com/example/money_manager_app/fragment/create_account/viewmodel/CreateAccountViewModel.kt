@@ -77,7 +77,7 @@ class CreateAccountViewModel @Inject constructor(
                     Wallet(
                         accountId = accountId,
                         amount = _initAmount,
-                        typeWallet = WalletType.GENERAL,
+                        walletType = WalletType.GENERAL,
                         iconId = "ic_general",
                         colorId = "color_general",
                         name = "General",
