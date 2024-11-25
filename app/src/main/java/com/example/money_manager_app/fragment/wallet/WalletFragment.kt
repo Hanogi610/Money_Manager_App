@@ -59,6 +59,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
         mainViewModel.currentAccount.value?.account?.id?.let {
             getVM().getWallets(it)
             getVM().getDebts(it)
+            getVM().getGoals(it)
         }
 
         lifecycleScope.launch {

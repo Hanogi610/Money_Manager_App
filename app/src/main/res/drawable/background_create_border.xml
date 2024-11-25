@@ -7,7 +7,6 @@
                     <corners android:radius="8dp"/>
                     <stroke
                         android:width="2dp"
-                        android:color="?attr/buttonDisabled"
                         android:dashWidth="10px"
                         android:dashGap="10px"/>
                 </shape>

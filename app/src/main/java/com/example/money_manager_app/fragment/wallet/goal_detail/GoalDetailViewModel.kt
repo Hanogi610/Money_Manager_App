@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.wallet.goal_detail
 
 import androidx.lifecycle.viewModelScope
+import com.example.money_manager_app.R
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.TransactionListItem
 import com.example.money_manager_app.data.model.entity.GoalDetail
@@ -58,6 +59,7 @@ class GoalDetailViewModel @Inject constructor(
             amountGoal = goalDetail.goal.amount,
             goalDate = goalDate,
             daysLeft = daysLeft,
+            colorId = goalDetail.goal.colorId,
             transactions = groupedTransactions
         )
     }
@@ -78,5 +80,6 @@ data class GoalDetailItem(
     val goalDate: String,
     val daysLeft: String,
     val transactions: List<TransactionListItem>,
-    val progress: Int = ((saveAmount / amountGoal) * 100).toInt()
+    val progress: Int = ((saveAmount / amountGoal) * 100).toInt(),
+    val colorId: Int = R.color.color_1
 )

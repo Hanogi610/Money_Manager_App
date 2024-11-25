@@ -68,7 +68,7 @@ class DebtAdapter(
                     .sumOf { it.amount }
             binding.amountLabel.text =
                 context.getString(R.string.money_amount, currentCurrencySymbol, currentAmount)
-
+            binding.circleLabel.setImageResource(debt.debt.iconId)
             binding.root.setOnClickListener { onItemClick(debt.debt) }
         }
     }

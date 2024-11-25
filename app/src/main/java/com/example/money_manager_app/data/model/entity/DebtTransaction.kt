@@ -30,9 +30,9 @@ import com.example.money_manager_app.utils.DebtActionTypeConverter
 )
 data class DebtTransaction(
     @PrimaryKey(autoGenerate = true) override val id: Long = 0,
-    @ColumnInfo(name = "icon_id") override val iconId: Int ? = R.drawable.wallet_11,
+    @ColumnInfo(name = "icon_id") override val iconId: Int = R.drawable.wallet_11,
     override val name: String,
-    @ColumnInfo(name = "color_id") override val colorId: Int ? = R.color.color_1,
+    @ColumnInfo(name = "color_id") override val colorId: Int = R.color.color_1,
     @ColumnInfo(name = "account_id") override val accountId: Long,
     @ColumnInfo(name = "debt_id") val debtId: Long,
     @ColumnInfo(name = "wallet_id") override val walletId: Long,

@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.wallet.debt_detail
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -72,12 +73,20 @@ class DebtDetailFragment :
                             nameLabel.text = it.title
                             descriptionLabel.text = it.description
                             spentLabel.text = getString(
-                                R.string.money_amount,
-                                currentCurrencySymbol,
-                                it.paidAmount
+                                R.string.money_amount, currentCurrencySymbol, it.paidAmount
                             )
+                            remainLabel.text = getString(
+                                R.string.money_amount, currentCurrencySymbol, it.remainingAmount
+                            )
+                            percentLabel.text =
+                                if (it.progress > 100) getString(R.string.overpaid) else getString(
+                                    R.string.percent, it.progress
+                                )
+                            circleLabel.setImageResource(it.iconId)
                             progressBar.progress = it.progress
                             dateLabel.text = it.date
+                            progressBar.indeterminateTintList =
+                                ContextCompat.getColorStateList(requireContext(), it.colorId)
                             walletLabel.text =
                                 mainViewModel.currentAccount.value!!.wallets.find { wallet -> wallet.id == it.walletId }?.name
                             adapter.submitList(it.transactions)
@@ -102,13 +111,12 @@ class DebtDetailFragment :
         }
 
         binding.addDebtAction.setOnSafeClickListener {
-            appNavigation.openDebtDetailToAddDebtTransactionScreen()
+            val debtToSent = getVM().debtInfo.value!!.debt
+            appNavigation.openDebtDetailToAddDebtTransactionScreen(Bundle().apply {
+                putParcelable("debt", debtToSent)
+            })
         }
 
-    }
-
-    companion object {
-        private const val TAG = "DebtDetailFragment"
     }
 }
 

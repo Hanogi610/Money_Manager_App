@@ -1,6 +1,5 @@
-package com.example.moneymanager.ui.wallet_screen.add_debt_transaction
+package com.example.money_manager_app.fragment.wallet.add_debt_transaction
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.entity.DebtTransaction
@@ -17,7 +16,7 @@ class AddDebtTransactionViewModel @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
     private val debtTransactionRepository: DebtTransactionRepository,
 ) : BaseViewModel() {
-    fun addDebtTransaction(debtTransaction: DebtTransaction) : Long{
+    fun addDebtTransaction(debtTransaction: DebtTransaction): Long {
         return if (debtTransaction.amount > 0) {
             var debtId: Long = -1
             viewModelScope.launch(ioDispatcher) {

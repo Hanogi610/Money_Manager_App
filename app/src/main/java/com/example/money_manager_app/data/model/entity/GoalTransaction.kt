@@ -30,10 +30,10 @@ import com.example.money_manager_app.utils.GoalInputTypeConverter
 )
 data class GoalTransaction(
     @PrimaryKey(autoGenerate = true) override val id: Long = 0,
-    @ColumnInfo(name = "icon_id") override val iconId: Int ? = R.drawable.wallet_8,
+    @ColumnInfo(name = "icon_id") override val iconId: Int = R.drawable.wallet_8,
     override val name: String,
     @ColumnInfo(name = "account_id") override val accountId: Long,
-    @ColumnInfo(name = "color_id") override val colorId: Int ? = R.color.color_1,
+    @ColumnInfo(name = "color_id") override val colorId: Int = R.color.color_1,
     @ColumnInfo(name = "goal_id") val goalId: Long,
     @ColumnInfo(name = "wallet_id") override val walletId: Long,
     override val amount: Double,

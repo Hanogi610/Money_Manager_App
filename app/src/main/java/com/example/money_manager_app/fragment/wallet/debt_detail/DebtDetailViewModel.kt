@@ -56,7 +56,9 @@ class DebtDetailViewModel @Inject constructor(
             remainingAmount = remainingAmount,
             date = date,
             walletId = walletId,
-            transactions = groupedTransactions
+            transactions = groupedTransactions,
+            colorId = debtDetail.debt.colorId,
+            iconId = debtDetail.debt.iconId
         )
     }
 
@@ -72,6 +74,7 @@ class DebtDetailViewModel @Inject constructor(
 }
 
 data class DebtDetailItem(
+    val iconId : Int,
     val title: String,
     val description: String,
     val totalAmount: Double,
@@ -80,5 +83,6 @@ data class DebtDetailItem(
     val date: String,
     val walletId: Long,
     val transactions: List<TransactionListItem>,
-    val progress: Int = ((paidAmount / totalAmount) * 100).toInt()
+    val progress: Int = ((paidAmount / totalAmount) * 100).toInt(),
+    val colorId: Int
 )

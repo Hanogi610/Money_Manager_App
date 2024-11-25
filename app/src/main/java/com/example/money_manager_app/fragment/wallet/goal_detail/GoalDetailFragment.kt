@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.wallet.goal_detail
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -36,6 +37,14 @@ class GoalDetailFragment :
         arguments?.let {
             goal = it.getParcelable("goal")
             getVM().getGoalDetail(goal!!.id)
+        }
+    }
+
+    override fun initToolbar() {
+        super.initToolbar()
+
+        binding.backButton.setOnSafeClickListener {
+            appNavigation.navigateUp()
         }
     }
 
@@ -75,9 +84,16 @@ class GoalDetailFragment :
                                 currentCurrencySymbol,
                                 it.remainAmount
                             )
+                            goalLabel.text = getString(
+                                R.string.money_amount,
+                                currentCurrencySymbol,
+                                it.amountGoal
+                            )
+                            percentLabel.text = getString(R.string.percent, it.progress)
                             goalDateLabel.text = it.goalDate
-                            timeLabel.text = it.daysLeft
+                            timeLabel.text = getString(R.string.days_left, it.daysLeft)
                             progressBar.progress = it.progress
+                            progressBar.indeterminateTintList = ContextCompat.getColorStateList(requireContext(),it.colorId)
                             transactionAdapter.submitList(it.transactions)
                         }
                     }

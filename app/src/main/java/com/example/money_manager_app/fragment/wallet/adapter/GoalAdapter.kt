@@ -14,6 +14,7 @@ import com.example.money_manager_app.databinding.AddNewItemBinding
 import com.example.money_manager_app.databinding.GoalItemBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toDate
+import com.example.money_manager_app.utils.toFormattedDateString
 
 class GoalAdapter(
     private val context: Context,
@@ -59,7 +60,7 @@ class GoalAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(goal: GoalDetail) {
             binding.nameLabel.text = goal.goal.name
-            binding.dateLabel.text = goal.goal.targetDate.toDate()
+            binding.dateLabel.text = goal.goal.targetDate.toFormattedDateString()
             binding.progressBar.max = 100
             val currentAccumulation = goal.transactions.filter { it.type == GoalInputType.DEPOSIT }.sumOf { it.amount } -
                     goal.transactions.filter { it.type == GoalInputType.WITHDRAW }.sumOf { it.amount }

@@ -61,7 +61,7 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
     }
 
     if (lastDate != null) {
-        groupedList.add(
+        groupedList.add(0,
             TransactionListItem.DateHeader(
                 lastDate,
                 this.last().date.formatToDayOfWeek(),

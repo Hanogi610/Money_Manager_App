@@ -68,7 +68,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16dp"
-                android:background="?attr/secondaryBackground"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -80,7 +79,6 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginTop="@dimen/_16dp"
                     android:layout_marginEnd="@dimen/_16dp"
-                    android:textColor="?attr/primaryTextColor"
                     android:textSize="26sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +91,6 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginTop="@dimen/_16dp"
                     android:text="@string/saved"
-                    android:textColor="?attr/secondaryTextColor"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
@@ -105,7 +102,6 @@
                     android:layout_marginTop="@dimen/_16dp"
                     android:layout_marginEnd="@dimen/_16dp"
                     android:text="@string/remain"
-                    android:textColor="?attr/secondaryTextColor"
                     android:textSize="13sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
@@ -116,7 +112,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_16dp"
                     android:ellipsize="end"
-                    android:textColor="?attr/primaryTextColor"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/saveTitleLabel" />
@@ -128,7 +123,6 @@
                     android:layout_marginEnd="@dimen/_16dp"
                     android:ellipsize="end"
                     android:textAlignment="viewEnd"
-                    android:textColor="?attr/primaryTextColor"
                     android:textSize="13sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/remainTitleLabel" />
@@ -143,8 +137,6 @@
                     android:layout_marginEnd="@dimen/_16dp"
                     android:layout_marginBottom="@dimen/_12dp"
                     android:progress="0"
-                    android:progressBackgroundTint="?attr/progressBar"
-                    android:progressTint="#ff000000"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/saveLabel" />
@@ -167,7 +159,6 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginTop="@dimen/_24dp"
                     android:text="@string/amount"
-                    android:textColor="?attr/secondaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/progressBar" />
@@ -179,7 +170,6 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginTop="@dimen/_16dp"
                     android:text="@string/goal_date"
-                    android:textColor="?attr/secondaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/goalTitleLabel" />
@@ -189,7 +179,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_24dp"
-                    android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@+id/goalDateLabel"
                     app:layout_constraintTop_toBottomOf="@+id/progressBar" />
@@ -200,7 +189,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_24dp"
                     android:layout_marginTop="@dimen/_16dp"
-                    android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@+id/goalDateTitleLabel"
                     app:layout_constraintTop_toBottomOf="@+id/goalLabel" />
@@ -210,7 +198,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_24dp"
-                    android:textColor="?attr/secondaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toEndOf="@+id/goalDateTitleLabel"
                     app:layout_constraintTop_toBottomOf="@+id/goalDateLabel" />
@@ -229,7 +216,6 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginTop="@dimen/_24dp"
                     android:layout_marginEnd="@dimen/_8dp"
-                    android:background="@drawable/background_list_item"
                     app:layout_constraintEnd_toStartOf="@+id/midGuideline"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/timeLabel">
@@ -242,8 +228,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/depositLabel"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/deposit"
-                        app:tint="?attr/primaryTextColor" />
+                        app:srcCompat="@drawable/deposit" />
 
                     <TextView
                         android:id="@+id/depositLabel"
@@ -252,7 +237,6 @@
                         android:ellipsize="end"
                         android:text="@string/deposit"
                         android:textAllCaps="true"
-                        android:textColor="?attr/primaryTextColor"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -266,7 +250,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8dp"
                     android:layout_marginEnd="@dimen/_16dp"
-                    android:background="@drawable/background_list_item"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/midGuideline"
                     app:layout_constraintTop_toTopOf="@+id/depositWrapper">
@@ -280,8 +263,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/withdrawLabel"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/withdraw"
-                        app:tint="?attr/primaryTextColor" />
+                        app:srcCompat="@drawable/withdraw"/>
 
                     <TextView
                         android:id="@+id/withdrawLabel"
@@ -289,7 +271,6 @@
                         android:layout_height="wrap_content"
                         android:text="@string/withdraw"
                         android:textAllCaps="true"
-                        android:textColor="?attr/primaryTextColor"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -310,15 +291,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.85" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="24dp"
-                    android:background="?attr/seperator"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/withdrawWrapper" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.recyclerview.widget.RecyclerView

@@ -6,7 +6,7 @@ import java.util.Date
 import java.util.Locale
 
 fun Long.toFormattedTimeString(format: String = "HH:mm"): String {
-    val time = this.toDate()
+    val time = Date(this)
     val timeFormatter = SimpleDateFormat(format, Locale.getDefault())
     return timeFormatter.format(time)
 }
@@ -15,8 +15,8 @@ fun Long.toDate(): String {
     return Date(this).toString()
 }
 
-fun Long.toFormattedDateString(format: String = "yyyy-MM-dd"): String {
-    val date = this.toDate()
+fun Long.toFormattedDateString(format: String = "dd/MM/yyyy"): String {
+    val date = Date(this)
     val dateFormatter = SimpleDateFormat(format, Locale.getDefault())
     return dateFormatter.format(date)
 }

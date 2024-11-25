@@ -53,9 +53,11 @@
     <string name="initial_amount">Initial Amount</string>
     <string name="cash_wallet_prompt">How much money do you have in your cash wallet?</string>
     <string name="amount_hint" translatable="false">%1$s 0</string>
-    <string name="money_amount" translatable="false">%1$s %2$.3f</string>
-    <string name="positive_money_amount" translatable="false">+%1$s %2$.3f</string>
-    <string name="negative_money_amount" translatable="false">-%1$s %2$.3f</string>
+    <string name="money_amount" translatable="false">%1$s %2$.2f</string>
+    <string name="days_left">%1$s days left</string>
+    <string name="amount_number">%1$.2f</string>
+    <string name="positive_money_amount" translatable="false">+%1$s %2$.2f</string>
+    <string name="negative_money_amount" translatable="false">-%1$s %2$.2f</string>
     <string name="goal_transaction_name" >%1$s to %2$s</string>
     <string name="balance">Balance: </string>
     <string name="add_expense">Expense</string>
@@ -86,6 +88,8 @@
     <string name="select_category">Select Category</string>
     <string name="total">Total</string>
     <string name="transaction">Transaction</string>
+    <string name="percent">%1$d%%</string>
+    <string name="overpaid">Overpaid</string>
 
     <string-array name="wallet_options">
         <item>Cash</item>
@@ -153,6 +157,9 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="color">Color</string>
+    <string name="goal_s_name">Goal\'s name</string>
+    <string name="target_date">Target Date</string>
+    <string name="edit_goal">Edit Goal</string>
     <string-array name="spinner_color">
         <item>#34BFFF</item>
         <item>#0097E6</item>

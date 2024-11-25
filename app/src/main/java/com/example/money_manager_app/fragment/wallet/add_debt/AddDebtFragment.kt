@@ -193,8 +193,6 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R
         val selectedWallet = mainViewModel.accounts.value.flatMap { it.wallets }.find { it.name == selectedWalletName }
         val selectedWalletId = selectedWallet?.id ?: 0 // Default to 0 if not found
 
-        val selectedColorName = binding.colorSpinner.selectedItem.toString()
-
         return Debt(
             id = debtId ?: 0, // Use existing debt id if editing, otherwise 0 for new debt
             name = binding.editTextName.text.toString(),
@@ -205,7 +203,7 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R
             time = binding.timeTextView.text.toString().toTimeTimestamp(),
             description = binding.editTextDescription.text.toString(),
             walletId = selectedWalletId, // Set the wallet ID
-            colorId = R.color.color_1,
+            colorId = ColorUtils.getColors()[binding.colorSpinner.selectedItemPosition],
         )
     }
 }
