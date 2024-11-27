@@ -1,5 +1,6 @@
 package com.example.money_manager_app.data.model.entity
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -9,7 +10,9 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.SubTransaction
 import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 import com.example.money_manager_app.utils.GoalInputTypeConverter
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(
     tableName = "goal_transaction", foreignKeys = [ForeignKey(
         entity = Goal::class,
@@ -40,4 +43,4 @@ data class GoalTransaction(
     @TypeConverters(GoalInputTypeConverter::class) val type: GoalInputType? = GoalInputType.DEPOSIT,
     override val date: Long = System.currentTimeMillis(),
     override val time: Long = System.currentTimeMillis(),
-) : SubTransaction(id, iconId, name, amount, colorId, accountId, walletId, date, time)
+) : SubTransaction(id, iconId, name, amount, colorId, accountId, walletId, date, time), Parcelable

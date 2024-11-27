@@ -8,7 +8,7 @@ interface GoalTransactionRepository {
     suspend fun insertGoalTransaction(goalTransaction: GoalTransaction) : Long
     suspend fun updateGoalTransaction(goalTransaction: GoalTransaction) : Int
     suspend fun deleteGoalTransaction(goalTransaction: GoalTransaction)
-    suspend fun deleteGoalTransactionById(id: Long)
+    suspend fun deleteGoalTransaction(id: Long)
 }
 
 class GoalTransactionRepositoryImpl @Inject constructor(
@@ -26,7 +26,7 @@ class GoalTransactionRepositoryImpl @Inject constructor(
         return goalTransactionDao.deleteGoalTransaction(goalTransaction)
     }
 
-    override suspend fun deleteGoalTransactionById(id: Long) {
-        return goalTransactionDao.deleteGoalTransactionById(id)
+    override suspend fun deleteGoalTransaction(id: Long) {
+        return goalTransactionDao.deleteGoalTransaction(id)
     }
 }

@@ -14,7 +14,9 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
     var lastDate: String? = null
     var dailyTotal = 0.0
 
-    for (transaction in this) {
+    val sortedList = this.sortedByDescending { it.date }
+
+    for (transaction in sortedList) {
         val dayOfMonth = transaction.date.formatToDayOfMonth()
         val dayOfWeek = transaction.date.formatToDayOfWeek()
         val monthYear = transaction.date.formatToMonthYear()
@@ -61,7 +63,7 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
     }
 
     if (lastDate != null) {
-        groupedList.add(0,
+        groupedList.add(
             TransactionListItem.DateHeader(
                 lastDate,
                 this.last().date.formatToDayOfWeek(),
@@ -71,5 +73,5 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
         )
     }
 
-    return groupedList
+    return groupedList.reversed()
 }

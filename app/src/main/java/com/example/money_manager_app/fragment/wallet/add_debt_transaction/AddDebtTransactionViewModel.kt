@@ -27,4 +27,18 @@ class AddDebtTransactionViewModel @Inject constructor(
             -1L
         }
     }
+
+    fun updateDebtTransaction(debtTransaction: DebtTransaction){
+        (debtTransaction.amount > 0).let {
+            viewModelScope.launch(ioDispatcher) {
+                debtTransactionRepository.editDebtTransaction(debtTransaction)
+            }
+        }
+    }
+
+    fun deleteDebtTransaction(debtId: Long) {
+        viewModelScope.launch(ioDispatcher) {
+            debtTransactionRepository.deleteDebtTransaction(debtId)
+        }
+    }
 }

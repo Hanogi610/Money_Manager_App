@@ -8,7 +8,6 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.example.money_manager_app.R
-import com.example.money_manager_app.data.model.Transaction
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

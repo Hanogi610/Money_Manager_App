@@ -32,7 +32,7 @@ class DebtDetailViewModel @Inject constructor(
     fun getDebtDetails(debtId: Long) {
         viewModelScope.launch(ioDispatcher) {
             debtRepository.getDebtDetailsByDebtId(debtId).collect {
-                Log.d(TAG, "getDebtDetails: $it")
+                Log.d("hoangph", "getDebtDetails: $it")
                 _debtInfo.value = it
                 it.let {
                     _debtDetailItem.value = convertDebtDetailToDebtDetailItem(it)
@@ -44,14 +44,16 @@ class DebtDetailViewModel @Inject constructor(
     private fun convertDebtDetailToDebtDetailItem(debtDetail: DebtDetail): DebtDetailItem {
         val paidAmount = debtDetail.transactions.filter { it.action == DebtActionType.REPAYMENT }
             .sumOf { it.amount }
-        val remainingAmount = debtDetail.debt.amount - paidAmount
+        val interestAmount = debtDetail.transactions.filter { it.action == DebtActionType.INTEREST || it.action == DebtActionType.DEBT_INCREASE }
+            .sumOf { it.amount }
+        val remainingAmount = debtDetail.debt.amount + interestAmount - paidAmount
         val date = debtDetail.debt.date.toFormattedDateString()
         val walletId = debtDetail.debt.walletId
         val groupedTransactions = debtDetail.transactions.groupTransactionsByDate()
         return DebtDetailItem(
             title = debtDetail.debt.name,
             description = debtDetail.debt.description,
-            totalAmount = debtDetail.debt.amount,
+            totalAmount = debtDetail.debt.amount + interestAmount,
             paidAmount = paidAmount,
             remainingAmount = remainingAmount,
             date = date,
@@ -66,10 +68,6 @@ class DebtDetailViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             debtRepository.deleteDebt(debtId)
         }
-    }
-
-    companion object {
-        private const val TAG = "DebtDetailViewModel"
     }
 }
 

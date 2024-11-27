@@ -160,6 +160,12 @@
     <string name="goal_s_name">Goal\'s name</string>
     <string name="target_date">Target Date</string>
     <string name="edit_goal">Edit Goal</string>
+    <string name="action_type">Action Type</string>
+    <string name="time">Time</string>
+    <string name="select_time">Select time</string>
+    <string name="goal_transaction">Goal Transaction</string>
+    <string name="budget_s_name">Budget\'s name</string>
+    <string name="add_category">Add Category</string>
     <string-array name="spinner_color">
         <item>#34BFFF</item>
         <item>#0097E6</item>

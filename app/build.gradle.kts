@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.dataStore)
     implementation(libs.androidx.security.crypto)
     implementation(libs.lottie.v520)
+    implementation(libs.androidx.legacy.support.v4)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
 import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Debt
+import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.databinding.FragmentDebtDetailBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -53,7 +55,7 @@ class DebtDetailFragment :
         val currentCurrencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
         adapter = TransactionAdapter(
-            requireContext(), currentCurrencySymbol, mainViewModel.currentAccount.value!!.wallets
+            requireContext(), currentCurrencySymbol, mainViewModel.currentAccount.value!!.wallets, ::openAddDebtTransactionScreen
         )
         binding.debtTransactionRv.adapter = adapter
         binding.debtTransactionRv.layoutManager = LinearLayoutManager(requireContext())
@@ -77,6 +79,9 @@ class DebtDetailFragment :
                             )
                             remainLabel.text = getString(
                                 R.string.money_amount, currentCurrencySymbol, it.remainingAmount
+                            )
+                            amountLabel.text = getString(
+                                R.string.money_amount, currentCurrencySymbol, it.totalAmount
                             )
                             percentLabel.text =
                                 if (it.progress > 100) getString(R.string.overpaid) else getString(
@@ -117,6 +122,13 @@ class DebtDetailFragment :
             })
         }
 
+    }
+
+    private fun openAddDebtTransactionScreen(transaction: Transaction) {
+        appNavigation.openDebtDetailToAddDebtTransactionScreen(Bundle().apply {
+            putParcelable("debt", debt)
+            putParcelable("debtTransaction", transaction as DebtTransaction)
+        })
     }
 }
 

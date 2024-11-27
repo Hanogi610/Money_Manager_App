@@ -66,8 +66,11 @@ class TransactionAdapter(
                 dayOfWeekLabel.text = header.dayOfWeek
                 dayOfMonthLabel.text = header.dayOfMonth
                 monthYearLabel.text = header.monthYear
-                totalAmountLabel.text =
-                    context.getString(R.string.money_amount, currencySymbol, header.total)
+                totalAmountLabel.text = if(header.total >= 0){
+                    context.getString(R.string.positive_money_amount, currencySymbol, header.total)
+                } else {
+                    context.getString(R.string.negative_money_amount, currencySymbol, header.total * -1)
+                }
             }
         }
     }
@@ -95,10 +98,12 @@ class TransactionAdapter(
                         transaction.action.toString(),
                         transaction.name
                     )
-                    binding.transactionAmount.text = if(transaction.action == DebtActionType.DEBT_INCREASE){
-                        context.getString(R.string.positive_money_amount, currencySymbol, transaction.amount)
+                    if(transaction.action == DebtActionType.DEBT_INCREASE){
+                        binding.transactionAmount.text = context.getString(R.string.positive_money_amount, currencySymbol, transaction.amount)
+                        binding.transactionAmount.setTextColor(context.getColor(R.color.color_1))
                     } else {
-                        context.getString(R.string.negative_money_amount, currencySymbol, transaction.amount)
+                        binding.transactionAmount.text = context.getString(R.string.negative_money_amount, currencySymbol, transaction.amount)
+                        binding.transactionAmount.setTextColor(context.getColor(R.color.color_17))
                     }
                 }
 
@@ -107,7 +112,7 @@ class TransactionAdapter(
                     binding.transactionAmount.text = context.getString(R.string.money_amount, currencySymbol, transaction.amount)
                 }
             }
-            binding.transactionTime.text = transaction.date.toFormattedTimeString()
+            binding.transactionTime.text = transaction.time.toFormattedTimeString()
             binding.walletName.text = wallets.find { it.id == transaction.walletId }?.name
             binding.root.setOnSafeClickListener {
                 onTransactionClick(transaction)

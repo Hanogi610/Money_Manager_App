@@ -20,5 +20,5 @@ interface GoalTransactionDao {
     suspend fun deleteGoalTransaction(goalTransaction: GoalTransaction)
 
     @Query("DELETE FROM goal_transaction WHERE id = :id")
-    suspend fun deleteGoalTransactionById(id: Long)
+    suspend fun deleteGoalTransaction(id: Long)
 }
