@@ -57,42 +57,6 @@
             app:destination="@id/mainFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addExpenseFragment"
-        tools:layout="@layout/fragment_add_income"
-        android:name="com.example.money_manager_app.fragment.add.view.AddExpenseFragment"
-        android:label="AddExpenseFragment" >
-        <action
-            android:id="@+id/action_addExpenseFragment_to_addTranferFragment"
-            app:destination="@id/addTranferFragment" />
-        <action
-            android:id="@+id/action_addExpenseFragment_to_addIncomeFragment"
-            app:destination="@id/addIncomeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addTranferFragment"
-        tools:layout="@layout/fragment_add_tranfer"
-        android:name="com.example.money_manager_app.fragment.add.view.AddTranferFragment"
-        android:label="AddTranferFragment" >
-        <action
-            android:id="@+id/action_addTranferFragment_to_addExpenseFragment"
-            app:destination="@id/addExpenseFragment" />
-        <action
-            android:id="@+id/action_addTranferFragment_to_addIncomeFragment"
-            app:destination="@id/addIncomeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addIncomeFragment"
-        tools:layout="@layout/fragment_add_expense"
-        android:name="com.example.money_manager_app.fragment.add.view.AddIncomeFragment"
-        android:label="AddIncomeFragment" >
-        <action
-            android:id="@+id/action_addIncomeFragment_to_addExpenseFragment"
-            app:destination="@id/addExpenseFragment" />
-        <action
-            android:id="@+id/action_addIncomeFragment_to_addTranferFragment"
-            app:destination="@id/addTranferFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.money_manager_app.fragment.main.MainScreenFragment"
         android:label="MainFragment" >
@@ -150,4 +114,35 @@
         android:id="@+id/addGoalTransactionFragment"
         android:name="com.example.money_manager_app.fragment.wallet.add_goal_transaction.AddGoalTransactionFragment"
         android:label="AddGoalTransactionFragment" />
+
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.money_manager_app.fragment.add.view.AddFragment"
+        android:label="AddFragment"
+        tools:layout="@layout/fragment_add"/>
+
+    <fragment
+        android:id="@+id/selectIncomeExpenseFragment"
+        android:name="com.example.money_manager_app.selecticon.SelectIncomeExpenseFragment"
+        android:label="SelectCategoryFragment"
+        tools:layout="@layout/fragment_select_income_expense" />
+
+    <fragment
+        android:id="@+id/selectWalletFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.SelectWalletFragment"
+        android:label="SelectWalletFragment"
+        tools:layout="@layout/fragment_select_wallet" />
+
+    <fragment
+        android:id="@+id/detailDayFragment"
+        android:name="com.example.money_manager_app.fragment.detail.view.DetailDayFragment"
+        android:label="DetailDayFragment"
+        tools:layout="@layout/fragment_detail_day" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.money_manager_app.fragment.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search" />
+
 </navigation>

@@ -31,8 +31,11 @@
             android:id="@+id/start_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8dp"
+            android:padding="@dimen/_8dp"
             android:hint="@string/start_date"
             android:focusable="false"
+            android:background="@drawable/custom_edit"
             android:clickable="true"
             android:drawableEnd="@drawable/ic_edit_calendar_24"
             android:importantForAutofill="no"
@@ -47,8 +50,11 @@
             android:id="@+id/end_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8dp"
             android:hint="@string/end_date"
             android:focusable="false"
+            android:background="@drawable/custom_edit"
+            android:padding="@dimen/_8dp"
             android:clickable="true"
             android:inputType="date"
             android:drawableEnd="@drawable/ic_edit_calendar_24"
@@ -73,6 +79,9 @@
         <Spinner
             android:id="@+id/filter_wallet"
             android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_8dp"
+            android:padding="@dimen/_8dp"
+            android:background="@drawable/custom_edit"
             android:layout_height="wrap_content"
             android:entries="@array/wallet_options"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +102,10 @@
 
         <Spinner
             android:id="@+id/filter_category"
+            android:layout_marginTop="@dimen/_8dp"
             android:layout_width="0dp"
+            android:padding="@dimen/_8dp"
+            android:background="@drawable/custom_edit"
             android:layout_height="wrap_content"
             android:entries="@array/category_options"
             app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +126,9 @@
 
         <EditText
             android:id="@+id/filter_description"
+            android:layout_marginTop="@dimen/_8dp"
+            android:background="@drawable/custom_edit"
+            android:padding="@dimen/_8dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/enter_description"
@@ -138,6 +153,9 @@
         <EditText
             android:id="@+id/min_amount"
             android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_8dp"
+            android:padding="@dimen/_8dp"
+            android:background="@drawable/custom_edit"
             android:layout_height="wrap_content"
             android:hint="@string/min_amount"
             android:inputType="numberDecimal"
@@ -151,6 +169,9 @@
         <EditText
             android:id="@+id/max_amount"
             android:layout_width="0dp"
+            android:layout_marginTop="@dimen/_8dp"
+            android:padding="@dimen/_8dp"
+            android:background="@drawable/custom_edit"
             android:layout_height="wrap_content"
             android:hint="@string/max_amount"
             android:inputType="numberDecimal"
@@ -177,18 +198,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="@color/white"
+                android:background="@drawable/background_cannel"
                 android:textSize="16sp"
-                android:text="@string/apply" />
+                android:layout_marginRight="@dimen/_4dp"
+                android:text="@string/cancel" />
 
             <Button
+                android:layout_marginLeft="@dimen/_4dp"
                 android:id="@+id/cancel_filter_button"
                 style="?android:attr/buttonBarButtonStyle"
+                android:background="@drawable/background_save"
+                android:textColor="@color/white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="16sp"
-                android:text="@string/cancel" />
+                android:text="@string/apply" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

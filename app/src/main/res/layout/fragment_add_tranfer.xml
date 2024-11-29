@@ -1,82 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <layout>
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/_8dp">
-
-        <RelativeLayout
-            android:id="@+id/rlHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/ivBack"
-                android:layout_width="@dimen/_24dp"
-                android:layout_height="@dimen/_36dp"
-                android:src="@drawable/ic_back"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8dp"
-                android:textSize="@dimen/_16sp"
-                android:text="@string/transfer"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_toRightOf="@+id/ivBack"/>
-
-            <TextView
-                android:id="@+id/tvSave"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/save"
-                android:layout_alignParentRight="true"/>
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/llSelectTranfer"
-            android:layout_below="@+id/rlHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            >
-            <TextView
-                android:id="@+id/tv_income"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_8dp"
-                android:text="@string/income"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_weight="1"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/tv_add_expense"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="@dimen/_8dp"
-                android:text="@string/add_expense"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_transfer"
-                android:padding="@dimen/_8dp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:background="@color/red"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/transfer"/>
-        </LinearLayout>
+        android:layout_margin="@dimen/_8dp"
+        tools:context=".ui.add.view.AddExpenseFragment">
 
         <TextView
             android:id="@+id/textView"
@@ -84,7 +12,6 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:layout_below="@+id/llSelectTranfer"
             android:layout_marginTop="@dimen/_8dp"
             android:text="@string/date"/>
 
@@ -93,34 +20,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="6"
+            android:background="@drawable/custom_edit"
+            android:padding="@dimen/_8dp"
+            android:weightSum="4"
             android:layout_below="@id/textView">
 
             <EditText
                 android:id="@+id/etDate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="3"
+                android:textSize="@dimen/_12sp"
                 android:hint="@string/date"
+                android:drawableStart="@drawable/calendar"
                 android:background="@null"
                 />
 
             <EditText
                 android:id="@+id/etTime"
-                android:hint="Time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="@null"
-                android:layout_weight="4" />
+                android:drawableStart="@drawable/timer"
+                android:hint="Time"
+                android:textSize="@dimen/_12sp" />
         </LinearLayout>
 
-        <View
-            android:id="@+id/line"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1dp"
-            android:background="@color/black"
-            android:layout_margin="@dimen/_8dp"
-            android:layout_below="@id/etDateAndTime"/>
 
         <TextView
             android:id="@+id/tv_amount"
@@ -129,16 +55,24 @@
             android:text="@string/amount"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:layout_below="@+id/line"/>
+            android:layout_below="@+id/etDateAndTime"/>
 
         <EditText
             android:id="@+id/et_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_amount"/>
+            android:padding="@dimen/_8dp"
+            android:hint="Amount"
+            android:layout_marginTop="@dimen/_8dp"
+            android:textSize="@dimen/_12sp"
+            android:background="@drawable/custom_edit"
+            android:layout_below="@+id/tv_amount"
+            android:drawableEnd="@drawable/calculator" />
+
 
         <TextView
             android:textStyle="bold"
+            android:layout_marginTop="8dp"
             android:textColor="@color/black"
             android:id="@+id/tv_description"
             android:layout_width="wrap_content"
@@ -147,65 +81,70 @@
             android:layout_below="@+id/et_amount"/>
 
         <EditText
+            android:layout_marginTop="@dimen/_8dp"
             android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/_8dp"
+            android:hint="Short description"
+            android:textSize="@dimen/_12sp"
+            android:background="@drawable/custom_edit"
             android:layout_below="@+id/tv_description"/>
 
         <TextView
             android:id="@+id/tv_category"
             android:textStyle="bold"
+            android:layout_marginTop="@dimen/_8dp"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/from_wallet"
             android:layout_below="@+id/et_description"/>
 
-        <Spinner
+        <EditText
             android:id="@+id/from_wallet"
+            android:layout_marginTop="@dimen/_8dp"
+            android:layout_below="@+id/tv_category"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_category"/>
-
-        <View
-            android:id="@+id/line_1"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1dp"
-            android:background="@color/black"
-            android:layout_margin="@dimen/_8dp"
-            android:layout_below="@id/from_wallet"/>
+            android:hint="Select category"
+            android:padding="@dimen/_8dp"
+            android:background="@drawable/custom_edit"
+            android:textSize="@dimen/_12sp"
+            android:drawableEnd="@drawable/arrow_right"
+            android:layout_height="wrap_content"/>
 
         <TextView
-            android:id="@+id/wallet"
+            android:id="@+id/towallet"
+            android:layout_marginTop="@dimen/_8dp"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/to_wallet"
-            android:layout_below="@+id/line_1"/>
+            android:layout_below="@+id/from_wallet"/>
 
-        <Spinner
-            android:id="@+id/sp_wallet"
+        <EditText
+            android:id="@+id/to_wallet"
+            android:layout_marginTop="@dimen/_8dp"
+            android:layout_below="@+id/towallet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/wallet"/>
+            android:hint="Select category"
+            android:padding="@dimen/_8dp"
+            android:background="@drawable/custom_edit"
+            android:textSize="@dimen/_12sp"
+            android:drawableEnd="@drawable/arrow_right"
+            android:layout_height="wrap_content"/>
 
-        <View
-            android:id="@+id/line_2"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1dp"
-            android:background="@color/black"
-            android:layout_margin="@dimen/_8dp"
-            android:layout_below="@id/sp_wallet"/>
 
         <TextView
             android:id="@+id/tv_memo"
+            android:layout_marginTop="@dimen/_8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:text="@string/memo"
-            android:layout_below="@+id/line_2"/>
+            android:layout_below="@+id/to_wallet"/>
 
         <LinearLayout
             android:id="@+id/ll_memo"
@@ -213,6 +152,8 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@+id/tv_memo"
+            android:padding="@dimen/_8dp"
+            android:background="@drawable/custom_edit"
             android:weightSum="10">
 
             <EditText
@@ -231,19 +172,12 @@
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/line_3"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1dp"
-            android:background="@color/black"
-            android:layout_margin="@dimen/_8dp"
-            android:layout_below="@id/ll_memo"/>
 
         <ImageView
             android:id="@+id/iv_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/line_3" />
+            android:layout_below="@+id/ll_memo" />
 
     </RelativeLayout>
 </layout>

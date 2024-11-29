@@ -2,11 +2,14 @@ package com.example.money_manager_app.data.repository
 
 import com.example.money_manager_app.data.dao.TransferDao
 import com.example.money_manager_app.data.model.entity.Transfer
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 
 interface TransferRepository {
     suspend fun insertTransfer(transfer : Transfer) : Long
+    fun getTransferFromDayStartAndDayEnd(startDay : Long, endDay : Long, accountId : Long) : Flow<List<Transfer>>
+    fun getAllTransfer(date : Long) : Flow<List<Transfer>>
 
 }
 
@@ -15,6 +18,13 @@ class TransferRepositoryImpl @Inject constructor(
 ) : TransferRepository {
     override suspend fun insertTransfer(transfer: Transfer): Long {
         return transferDao.insertTransfer(transfer)
+    }
+    override fun getTransferFromDayStartAndDayEnd(startDay: Long, endDay: Long, accountId: Long): Flow<List<Transfer>> {
+        return transferDao.getTransferFromDayStartAndDayEnd(startDay, endDay, accountId)
+    }
+
+    override fun getAllTransfer(date : Long): Flow<List<Transfer>> {
+        return transferDao.getAllTransfer(date)
     }
 
 }
