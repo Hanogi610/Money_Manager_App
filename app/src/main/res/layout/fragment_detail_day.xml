@@ -86,6 +86,7 @@
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_detail_day"
             android:layout_marginTop="@dimen/_12dp"
             android:layout_below="@+id/llDetailDayContent"
             android:layout_marginLeft="@dimen/_12dp"

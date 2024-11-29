@@ -33,6 +33,10 @@ class MainScreenFragment :
         vpAdapter = MainPagerAdapter(this)
         binding.mainViewPager.adapter = vpAdapter // Make sure to set the adapter
 
+        binding.searchIcon.setOnClickListener {
+            findNavController().navigate(R.id.searchFragment)
+        }
+
         // Synchronize BottomNavigationView with ViewPager2
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
@@ -62,7 +66,7 @@ class MainScreenFragment :
             when (getVM().currentFragmentId.value) {
                 0 -> {
                     // Action for Home Fragment
-                    findNavController().navigate(R.id.addExpenseFragment)
+                    findNavController().navigate(R.id.addFragment)
                 }
 
                 1 -> {

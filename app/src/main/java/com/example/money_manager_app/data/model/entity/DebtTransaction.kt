@@ -38,6 +38,7 @@ data class DebtTransaction(
     @ColumnInfo(name = "wallet_id") override val walletId: Long,
     override val amount: Double,
     @TypeConverters(DebtActionTypeConverter::class) val action: DebtActionType,
+    @ColumnInfo(name = "to_wallet") override val toWallet: Long = 0,
     override val date: Long = System.currentTimeMillis(),
     override val time: Long = System.currentTimeMillis(),
-) : SubTransaction(id, iconId, name, amount, colorId, accountId, walletId, date, time)
+) : SubTransaction(id, iconId, name, amount, colorId, accountId, walletId,toWallet, date, time)

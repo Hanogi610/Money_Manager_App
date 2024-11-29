@@ -56,12 +56,14 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.dataStore)
+    implementation (libs.commons.lang3)
     implementation(libs.androidx.security.crypto)
     implementation(libs.lottie.v520)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
+    implementation(libs.mpandroidchart)
+    implementation(libs.circleprogress)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 

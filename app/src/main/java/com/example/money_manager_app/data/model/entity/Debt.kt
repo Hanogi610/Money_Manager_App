@@ -36,11 +36,13 @@ data class Debt(
     @ColumnInfo(name = "account_id") override val accountId: Long,
     @TypeConverters(DebtTypeConverter::class) val type: DebtType,
     override val date: Long,
-    val time: Long,
+    override val toWallet: Long = 0,
+    override val time: Long,
     val description: String,
     @ColumnInfo(name = "wallet_id")override val walletId: Long,
+
     @ColumnInfo(name = "color_id")override val colorId: Int = R.color.color_1,
-) : Transaction(id, iconId, name, amount, colorId, accountId, walletId, date), Parcelable
+) : Transaction(id, iconId, name, amount, colorId, accountId, walletId, toWallet, date, time), Parcelable
 
 data class DebtDetail(
     @Embedded val debt: Debt,
