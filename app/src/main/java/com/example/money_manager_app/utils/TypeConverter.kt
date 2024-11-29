@@ -68,6 +68,13 @@ class CurrencyTypeConverter {
             else -> "Không xác định"
         }
     }
+
+    @TypeConverter
+    fun transfersDay(day: String, month: String, year: String) : Long {
+        var ngay : String = "$day/$month/$year"
+        val date : Long = ngay.toDateTimestamp()
+        return date
+    }
 }
 
 class GoalInputTypeConverter {

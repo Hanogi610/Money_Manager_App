@@ -8,6 +8,9 @@ open class SubTransaction(
     override val colorId: Int,
     override val accountId: Long,
     override val walletId: Long,
+    override val toWallet: Long,
     override val date: Long,
+    override val time: Long,
+) : Transaction(id, iconId, name, amount, colorId, accountId, walletId, toWallet, date, time)
     override val time: Long,
 ) : Transaction(id, iconId, name, amount, colorId, accountId, walletId, date, time)

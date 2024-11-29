@@ -36,6 +36,14 @@ class MainViewModel @Inject constructor(
         fetchAccountsAndSetCurrentAccount()
     }
 
+    fun getAccount() {
+        viewModelScope.launch {
+            accountRepository.getAccount().collect {
+                _accounts.value = it
+            }
+        }
+    }
+
     fun setCurrentAccount(account: AccountWithWallet) {
         _currentAccount.value = account
         appPreferences.setCurrentAccount(account.account.id)

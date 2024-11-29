@@ -26,6 +26,15 @@ interface DebtTransactionDao {
     @Query("DELETE FROM debt_transaction WHERE id = :debtTransactionId")
     suspend fun deleteDebtTransaction(debtTransactionId: Long)
 
+    @Query(" SELECT * FROM debt_transaction WHERE date BETWEEN :startDay AND :endDay AND account_id = :accountId")
+    fun getDebtTransactionFromDayStartAndDayEnd(accountId: Long, startDay : Long, endDay : Long): Flow<List<DebtTransaction>>
+
+    @Query("SELECT * FROM debt_transaction WHERE date = :date AND account_id = :accountId")
+    fun getDebtTransactionsByDateAndAccountId(
+        date: Long,
+        accountId: Long
+    ): Flow<List<DebtTransaction>>
+
     @Delete
     suspend fun deleteDebtTransaction(debtTransaction: DebtTransaction)
 }

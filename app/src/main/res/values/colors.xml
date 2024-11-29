@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="Brand_Primary">#3F9AD7</color>
+    <color name="Neutral_100">#D4D4D4</color>
+    <color name="Neutral_300">#7A7A7A</color>
     <color name="primary">#3F9AD7</color>
     <color name="white">#FFF</color>
     <color name="black">#000</color>
+    <color name="backgroundSecondary">#ffffffff</color>
+    <color name="calendar_red_dark">#ffff5c61</color>
+    <color name="blue_alpha">#603b92ff</color>
+    <color name="calendar_red_light">#40ff5c61</color>
+    <color name="black_light">#808080</color>
+    <color name="black_dark">#000000</color>
+    <color name="Neutral_50">#F2F2F2</color>
     <color name="primary_text">#212121</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="gray">#D1D5DBE5</color>

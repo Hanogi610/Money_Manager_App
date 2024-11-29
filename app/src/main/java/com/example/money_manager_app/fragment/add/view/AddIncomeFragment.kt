@@ -3,12 +3,18 @@ package com.example.money_manager_app.fragment.add.view
 import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,17 +23,45 @@ import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewModel
 import com.example.money_manager_app.data.model.entity.AddTransfer
+import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddIncomeBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
+import com.example.money_manager_app.viewmodel.MainViewModel
+import com.example.moneymanager.ui.add.adapter.AddTransferInterface
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-class AddIncomeFragment : BaseFragmentNotRequireViewModel<FragmentAddIncomeBinding>(R.layout.fragment_add_income) {
+@AndroidEntryPoint
+class AddIncomeFragment : Fragment(), AddTransferInterface {
+    private var _binding: FragmentAddIncomeBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: AddViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
-        Log.d("nang", "null() called with: bitmap = $bitmap")
         bitmap?.let {
             viewModel.setBitmap(it)
+        }
+    }
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            try {
+                val bitmap = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                    ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, it))
+                } else {
+                    @Suppress("DEPRECATION")
+                    MediaStore.Images.Media.getBitmap(requireContext().contentResolver, it)
+                }
+                viewModel.setBitmap(bitmap)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("PickImageLauncher", "Error decoding bitmap: ${e.message}")
+                Toast.makeText(requireContext(), "Unable to load image.", Toast.LENGTH_SHORT).show()
+            }
+        } ?: run {
+            Log.e("PickImageLauncher", "No image selected")
+            Toast.makeText(requireContext(), "No image selected.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -39,38 +73,54 @@ class AddIncomeFragment : BaseFragmentNotRequireViewModel<FragmentAddIncomeBindi
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentAddIncomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navGraph()
+        viewModel.updateDateTime()
         pickDate()
         pickTime()
         selectImage()
         observe()
-        saveTranfer()
         selectWallet()
         selectCategory()
-        back()
     }
 
-    fun saveTranfer() {
-        binding.tvSave.setOnClickListener {
-            val amountText = binding.etAmount.text.toString()
-            if (amountText.isNotEmpty()) {
-                val amount = amountText.toDouble()
-                val description = binding.etDescription.text.toString()
-                val time = binding.etTime.text.toString()
-                val date = binding.etDate.text.toString()
-                val getbitmap = viewModel.getBitmap()
-                val imagePath = viewModel.saveDrawableToAppStorage(requireContext(), getbitmap)
-                val category = binding.spCategory.selectedItem.toString()
-                val typeOfExpenditure = "Income"
-                val idWallet = 1L
-                val incomeAndExpense = AddTransfer()
-                viewModel.saveIncomeAndExpense(incomeAndExpense)
-            } else {
-                Log.e("AddExpenseFragment", "Amount is empty")
-            }
+    fun setData(){
+        var amount = binding.etAmount.text.toString()
+        var description = binding.etDescription.text.toString()
+        var momo = binding.etMemo.text.toString()
+        if (amount.isEmpty()) {
+            amount = "0"
+        }
+        viewModel.setAmount(amount.toDouble())
+        viewModel.setDescriptor(description)
+        viewModel.setMomo(momo)
+    }
+
+    fun selectCategory(){
+        val navController = findNavController()
+        binding.etCategory.setOnClickListener {
+            setData()
+            var bundle = bundleOf("type" to TransferType.Income.toString())
+            navController.navigate(R.id.selectIncomeExpenseFragment,bundle)
+        }
+    }
+
+    fun selectWallet(){
+        binding.spWallet.setOnClickListener{
+            setData()
+            var bundle = bundleOf(
+                "typeExpense" to 0,
+                "isCheckWallet" to true,
+            )
+            findNavController().navigate(R.id.selectWalletFragment,bundle)
         }
     }
 
@@ -93,6 +143,14 @@ class AddIncomeFragment : BaseFragmentNotRequireViewModel<FragmentAddIncomeBindi
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.categoryNameIncome.collect { category ->
+                    binding.etCategory.setText(category.first)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.currentDateTime.collect { dateTime ->
                     binding.etDate.setText(dateTime.first)
                     binding.etTime.setText(dateTime.second)
@@ -107,6 +165,44 @@ class AddIncomeFragment : BaseFragmentNotRequireViewModel<FragmentAddIncomeBindi
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.amount.collect { amount ->
+                    if(amount != 0.0){
+                        binding.etAmount.setText(amount.toString())
+                    } else {
+                        binding.etAmount.setText("")
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.descriptor.collect { descriptor ->
+                    binding.etDescription.setText(descriptor)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.momo.collect { momo ->
+                    binding.etMemo.setText(momo)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.fromWallet.collect { wallet ->
+                    if (wallet.isNotEmpty()) {
+                        binding.spWallet.setText(wallet.first().name)
+                    }
+                }
+            }
+        }
     }
 
     fun selectImage(){
@@ -115,6 +211,7 @@ class AddIncomeFragment : BaseFragmentNotRequireViewModel<FragmentAddIncomeBindi
             builder.setItems(R.array.select_camera_and_gallery) { _, which ->
                 when (which) {
                     0 -> {
+                        setData()
                         if (requireActivity().checkSelfPermission(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                             takePictureLauncher.launch(null)
                         } else {
@@ -122,6 +219,8 @@ class AddIncomeFragment : BaseFragmentNotRequireViewModel<FragmentAddIncomeBindi
                         }
                     }
                     1 -> {
+                        setData()
+                        pickImageLauncher.launch("image/*")
                     }
                 }
             }
@@ -144,47 +243,71 @@ class AddIncomeFragment : BaseFragmentNotRequireViewModel<FragmentAddIncomeBindi
         }
     }
 
-    private fun saveData(){
-        val amount = binding.etAmount.text.toString().toDouble()
-        val description = binding.etDescription.text.toString()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
-    private fun navGraph() {
-        val controller_nav = findNavController()
-        binding.tvAddExpense.setOnClickListener {
-            controller_nav.navigate(R.id.addExpenseFragment)
-        }
-        binding.tvTransfer.setOnClickListener {
-            controller_nav.navigate(R.id.addTranferFragment)
+    override fun onSaveIncome() {
+        val amountText = binding.etAmount.text.toString()
+        if (amountText.isNotEmpty()) {
+            val amount = amountText.toDouble()
+            val description = binding.etDescription.text.toString()
+            val time = binding.etTime.text.toString()
+            val date = binding.etDate.text.toString()
+            val getbitmap = viewModel.getBitmap()
+            var linkimg = viewModel.saveDrawableToAppStorage(requireContext(), getbitmap)
+            if(linkimg == null){
+                linkimg = ""
+            }
+            val typeOfExpenditure: TransferType = TransferType.Income
+            val toWallet = 1L
+            val fromWallet = viewModel.fromWallet.value?.first()?.id ?: 0
+            val fee : Double = 0.0
+            val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
+            val name = binding.etMemo.text.toString()
+            var iconId : Int = viewModel.getCategoryNameIncome().second
+            val typeDebt = ""
+            val typeIconWallet = ""
+            val colorId = 0
+            val transfer = AddTransfer(
+                fromWallet,
+                toWallet,
+                amount,
+                name,
+                fee,
+                description,
+                accountId,
+                linkimg,
+                date,
+                time,
+                typeOfExpenditure,
+                typeDebt,
+                iconId,
+                colorId,
+                typeIconWallet
+            )
+            viewModel.saveIncomeAndExpense(transfer)
+            viewModel.onCleared()
+            findNavController().navigate(R.id.mainFragment)
+        } else {
+            Log.e("AddExpenseFragment", "Amount is empty")
         }
     }
 
-    fun selectCategory(){
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.category_options,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.spCategory.adapter = adapter
-        }
+    override fun onSaveExpense() {
+        TODO("Not yet implemented")
     }
 
-    fun selectWallet(){
-        ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.wallet_options,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.spWallet.adapter = adapter
-        }
+    override fun onSaveTransfer() {
+        TODO("Not yet implemented")
     }
 
-    fun back(){
-        binding.ivBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        viewModel.setCategoryNameIncome(Pair("",0))
     }
 
 }
