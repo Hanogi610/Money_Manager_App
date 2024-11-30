@@ -13,7 +13,9 @@ import com.example.money_manager_app.data.model.entity.AddTransfer
 import com.example.money_manager_app.data.model.entity.CategoryData
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
+import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.data.repository.TransferRepository
+import com.example.money_manager_app.data.repository.WalletRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
 import com.example.money_manager_app.utils.toDateTimestamp
@@ -33,6 +35,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddViewModel @Inject constructor(
     private val repository: TransferRepository,
+    private val walletRepository: WalletRepository,
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 )  : ViewModel() {
     private val _categoryListExpense = MutableStateFlow<List<CategoryData.Category>>(emptyList())
@@ -270,6 +273,20 @@ class AddViewModel @Inject constructor(
                         typeIconWallet = ""
                     )
                 )
+                if(addTransfer.typeOfExpenditure == TransferType.Transfer){
+                    var walletFrom = fromWallet.value.find { it.id == addTransfer.walletId }
+                    var walletTo = toWallet.value.find { it.id == addTransfer.toWallet }
+                    walletFrom?.let {
+                        walletRepository.editWallet(it.copy(
+                            amount = it.amount - addTransfer.amount - addTransfer.fee
+                        ))
+                    }
+                    walletTo?.let {
+                        walletRepository.editWallet(it.copy(
+                            amount = it.amount + addTransfer.amount
+                        ))
+                    }
+                }
                 Log.i("AddViewModel", "transferDate: $addTransfer")
             }
         }
