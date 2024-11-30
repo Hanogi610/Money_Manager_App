@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtDetail
+import com.example.money_manager_app.data.model.entity.Transfer
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -27,6 +28,27 @@ interface DebtDao {
 
     @Query("SELECT * FROM debt WHERE date BETWEEN :startDay AND :endDay AND account_id = :accountId")
     fun getDebtByDayStartAndDayEnd(accountId: Long, startDay : Long, endDay : Long): Flow<List<Debt>>
+
+    @Query("""
+    SELECT * FROM debt
+    WHERE (:startDate IS NULL OR date >= :startDate)
+    AND (:endDate IS NULL OR date <= :endDate)
+    AND (:minAmount IS NULL OR amount >= :minAmount)
+    AND (:maxAmount IS NULL OR amount <= :maxAmount)
+    AND (:description IS NULL OR description LIKE '%' || :description || '%')
+    AND (:categoryType IS NULL OR icon_id = :categoryType)
+    AND (:fromWallet IS NULL OR wallet_id = :fromWallet)
+""")
+    fun searchByDateAndAmountAndDesAndCategoryAndWallet(
+        startDate : Long?,
+        endDate : Long?,
+        minAmount : Double?,
+        maxAmount : Double?,
+        description : String?,
+        categoryType: Int?,
+        fromWallet : Long?
+    ): List<Debt>
+
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun editDebt(debt: Debt)

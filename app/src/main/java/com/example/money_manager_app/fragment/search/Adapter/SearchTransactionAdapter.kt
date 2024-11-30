@@ -1,4 +1,4 @@
-package com.example.money_manager_app.fragment.detail.Adapter
+package com.example.money_manager_app.fragment.search.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -16,9 +16,10 @@ import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.ItemTransferBinding
 import com.example.money_manager_app.utils.toFormattedTimeString
 
-class DetailDayAdapter(private var listTranfer : List<Transaction>, private var listWallet : List<Wallet>) :RecyclerView.Adapter<DetailDayAdapter.DetailDayViewHolder>() {
+class SearchTransactionAdapter (private var listTranfer : List<Transaction>, private var listWallet : List<Wallet>) :
+    RecyclerView.Adapter<SearchTransactionAdapter.ViewHolder>() {
 
-    inner class DetailDayViewHolder(private var binding: ItemTransferBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private var binding: ItemTransferBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: Transaction) {
             binding.tvTime.text = transaction.time.toFormattedTimeString()
             if (transaction is Transfer){
@@ -109,16 +110,18 @@ class DetailDayAdapter(private var listTranfer : List<Transaction>, private var 
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailDayViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemTransferBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return DetailDayViewHolder(binding)
+        return ViewHolder(binding)
     }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(listTranfer[position])
+    }
+
 
     override fun getItemCount(): Int {
         return listTranfer.size
-    }
-    override fun onBindViewHolder(holder: DetailDayViewHolder, position: Int) {
-        holder.bind(listTranfer[position])
     }
 
     fun setWallets(wallets: List<Wallet>) {

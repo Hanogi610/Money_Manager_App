@@ -178,7 +178,7 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R
         binding.dateTextView.text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(debt.date)
         binding.timeTextView.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(debt.time)
         binding.spinnerDebtType.setSelection(DebtType.valueOf(debt.type.name).ordinal)
-        binding.walletSpinner.setSelection(getWalletIndex(debt.walletId))
+        binding.walletSpinner.setSelection(getWalletIndex(debt.fromWallet))
         debt.colorId?.let { ColorUtils.getColors()[it] }
             ?.let { binding.colorSpinner.setSelection(it) }
     }
@@ -202,7 +202,7 @@ class AddDebtFragment : BaseFragment<FragmentAddDebtBinding, AddDebtViewModel>(R
             date = binding.dateTextView.text.toString().toDateTimestamp(),
             time = binding.timeTextView.text.toString().toTimeTimestamp(),
             description = binding.editTextDescription.text.toString(),
-            walletId = selectedWalletId, // Set the wallet ID
+            fromWallet = selectedWalletId, // Set the wallet ID
             colorId = ColorUtils.getColors()[binding.colorSpinner.selectedItemPosition],
         )
     }

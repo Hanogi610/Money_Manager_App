@@ -22,4 +22,5 @@ abstract class BaseFragment<BD : ViewDataBinding, VM : BaseViewModel>(@LayoutRes
             showHideLoading(it)
         }
     }
+
 }

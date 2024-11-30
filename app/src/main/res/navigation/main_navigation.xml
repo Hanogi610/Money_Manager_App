@@ -141,7 +141,7 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.money_manager_app.fragment.search.SearchFragment"
+        android:name="com.example.money_manager_app.fragment.search.view.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search" />
 

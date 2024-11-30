@@ -19,6 +19,16 @@ interface DebtTransactionRepository {
         date: Long,
         accountId: Long
     ): Flow<List<DebtTransaction>>
+
+    fun searchByDateAndAmountAndDesAndCategoryAndWallet(
+        startDate : Long?,
+        endDate : Long?,
+        minAmount : Double?,
+        maxAmount : Double?,
+        categoryType: Int?,
+        fromWallet : Long?
+    ): List<DebtTransaction>
+
     suspend fun deleteDebtTransaction(debtTransactionId: Long)
     suspend fun deleteDebtTransaction(debtTransaction: DebtTransaction)
 }
@@ -40,6 +50,24 @@ class DebtTransactionRepositoryImpl @Inject constructor(
 
     override suspend fun editDebtTransaction(debtTransaction: DebtTransaction) {
         debtTransactionDao.editDebtTransaction(debtTransaction)
+    }
+
+    override fun searchByDateAndAmountAndDesAndCategoryAndWallet(
+        startDate : Long?,
+        endDate : Long?,
+        minAmount : Double?,
+        maxAmount : Double?,
+        categoryType: Int?,
+        fromWallet : Long?
+    ): List<DebtTransaction> {
+        return debtTransactionDao.searchByDateAndAmountAndDesAndCategoryAndWallet(
+            startDate,
+            endDate,
+            minAmount,
+            maxAmount,
+            categoryType,
+            fromWallet
+        )
     }
 
     override fun getDebtTransactionsByDebtId(debtId: Long): Flow<List<DebtTransaction>> {

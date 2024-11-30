@@ -76,13 +76,14 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="16dp" />
 
-        <Spinner
+        <EditText
             android:id="@+id/filter_wallet"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_8dp"
             android:padding="@dimen/_8dp"
             android:background="@drawable/custom_edit"
             android:layout_height="wrap_content"
+            android:hint="@string/select_wallet"
             android:entries="@array/wallet_options"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,11 +101,12 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="16dp" />
 
-        <Spinner
+        <EditText
             android:id="@+id/filter_category"
             android:layout_marginTop="@dimen/_8dp"
             android:layout_width="0dp"
             android:padding="@dimen/_8dp"
+            android:hint="@string/select_category"
             android:background="@drawable/custom_edit"
             android:layout_height="wrap_content"
             android:entries="@array/category_options"
@@ -193,7 +195,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <Button
-                android:id="@+id/apply_filter_button"
+                android:id="@+id/cancel_filter_button"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -206,7 +208,7 @@
 
             <Button
                 android:layout_marginLeft="@dimen/_4dp"
-                android:id="@+id/cancel_filter_button"
+                android:id="@+id/apply_filter_button"
                 style="?android:attr/buttonBarButtonStyle"
                 android:background="@drawable/background_save"
                 android:textColor="@color/white"

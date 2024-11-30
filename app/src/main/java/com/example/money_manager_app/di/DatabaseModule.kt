@@ -55,6 +55,10 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideBudgetDao(appDatabase: AppDatabase) = appDatabase.budgetDao()
+
+    @Provides
+    @Singleton
     fun provideGoalDao(appDatabase: AppDatabase) = appDatabase.goalDao()
 
     @Provides

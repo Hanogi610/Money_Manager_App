@@ -9,6 +9,12 @@ import javax.inject.Inject
 interface TransferRepository {
     suspend fun insertTransfer(transfer : Transfer) : Long
     fun getTransferFromDayStartAndDayEnd(startDay : Long, endDay : Long, accountId : Long) : Flow<List<Transfer>>
+    fun searchByDateAndAmountAndDesAndCategoryAndWallet(
+        startDate: Long?,
+        endDate: Long?,
+        minAmount: Double?,
+        maxAmount: Double?,
+        description: String?, categoryType: Int?, fromWallet: Long?): List<Transfer>
     fun getAllTransfer(date : Long) : Flow<List<Transfer>>
 
 }
@@ -19,6 +25,27 @@ class TransferRepositoryImpl @Inject constructor(
     override suspend fun insertTransfer(transfer: Transfer): Long {
         return transferDao.insertTransfer(transfer)
     }
+
+    override fun searchByDateAndAmountAndDesAndCategoryAndWallet(
+        startDate: Long?,
+        endDate: Long?,
+        minAmount: Double?,
+        maxAmount: Double?,
+        description: String?,
+        categoryType: Int?,
+        fromWallet: Long?
+    ): List<Transfer> {
+        return transferDao.searchByDateAndAmountAndDesAndCategoryAndWallet(
+            startDate,
+            endDate,
+            minAmount,
+            maxAmount,
+            description,
+            categoryType,
+            fromWallet
+        )
+    }
+
     override fun getTransferFromDayStartAndDayEnd(startDay: Long, endDay: Long, accountId: Long): Flow<List<Transfer>> {
         return transferDao.getTransferFromDayStartAndDayEnd(startDay, endDay, accountId)
     }

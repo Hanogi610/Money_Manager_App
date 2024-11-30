@@ -3,6 +3,7 @@ package com.example.money_manager_app.data
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.money_manager_app.data.dao.AccountDao
+import com.example.money_manager_app.data.dao.BudgetDao
 import com.example.money_manager_app.data.dao.DebtDao
 import com.example.money_manager_app.data.dao.DebtTransactionDao
 import com.example.money_manager_app.data.dao.GoalDao
@@ -28,7 +29,7 @@ import com.example.money_manager_app.data.model.entity.Wallet
 )
 abstract class AppDatabase : RoomDatabase(){
     abstract fun accountDao(): AccountDao
-//    abstract fun budgetDao(): BudgetDao
+    abstract fun budgetDao(): BudgetDao
     abstract fun debtDao(): DebtDao
     abstract fun debtTransactionDao(): DebtTransactionDao
 //    abstract fun depositAndWithdrawDao(): DepositAndWithdrawDao

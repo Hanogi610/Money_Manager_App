@@ -48,7 +48,7 @@ class DebtDetailViewModel @Inject constructor(
             .sumOf { it.amount }
         val remainingAmount = debtDetail.debt.amount + interestAmount - paidAmount
         val date = debtDetail.debt.date.toFormattedDateString()
-        val walletId = debtDetail.debt.walletId
+        val walletId = debtDetail.debt.fromWallet
         val groupedTransactions = debtDetail.transactions.groupTransactionsByDate()
         return DebtDetailItem(
             title = debtDetail.debt.name,
