@@ -2,14 +2,11 @@ package com.example.money_manager_app.data.model.entity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
-import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import androidx.room.TypeConverters
 import com.example.money_manager_app.R
-import com.example.money_manager_app.data.model.entity.Account
 import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.utils.CategoryTypeConverter

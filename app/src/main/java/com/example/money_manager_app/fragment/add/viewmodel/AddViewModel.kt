@@ -36,8 +36,10 @@ class AddViewModel @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 )  : ViewModel() {
     private val _categoryListExpense = MutableStateFlow<List<CategoryData.Category>>(emptyList())
+    val categoryListExpense: StateFlow<List<CategoryData.Category>> get() = _categoryListExpense
 
     private val _categoryListIncome = MutableStateFlow<List<CategoryData.Category>>(emptyList())
+    val categoryListIncome: StateFlow<List<CategoryData.Category>> get() = _categoryListIncome
 
     private val _addTransfer = MutableStateFlow(AddTransfer())
 
@@ -76,6 +78,14 @@ class AddViewModel @Inject constructor(
 
     private var _toWallet : MutableStateFlow<List<Wallet>> = MutableStateFlow(emptyList())
     val toWallet: StateFlow<List<Wallet>> get() = _toWallet
+
+    fun getCategoryIncome(): List<CategoryData.Category> {
+        return _categoryListIncome.value
+    }
+
+    fun getCategoryExpense(): List<CategoryData.Category> {
+        return _categoryListExpense.value
+    }
 
     fun setFromWallet (list: List<Wallet>){
         _fromWallet.value = list
@@ -244,7 +254,7 @@ class AddViewModel @Inject constructor(
                 val transferTime = addTransfer.time.toTimeTimestamp()
                 repository.insertTransfer(
                     Transfer(
-                        walletId = addTransfer.walletId,
+                        fromWallet = addTransfer.walletId,
                         toWallet = addTransfer.toWallet,
                         amount = addTransfer.amount,
                         name = addTransfer.name,
@@ -255,10 +265,9 @@ class AddViewModel @Inject constructor(
                         date = transferDate,
                         time = transferTime,
                         typeOfExpenditure = addTransfer.typeOfExpenditure,
-                        typeDebt = addTransfer.typeDebt,
                         iconId = addTransfer.iconId,
                         colorId = addTransfer.colorId,
-                        typeIconWallet = 1
+                        typeIconWallet = ""
                     )
                 )
                 Log.i("AddViewModel", "transferDate: $addTransfer")

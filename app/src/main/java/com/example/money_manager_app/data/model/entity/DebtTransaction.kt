@@ -1,5 +1,6 @@
 package com.example.money_manager_app.data.model.entity
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -37,10 +38,11 @@ data class DebtTransaction(
     @ColumnInfo(name = "color_id") override val colorId: Int = R.color.color_1,
     @ColumnInfo(name = "account_id") override val accountId: Long,
     @ColumnInfo(name = "debt_id") val debtId: Long,
-    @ColumnInfo(name = "wallet_id") override val walletId: Long,
+    @ColumnInfo(name = "wallet_id") override val fromWallet: Long,
     override val amount: Double,
     @TypeConverters(DebtActionTypeConverter::class) val action: DebtActionType,
+    override val toWallet: Long,
     override val date: Long = System.currentTimeMillis(),
     override val time: Long = System.currentTimeMillis(),
-) : SubTransaction(id, iconId, name, amount, colorId, accountId, walletId,toWallet, date, time)
-) : SubTransaction(id, iconId, name, amount, colorId, accountId, walletId, date, time), Parcelable
+) : SubTransaction(id, iconId, name, amount, colorId, accountId, fromWallet,toWallet, date, time),
+    Parcelable

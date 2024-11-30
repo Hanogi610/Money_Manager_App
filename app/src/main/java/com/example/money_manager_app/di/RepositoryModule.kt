@@ -2,6 +2,8 @@ package com.example.money_manager_app.di
 
 import com.example.money_manager_app.data.repository.AccountRepository
 import com.example.money_manager_app.data.repository.AccountRepositoryImpl
+import com.example.money_manager_app.data.repository.BudgetRepository
+import com.example.money_manager_app.data.repository.BudgetRepositoryImpl
 import com.example.money_manager_app.data.repository.DebtRepository
 import com.example.money_manager_app.data.repository.DebtRepositoryImpl
 import com.example.money_manager_app.data.repository.DebtTransactionRepository
@@ -42,6 +44,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindDebtTransactionRepository(debtTransactionRepositoryImpl: DebtTransactionRepositoryImpl): DebtTransactionRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindBudgetRepository(budgetRepositoryImpl: BudgetRepositoryImpl): BudgetRepository
 
     @Binds
     @Singleton

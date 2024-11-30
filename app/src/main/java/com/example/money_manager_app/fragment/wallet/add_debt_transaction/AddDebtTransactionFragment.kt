@@ -73,7 +73,7 @@ class AddDebtTransactionFragment :
             val actionTypeIndex = DebtActionType.entries.indexOf(transaction.action)
             binding.spinnerActionType.setSelection(actionTypeIndex)
             val walletName =
-                mainViewModel.currentAccount.value!!.wallets.find { it.id == transaction.walletId }!!.name
+                mainViewModel.currentAccount.value!!.wallets.find { it.id == transaction.fromWallet }!!.name
             binding.spinnerWallet.setSelection(walletAdapter.getPosition(walletName))
             binding.delete.visibility = View.VISIBLE
         }
@@ -115,14 +115,16 @@ class AddDebtTransactionFragment :
                 amount = amount,
                 date = date,
                 time = time,
-                walletId = wallet,
+                fromWallet = wallet,
+                toWallet = debt!!.fromWallet,
                 action = actionType
             ) ?: DebtTransaction(
                 name = name,
                 amount = amount,
                 date = date,
                 time = time,
-                walletId = wallet,
+                fromWallet = wallet,
+                toWallet = debt!!.fromWallet,
                 action = actionType,
                 accountId = mainViewModel.currentAccount.value!!.account.id,
                 debtId = debt!!.id

@@ -192,6 +192,16 @@ class AddExpenseFragment : Fragment(), AddTransferInterface {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.fromWallet.collect { wallet ->
+                    if (wallet.isNotEmpty()) {
+                        binding.spWallet.setText(wallet.first().name)
+                    }
+                }
+            }
+        }
     }
 
     fun selectImage(){

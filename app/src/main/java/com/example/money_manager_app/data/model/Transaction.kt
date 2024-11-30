@@ -7,9 +7,8 @@ open class Transaction(
     open val amount: Double,
     open val colorId: Int,
     open val accountId: Long,
-    open val walletId: Long,
+    open val fromWallet: Long,
     open val toWallet: Long,
     open val date: Long,
     open val time: Long
-    open val time: Long,
 )
