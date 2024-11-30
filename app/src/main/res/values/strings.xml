@@ -67,6 +67,7 @@
     <string name="memo">Memo</string>
     <string name="from_wallet">From Wallet</string>
     <string name="to_wallet">To Wallet</string>
+    <string name="fee">Fee</string>
     <string name="currency_cny">CNY</string>
     <string name="currency_cny_symbol" translatable="false">¥</string>
     <string name="currency_inr">INR</string>

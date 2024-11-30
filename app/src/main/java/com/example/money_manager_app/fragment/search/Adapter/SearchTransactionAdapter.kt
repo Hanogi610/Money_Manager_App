@@ -51,6 +51,11 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                         binding.tvBank.text = listWallet.find { it.id == transaction.fromWallet}?.name
                     }
                     else -> {
+                        val link = "transfer_" + transaction.iconId
+                        val resId = binding.root.context.resources.getIdentifier(link, "drawable", binding.root.context.packageName)
+                        if (resId != 0) {
+                            binding.ivItem.setImageResource(resId)
+                        }
                         binding.tvAmount.text = "${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.black)

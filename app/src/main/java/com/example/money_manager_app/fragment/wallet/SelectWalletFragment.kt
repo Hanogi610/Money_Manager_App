@@ -102,7 +102,7 @@ class SelectWalletFragment : Fragment() {
             listWallet.add(wallet)
             addViewModel.setToWallet(listWallet)
             bundle?.putInt("position", typeExpense?:0)
-            findNavController().navigate(R.id.addFragment)
+            findNavController().navigate(R.id.addFragment, bundle)
         }
     }
 
