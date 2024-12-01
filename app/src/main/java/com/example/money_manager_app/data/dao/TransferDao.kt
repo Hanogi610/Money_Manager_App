@@ -40,7 +40,7 @@ interface TransferDao {
     suspend fun deleteTransfer(id: Long)
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId")
-    fun getTransfersByAccountId(accountId: Long): List<Transfer>
+    fun getTransfersByAccountId(accountId: Long): List<TransferWithCategory>
 
     @Query("""
     SELECT * FROM transfer
