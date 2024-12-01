@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.money_manager_app.data.model.entity.Transfer
+import com.example.money_manager_app.data.model.entity.TransferCategoryCrossRef
 import com.example.money_manager_app.data.model.entity.TransferWithCategory
 import kotlinx.coroutines.flow.Flow
 
@@ -25,6 +26,9 @@ interface TransferDao {
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertTransfer(transfer: Transfer): Long
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertTransferCategoryCrossRefs(crossRefs: List<TransferCategoryCrossRef>)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun editTransfer(transfer: Transfer)
@@ -45,7 +49,6 @@ interface TransferDao {
     AND (:minAmount IS NULL OR amount >= :minAmount)
     AND (:maxAmount IS NULL OR amount <= :maxAmount)
     AND (:description IS NULL OR description LIKE '%' || :description || '%')
-    AND (:categoryId IS NULL OR category_id = :categoryId)
     AND (:fromWalletId IS NULL OR from_wallet_id = :fromWalletId)
 """)
     fun searchByDateAndAmountAndDesAndCategoryAndWallet(
@@ -54,9 +57,7 @@ interface TransferDao {
         minAmount : Double?,
         maxAmount : Double?,
         description : String?,
-        categoryId: Int?,
-        fromWalletId : Long?,
-//        accountId: Long
+        fromWalletId : Long?
     ): List<TransferWithCategory>
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId")
