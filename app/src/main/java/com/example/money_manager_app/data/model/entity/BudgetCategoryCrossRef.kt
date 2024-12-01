@@ -28,7 +28,7 @@ data class BudgetCategoryCrossRef(
 data class BudgetWithCategory(
     @Embedded val budget: Budget,
     @Relation(
-        parentColumn = "transfer_id",
+        parentColumn = "budget_id",
         entityColumn = "category_id",
         associateBy = Junction(BudgetCategoryCrossRef::class)
     )

@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.money_manager_app.data.model.entity.GoalTransaction
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GoalTransactionDao {
@@ -21,4 +22,7 @@ interface GoalTransactionDao {
 
     @Query("DELETE FROM goal_transaction WHERE id = :id")
     suspend fun deleteGoalTransaction(id: Long)
+
+    @Query("SELECT * FROM goal_transaction WHERE account_id = :accountId")
+    fun getGoalTransactionsByAccountId(accountId: Long) : Flow<List<GoalTransaction>>
 }

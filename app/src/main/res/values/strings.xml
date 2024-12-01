@@ -59,7 +59,7 @@
     <string name="positive_money_amount" translatable="false">+%1$s %2$.2f</string>
     <string name="negative_money_amount" translatable="false">-%1$s %2$.2f</string>
     <string name="goal_transaction_name">%1$s to %2$s</string>
-    <string name="balance">Balance: </string>
+    <string name="balance">Balance</string>
     <string name="add_expense">Expense</string>
     <string name="income">Income</string>
     <string name="transfer">Transfer</string>
@@ -176,6 +176,7 @@
     <string name="goal_transaction">Goal Transaction</string>
     <string name="budget_s_name">Budget\'s name</string>
     <string name="add_category">Add Category</string>
+    <string name="balance_visibility_toggle">Balance Visibility Toggle</string>
     <string-array name="spinner_color">
         <item>#34BFFF</item>
         <item>#0097E6</item>

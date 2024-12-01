@@ -16,30 +16,20 @@ class SplashFragment : BaseFragmentNotRequireViewModel<FragmentSplashBinding>(R.
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        Log.d(TAG, "initView: 1")
         goToNextScreen()
     }
 
     private fun goToNextScreen() {
         lifecycleScope.launch {
-            Log.d(TAG, "goToNextScreen: 2")
             delay(2000)
 
             val isFirstTime = appPreferences.isFirstTimeLaunch()
 
-            Log.d(TAG, "goToNextScreen: 3")
             if (isFirstTime) {
-                Log.d(TAG, "goToNextScreen: 4")
                 appNavigation.openSplashToLanguageScreen()
             } else {
-                Log.d(TAG, "goToNextScreen: 4.2")
                 appNavigation.openSplashToPasswordScreen()
             }
         }
     }
-
-    companion object {
-        private const val TAG = "SplashFragment"
-    }
-
 }

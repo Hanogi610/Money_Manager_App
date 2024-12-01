@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.TransactionListItem
+import com.example.money_manager_app.data.model.entity.Category
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.data.model.entity.enums.GoalInputType
+import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.DateHeaderItemBinding
 import com.example.money_manager_app.databinding.TransactionItemBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
@@ -24,6 +26,7 @@ class TransactionAdapter(
     private val context: Context,
     private val currencySymbol: String,
     private val wallets: List<Wallet>,
+    private val categories: List<Category>? = null,
     private val onTransactionClick: (Transaction) -> Unit = {}
 ) : ListAdapter<TransactionListItem, RecyclerView.ViewHolder>(TransactionListItemDiffCallback()) {
 
@@ -67,10 +70,14 @@ class TransactionAdapter(
                 dayOfWeekLabel.text = header.dayOfWeek
                 dayOfMonthLabel.text = header.dayOfMonth
                 monthYearLabel.text = header.monthYear
-                totalAmountLabel.text = if(header.total >= 0){
+                totalAmountLabel.text = if (header.total >= 0) {
                     context.getString(R.string.positive_money_amount, currencySymbol, header.total)
                 } else {
-                    context.getString(R.string.negative_money_amount, currencySymbol, header.total * -1)
+                    context.getString(
+                        R.string.negative_money_amount,
+                        currencySymbol,
+                        header.total * -1
+                    )
                 }
             }
         }
@@ -80,40 +87,90 @@ class TransactionAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: Transaction) {
             when (transaction) {
-                is GoalTransaction ->{
+                is GoalTransaction -> {
+                    binding.transactionTypeImageView.setImageResource(transaction.iconId)
                     binding.transactionTypeTextView.text = context.getString(
                         R.string.goal_transaction_name,
                         transaction.type.toString(),
                         transaction.name
                     )
-                    binding.transactionAmount.text = if(transaction.type == GoalInputType.DEPOSIT){
-                        context.getString(R.string.negative_money_amount, currencySymbol, transaction.amount)
-                    } else {
-                        context.getString(R.string.positive_money_amount, currencySymbol, transaction.amount)
-                    }
+                    binding.transactionAmount.text =
+                        if (transaction.type == GoalInputType.DEPOSIT) {
+                            context.getString(
+                                R.string.negative_money_amount,
+                                currencySymbol,
+                                transaction.amount
+                            )
+                        } else {
+                            context.getString(
+                                R.string.positive_money_amount,
+                                currencySymbol,
+                                transaction.amount
+                            )
+                        }
                 }
 
-                is DebtTransaction ->{
+                is DebtTransaction -> {
+                    binding.transactionTypeImageView.setImageResource(transaction.iconId)
                     binding.transactionTypeTextView.text = context.getString(
                         R.string.debt_transaction_name,
                         transaction.action.toString(),
                         transaction.name
                     )
-                    if(transaction.action == DebtActionType.DEBT_INCREASE){
-                        binding.transactionAmount.text = context.getString(R.string.positive_money_amount, currencySymbol, transaction.amount)
+                    if (transaction.action == DebtActionType.DEBT_INCREASE) {
+                        binding.transactionAmount.text = context.getString(
+                            R.string.positive_money_amount,
+                            currencySymbol,
+                            transaction.amount
+                        )
                         binding.transactionAmount.setTextColor(context.getColor(R.color.color_1))
                     } else {
-                        binding.transactionAmount.text = context.getString(R.string.negative_money_amount, currencySymbol, transaction.amount)
+                        binding.transactionAmount.text = context.getString(
+                            R.string.negative_money_amount,
+                            currencySymbol,
+                            transaction.amount
+                        )
                         binding.transactionAmount.setTextColor(context.getColor(R.color.color_17))
                     }
                 }
-                is Transfer -> {
 
+                is Transfer -> {
+                    categories?.let {
+                        val category = it.find { category -> category.id == transaction.categoryId }
+                        binding.transactionTypeTextView.text = category?.name
+                        binding.transactionTypeImageView.setImageResource(category?.iconId ?: R.drawable.expense_1)
+                        binding.transactionTypeImageView.setColorFilter(category?.colorId ?: R.color.color_1)
+                    }
+
+                    when (transaction.typeOfExpenditure) {
+                        TransferType.Expense -> {
+                            binding.transactionAmount.text = context.getString(
+                                R.string.negative_money_amount,
+                                currencySymbol,
+                                transaction.amount
+                            )
+                        }
+                        TransferType.Income -> {
+                            binding.transactionAmount.text = context.getString(
+                                R.string.positive_money_amount,
+                                currencySymbol,
+                                transaction.amount
+                            )
+                        }
+                        else ->{
+                            binding.transactionAmount.text = context.getString(
+                                R.string.money_amount,
+                                currencySymbol,
+                                transaction.amount
+                            )
+                        }
+                    }
                 }
 
-                else ->{
+                else -> {
                     binding.transactionTypeTextView.text = transaction.name
-                    binding.transactionAmount.text = context.getString(R.string.money_amount, currencySymbol, transaction.amount)
+                    binding.transactionAmount.text =
+                        context.getString(R.string.money_amount, currencySymbol, transaction.amount)
                 }
             }
             binding.transactionTime.text = transaction.time.toFormattedTimeString()
@@ -127,8 +184,7 @@ class TransactionAdapter(
 
 class TransactionListItemDiffCallback : DiffUtil.ItemCallback<TransactionListItem>() {
     override fun areItemsTheSame(
-        oldItem: TransactionListItem,
-        newItem: TransactionListItem
+        oldItem: TransactionListItem, newItem: TransactionListItem
     ): Boolean {
         return if (oldItem is TransactionListItem.DateHeader && newItem is TransactionListItem.DateHeader) {
             oldItem.dayOfMonth == newItem.dayOfMonth && oldItem.monthYear == newItem.monthYear
@@ -140,8 +196,7 @@ class TransactionListItemDiffCallback : DiffUtil.ItemCallback<TransactionListIte
     }
 
     override fun areContentsTheSame(
-        oldItem: TransactionListItem,
-        newItem: TransactionListItem
+        oldItem: TransactionListItem, newItem: TransactionListItem
     ): Boolean {
         return oldItem == newItem
     }
