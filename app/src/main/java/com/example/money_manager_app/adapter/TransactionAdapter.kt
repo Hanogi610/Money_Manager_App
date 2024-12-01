@@ -11,6 +11,7 @@ import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.TransactionListItem
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.GoalTransaction
+import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.data.model.entity.enums.GoalInputType
@@ -105,6 +106,9 @@ class TransactionAdapter(
                         binding.transactionAmount.text = context.getString(R.string.negative_money_amount, currencySymbol, transaction.amount)
                         binding.transactionAmount.setTextColor(context.getColor(R.color.color_17))
                     }
+                }
+                is Transfer -> {
+
                 }
 
                 else ->{

@@ -72,7 +72,6 @@
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
-                android:textColor="?attr/primaryDarkTextColor"
                 android:textSize="26sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +84,6 @@
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
                 android:text="@string/left"
-                android:textColor="?attr/secondaryTextColor"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
@@ -97,7 +95,6 @@
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
                 android:text="@string/spent"
-                android:textColor="?attr/secondaryTextColor"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
@@ -107,7 +104,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_16dp"
-                android:textColor="?attr/primaryTextColor"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/remainTitleLabel" />
@@ -117,7 +113,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16dp"
-                android:textColor="?attr/primaryTextColor"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spentTitleLabel" />
@@ -132,7 +127,6 @@
                 android:layout_marginEnd="@dimen/_16dp"
                 android:layout_marginBottom="@dimen/_12dp"
                 android:progress="0"
-                android:progressBackgroundTint="?attr/progressBar"
                 android:progressTint="#ff000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +158,6 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginTop="@dimen/_16dp"
                     android:text="@string/period"
-                    android:textColor="?attr/secondaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/budgetTitleLabel" />
@@ -176,7 +169,6 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginTop="@dimen/_16dp"
                     android:text="@string/budget"
-                    android:textColor="?attr/secondaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/categoryLabel" />
@@ -188,7 +180,6 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginTop="@dimen/_16dp"
                     android:text="@string/category"
-                    android:textColor="?attr/secondaryTextColor"
                     android:textSize="16sp"
                     android:typeface="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -201,7 +192,6 @@
                     android:layout_marginStart="@dimen/_24dp"
                     android:layout_marginTop="@dimen/_16dp"
                     android:layout_marginEnd="@dimen/_16dp"
-                    android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/categoryTitleLabel"
@@ -212,7 +202,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_16dp"
-                    android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@+id/categoryLabel"
                     app:layout_constraintTop_toBottomOf="@+id/categoryLabel" />
@@ -222,7 +211,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_16dp"
-                    android:textColor="?attr/primaryTextColor"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="@+id/categoryLabel"
                     app:layout_constraintTop_toBottomOf="@+id/budgetLabel" />
@@ -231,7 +219,6 @@
                     android:id="@+id/timeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="?attr/secondaryTextColor"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="@+id/categoryLabel"
                     app:layout_constraintTop_toBottomOf="@+id/periodLabel" />

@@ -2,14 +2,14 @@ package com.example.money_manager_app.data.model.entity
 
 import android.os.Parcelable
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 import androidx.room.TypeConverters
 import com.example.money_manager_app.R
-import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import com.example.money_manager_app.data.model.entity.enums.PeriodType
-import com.example.money_manager_app.utils.CategoryTypeConverter
 import com.example.money_manager_app.utils.PeriodTypeConverter
 import kotlinx.parcelize.Parcelize
 
@@ -20,19 +20,29 @@ import kotlinx.parcelize.Parcelize
         parentColumns = ["id"],
         childColumns = ["account_id"],
         onDelete = ForeignKey.CASCADE
+    ), ForeignKey(
+        entity = Category::class,
+        parentColumns = ["id"],
+        childColumns = ["category_id"],
+        onDelete = ForeignKey.CASCADE
     )]
 )
 data class Budget(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "account_id") val accountId: Long,
     val name: String,
-    @ColumnInfo(name = "color_id") val colorId: Int ? = R.color.color_1,
+    @ColumnInfo(name = "color_id") val colorId: Int? = R.color.color_1,
     val amount: Double,
     @ColumnInfo(name = "period_date_start") val periodDateStart: Long,
-    @ColumnInfo(name = "period_type")
-    @TypeConverters(PeriodTypeConverter::class)
-    val periodType: PeriodType,
-    @ColumnInfo(name = "category_type")
-    @TypeConverters(CategoryTypeConverter::class)
-    val categoryType: CategoryType
+    @ColumnInfo(name = "period_type") @TypeConverters(PeriodTypeConverter::class) val periodType: PeriodType,
+    @ColumnInfo(name = "category_id") val categoryId: Long
 ) : Parcelable
+
+data class BudgetWithCategory(
+    @Embedded val budget: Budget,
+    @Relation(
+        parentColumn = "category_id",
+        entityColumn = "id"
+    )
+    val category: Category
+)

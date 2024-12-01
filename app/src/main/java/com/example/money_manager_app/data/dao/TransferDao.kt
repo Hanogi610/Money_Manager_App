@@ -8,7 +8,6 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.money_manager_app.data.model.entity.Transfer
 import kotlinx.coroutines.flow.Flow
-import com.example.money_manager_app.data.model.entity.enums.CategoryType
 
 @Dao
 interface TransferDao {
