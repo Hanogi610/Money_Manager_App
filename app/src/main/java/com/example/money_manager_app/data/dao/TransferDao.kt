@@ -37,26 +37,27 @@ interface TransferDao {
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId")
     fun getTransfersByAccountId(accountId: Long): List<Transfer>
-//
-//    @Query("""
-//    SELECT * FROM transfer
-//    WHERE (:startDate IS NULL OR transfer_date >= :startDate)
-//    AND (:endDate IS NULL OR transfer_date <= :endDate)
-//    AND (:minAmount IS NULL OR amount >= :minAmount)
-//    AND (:maxAmount IS NULL OR amount <= :maxAmount)
-//    AND (:description IS NULL OR description LIKE '%' || :description || '%')
-//    AND (:categoryType IS NULL OR type_icon_category = :categoryType)
-//    AND (:fromWallet IS NULL OR from_wallet = :fromWallet)
-//""")
-//    fun searchByDateAndAmountAndDesAndCategoryAndWallet(
-//        startDate : Long?,
-//        endDate : Long?,
-//        minAmount : Double?,
-//        maxAmount : Double?,
-//        description : String?,
-//        categoryType: Int?,
-//        fromWallet : Long?
-//    ): List<Transfer>
+
+    @Query("""
+    SELECT * FROM transfer
+    WHERE (:startDate IS NULL OR date >= :startDate)
+    AND (:endDate IS NULL OR date <= :endDate)
+    AND (:minAmount IS NULL OR amount >= :minAmount)
+    AND (:maxAmount IS NULL OR amount <= :maxAmount)
+    AND (:description IS NULL OR description LIKE '%' || :description || '%')
+    AND (:categoryId IS NULL OR category_id = :categoryId)
+    AND (:fromWalletId IS NULL OR from_wallet_id = :fromWalletId)
+""")
+    fun searchByDateAndAmountAndDesAndCategoryAndWallet(
+        startDate : Long?,
+        endDate : Long?,
+        minAmount : Double?,
+        maxAmount : Double?,
+        description : String?,
+        categoryId: Int?,
+        fromWalletId : Long?,
+//        accountId: Long
+    ): List<TransferWithCategory>
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId")
     fun getTransferWithCategoryByAccountId(accountId: Long): Flow<List<TransferWithCategory>>
