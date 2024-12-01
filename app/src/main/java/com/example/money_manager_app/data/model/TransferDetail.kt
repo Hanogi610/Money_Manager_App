@@ -1,41 +1,28 @@
 package com.example.money_manager_app.data.model
 
+import com.example.money_manager_app.R
+import com.example.money_manager_app.data.model.entity.BudgetWithCategory
 import com.example.money_manager_app.data.model.entity.Category
-import com.example.money_manager_app.data.model.entity.TransferWithCategory
-import com.example.money_manager_app.data.model.entity.enums.TransferType
+import com.example.money_manager_app.data.model.entity.enums.PeriodType
 
-data class TransferDetail(
-    override val id : Long = 0,
-    override val walletId: Long,
-    val toWalletId: Long,
-    override val amount: Double,
-    override val name : String,
-    val fee: Double,
-    val description: String,
-    override val accountId: Long,
-    val linkImg: String,
-    override val date: Long = System.currentTimeMillis(),
-    override val time: Long = System.currentTimeMillis(),
-    val typeOfExpenditure: TransferType,
-    override val iconId: Int?,
+data class BudgetDetail(
+    val id: Long = 0,
+    val accountId: Long,
+    val name: String,
+    val colorId: Int? = R.color.color_1,
+    val amount: Double,
+    val periodDateStart: Long,
+    val periodType: PeriodType,
     val categories: List<Category>
-): Transaction(id, iconId, name, amount, accountId, walletId, date, time)
+)
 
-fun TransferWithCategory.toTransferDetail(): TransferDetail {
-    return TransferDetail(
-        id = transfer.id,
-        walletId = transfer.walletId,
-        toWalletId = transfer.toWalletId,
-        amount = transfer.amount,
-        name = transfer.name,
-        fee = transfer.fee,
-        description = transfer.description,
-        accountId = transfer.accountId,
-        linkImg = transfer.linkImg,
-        date = transfer.date,
-        time = transfer.time,
-        typeOfExpenditure = transfer.typeOfExpenditure,
-        iconId = transfer.iconId,
-        categories = categories
-    )
-}
+fun BudgetWithCategory.toBudgetDetail() = BudgetDetail(
+    budget.id,
+    budget.accountId,
+    budget.name,
+    budget.colorId,
+    budget.amount,
+    budget.periodDateStart,
+    budget.periodType,
+    categories
+)

@@ -20,29 +20,15 @@ import kotlinx.parcelize.Parcelize
         parentColumns = ["id"],
         childColumns = ["account_id"],
         onDelete = ForeignKey.CASCADE
-    ), ForeignKey(
-        entity = Category::class,
-        parentColumns = ["category_id"],
-        childColumns = ["category_id"],
-        onDelete = ForeignKey.CASCADE
     )]
 )
 data class Budget(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "budget_id") val id: Long = 0,
     @ColumnInfo(name = "account_id") val accountId: Long,
     val name: String,
     @ColumnInfo(name = "color_id") val colorId: Int? = R.color.color_1,
     val amount: Double,
     @ColumnInfo(name = "period_date_start") val periodDateStart: Long,
     @ColumnInfo(name = "period_type") @TypeConverters(PeriodTypeConverter::class) val periodType: PeriodType,
-    @ColumnInfo(name = "category_id") val categoryId: Long
 ) : Parcelable
-
-data class BudgetWithCategory(
-    @Embedded val budget: Budget,
-    @Relation(
-        parentColumn = "category_id",
-        entityColumn = "category_id"
-    )
-    val category: Category
-)

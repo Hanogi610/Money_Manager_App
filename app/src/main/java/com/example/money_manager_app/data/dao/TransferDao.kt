@@ -7,7 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.money_manager_app.data.model.entity.Transfer
-import com.example.money_manager_app.data.model.entity.TransferCategoryCrossRef
+import com.example.money_manager_app.data.model.entity.BudgetCategoryCrossRef
 import com.example.money_manager_app.data.model.entity.TransferWithCategory
 import kotlinx.coroutines.flow.Flow
 
@@ -28,7 +28,7 @@ interface TransferDao {
     suspend fun insertTransfer(transfer: Transfer): Long
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertTransferCategoryCrossRefs(crossRefs: List<TransferCategoryCrossRef>)
+    suspend fun insertTransferCategoryCrossRefs(crossRefs: List<BudgetCategoryCrossRef>)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun editTransfer(transfer: Transfer)
