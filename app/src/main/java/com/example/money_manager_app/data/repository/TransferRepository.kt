@@ -2,12 +2,13 @@ package com.example.money_manager_app.data.repository
 
 import com.example.money_manager_app.data.dao.TransferDao
 import com.example.money_manager_app.data.model.entity.Transfer
+import com.example.money_manager_app.data.model.entity.TransferCategoryCrossRef
 import com.example.money_manager_app.data.model.entity.TransferWithCategory
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface TransferRepository {
-    suspend fun insertTransfer(transfer: Transfer): Long
+    suspend fun insertTransfer(transfer: Transfer, categories: List<Long>): Long
     fun getTransferFromDayStartAndDayEnd(startDay: Long, endDay: Long, accountId: Long): Flow<List<TransferWithCategory>>
     fun searchByDateAndAmountAndDesAndCategoryAndWallet(
         startDate: Long?,
@@ -24,8 +25,13 @@ interface TransferRepository {
 class TransferRepositoryImpl @Inject constructor(
     private val transferDao: TransferDao
 ) : TransferRepository {
-    override suspend fun insertTransfer(transfer: Transfer): Long {
-        return transferDao.insertTransfer(transfer)
+    override suspend fun insertTransfer(transfer: Transfer, categories: List<Long>): Long {
+        val transferId = transferDao.insertTransfer(transfer)
+        val transferCategoryCrossRefs = categories.map { categoryId ->
+            TransferCategoryCrossRef(transferId, categoryId)
+        }
+        transferDao.insertTransferCategoryCrossRefs(transferCategoryCrossRefs)
+        return transferId
     }
 
     override fun searchByDateAndAmountAndDesAndCategoryAndWallet(
@@ -37,15 +43,7 @@ class TransferRepositoryImpl @Inject constructor(
         categoryType: Int?,
         fromWallet: Long?
     ): List<TransferWithCategory> {
-        return transferDao.searchByDateAndAmountAndDesAndCategoryAndWallet(
-            startDate,
-            endDate,
-            minAmount,
-            maxAmount,
-            description,
-            categoryType,
-            fromWallet
-        )
+        return emptyList()
     }
 
     override fun getTransferFromDayStartAndDayEnd(startDay: Long, endDay: Long, accountId: Long): Flow<List<TransferWithCategory>> {
