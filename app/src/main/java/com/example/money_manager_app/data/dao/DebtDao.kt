@@ -58,4 +58,7 @@ interface DebtDao {
 
     @Delete
     suspend fun deleteDebt(debt: Debt)
+
+    @Query("SELECT * FROM debt WHERE account_id = :userId")
+    fun getDebtListByAccountId(userId: Long): Flow<List<Debt>>
 }

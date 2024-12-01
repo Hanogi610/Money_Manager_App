@@ -6,9 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.BudgetCategoryCrossRef
-import com.example.money_manager_app.data.model.entity.TransferWithCategory
+import com.example.money_manager_app.data.model.entity.Transfer
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,13 +15,11 @@ interface TransferDao {
 
     @Query("SELECT * FROM transfer WHERE date BETWEEN :startDay AND :endDay AND account_id = :accountId")
     fun getTransferFromDayStartAndDayEnd(
-        startDay: Long,
-        endDay: Long,
-        accountId: Long
-    ): Flow<List<TransferWithCategory>>
+        startDay: Long, endDay: Long, accountId: Long
+    ): Flow<List<Transfer>>
 
     @Query("SELECT * FROM transfer WHERE date = :date")
-    fun getAllTransfer(date: Long): Flow<List<TransferWithCategory>>
+    fun getAllTransfer(date: Long): Flow<List<Transfer>>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertTransfer(transfer: Transfer): Long
@@ -40,9 +37,10 @@ interface TransferDao {
     suspend fun deleteTransfer(id: Long)
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId")
-    fun getTransfersByAccountId(accountId: Long): List<TransferWithCategory>
+    fun getTransfersByAccountId(accountId: Long): Flow<List<Transfer>>
 
-    @Query("""
+    @Query(
+        """
     SELECT * FROM transfer
     WHERE (:startDate IS NULL OR date >= :startDate)
     AND (:endDate IS NULL OR date <= :endDate)
@@ -50,16 +48,17 @@ interface TransferDao {
     AND (:maxAmount IS NULL OR amount <= :maxAmount)
     AND (:description IS NULL OR description LIKE '%' || :description || '%')
     AND (:fromWalletId IS NULL OR from_wallet_id = :fromWalletId)
-""")
+"""
+    )
     fun searchByDateAndAmountAndDesAndCategoryAndWallet(
-        startDate : Long?,
-        endDate : Long?,
-        minAmount : Double?,
-        maxAmount : Double?,
-        description : String?,
-        fromWalletId : Long?
-    ): List<TransferWithCategory>
+        startDate: Long?,
+        endDate: Long?,
+        minAmount: Double?,
+        maxAmount: Double?,
+        description: String?,
+        fromWalletId: Long?
+    ): List<Transfer>
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId")
-    fun getTransferWithCategoryByAccountId(accountId: Long): Flow<List<TransferWithCategory>>
+    fun getTransferWithCategoryByAccountId(accountId: Long): Flow<List<Transfer>>
 }

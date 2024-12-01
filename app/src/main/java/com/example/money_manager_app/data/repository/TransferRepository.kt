@@ -2,7 +2,6 @@
 
     import com.example.money_manager_app.data.dao.TransferDao
     import com.example.money_manager_app.data.model.entity.Transfer
-    import com.example.money_manager_app.data.model.entity.TransferWithCategory
     import kotlinx.coroutines.flow.Flow
     import javax.inject.Inject
 
@@ -12,9 +11,8 @@
             startDay: Long,
             endDay: Long,
             accountId: Long
-        ): Flow<List<TransferWithCategory>>
-
-        fun getTransferByAccountId(accountId: Long): List<TransferWithCategory>
+        ): Flow<List<Transfer>>
+        fun getTransferByAccountId(accountId: Long): Flow<List<Transfer>>
         fun searchByDateAndAmountAndDesAndCategoryAndWallet(
             startDate: Long?,
             endDate: Long?,
@@ -22,9 +20,9 @@
             maxAmount: Double?,
             description: String?,
             fromWallet: Long?
-        ): List<TransferWithCategory>
+        ): List<Transfer>
 
-        fun getAllTransfer(date: Long): Flow<List<TransferWithCategory>>
+        fun getAllTransfer(date: Long): Flow<List<Transfer>>
     }
 
 
@@ -40,11 +38,11 @@
             startDay: Long,
             endDay: Long,
             accountId: Long
-        ): Flow<List<TransferWithCategory>> {
+        ): Flow<List<Transfer>> {
             return transferDao.getTransferFromDayStartAndDayEnd(startDay, endDay, accountId)
         }
 
-        override fun getTransferByAccountId(accountId: Long): List<TransferWithCategory> {
+        override fun getTransferByAccountId(accountId: Long): Flow<List<Transfer>> {
             return transferDao.getTransfersByAccountId(accountId)
         }
 
@@ -55,13 +53,13 @@
             maxAmount: Double?,
             description: String?,
             fromWallet: Long?
-        ): List<TransferWithCategory> {
+        ): List<Transfer> {
             return transferDao.searchByDateAndAmountAndDesAndCategoryAndWallet(
                 startDate, endDate, minAmount, maxAmount, description, fromWallet
             )
         }
 
-        override fun getAllTransfer(date: Long): Flow<List<TransferWithCategory>> {
+        override fun getAllTransfer(date: Long): Flow<List<Transfer>> {
             return transferDao.getAllTransfer(date)
         }
     }

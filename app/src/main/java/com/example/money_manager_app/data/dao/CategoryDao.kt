@@ -26,4 +26,7 @@ interface CategoryDao {
 
     @Query("SELECT * FROM category WHERE account_id = :accountId")
     fun getCategoriesWithTransferByAccountId(accountId: Long): Flow<List<CategoryWithTransfer>>
+
+    @Query("SELECT * FROM category WHERE account_id = :accountId")
+    fun getCategoriesByAccountId(accountId: Long): Flow<List<Category>>
 }

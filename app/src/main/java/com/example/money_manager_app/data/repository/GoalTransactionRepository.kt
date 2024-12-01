@@ -2,6 +2,7 @@ package com.example.money_manager_app.data.repository
 
 import com.example.money_manager_app.data.dao.GoalTransactionDao
 import com.example.money_manager_app.data.model.entity.GoalTransaction
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface GoalTransactionRepository {
@@ -9,6 +10,7 @@ interface GoalTransactionRepository {
     suspend fun updateGoalTransaction(goalTransaction: GoalTransaction) : Int
     suspend fun deleteGoalTransaction(goalTransaction: GoalTransaction)
     suspend fun deleteGoalTransaction(id: Long)
+    fun getGoalTransactionsByAccountId(accountId: Long) : Flow<List<GoalTransaction>>
 }
 
 class GoalTransactionRepositoryImpl @Inject constructor(
@@ -28,5 +30,9 @@ class GoalTransactionRepositoryImpl @Inject constructor(
 
     override suspend fun deleteGoalTransaction(id: Long) {
         return goalTransactionDao.deleteGoalTransaction(id)
+    }
+
+    override fun getGoalTransactionsByAccountId(accountId: Long): Flow<List<GoalTransaction>> {
+        return goalTransactionDao.getGoalTransactionsByAccountId(accountId)
     }
 }

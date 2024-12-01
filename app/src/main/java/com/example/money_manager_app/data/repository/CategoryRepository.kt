@@ -20,6 +20,8 @@ interface CategoryRepository {
     suspend fun deleteCategory(categoryId: Long)
 
     fun getCategoriesWithTransferByAccountId(accountId: Long): Flow<List<CategoryWithTransfer>>
+
+    fun getCategoriesByAccountId(accountId: Long): Flow<List<Category>>
 }
 
 class CategoryRepositoryImpl @Inject constructor(private val categoryDao: CategoryDao) : CategoryRepository {
@@ -41,5 +43,9 @@ class CategoryRepositoryImpl @Inject constructor(private val categoryDao: Catego
 
     override fun getCategoriesWithTransferByAccountId(accountId: Long): Flow<List<CategoryWithTransfer>> {
         return categoryDao.getCategoriesWithTransferByAccountId(accountId)
+    }
+
+    override fun getCategoriesByAccountId(accountId: Long): Flow<List<Category>> {
+        return categoryDao.getCategoriesByAccountId(accountId)
     }
 }

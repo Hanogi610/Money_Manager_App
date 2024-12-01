@@ -154,9 +154,6 @@ class AddFragment : Fragment() {
             }
         }
     }
-
-
-
 }
 
 class DepthPageTransformer : ViewPager2.PageTransformer {

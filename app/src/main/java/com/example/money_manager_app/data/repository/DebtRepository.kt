@@ -8,6 +8,7 @@ import javax.inject.Inject
 
 interface DebtRepository {
     fun getDebtsByAccountId(userId: Long) : Flow<List<DebtDetail>>
+    fun getDebtListByAccountId(userId: Long) : Flow<List<Debt>>
     fun getDebtDetailsByDebtId(debtId: Long) : Flow<DebtDetail>
     fun getDebtsByDateAndAccountId(date: Long, accountId: Long): Flow<List<Debt>>
     fun getDebtByDayStartAndDayEnd(accountId: Long, startDay : Long, endDay : Long): Flow<List<Debt>>
@@ -31,6 +32,10 @@ class DebtRepositoryImpl @Inject constructor(
 ) : DebtRepository {
     override fun getDebtsByAccountId(userId: Long): Flow<List<DebtDetail>> {
         return debtDao.getDebtsByAccountId(userId)
+    }
+
+    override fun getDebtListByAccountId(userId: Long): Flow<List<Debt>> {
+        return debtDao.getDebtListByAccountId(userId)
     }
 
     override fun getDebtDetailsByDebtId(debtId: Long): Flow<DebtDetail> {
