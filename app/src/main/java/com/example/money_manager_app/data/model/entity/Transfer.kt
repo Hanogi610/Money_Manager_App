@@ -31,14 +31,15 @@ import com.example.money_manager_app.data.model.entity.enums.TransferType
         ),
         ForeignKey(
             entity = Category::class,
-            parentColumns = ["id"],
+            parentColumns = ["category_id"],
             childColumns = ["category_id"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class Transfer(
-    @PrimaryKey(autoGenerate = true) override val  id : Long = 0,
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "transfer_id") override val id : Long = 0,
     @ColumnInfo(name = "from_wallet_id") override val walletId: Long,
     @ColumnInfo(name = "to_wallet_id") val toWalletId: Long,
     override val amount: Double,

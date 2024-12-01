@@ -1,5 +1,6 @@
 package com.example.money_manager_app.data.model.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -7,27 +8,28 @@ import androidx.room.Junction
 import androidx.room.Relation
 
 @Entity(
-    primaryKeys = ["transferId", "categoryId"], foreignKeys = [ForeignKey(
+    primaryKeys = ["transfer_id", "category_id"], foreignKeys = [ForeignKey(
         entity = Transfer::class,
-        parentColumns = ["id"],
-        childColumns = ["transferId"],
+        parentColumns = ["transfer_id"],
+        childColumns = ["transfer_id"],
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = Category::class,
-        parentColumns = ["id"],
-        childColumns = ["categoryId"],
+        parentColumns = ["category_id"],
+        childColumns = ["category_id"],
         onDelete = ForeignKey.CASCADE
     )]
 )
 data class TransferCategoryCrossRef(
-    val transferId: Long, val categoryId: Long
+    @ColumnInfo(name = "transfer_id") val transferId: Long,
+    @ColumnInfo(name = "category_id") val categoryId: Long
 )
 
 data class TransferWithCategory(
     @Embedded val transfer: Transfer,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "categoryId",
+        parentColumn = "transfer_id",
+        entityColumn = "category_id",
         associateBy = Junction(TransferCategoryCrossRef::class)
     )
     val categories: List<Category>
@@ -36,8 +38,8 @@ data class TransferWithCategory(
 data class CategoryWithTransfer(
     @Embedded val category: Category,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "transferId",
+        parentColumn = "category_id",
+        entityColumn = "transfer_id",
         associateBy = Junction(TransferCategoryCrossRef::class)
     )
     val transfers: List<Transfer>

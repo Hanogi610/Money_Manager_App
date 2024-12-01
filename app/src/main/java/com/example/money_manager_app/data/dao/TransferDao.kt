@@ -32,7 +32,7 @@ interface TransferDao {
     @Delete
     suspend fun deleteTransfer(transfer: Transfer)
 
-    @Query("DELETE FROM transfer WHERE id = :id")
+    @Query("DELETE FROM transfer WHERE transfer_id = :id")
     suspend fun deleteTransfer(id: Long)
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId")

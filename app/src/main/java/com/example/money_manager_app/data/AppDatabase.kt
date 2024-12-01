@@ -19,11 +19,12 @@ import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
+import com.example.money_manager_app.data.model.entity.TransferCategoryCrossRef
 import com.example.money_manager_app.data.model.entity.Wallet
 
 @Database(
     entities = [
-        Account::class, Budget::class, Goal::class, Category::class,
+        Account::class, Budget::class, Goal::class, Category::class, TransferCategoryCrossRef::class,
         Transfer::class, Wallet::class, Debt::class, DebtTransaction::class, GoalTransaction::class
     ],
     version = 1,
@@ -35,11 +36,8 @@ abstract class AppDatabase : RoomDatabase(){
     abstract fun debtDao(): DebtDao
     abstract fun debtTransactionDao(): DebtTransactionDao
     abstract fun categoryDao(): CategoryDao
-//    abstract fun depositAndWithdrawDao(): DepositAndWithdrawDao
     abstract fun goalDao(): GoalDao
     abstract fun goalTransactionDao(): GoalTransactionDao
     abstract fun transferDao(): TransferDao
-//    abstract fun transferWalletDao(): TransferWalletDao
-//    abstract fun typeMoneyDao(): TypeMoneyDao
     abstract fun walletDao(): WalletDao
 }
