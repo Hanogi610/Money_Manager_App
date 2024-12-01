@@ -9,8 +9,8 @@ import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.money_manager_app.data.model.entity.AddTransfer
-import com.example.money_manager_app.data.model.entity.CategoryData
+import com.example.money_manager_app.data.model.AddTransfer
+import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.TransferType

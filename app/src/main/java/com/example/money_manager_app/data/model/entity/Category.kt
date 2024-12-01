@@ -13,11 +13,17 @@ import com.example.money_manager_app.utils.CategoryTypeConverter
         parentColumns = ["id"],
         childColumns = ["category_id"],
         onDelete = ForeignKey.CASCADE
+    ), ForeignKey(
+        entity = Account::class,
+        parentColumns = ["id"],
+        childColumns = ["account_id"],
+        onDelete = ForeignKey.CASCADE
     )]
 )
 data class Category(
     val id: Long,
     val name: String,
+    @ColumnInfo(name = "account_id") val accountId: Long,
     @ColumnInfo(name = "icon_id") val iconId: Int,
     @ColumnInfo(name = "color_id") val colorId: Int,
     @TypeConverters(CategoryTypeConverter::class)

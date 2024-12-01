@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.BaseBottomSheet
-import com.example.money_manager_app.data.model.entity.CategoryData
+import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.databinding.FilterBottomSheetBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.fragment.search.Adapter.IconCategoryAdapter
@@ -96,7 +96,8 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
             listCategory.addAll(listCategoryIncome.filter { it.name != "Other"})
             listCategory.addAll(listCategoryExpense.filter { it.name != "Other"})
             listCategory.sortedBy { it.name }
-            listCategory.add(CategoryData.Category(
+            listCategory.add(
+                CategoryData.Category(
                 0, "Other", "expense_14",
                 "expense",
                 true

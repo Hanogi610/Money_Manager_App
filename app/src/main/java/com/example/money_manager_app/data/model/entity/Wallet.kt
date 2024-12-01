@@ -24,7 +24,7 @@ data class Wallet(
     @TypeConverters(WalletTypeConverter::class)
     @ColumnInfo(name = "wallet_type") val walletType: WalletType,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "icon_id") val iconId: Int ?= R.drawable.wallet_14,
-    @ColumnInfo(name = "color_id") val colorId: Int ?= R.color.color_1,
+    @ColumnInfo(name = "icon_id") val iconId: Int = R.drawable.wallet_14,
+    @ColumnInfo(name = "color_id") val colorId: Int = R.color.color_1,
     @ColumnInfo(name = "is_excluded") val isExcluded: Boolean ?= false
 )

@@ -15,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
-import com.example.money_manager_app.data.model.entity.CalendarSummary
+import com.example.money_manager_app.data.model.CalendarSummary
 import com.example.money_manager_app.databinding.FragmentCalendarBinding
 import com.example.money_manager_app.fragment.calendar.viewmodel.CalendarViewModel
 import com.example.money_manager_app.fragment.detail.view.DetailDayFragment

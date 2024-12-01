@@ -5,7 +5,7 @@ import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.activity.BaseActivity
-import com.example.money_manager_app.data.model.entity.CategoryData
+import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.databinding.ActivityMainBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.navigation.AppNavigation

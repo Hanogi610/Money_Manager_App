@@ -1,4 +1,4 @@
-package com.example.money_manager_app.data.model.entity
+package com.example.money_manager_app.data.model
 
 import android.content.Context
 import android.util.Log
