@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.money_manager_app.data.model.entity.Budget
+import com.example.money_manager_app.data.model.entity.BudgetCategoryCrossRef
+import com.example.money_manager_app.data.model.entity.BudgetWithCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,5 +27,12 @@ interface BudgetDao {
     fun deleteBudget(id: Long)
 
     @Query("SELECT * FROM budget WHERE account_id = :accountId")
-    fun getBudgetsByAccountId(accountId: Long): Flow<List<Budget>>
+    fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetWithCategory>>
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertBudgetCategoryCrossRefs(crossRefs: List<BudgetCategoryCrossRef>)
+
+    @Query("DELETE FROM BudgetCategoryCrossRef WHERE budgetId = :budgetId AND categoryId = :categoryId")
+    suspend fun deleteBudgetCategoryCrossRef(budgetId: Long, categoryId: Long)
+
 }
