@@ -29,6 +29,12 @@ import com.example.money_manager_app.data.model.entity.enums.TransferType
             childColumns = ["account_id"],
             onDelete = ForeignKey.CASCADE
         ),
+        ForeignKey(
+            entity = Category::class,
+            parentColumns = ["category_id"],
+            childColumns = ["category_id"],
+            onDelete = ForeignKey.CASCADE
+        )
     ]
 )
 data class Transfer(
@@ -46,4 +52,14 @@ data class Transfer(
     override val time: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "type_of_expenditure") val typeOfExpenditure: TransferType,
     @ColumnInfo(name = "icon_id") override val iconId: Int?,
+    @ColumnInfo(name = "category_id") val categoryId: Long
 ) : Transaction(id, iconId, name, amount, accountId, walletId, date, time)
+
+data class TransferWithCategory(
+    @Embedded val transfer: Transfer,
+    @Relation(
+        parentColumn = "transfer_id",
+        entityColumn = "category_id"
+    )
+    val categories: List<Category>
+)

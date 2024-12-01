@@ -9,9 +9,9 @@ import androidx.room.Relation
 
 @Entity(
     primaryKeys = ["transfer_id", "category_id"], foreignKeys = [ForeignKey(
-        entity = Transfer::class,
-        parentColumns = ["transfer_id"],
-        childColumns = ["transfer_id"],
+        entity = Budget::class,
+        parentColumns = ["budget_id"],
+        childColumns = ["budget_id"],
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = Category::class,
@@ -20,27 +20,17 @@ import androidx.room.Relation
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class TransferCategoryCrossRef(
-    @ColumnInfo(name = "transfer_id") val transferId: Long,
+data class BudgetCategoryCrossRef(
+    @ColumnInfo(name = "budget_id") val budgetId: Long,
     @ColumnInfo(name = "category_id") val categoryId: Long
 )
 
-data class TransferWithCategory(
-    @Embedded val transfer: Transfer,
+data class BudgetWithCategory(
+    @Embedded val budget: Budget,
     @Relation(
         parentColumn = "transfer_id",
         entityColumn = "category_id",
-        associateBy = Junction(TransferCategoryCrossRef::class)
+        associateBy = Junction(BudgetCategoryCrossRef::class)
     )
     val categories: List<Category>
-)
-
-data class CategoryWithTransfer(
-    @Embedded val category: Category,
-    @Relation(
-        parentColumn = "category_id",
-        entityColumn = "transfer_id",
-        associateBy = Junction(TransferCategoryCrossRef::class)
-    )
-    val transfers: List<Transfer>
 )

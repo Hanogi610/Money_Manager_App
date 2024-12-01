@@ -19,12 +19,12 @@ import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
-import com.example.money_manager_app.data.model.entity.TransferCategoryCrossRef
+import com.example.money_manager_app.data.model.entity.BudgetCategoryCrossRef
 import com.example.money_manager_app.data.model.entity.Wallet
 
 @Database(
     entities = [
-        Account::class, Budget::class, Goal::class, Category::class, TransferCategoryCrossRef::class,
+        Account::class, Budget::class, Goal::class, Category::class, BudgetCategoryCrossRef::class,
         Transfer::class, Wallet::class, Debt::class, DebtTransaction::class, GoalTransaction::class
     ],
     version = 1,
