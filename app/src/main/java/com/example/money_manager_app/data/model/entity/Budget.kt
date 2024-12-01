@@ -22,7 +22,7 @@ import kotlinx.parcelize.Parcelize
         onDelete = ForeignKey.CASCADE
     ), ForeignKey(
         entity = Category::class,
-        parentColumns = ["id"],
+        parentColumns = ["category_id"],
         childColumns = ["category_id"],
         onDelete = ForeignKey.CASCADE
     )]
@@ -42,7 +42,7 @@ data class BudgetWithCategory(
     @Embedded val budget: Budget,
     @Relation(
         parentColumn = "category_id",
-        entityColumn = "id"
+        entityColumn = "category_id"
     )
     val category: Category
 )

@@ -117,7 +117,7 @@ class TransactionAdapter(
                 }
             }
             binding.transactionTime.text = transaction.time.toFormattedTimeString()
-            binding.walletName.text = wallets.find { it.id == transaction.fromWallet }?.name
+            binding.walletName.text = wallets.find { it.id == transaction.walletId }?.name
             binding.root.setOnSafeClickListener {
                 onTransactionClick(transaction)
             }
