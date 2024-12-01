@@ -3,9 +3,8 @@ package com.example.money_manager_app.fragment.calendar.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.Transaction
-import com.example.money_manager_app.data.model.entity.CalendarRecord
+import com.example.money_manager_app.data.model.CalendarRecord
 import com.example.money_manager_app.data.repository.DebtRepository
 import com.example.money_manager_app.data.repository.DebtTransactionRepository
 import com.example.money_manager_app.data.repository.TransferRepository

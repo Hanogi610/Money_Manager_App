@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.Transaction
-import com.example.money_manager_app.data.model.entity.CategoryData
+import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.data.repository.DebtRepository

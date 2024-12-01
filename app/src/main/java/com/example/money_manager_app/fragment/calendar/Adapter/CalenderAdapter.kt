@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
-import com.example.money_manager_app.data.model.entity.CalendarRecord
+import com.example.money_manager_app.data.model.CalendarRecord
 import com.example.money_manager_app.utils.CalendarHelper
 import com.example.money_manager_app.utils.Helper
 import com.example.money_manager_app.utils.SharePreferenceHelper

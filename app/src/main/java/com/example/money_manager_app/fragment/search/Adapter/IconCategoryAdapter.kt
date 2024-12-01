@@ -3,7 +3,7 @@ package com.example.money_manager_app.fragment.search.Adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.money_manager_app.data.model.entity.CategoryData
+import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.databinding.ItemCategorySearchBinding
 
 class IconCategoryAdapter(

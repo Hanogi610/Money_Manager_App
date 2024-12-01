@@ -11,7 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
-import com.example.money_manager_app.data.model.entity.CategoryData
+import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentSelectIncomeExpenseBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel

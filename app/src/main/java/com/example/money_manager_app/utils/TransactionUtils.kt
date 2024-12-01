@@ -2,7 +2,7 @@ package com.example.money_manager_app.utils
 
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.TransactionListItem
-import com.example.money_manager_app.data.model.entity.CalendarRecord
+import com.example.money_manager_app.data.model.CalendarRecord
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.GoalTransaction

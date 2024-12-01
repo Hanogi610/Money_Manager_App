@@ -64,4 +64,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideGoalTransactionDao(appDatabase: AppDatabase) = appDatabase.goalTransactionDao()
+
+    @Provides
+    @Singleton
+    fun provideCategoryDao(appDatabase: AppDatabase) = appDatabase.categoryDao()
 }

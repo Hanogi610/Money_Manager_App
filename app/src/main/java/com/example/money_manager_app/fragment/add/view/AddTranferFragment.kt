@@ -20,7 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
-import com.example.money_manager_app.data.model.entity.AddTransfer
+import com.example.money_manager_app.data.model.AddTransfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddTranferBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
