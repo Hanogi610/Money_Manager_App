@@ -91,6 +91,7 @@
     <string name="transaction">Transaction</string>
     <string name="percent">%1$d%%</string>
     <string name="overpaid">Overpaid</string>
+    <string name="type">Type</string>
     <string name="select_wallet">Select Wallet</string>
     <string name="sun" translatable="false">Sun</string>
     <string name="mon" translatable="false">Mon</string>

@@ -251,6 +251,7 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, AddViewModel>(R
             if(linkimg == null){
                 linkimg = ""
             }
+            val memo = binding.etMemo.text.toString()
             val toWallet = 1L
             val fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
             val fee : Double = 0.0
@@ -272,7 +273,8 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, AddViewModel>(R
                 time.toTimeTimestamp(),
                 TransferType.Income,
                 iconId,
-                id_category
+                id_category,
+                memo
             )
             getVM().saveIncomeAndExpense(transfer)
             getVM().onCleared()

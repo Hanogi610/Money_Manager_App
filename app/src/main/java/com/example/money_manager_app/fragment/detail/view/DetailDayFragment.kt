@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.money_manager_app.R
+import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.databinding.FragmentDetailDayBinding
 import com.example.money_manager_app.fragment.detail.Adapter.DetailDayAdapter
 import com.example.money_manager_app.fragment.detail.viewmodel.DetailViewModel
@@ -65,9 +69,16 @@ class DetailDayFragment : Fragment() {
 
 
     fun setAdapter() {
-        adapter = DetailDayAdapter(listOf(), listOf())
+        adapter = DetailDayAdapter(listOf(), listOf(), ::onClick)
         binding.rvDetailDay.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvDetailDay.adapter = adapter
+    }
+
+    fun onClick(transaction: Transaction) {
+        val bundle = bundleOf(
+            "transaction" to transaction
+        )
+        findNavController().navigate(R.id.recordFragment, bundle)
     }
 
     fun ShowDay(bundle: Bundle) {

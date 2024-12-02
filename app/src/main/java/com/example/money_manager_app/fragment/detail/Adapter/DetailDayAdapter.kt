@@ -16,7 +16,11 @@ import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.ItemTransferBinding
 import com.example.money_manager_app.utils.toFormattedTimeString
 
-class DetailDayAdapter(private var listTranfer : List<Transaction>, private var listWallet : List<Wallet>) :RecyclerView.Adapter<DetailDayAdapter.DetailDayViewHolder>() {
+class DetailDayAdapter(
+    private var listTranfer : List<Transaction>,
+    private var listWallet : List<Wallet>,
+    private val onClick :(transaction: Transaction) -> Unit
+) :RecyclerView.Adapter<DetailDayAdapter.DetailDayViewHolder>() {
 
     inner class DetailDayViewHolder(private var binding: ItemTransferBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: Transaction) {
@@ -98,6 +102,9 @@ class DetailDayAdapter(private var listTranfer : List<Transaction>, private var 
                         binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
                 }
+            }
+            binding.root.setOnClickListener {
+                onClick(transaction)
             }
         }
     }
