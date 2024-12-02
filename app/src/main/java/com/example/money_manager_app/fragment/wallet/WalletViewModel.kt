@@ -51,6 +51,14 @@ class WalletViewModel @Inject constructor(
         }
     }
 
+    fun getBudgets(accountId: Long) {
+        viewModelScope.launch {
+            walletRepository.getWalletsByUserId(accountId).collect {
+                _wallets.value = it
+            }
+        }
+    }
+
     fun getGoals(accountId: Long) {
         viewModelScope.launch {
             goalRepository.getGoalsByAccountId(accountId).collect {
