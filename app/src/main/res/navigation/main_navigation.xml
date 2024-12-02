@@ -144,5 +144,10 @@
         android:name="com.example.money_manager_app.fragment.search.view.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/recordFragment"
+        android:name="com.example.money_manager_app.fragment.Record.view.RecordFragment"
+        android:label="RecordFragment"
+        tools:layout="@layout/fragment_record"/>
 
 </navigation>

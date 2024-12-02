@@ -25,6 +25,8 @@
         ): List<Transfer>
 
         fun getAllTransfer(date: Long): Flow<List<Transfer>>
+
+        suspend fun deleteTransfer(transferId: Long)
     }
 
 
@@ -62,7 +64,12 @@
             )
         }
 
+
         override fun getAllTransfer(date: Long): Flow<List<Transfer>> {
             return transferDao.getAllTransfer(date)
+        }
+
+        override suspend fun deleteTransfer(transferId: Long) {
+            transferDao.deleteTransfer(transferId)
         }
     }

@@ -279,7 +279,8 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
             val fee : Double = 0.0
             val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
             val name = binding.etMemo.text.toString()
-            var iconId = R.drawable.income_1
+            var iconId = R.drawable.transfer
+            var memo = binding.etMemo.text.toString()
             var id_category = 1L
             val transfer = Transfer(
                 0,
@@ -295,7 +296,8 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
                 time.toTimeTimestamp(),
                 typeOfExpenditure,
                 iconId,
-                id_category
+                id_category,
+                memo
             )
             getVM().saveIncomeAndExpense(transfer)
             getVM().onCleared()

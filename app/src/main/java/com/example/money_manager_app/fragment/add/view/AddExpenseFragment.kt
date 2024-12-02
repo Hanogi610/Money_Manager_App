@@ -258,6 +258,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>
             if(linkimg == null){
                 linkimg = ""
             }
+            val memo = binding.etMemo.text.toString()
             val toWallet = 1L
             val fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
             val fee : Double = 0.0
@@ -279,7 +280,8 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>
                 time.toTimeTimestamp(),
                 TransferType.Expense,
                 iconId,
-                id_category
+                id_category,
+                memo
             )
             Log.d("AddExpenseFragment", "onSaveExpense: $transfer")
             getVM().saveIncomeAndExpense(transfer)
