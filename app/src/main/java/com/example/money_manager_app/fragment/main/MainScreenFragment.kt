@@ -1,6 +1,8 @@
 package com.example.money_manager_app.fragment.main
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,6 +17,7 @@ import com.example.money_manager_app.databinding.FragmentMainScreenBinding
 import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.moneymanager.ui.main_screen.adapter.MainPagerAdapter
 import com.example.money_manager_app.fragment.main.fragment.AccountSelectorBottomSheet
+import com.example.money_manager_app.utils.CategoryUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -61,7 +64,6 @@ class MainScreenFragment :
                 }
             }
         })
-
         binding.addFab.setOnClickListener {
             when (getVM().currentFragmentId.value) {
                 0 -> {
@@ -100,6 +102,18 @@ class MainScreenFragment :
                     openAccountSelector(accounts, currentAccount)
                 }
             }
+        }
+        checkOnFirstRun()
+    }
+
+    private fun checkOnFirstRun(){
+        val sharedPreferences = requireContext().getSharedPreferences("app_preferences", MODE_PRIVATE)
+        val isFirstRun = sharedPreferences.getBoolean("firstRun", true)
+        if(isFirstRun){
+            Log.d("MainActivity", "checkOnFirstRun: ")
+            val listCategory = CategoryUtils.listCategory
+            mainViewModel.insertCategory(listCategory)
+            sharedPreferences.edit().putBoolean("firstRun", false).apply()
         }
     }
 

@@ -43,11 +43,18 @@ class MainViewModel @Inject constructor(
         observeCurrentAccount()
     }
 
+
     fun getAccount() {
         viewModelScope.launch {
             accountRepository.getAccount().collect {
                 _accounts.value = it
             }
+        }
+    }
+
+    fun insertCategory(listCategory: List<Category>){
+        viewModelScope.launch {
+            categoryRepository.insertCategory(listCategory)
         }
     }
 

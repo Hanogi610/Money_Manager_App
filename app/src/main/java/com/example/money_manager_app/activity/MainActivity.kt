@@ -1,6 +1,7 @@
 package com.example.money_manager_app.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.example.money_manager_app.R
@@ -9,6 +10,7 @@ import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.databinding.ActivityMainBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.navigation.AppNavigation
+import com.example.money_manager_app.utils.CategoryUtils
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -19,6 +21,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     @Inject
     lateinit var appNavigation: AppNavigation
     private val addViewModel: AddViewModel by viewModels()
+    private val mainViewModel : MainViewModel by viewModels()
 
     override fun getVM(): MainViewModel {
         val viewModel: MainViewModel by viewModels()
@@ -38,7 +41,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         val navController = navHostFragment.navController
         appNavigation.bind(navController)
     }
-
 
 
     companion object {

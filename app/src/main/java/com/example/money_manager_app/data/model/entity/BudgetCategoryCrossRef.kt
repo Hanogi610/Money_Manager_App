@@ -8,7 +8,7 @@ import androidx.room.Junction
 import androidx.room.Relation
 
 @Entity(
-    primaryKeys = ["transfer_id", "category_id"], foreignKeys = [ForeignKey(
+    primaryKeys = ["budget_id", "category_id"], foreignKeys = [ForeignKey(
         entity = Budget::class,
         parentColumns = ["budget_id"],
         childColumns = ["budget_id"],

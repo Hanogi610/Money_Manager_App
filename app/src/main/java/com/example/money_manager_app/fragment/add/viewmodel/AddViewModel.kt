@@ -9,6 +9,7 @@ import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.AddTransfer
 import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.Transfer
@@ -37,7 +38,7 @@ class AddViewModel @Inject constructor(
     private val repository: TransferRepository,
     private val walletRepository: WalletRepository,
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
-)  : ViewModel() {
+)  : BaseViewModel() {
     private val _categoryListExpense = MutableStateFlow<List<CategoryData.Category>>(emptyList())
     val categoryListExpense: StateFlow<List<CategoryData.Category>> get() = _categoryListExpense
 
@@ -250,44 +251,44 @@ class AddViewModel @Inject constructor(
         _currentDateTime.value = Pair(dateFormat.format(currentDate), timeFormat.format(currentDate))
     }
 
-    fun saveIncomeAndExpense(addTransfer: AddTransfer) {
+    fun saveIncomeAndExpense(transfer: Transfer) {
         viewModelScope.launch(ioDispatcher) {
-            if (addTransfer.amount > 0) {
-                val transferDate = addTransfer.date.toDateTimestamp()
-                val transferTime = addTransfer.time.toTimeTimestamp()
-                repository.insertTransfer(
-                    Transfer(
-                        fromWallet = addTransfer.walletId,
-                        toWallet = addTransfer.toWallet,
-                        amount = addTransfer.amount,
-                        name = addTransfer.name,
-                        fee = addTransfer.fee,
-                        description = addTransfer.description,
-                        accountId = addTransfer.accountId,
-                        linkImg = addTransfer.linkImg,
-                        date = transferDate,
-                        time = transferTime,
-                        typeOfExpenditure = addTransfer.typeOfExpenditure,
-                        iconId = addTransfer.iconId,
-                        colorId = addTransfer.colorId,
-                        typeIconWallet = ""
-                    )
+            if (transfer.amount > 0) {
+                repository.insertTransferDetail(
+                    transfer
                 )
-                if(addTransfer.typeOfExpenditure == TransferType.Transfer){
-                    var walletFrom = fromWallet.value.find { it.id == addTransfer.walletId }
-                    var walletTo = toWallet.value.find { it.id == addTransfer.toWallet }
+                if(transfer.typeOfExpenditure == TransferType.Transfer){
+                    var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
+                    var walletTo = toWallet.value.find { it.id == transfer.toWalletId }
                     walletFrom?.let {
                         walletRepository.editWallet(it.copy(
-                            amount = it.amount - addTransfer.amount - addTransfer.fee
+                            amount = it.amount - transfer.amount - transfer.fee
                         ))
                     }
                     walletTo?.let {
                         walletRepository.editWallet(it.copy(
-                            amount = it.amount + addTransfer.amount
+                            amount = it.amount + transfer.amount
                         ))
                     }
+                } else {
+                    if(transfer.typeOfExpenditure == TransferType.Income){
+                        var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
+                        walletFrom?.let {
+                            walletRepository.editWallet(it.copy(
+                                amount = it.amount + transfer.amount
+                            ))
+                        }
+                    } else {
+                        var walletFrom = toWallet.value.find { it.id == transfer.walletId }
+                        walletFrom?.let {
+                            walletRepository.editWallet(
+                                it.copy(
+                                    amount = it.amount - transfer.amount
+                                )
+                            )
+                        }
+                    }
                 }
-                Log.i("AddViewModel", "transferDate: $addTransfer")
             }
         }
     }

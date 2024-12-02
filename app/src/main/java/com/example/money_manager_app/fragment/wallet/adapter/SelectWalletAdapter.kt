@@ -13,8 +13,7 @@ class SelectWalletAdapter(private var listWallet: List<Wallet>, private val onIt
         RecyclerView.ViewHolder(binding.root) {
             fun bind (wallet: Wallet){
                 binding.tvWallet.text = wallet.name.toString()
-                var link = "wallet_" + wallet.iconId
-                binding.ivItem.setImageResource(binding.root.context.resources.getIdentifier(link, "drawable", binding.root.context.packageName))
+                binding.ivItem.setImageResource(wallet.iconId)
                 binding.tvMoney.text = wallet.amount.toString()
                 binding.root.setOnClickListener {
                     onItemClick(wallet)

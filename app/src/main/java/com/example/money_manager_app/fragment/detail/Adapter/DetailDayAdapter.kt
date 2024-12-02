@@ -24,43 +24,31 @@ class DetailDayAdapter(private var listTranfer : List<Transaction>, private var 
             if (transaction is Transfer){
                 when (transaction.typeOfExpenditure) {
                     TransferType.Expense -> {
-                        val link = "expense_" + transaction.iconId
-                        val resId = binding.root.context.resources.getIdentifier(link, "drawable", binding.root.context.packageName)
-                        if (resId != 0) {
-                            binding.ivItem.setImageResource(resId)
-                        }
+                        binding.ivItem.setImageResource(transaction.iconId ?: R.drawable.expense_1)
                         binding.tvAmount.text = "-${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.red)
                         )
                         binding.tvName.text = transaction.description
-                        binding.tvBank.text = listWallet.find { it.id == transaction.fromWallet}?.name
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
                     TransferType.Income -> {
-                        val link = "income_" + transaction.iconId
-                        val resId = binding.root.context.resources.getIdentifier(link, "drawable", binding.root.context.packageName)
-                        if (resId != 0) {
-                            binding.ivItem.setImageResource(resId)
-                        }
+                        binding.ivItem.setImageResource(transaction.iconId ?: R.drawable.expense_1)
                         binding.tvAmount.text = "+${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
                         binding.tvName.text = transaction.description
-                        binding.tvBank.text = listWallet.find { it.id == transaction.fromWallet}?.name
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
                     else -> {
-                        val link = "transfer_" + transaction.iconId
-                        val resId = binding.root.context.resources.getIdentifier(link, "drawable", binding.root.context.packageName)
-                        if (resId != 0) {
-                            binding.ivItem.setImageResource(resId)
-                        }
+                        binding.ivItem.setImageResource(transaction.iconId ?: R.drawable.expense_1)
                         binding.tvAmount.text = "${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.black)
                         )
                         binding.tvName.text = transaction.description
-                        val bank = listWallet.find { it.id == transaction.fromWallet}?.name + " -> " + listWallet.find { it.id == transaction.toWallet}?.name
+                        val bank = listWallet.find { it.id == transaction.walletId}?.name + " -> " + listWallet.find { it.id == transaction.toWalletId}?.name
                         binding.tvBank.text = bank
                     }
                 }
@@ -73,7 +61,7 @@ class DetailDayAdapter(private var listTranfer : List<Transaction>, private var 
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
                         binding.tvName.text = transaction.description
-                        binding.tvBank.text = listWallet.find { it.id == transaction.fromWallet}?.name
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
 
                     DebtType.RECEIVABLE -> {
@@ -82,7 +70,7 @@ class DetailDayAdapter(private var listTranfer : List<Transaction>, private var 
                             ContextCompat.getColor(binding.root.context, R.color.red)
                         )
                         binding.tvName.text = transaction.description
-                        binding.tvBank.text = listWallet.find { it.id == transaction.fromWallet}?.name
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
                 }
             }
@@ -98,7 +86,7 @@ class DetailDayAdapter(private var listTranfer : List<Transaction>, private var 
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
                         binding.tvName.text = "Debt increase"
-                        binding.tvBank.text = listWallet.find { it.id == transaction.fromWallet}?.name
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
 
                     DebtActionType.REPAYMENT -> {
@@ -107,7 +95,7 @@ class DetailDayAdapter(private var listTranfer : List<Transaction>, private var 
                             ContextCompat.getColor(binding.root.context, R.color.red)
                         )
                         binding.tvName.text = "Repayment"
-                        binding.tvBank.text = listWallet.find { it.id == transaction.fromWallet}?.name
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
                 }
             }

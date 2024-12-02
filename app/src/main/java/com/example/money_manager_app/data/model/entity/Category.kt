@@ -20,7 +20,7 @@ import com.example.money_manager_app.utils.CategoryTypeConverter
 )
 data class Category(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "category_id") val id: Long,
+    @ColumnInfo(name = "category_id") val id: Long = 0,
     val name: String,
     @ColumnInfo(name = "account_id") val accountId: Long,
     @ColumnInfo(name = "icon_id") val iconId: Int,
@@ -33,8 +33,8 @@ data class Category(
 data class CategoryWithTransfer(
     @Embedded val category: Category,
     @Relation(
-        parentColumn = "transfer_id",
-        entityColumn = "category_id"
+        parentColumn = "category_id",
+        entityColumn = "transfer_id"
     )
     val transfers: List<Transfer>
 )

@@ -81,7 +81,7 @@ class AddGoalTransactionFragment :
             binding.spinnerActionType.setSelection(inputTypeIndex)
             binding.delete.visibility = View.VISIBLE
             val walletName =
-                mainViewModel.currentAccount.value!!.wallets.find { it.id == transaction.fromWallet }!!.name
+                mainViewModel.currentAccount.value!!.wallets.find { it.id == transaction.walletId }!!.name
             binding.spinnerWallet.setSelection(walletAdapter.getPosition(walletName))
         }
 
@@ -111,14 +111,14 @@ class AddGoalTransactionFragment :
                 amount = amount,
                 date = date,
                 time = time,
-                fromWallet = wallet,
+                walletId = wallet,
                 type = inputType
             ) ?: GoalTransaction(
                 name = "GOAL $inputType",
                 amount = amount,
                 date = date,
                 time = time,
-                fromWallet = wallet,
+                walletId = wallet,
                 type = inputType,
                 accountId = mainViewModel.currentAccount.value!!.account.id,
                 goalId = goal!!.id

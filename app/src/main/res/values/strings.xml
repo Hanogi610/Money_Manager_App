@@ -177,6 +177,8 @@
     <string name="budget_s_name">Budget\'s name</string>
     <string name="add_category">Add Category</string>
     <string name="balance_visibility_toggle">Balance Visibility Toggle</string>
+    <string name="record">Record</string>
+    <string name="Memo">Memo</string>
     <string-array name="spinner_color">
         <item>#34BFFF</item>
         <item>#0097E6</item>

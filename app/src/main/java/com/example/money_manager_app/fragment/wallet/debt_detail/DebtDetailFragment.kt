@@ -55,7 +55,7 @@ class DebtDetailFragment :
         val currentCurrencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
         adapter = TransactionAdapter(
-            requireContext(), currentCurrencySymbol, mainViewModel.currentAccount.value!!.wallets, ::openAddDebtTransactionScreen
+            requireContext(), currentCurrencySymbol, mainViewModel.currentAccount.value!!.wallets, listOf(),::openAddDebtTransactionScreen
         )
         binding.debtTransactionRv.adapter = adapter
         binding.debtTransactionRv.layoutManager = LinearLayoutManager(requireContext())

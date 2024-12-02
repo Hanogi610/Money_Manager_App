@@ -15,6 +15,9 @@ interface CategoryDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertCategory(category: Category)
 
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertCategory(listCategory : List<Category>)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun editCategory(category: Category)
 

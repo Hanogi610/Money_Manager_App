@@ -70,7 +70,7 @@ class SearchViewModel @Inject constructor(
 
             list.addAll(debtRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, description, category, wallet))
             list.addAll(debtTransactionRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, category, wallet))
-            list.addAll(transferRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, description, category, wallet))
+            list.addAll(transferRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, description, wallet, category?.toLong()))
             setListTransaction(list)
         }
     }

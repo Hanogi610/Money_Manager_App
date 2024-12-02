@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
+import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.databinding.FragmentSelectWalletBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
@@ -22,26 +23,20 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SelectWalletFragment : Fragment() {
+class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletViewModel>(R.layout.fragment_select_wallet) {
 
-    private lateinit var binding : FragmentSelectWalletBinding
     private var selectWalletAdapterInclude: SelectWalletAdapter = SelectWalletAdapter(emptyList(), ::onItemClick)
     private var selectWalletAdapterExclude: SelectWalletAdapter = SelectWalletAdapter(emptyList(), ::onItemClick)
     private val mainViewModel: MainViewModel by activityViewModels()
-    private val viewModel: WalletViewModel by activityViewModels()
     private val addViewModel : AddViewModel by activityViewModels()
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentSelectWalletBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun getVM(): WalletViewModel {
+        val vm: WalletViewModel by activityViewModels()
+        return vm
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
         setAdapter()
         observeData()
         getData()
@@ -50,13 +45,13 @@ class SelectWalletFragment : Fragment() {
 
 
     fun getData(){
-        viewModel.getWallets(mainViewModel.currentAccount.value!!.account.id)
+        getVM().getWallets(mainViewModel.currentAccount.value!!.account.id)
     }
 
     fun observeData(){
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.wallets.collect {
+                getVM().wallets.collect {
                     var listWalletInclude = mutableListOf<Wallet>()
                     var listWalletExclude = mutableListOf<Wallet>()
                     for(wallet in it){

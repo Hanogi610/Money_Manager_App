@@ -13,6 +13,8 @@ import javax.inject.Inject
 interface CategoryRepository {
     suspend fun insertCategory(category: Category)
 
+    suspend fun insertCategory(listCategory : List<Category>)
+
     suspend fun editCategory(category: Category)
 
     suspend fun deleteCategory(category: Category)
@@ -27,6 +29,10 @@ interface CategoryRepository {
 class CategoryRepositoryImpl @Inject constructor(private val categoryDao: CategoryDao) : CategoryRepository {
     override suspend fun insertCategory(category: Category) {
         categoryDao.insertCategory(category)
+    }
+
+    override suspend fun insertCategory(listCategory : List<Category>) {
+        categoryDao.insertCategory(listCategory)
     }
 
     override suspend fun editCategory(category: Category) {

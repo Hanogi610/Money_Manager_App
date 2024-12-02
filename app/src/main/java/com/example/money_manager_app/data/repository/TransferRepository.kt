@@ -1,6 +1,7 @@
     package com.example.money_manager_app.data.repository
 
     import com.example.money_manager_app.data.dao.TransferDao
+    import com.example.money_manager_app.data.model.entity.Category
     import com.example.money_manager_app.data.model.entity.Transfer
     import kotlinx.coroutines.flow.Flow
     import javax.inject.Inject
@@ -19,7 +20,8 @@
             minAmount: Double?,
             maxAmount: Double?,
             description: String?,
-            fromWallet: Long?
+            fromWallet: Long?,
+            categoryId: Long?
         ): List<Transfer>
 
         fun getAllTransfer(date: Long): Flow<List<Transfer>>
@@ -52,7 +54,8 @@
             minAmount: Double?,
             maxAmount: Double?,
             description: String?,
-            fromWallet: Long?
+            fromWallet: Long?,
+            categoryId: Long?
         ): List<Transfer> {
             return transferDao.searchByDateAndAmountAndDesAndCategoryAndWallet(
                 startDate, endDate, minAmount, maxAmount, description, fromWallet
