@@ -35,7 +35,7 @@ class AppPreferencesImpl @Inject constructor(
     }
 
     override fun get(key: String): String? {
-        return mPrefs.getString(key, "")
+        return mPrefs.getString(key, null)
     }
 
     override fun put(key: String, value: Int) {
@@ -74,7 +74,7 @@ class AppPreferencesImpl @Inject constructor(
         editor.apply()
     }
 
-    override fun isFirstTimeLaunch() = get(PREF_PARAM_IS_FIRST_TIME_LAUNCH, false)
+    override fun isFirstTimeLaunch() = get(PREF_PARAM_IS_FIRST_TIME_LAUNCH, true)
 
     override fun setFirstTimeLaunch(isFirstTimeLaunch: Boolean) {
         put(PREF_PARAM_IS_FIRST_TIME_LAUNCH, isFirstTimeLaunch)
