@@ -3,15 +3,23 @@
     <RelativeLayout
         android:layout_marginTop="@dimen/_16dp"
         android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/_8dp"
+        android:layout_marginRight="@dimen/_8dp"
         android:layout_height="match_parent">
         <RelativeLayout
             android:id="@+id/dateWrapper"
+            android:paddingTop="@dimen/_4dp"
+            android:paddingBottom="@dimen/_4dp"
+            android:paddingLeft="@dimen/_8dp"
+            android:paddingRight="@dimen/_8dp"
+            android:background="@drawable/customer_title_calendar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             >
             <ImageView
                 android:id="@+id/backImage"
                 android:layout_width="@dimen/_36dp"
+                android:layout_centerVertical="true"
                 android:layout_height="@dimen/_36dp"
                 android:src="@drawable/arrow_left"
                 android:layout_marginStart="@dimen/_8dp"
@@ -22,15 +30,18 @@
                 android:layout_height="@dimen/_36dp"
                 android:contentDescription="@string/next"
                 android:layout_marginEnd="@dimen/_8dp"
+                android:layout_centerVertical="true"
                 android:src="@drawable/arrow_right"
                 android:layout_alignParentEnd="true"/>
 
             <TextView
                 android:id="@+id/dateLabel"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/sfprodisplay_regular"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_height="19dp"
-                android:textSize="17sp" />
+                android:textSize="@dimen/_14sp" />
         </RelativeLayout>
         <View
             android:id="@+id/divider2"
@@ -40,7 +51,10 @@
             />
         <LinearLayout
             android:id="@+id/summaryWrapper"
+            android:layout_marginTop="@dimen/_8dp"
             android:layout_width="match_parent"
+            android:background="@drawable/customr_title_total_calendar"
+            android:padding="@dimen/_8dp"
             android:layout_height="65dp"
             android:orientation="horizontal"
             android:weightSum="3"
@@ -57,16 +71,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/income"
+                    android:fontFamily="@font/sfprodisplay_regular"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
+                    android:textSize="@dimen/_12sp"
                     android:layout_marginEnd="8dp"/>
 
                 <TextView
                     android:layout_marginTop="@dimen/_8dp"
-                    android:textSize="15sp"
+                    android:textSize="12sp"
                     android:textColor="#ff3f96e2"
                     android:ellipsize="end"
                     android:gravity="center"
+                    android:fontFamily="@font/sfprodisplay_medium"
                     android:id="@+id/incomeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="21dp"
@@ -86,8 +103,10 @@
                 <TextView
                     android:id="@+id/summaryExpenseLabel"
                     android:layout_width="wrap_content"
+                    android:fontFamily="@font/sfprodisplay_regular"
                     android:layout_height="wrap_content"
-                    android:text="expense"
+                    android:text="Expense"
+                    android:textSize="@dimen/_12sp"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_gravity="center"/>
@@ -95,10 +114,11 @@
 
                 <TextView
                     android:layout_marginTop="@dimen/_8dp"
-                    android:textSize="15sp"
+                    android:textSize="12sp"
                     android:textColor="#fff73242"
                     android:ellipsize="end"
                     android:gravity="center"
+                    android:fontFamily="@font/sfprodisplay_medium"
                     android:id="@+id/expenseLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="21dp"
@@ -119,8 +139,10 @@
                     android:id="@+id/summaryAmountLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="@dimen/_12sp"
+                    android:fontFamily="@font/sfprodisplay_regular"
                     android:layout_gravity="center"
-                    android:text="total"
+                    android:text="Total"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     />
@@ -132,13 +154,14 @@
                     android:layout_height="21dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="8dp"
+                    android:fontFamily="@font/sfprodisplay_medium"
                     android:layout_marginEnd="8dp"
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
                     android:text="dash"
                     android:textAlignment="center"
-                    android:textSize="15sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>
         <View
@@ -149,7 +172,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:background="@drawable/custom_recyclerview"
-            android:layout_margin="@dimen/_16dp"
+            android:layout_marginTop="@dimen/_16dp"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

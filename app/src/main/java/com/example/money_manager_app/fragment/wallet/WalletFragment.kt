@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
 import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.data.model.BudgetDetail
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.databinding.FragmentWalletBinding
+import com.example.money_manager_app.fragment.wallet.adapter.BudgetAdapter
 import com.example.money_manager_app.fragment.wallet.adapter.DebtAdapter
 import com.example.money_manager_app.fragment.wallet.adapter.GoalAdapter
 import com.example.money_manager_app.fragment.wallet.adapter.WalletAdapter
@@ -33,6 +35,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
     private lateinit var walletAdapter: WalletAdapter
     private lateinit var debtAdapter: DebtAdapter
     private lateinit var goalAdapter: GoalAdapter
+    private lateinit var budgetAdapter: BudgetAdapter
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
@@ -43,6 +46,10 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
         walletAdapter = WalletAdapter(requireContext(), currencySymbol, ::onWalletItemClick, ::onAddWalletClick)
         binding.walletRecyclerView.adapter = walletAdapter
         binding.walletRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        budgetAdapter = BudgetAdapter(requireContext(),currencySymbol,::onBudgetItemClick,::onAddBudgetClick)
+        binding.budgetRecyclerView.adapter = budgetAdapter
+
 
         debtAdapter = DebtAdapter(requireContext(),currencySymbol,::onDebtItemClick,::onAddDebtClick)
         binding.debtRecyclerView.adapter = debtAdapter
@@ -60,6 +67,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
             getVM().getWallets(it)
             getVM().getDebts(it)
             getVM().getGoals(it)
+            getVM().getBudgets(it)
         }
 
         lifecycleScope.launch {
@@ -108,6 +116,16 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
 
     private fun onAddDebtClick() {
         appNavigation.openMainScreenToAddDebtScreen()
+    }
+
+    private fun onBudgetItemClick(budget: BudgetDetail) {
+        appNavigation.openMainScreenToBudgetDetailScreen(Bundle().apply {
+            putParcelable("budget", budget)
+        })
+    }
+
+    private fun onAddBudgetClick() {
+        appNavigation.openMainScreenToAddBudgetScreen()
     }
 
     private fun onAddWalletClick() {
