@@ -18,7 +18,7 @@ import androidx.room.Relation
         parentColumns = ["category_id"],
         childColumns = ["category_id"],
         onDelete = ForeignKey.CASCADE
-    )]
+    )], tableName = "budget_category_cross_ref"
 )
 data class BudgetCategoryCrossRef(
     @ColumnInfo(name = "budget_id") val budgetId: Long,

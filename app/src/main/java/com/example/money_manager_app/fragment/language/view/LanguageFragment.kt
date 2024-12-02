@@ -1,32 +1,43 @@
 package com.example.money_manager_app.fragment.language.view
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
-import com.example.money_manager_app.fragment.language.adapter.LanguageAdapter
-import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewModel
 import com.example.money_manager_app.databinding.FragmentLanguageBinding
+import com.example.money_manager_app.datasource.LanguageDataSource
+import com.example.money_manager_app.fragment.language.adapter.LanguageAdapter
 import com.example.money_manager_app.utils.setOnSafeClickListener
-import com.example.money_manager_app.fragment.language.viewmodel.LanguageViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import java.util.Locale
 
 @AndroidEntryPoint
-class LanguageFragment : BaseFragment<FragmentLanguageBinding, LanguageViewModel>(R.layout.fragment_language) {
+class LanguageFragment : BaseFragmentNotRequireViewModel<FragmentLanguageBinding>(R.layout.fragment_language) {
 
     private lateinit var adapter: LanguageAdapter
+    private val languages = LanguageDataSource.getLanguageList()
+    private lateinit var language: String
 
-    override fun getVM(): LanguageViewModel {
-        val viewModel: LanguageViewModel by viewModels()
-        return viewModel
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
+
+        val languageName = appPreferences.getLanguage()
+        languages.forEach { language ->
+            language.isCheck = language.locale == languageName
+        }
+        language = languageName
     }
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
-        adapter = LanguageAdapter {
-            getVM().selectLanguage(it.locale)
+        adapter = LanguageAdapter(languages) {
+            language = it.locale
         }
 
         binding.rvLanguage.layoutManager = LinearLayoutManager(context)
@@ -37,22 +48,26 @@ class LanguageFragment : BaseFragment<FragmentLanguageBinding, LanguageViewModel
         super.setOnClick()
 
         binding.tvDone.setOnSafeClickListener {
-            getVM().changeLanguage()
-            Log.d(TAG, "setOnClick: 1")
-            appNavigation.openSplashToPasswordScreen()
+            LocaleHelper.setLocale(requireContext(), language)
+
+            lifecycleScope.launch {
+                appPreferences.setLanguage(language)
+                appPreferences.setFirstTimeLaunch(false)
+            }
+
+            appNavigation.openLanguageToPasswordScreen()
+
         }
     }
+}
 
-    override fun bindingStateView() {
-        super.bindingStateView()
+object LocaleHelper {
 
-        getVM().languages.observe(viewLifecycleOwner) {
-            Log.d(TAG, "bindingStateView: 1")
-            adapter.submitList(it)
-        }
-    }
-
-    companion object {
-        private const val TAG = "LanguageFragment"
+    fun setLocale(context: Context, languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.setLocale(locale)
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
     }
 }

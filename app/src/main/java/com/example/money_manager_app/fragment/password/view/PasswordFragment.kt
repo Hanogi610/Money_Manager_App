@@ -76,7 +76,7 @@ class PasswordFragment :
         getVM().numbersEnter.observe(viewLifecycleOwner) {
             it.forEach { (index, number) ->
                 if (number.isEmpty()) {
-                    numberDisplay[index].setText(R.string.subtract)
+                    numberDisplay[index].setText("")
                 } else {
                     numberDisplay[index].setText(number)
                 }

@@ -1,5 +1,6 @@
 package com.example.money_manager_app.fragment.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.Transaction
@@ -37,7 +38,7 @@ class HomeViewModel @Inject constructor(
             debtTransactionRepository.getDebtTransactionsByAccountId(accountId)
         val debtsFlow = debtRepository.getDebtListByAccountId(accountId)
 
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             combine(
                 goalsFlow,
                 transfersFlow,

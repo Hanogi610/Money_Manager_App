@@ -2,16 +2,15 @@ package com.example.money_manager_app.fragment.language.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.databinding.ItemLanguageBinding
 import com.example.money_manager_app.model.LanguageModel
 import com.example.money_manager_app.utils.loadImage
 
 class LanguageAdapter(
+    private val languages: List<LanguageModel>,
     private val onLanguageSelected: (LanguageModel) -> Unit
-) : ListAdapter<LanguageModel, LanguageAdapter.LanguageViewHolder>(LanguageDiffCallback()) {
+) : RecyclerView.Adapter<LanguageAdapter.LanguageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageViewHolder {
         val binding = ItemLanguageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -19,8 +18,10 @@ class LanguageAdapter(
     }
 
     override fun onBindViewHolder(holder: LanguageViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(languages[position])
     }
+
+    override fun getItemCount(): Int = languages.size
 
     inner class LanguageViewHolder(
         private val binding: ItemLanguageBinding,
@@ -33,18 +34,24 @@ class LanguageAdapter(
             binding.ivSelect.isActivated = languageModel.isCheck
 
             binding.root.setOnClickListener {
-                onLanguageSelected(languageModel)
+                click(languageModel)
             }
         }
-    }
-}
 
-class LanguageDiffCallback : DiffUtil.ItemCallback<LanguageModel>() {
-    override fun areItemsTheSame(oldItem: LanguageModel, newItem: LanguageModel): Boolean {
-        return oldItem.languageName == newItem.languageName
-    }
+        private fun click(languageModel: LanguageModel) {
+            onLanguageSelected(languageModel)
+            languageModel.isCheck = true
+            notifyItemChanged(adapterPosition, "payload")
+            handleLangDisplay(languageModel)
+        }
 
-    override fun areContentsTheSame(oldItem: LanguageModel, newItem: LanguageModel): Boolean {
-        return oldItem == newItem
+        private fun handleLangDisplay(languageModel: LanguageModel) {
+            for (i in languages.indices) {
+                if (languages[i].languageName != languageModel.languageName && languages[i].isCheck) {
+                    languages[i].isCheck = false
+                    notifyItemChanged(i, "payload")
+                }
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
 import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
@@ -39,6 +40,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         ) {
             // on transaction click
         }
+        binding.transactionRv.adapter = transactionAdapter
+        binding.transactionRv.layoutManager = LinearLayoutManager(requireContext())
+        getVM().getTransactionsByAccountId(mainViewModel.currentAccount.value!!.account.id)
     }
 
     override fun bindingStateView() {
