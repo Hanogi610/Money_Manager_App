@@ -1,4 +1,4 @@
-package com.example.money_manager_app.fragment.search.Adapter
+package com.example.money_manager_app.fragment.search.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

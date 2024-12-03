@@ -111,10 +111,12 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
     }
 
     private fun onAddWalletClick() {
-        TODO("Not yet implemented")
+        appNavigation.openMainScreenToAddWalletScreen()
     }
 
     private fun onWalletItemClick(wallet: Wallet) {
-        TODO("Not yet implemented")
+        appNavigation.openMainScreenToWalletDetailScreen(Bundle().apply {
+            putParcelable("wallet", wallet)
+        })
     }
 }

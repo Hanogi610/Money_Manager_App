@@ -61,4 +61,7 @@ interface DebtDao {
 
     @Query("SELECT * FROM debt WHERE account_id = :userId")
     fun getDebtListByAccountId(userId: Long): Flow<List<Debt>>
+
+    @Query("SELECT * FROM debt WHERE account_id = :userId AND wallet_id = :walletId")
+    fun getDebtListByAccountIdAndWalletId(userId: Long,walletId: Long): Flow<List<DebtDetail>>
 }

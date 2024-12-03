@@ -1,31 +1,34 @@
 package com.example.money_manager_app.fragment.wallet.wallet_detail
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.example.money_manager_app.R
+import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.data.model.entity.Wallet
+import com.example.money_manager_app.databinding.FragmentWalletDetailBinding
+import com.example.money_manager_app.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class WalletDetailFragment : Fragment() {
+@AndroidEntryPoint
+class WalletDetailFragment :
+    BaseFragment<FragmentWalletDetailBinding, WalletDetailViewModel>(R.layout.fragment_wallet_detail) {
 
-    companion object {
-        fun newInstance() = WalletDetailFragment()
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private var wallet: Wallet? = null
+
+    override fun getVM(): WalletDetailViewModel {
+        val viewModel: WalletDetailViewModel by viewModels()
+        return viewModel
     }
 
-    private val viewModel: WalletDetailViewModel by viewModels()
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
+        arguments?.let {
+            wallet = it.getParcelable("wallet")
+        }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_wallet_detail, container, false)
-    }
+
 }

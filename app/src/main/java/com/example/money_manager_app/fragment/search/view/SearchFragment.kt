@@ -1,7 +1,6 @@
 package com.example.money_manager_app.fragment.search.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -11,8 +10,8 @@ import com.example.money_manager_app.fragment.search.viewmodel.SearchViewModel
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.databinding.FragmentSearchBinding
-import com.example.money_manager_app.fragment.search.Adapter.SearchInterface
-import com.example.money_manager_app.fragment.search.Adapter.SearchTransactionAdapter
+import com.example.money_manager_app.fragment.search.adapter.SearchInterface
+import com.example.money_manager_app.fragment.search.adapter.SearchTransactionAdapter
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint

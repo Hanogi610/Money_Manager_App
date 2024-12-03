@@ -45,6 +45,9 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/edit"
                 android:src="@drawable/ic_edit_24"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginVertical="@dimen/_8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/deleteButton"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,6 +57,9 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/delete"
                 android:src="@drawable/ic_delete_24"
+                android:layout_marginHorizontal="@dimen/_16dp"
+                android:layout_marginVertical="@dimen/_8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

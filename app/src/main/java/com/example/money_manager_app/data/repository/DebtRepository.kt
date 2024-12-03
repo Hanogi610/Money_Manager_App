@@ -7,24 +7,26 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface DebtRepository {
-    fun getDebtsByAccountId(userId: Long) : Flow<List<DebtDetail>>
-    fun getDebtListByAccountId(userId: Long) : Flow<List<Debt>>
-    fun getDebtDetailsByDebtId(debtId: Long) : Flow<DebtDetail>
+    fun getDebtsByAccountId(userId: Long): Flow<List<DebtDetail>>
+    fun getDebtListByAccountId(userId: Long): Flow<List<Debt>>
+    fun getDebtDetailsByDebtId(debtId: Long): Flow<DebtDetail>
     fun getDebtsByDateAndAccountId(date: Long, accountId: Long): Flow<List<Debt>>
-    fun getDebtByDayStartAndDayEnd(accountId: Long, startDay : Long, endDay : Long): Flow<List<Debt>>
+    fun getDebtByDayStartAndDayEnd(accountId: Long, startDay: Long, endDay: Long): Flow<List<Debt>>
     fun searchByDateAndAmountAndDesAndCategoryAndWallet(
-        startDate : Long?,
-        endDate : Long?,
-        minAmount : Double?,
-        maxAmount : Double?,
-        description : String?,
+        startDate: Long?,
+        endDate: Long?,
+        minAmount: Double?,
+        maxAmount: Double?,
+        description: String?,
         categoryType: Int?,
-        fromWallet : Long?
+        fromWallet: Long?
     ): List<Debt>
-    suspend fun insertDebt(debt: Debt) : Long
+
+    suspend fun insertDebt(debt: Debt): Long
     suspend fun editDebt(debt: Debt)
     suspend fun deleteDebt(debtId: Long)
     suspend fun deleteDebt(debt: Debt)
+    fun getDebtListByAccountIdAndWalletId(userId: Long, walletId: Long): Flow<List<DebtDetail>>
 }
 
 class DebtRepositoryImpl @Inject constructor(
@@ -47,27 +49,23 @@ class DebtRepositoryImpl @Inject constructor(
     }
 
     override fun searchByDateAndAmountAndDesAndCategoryAndWallet(
-        startDate : Long?,
-        endDate : Long?,
-        minAmount : Double?,
-        maxAmount : Double?,
-        description : String?,
+        startDate: Long?,
+        endDate: Long?,
+        minAmount: Double?,
+        maxAmount: Double?,
+        description: String?,
         categoryType: Int?,
-        fromWallet : Long?
+        fromWallet: Long?
     ): List<Debt> {
         return debtDao.searchByDateAndAmountAndDesAndCategoryAndWallet(
-            startDate,
-            endDate,
-            minAmount,
-            maxAmount,
-            description,
-            categoryType,
-            fromWallet
+            startDate, endDate, minAmount, maxAmount, description, categoryType, fromWallet
         )
     }
 
 
-    override fun getDebtByDayStartAndDayEnd(accountId: Long, startDay: Long, endDay: Long): Flow<List<Debt>> {
+    override fun getDebtByDayStartAndDayEnd(
+        accountId: Long, startDay: Long, endDay: Long
+    ): Flow<List<Debt>> {
         return debtDao.getDebtByDayStartAndDayEnd(accountId, startDay, endDay)
     }
 
@@ -87,5 +85,10 @@ class DebtRepositoryImpl @Inject constructor(
         debtDao.deleteDebt(debt)
     }
 
-
+    override fun getDebtListByAccountIdAndWalletId(
+        userId: Long,
+        walletId: Long
+    ): Flow<List<DebtDetail>> {
+        return debtDao.getDebtListByAccountIdAndWalletId(userId, walletId)
+    }
 }

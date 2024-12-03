@@ -18,6 +18,9 @@ interface WalletDao {
     @Query("SELECT * FROM wallet where account_id = :userId")
     fun getWalletsByUserId(userId: Long) : Flow<List<Wallet>>
 
+    @Query("SELECT * FROM wallet WHERE id = :walletId")
+    fun getWalletById(walletId: Long) : Flow<Wallet>
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun editWallet(wallet: Wallet)
 

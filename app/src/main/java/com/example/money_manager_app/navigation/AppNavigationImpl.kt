@@ -16,7 +16,6 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
     }
 
     override fun openSplashToPasswordScreen(bundle: Bundle?) {
-        Log.d(TAG, "openSplashToPasswordScreen: 1")
         openScreen(R.id.action_splashScreenFragment_to_passwordFragment, bundle)
     }
 
@@ -72,7 +71,15 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
         openScreen(R.id.action_passwordFragment_to_mainFragment, bundle)
     }
 
-    companion object {
-        private const val TAG = "AppNavigationImpl"
+    override fun openMainScreenToAddWalletScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_addWalletFragment, bundle)
+    }
+
+    override fun openMainScreenToWalletDetailScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_walletDetailFragment, bundle)
+    }
+
+    override fun openWalletDetailToAddWalletScreen(bundle: Bundle?) {
+        openScreen(R.id.action_walletDetailFragment_to_addWalletFragment, bundle)
     }
 }
