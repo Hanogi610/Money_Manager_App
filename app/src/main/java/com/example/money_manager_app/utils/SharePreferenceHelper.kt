@@ -13,6 +13,11 @@ object SharePreferenceHelper {
         return true
     }
 
+    fun getAccountSymbol(context: Context): String? {
+        return context.getSharedPreferences("WalletPreferences", 0)
+            .getString("currencySymbol", "$")
+    }
+
 
     fun getFirstDayOfWeek(c: Context): Int {
         return c.getSharedPreferences("WalletPreferences", 0).getInt("dayOfWeek", 1)
