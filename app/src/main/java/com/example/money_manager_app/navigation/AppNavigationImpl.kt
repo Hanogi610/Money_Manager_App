@@ -72,6 +72,22 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
         openScreen(R.id.action_passwordFragment_to_mainFragment, bundle)
     }
 
+    override fun openMainScreenToAddBudgetScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_addBudgetFragment, bundle)
+    }
+
+    override fun openAddBudgetToSelectCategory(bundle: Bundle?) {
+        openScreen(R.id.action_addBudgetFragment_to_MultipleSelectionCatrgoryFragment, bundle)
+    }
+
+    override fun openMainScreenToBudgetDetailScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_detailBudgetFragment, bundle)
+    }
+
+    override fun openBudgetDetailToAddBudgetScreen(bundle: Bundle?) {
+        openScreen(R.id.action_detailBudgetFragment_to_addBudgetFragment, bundle)
+    }
+
     companion object {
         private const val TAG = "AppNavigationImpl"
     }

@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_arrow_back_24"
+                android:src="@drawable/arrow_left"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/add_category"
+                android:text="@string/add_budget"
                 android:textSize="@dimen/_20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -86,12 +86,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
-            android:text="@string/initial_amount"
+            android:text="@string/amount"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editTextName" />
 
-        <!-- Amount Field -->
         <EditText
             android:id="@+id/editTextAmount"
             android:layout_width="0dp"
@@ -102,6 +101,7 @@
             android:inputType="numberDecimal"
             android:padding="16dp"
             android:textSize="16sp"
+            android:drawableEnd="@drawable/calculator"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/amountTextView" />
@@ -118,12 +118,14 @@
             app:layout_constraintTop_toBottomOf="@id/editTextAmount" />
         <!-- Date Field -->
         <TextView
-            android:id="@+id/dateFieldContainer"
+            android:id="@+id/select_category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="@drawable/rounded_border"
             android:text="@string/select_category"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:gravity="center_vertical"
             android:padding="16dp"
             app:drawableEndCompat="@drawable/ic_keyboard_arrow_right_24"
@@ -139,43 +141,40 @@
             android:text="@string/color"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dateFieldContainer" />
+            app:layout_constraintTop_toBottomOf="@id/select_category" />
 
-        <Spinner
-            android:id="@+id/colorSpinner"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/llcolorContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_margin="16dp"
             android:background="@drawable/rounded_border"
             android:padding="@dimen/_16dp"
-            android:spinnerMode="dropdown"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/colorLabel" />
+            android:orientation="horizontal"
+            android:weightSum="10"
+            app:layout_constraintTop_toBottomOf="@id/colorLabel">
+            <Spinner
+                android:id="@+id/colorSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="9"
+                android:spinnerMode="dropdown"
+                android:background="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/colorLabel" />
 
-        <TextView
-            android:id="@+id/startDateTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
-            android:text="@string/start_date"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/colorSpinner" />
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/_6dp"
+                android:layout_width="wrap_content"
+                android:src="@drawable/arrow_down"
+                android:layout_height="wrap_content"/>
 
-        <!-- Amount Field -->
-        <TextView
-            android:id="@+id/editTextStartDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/rounded_border"
-            android:padding="16dp"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/startDateTextView" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/periodLabel"
@@ -186,7 +185,7 @@
             android:text="@string/period"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/editTextStartDate" />
+            app:layout_constraintTop_toBottomOf="@id/llcolorContainer" />
 
         <Spinner
             android:id="@+id/periodSpinner"
@@ -199,6 +198,29 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/periodLabel" />
+
+        <TextView
+            android:id="@+id/dayOfMonthLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="8dp"
+            android:text="@string/day_of_month"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/periodSpinner" />
+
+        <Spinner
+            android:id="@+id/dayOfMonthSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_border"
+            android:padding="@dimen/_16dp"
+            android:spinnerMode="dropdown"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dayOfMonthLabel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

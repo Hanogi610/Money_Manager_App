@@ -22,7 +22,8 @@ fun BudgetWithCategory.toBudgetDetail() = BudgetDetail(
     budget.name,
     budget.colorId,
     budget.amount,
-    budget.periodDateStart,
+    budget.start_date,
     budget.periodType,
     categories
+
 )

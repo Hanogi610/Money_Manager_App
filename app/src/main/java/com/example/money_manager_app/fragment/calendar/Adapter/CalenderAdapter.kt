@@ -153,6 +153,7 @@ class CalendarAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         }
         if (isToday) {
             itemViewHolder.dayLabel.setBackgroundColor(context.getColor(R.color.blue_alpha))
+            itemViewHolder.dayLabel.setTextColor(context.getColor(R.color.white))
         } else {
             itemViewHolder.dayLabel.background = null
         }

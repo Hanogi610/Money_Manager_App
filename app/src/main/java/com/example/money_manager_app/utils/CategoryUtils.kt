@@ -15,7 +15,7 @@ object CategoryUtils {
         Category(7, "Salary", 1, R.drawable.income_7, 0, CategoryType.INCOME),
         Category(8, "Tips", 1, R.drawable.income_8, 0, CategoryType.INCOME),
         Category(9, "Others", 1, R.drawable.income_9, 0, CategoryType.INCOME),
-        Category(10, "Groceries", 1, R.drawable.expense_1, 0, CategoryType.EXPENSE),
+        Category(10, "Bill", 1, R.drawable.expense_1, 0, CategoryType.EXPENSE),
         Category(11, "Clothing", 1, R.drawable.expense_2, 0, CategoryType.EXPENSE),
         Category(12, "Education", 1, R.drawable.expense_3, 0, CategoryType.EXPENSE),
         Category(13, "Entertainment", 1, R.drawable.expense_4, 0, CategoryType.EXPENSE),
