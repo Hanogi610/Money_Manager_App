@@ -22,4 +22,5 @@ interface AppNavigation : BaseNavigator {
     fun openMainScreenToAddWalletScreen(bundle: Bundle? = null)
     fun openMainScreenToWalletDetailScreen(bundle: Bundle? = null)
     fun openWalletDetailToAddWalletScreen(bundle: Bundle? = null)
+    fun openMainScreenToAddFragmentScreen(bundle: Bundle? = null)
 }

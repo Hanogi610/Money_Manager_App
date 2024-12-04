@@ -31,11 +31,6 @@
             app:destination="@id/passwordFragment" />
     </fragment>
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.money_manager_app.fragment.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
-    <fragment
         android:id="@+id/passwordFragment"
         android:name="com.example.money_manager_app.fragment.password.view.PasswordFragment"
         android:label="fragment_password"
@@ -81,6 +76,9 @@
         <action
             android:id="@+id/action_mainFragment_to_walletDetailFragment"
             app:destination="@id/walletDetailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addFragment"
+            app:destination="@id/addFragment" />
     </fragment>
     <fragment
         android:id="@+id/debtDetailFragment"
