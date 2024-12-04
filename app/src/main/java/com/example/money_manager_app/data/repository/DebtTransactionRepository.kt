@@ -10,6 +10,7 @@ interface DebtTransactionRepository {
     suspend fun editDebtTransaction(debtTransaction: DebtTransaction)
     fun getDebtTransactionsByDebtId(debtId: Long) : Flow<List<DebtTransaction>>
     fun getDebtTransactionsByAccountId(accountId: Long) : Flow<List<DebtTransaction>>
+    fun getDebtTransactionsByAccountIdAndWalletId(accountId: Long, walletId: Long) : Flow<List<DebtTransaction>>
     fun getDebtTransactionFromDayStartAndDayEnd(
         accountId: Long,
         startDay: Long,
@@ -76,6 +77,13 @@ class DebtTransactionRepositoryImpl @Inject constructor(
 
     override fun getDebtTransactionsByAccountId(accountId: Long): Flow<List<DebtTransaction>> {
         return debtTransactionDao.getDebtTransactionsByAccountId(accountId)
+    }
+
+    override fun getDebtTransactionsByAccountIdAndWalletId(
+        accountId: Long,
+        walletId: Long
+    ): Flow<List<DebtTransaction>> {
+        return debtTransactionDao.getDebtTransactionsByAccountIdAndWalletId(accountId, walletId)
     }
 
     override fun getDebtTransactionFromDayStartAndDayEnd(

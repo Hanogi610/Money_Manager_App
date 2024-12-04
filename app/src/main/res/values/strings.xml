@@ -54,6 +54,9 @@
     <string name="cash_wallet_prompt">How much money do you have in your cash wallet?</string>
     <string name="amount_hint" translatable="false">%1$s 0</string>
     <string name="money_amount" translatable="false">%1$s %2$.2f</string>
+    <string name="transactions_format">%1$d transactions</string>
+    <string name="adjust_balance">ADJUST BALANCE</string>
+    <string name="make_payment">MAKE PAYMENT</string>
     <string name="days_left">%1$s days left</string>
     <string name="amount_number">%1$.2f</string>
     <string name="positive_money_amount" translatable="false">+%1$s %2$.2f</string>

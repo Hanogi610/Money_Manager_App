@@ -25,4 +25,7 @@ interface GoalTransactionDao {
 
     @Query("SELECT * FROM goal_transaction WHERE account_id = :accountId")
     fun getGoalTransactionsByAccountId(accountId: Long) : Flow<List<GoalTransaction>>
+
+    @Query("SELECT * FROM goal_transaction WHERE account_id = :accountId AND wallet_id = :walletId")
+    fun getGoalTransactionsByAccountIdAndWalletId(accountId: Long, walletId: Long) : Flow<List<GoalTransaction>>
 }
