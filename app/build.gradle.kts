@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.circleprogress)
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+    implementation(libs.mpandroidchart)
 
     implementation(libs.androidx.room.runtime)
     //noinspection KaptUsageInsteadOfKsp
