@@ -7,6 +7,7 @@ import javax.inject.Inject
 
 interface WalletRepository {
     fun getWalletsByUserId(userId: Long) : Flow<List<Wallet>>
+    fun getWalletById(walletId: Long) : Flow<Wallet>
     suspend fun insertWallet(wallet: Wallet) : Long
     suspend fun editWallet(wallet: Wallet)
     suspend fun deleteWallet(walletId: Long)
@@ -18,6 +19,10 @@ class WalletRepositoryImpl @Inject constructor(
 ) : WalletRepository {
     override fun getWalletsByUserId(userId: Long): Flow<List<Wallet>> {
         return walletDao.getWalletsByUserId(userId)
+    }
+
+    override fun getWalletById(walletId: Long): Flow<Wallet> {
+        return walletDao.getWalletById(walletId)
     }
 
     override suspend fun insertWallet(wallet: Wallet): Long {

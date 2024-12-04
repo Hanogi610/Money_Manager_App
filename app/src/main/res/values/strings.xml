@@ -54,6 +54,9 @@
     <string name="cash_wallet_prompt">How much money do you have in your cash wallet?</string>
     <string name="amount_hint" translatable="false">%1$s 0</string>
     <string name="money_amount" translatable="false">%1$s %2$.2f</string>
+    <string name="transactions_format">%1$d transactions</string>
+    <string name="adjust_balance">ADJUST BALANCE</string>
+    <string name="make_payment">MAKE PAYMENT</string>
     <string name="days_left">%1$s days left</string>
     <string name="amount_number">%1$.2f</string>
     <string name="positive_money_amount" translatable="false">+%1$s %2$.2f</string>
@@ -193,6 +196,15 @@
     <string name="balance_visibility_toggle">Balance Visibility Toggle</string>
     <string name="record">Record</string>
     <string name="Memo">Memo</string>
+    <string name="icon">Icon</string>
+    <string name="exclude">Exclude</string>
+    <string name="ignore_the_balance_of_this_wallet_on_the_total_balance">Ignore the balance of this wallet on the total balance</string>
+    <string name="wallet_type">Wallet Type</string>
+    <string name="statement_date">Statement Date</string>
+    <string name="due_date">Due date</string>
+    <string name="available_credit">Available credit</string>
+    <string name="credit_limit">Credit limit</string>
+    <string name="expense">Expense</string>
     <string-array name="spinner_color">
         <item>#34BFFF</item>
         <item>#0097E6</item>

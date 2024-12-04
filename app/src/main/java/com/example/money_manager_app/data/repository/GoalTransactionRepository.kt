@@ -11,6 +11,7 @@ interface GoalTransactionRepository {
     suspend fun deleteGoalTransaction(goalTransaction: GoalTransaction)
     suspend fun deleteGoalTransaction(id: Long)
     fun getGoalTransactionsByAccountId(accountId: Long) : Flow<List<GoalTransaction>>
+    fun getGoalTransactionsByAccountIdAndWalletId(accountId: Long, walletId: Long) : Flow<List<GoalTransaction>>
 }
 
 class GoalTransactionRepositoryImpl @Inject constructor(
@@ -34,5 +35,9 @@ class GoalTransactionRepositoryImpl @Inject constructor(
 
     override fun getGoalTransactionsByAccountId(accountId: Long): Flow<List<GoalTransaction>> {
         return goalTransactionDao.getGoalTransactionsByAccountId(accountId)
+    }
+
+    override fun getGoalTransactionsByAccountIdAndWalletId(accountId: Long, walletId: Long): Flow<List<GoalTransaction>> {
+        return goalTransactionDao.getGoalTransactionsByAccountIdAndWalletId(accountId, walletId)
     }
 }

@@ -14,8 +14,8 @@ import com.example.money_manager_app.base.BaseBottomSheet
 import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.databinding.FilterBottomSheetBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
-import com.example.money_manager_app.fragment.search.Adapter.IconCategoryAdapter
-import com.example.money_manager_app.fragment.search.Adapter.SearchInterface
+import com.example.money_manager_app.fragment.search.adapter.IconCategoryAdapter
+import com.example.money_manager_app.fragment.search.adapter.SearchInterface
 import com.example.money_manager_app.fragment.search.viewmodel.SearchViewModel
 import com.example.money_manager_app.fragment.wallet.WalletViewModel
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -24,7 +24,6 @@ import java.util.Calendar
 class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding>() {
 
     private val walletViewModel : WalletViewModel by activityViewModels()
-    private val mainViewModel : MainViewModel by activityViewModels()
     private val searchViewModel : SearchViewModel by activityViewModels()
     private val addViewModel : AddViewModel by activityViewModels()
     private var searchInterface: SearchInterface? = null

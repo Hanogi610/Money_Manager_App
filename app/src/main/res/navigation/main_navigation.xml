@@ -31,11 +31,6 @@
             app:destination="@id/passwordFragment" />
     </fragment>
     <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.money_manager_app.fragment.home.HomeFragment"
-        android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
-    <fragment
         android:id="@+id/passwordFragment"
         android:name="com.example.money_manager_app.fragment.password.view.PasswordFragment"
         android:label="fragment_password"
@@ -76,12 +71,20 @@
             android:id="@+id/action_mainFragment_to_createAccountFragment"
             app:destination="@id/createAccountFragment" />
         <action
+            android:id="@+id/action_mainFragment_to_addWalletFragment"
+            app:destination="@id/addWalletFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_walletDetailFragment"
+            app:destination="@id/walletDetailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addFragment"
+            app:destination="@id/addFragment" />
+
             android:id="@+id/action_mainFragment_to_addBudgetFragment"
             app:destination="@id/addBudgetFragment" />
         <action
             android:id="@+id/action_mainFragment_to_detailBudgetFragment"
             app:destination="@id/detailBudgetFragment" />
-
     </fragment>
     <fragment
         android:id="@+id/debtDetailFragment"
@@ -156,6 +159,18 @@
         android:name="com.example.money_manager_app.fragment.Record.view.RecordFragment"
         android:label="RecordFragment"
         tools:layout="@layout/fragment_record"/>
+    <fragment
+        android:id="@+id/addWalletFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.add_wallet.AddWalletFragment"
+        android:label="AddWalletFragment" />
+    <fragment
+        android:id="@+id/walletDetailFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.wallet_detail.WalletDetailFragment"
+        android:label="WalletDetailFragment" >
+        <action
+            android:id="@+id/action_walletDetailFragment_to_addWalletFragment"
+            app:destination="@id/addWalletFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/addBudgetFragment"

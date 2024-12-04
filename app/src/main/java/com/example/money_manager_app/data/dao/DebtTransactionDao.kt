@@ -56,4 +56,7 @@ interface DebtTransactionDao {
 
     @Delete
     suspend fun deleteDebtTransaction(debtTransaction: DebtTransaction)
+
+    @Query("SELECT * FROM debt_transaction WHERE account_id = :accountId AND wallet_id = :walletId")
+    fun getDebtTransactionsByAccountIdAndWalletId(accountId: Long, walletId: Long) : Flow<List<DebtTransaction>>
 }

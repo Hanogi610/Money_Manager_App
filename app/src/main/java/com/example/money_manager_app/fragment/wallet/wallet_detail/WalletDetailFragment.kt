@@ -1,31 +1,147 @@
 package com.example.money_manager_app.fragment.wallet.wallet_detail
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.money_manager_app.R
+import com.example.money_manager_app.adapter.TransactionAdapter
+import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.data.model.entity.Wallet
+import com.example.money_manager_app.databinding.FragmentWalletDetailBinding
+import com.example.money_manager_app.utils.setOnSafeClickListener
+import com.example.money_manager_app.utils.toFormattedDateString
+import com.example.money_manager_app.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
-class WalletDetailFragment : Fragment() {
+@AndroidEntryPoint
+class WalletDetailFragment :
+    BaseFragment<FragmentWalletDetailBinding, WalletDetailViewModel>(R.layout.fragment_wallet_detail) {
 
-    companion object {
-        fun newInstance() = WalletDetailFragment()
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private var wallet: Wallet? = null
+    private lateinit var transactionAdapter: TransactionAdapter
+    private lateinit var currentCurrencySymbol: String
+
+    override fun getVM(): WalletDetailViewModel {
+        val viewModel: WalletDetailViewModel by viewModels()
+        return viewModel
     }
 
-    private val viewModel: WalletDetailViewModel by viewModels()
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
+        arguments?.let {
+            wallet = it.getParcelable("wallet")
+            wallet?.let {
+                getVM().getWalletDetailItem(it.id)
+                getVM().getTransactionByAccountIdAndWalletId(it.accountId, it.id)
+            }
+        }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_wallet_detail, container, false)
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
+
+        currentCurrencySymbol =
+            getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
+        transactionAdapter = TransactionAdapter(
+            requireContext(),
+            currentCurrencySymbol,
+            mainViewModel.currentAccount.value!!.wallets,
+            listOf()
+        )
+    }
+
+    override fun bindingStateView() {
+        super.bindingStateView()
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getVM().walletDetailItemState.collect { walletDetailItem ->
+                    walletDetailItem?.let {
+                        binding.apply {
+                            walletIconImageView.setImageResource(it.iconId)
+                            walletIconImageView.setBackgroundResource(it.colorId)
+                            nameLabel.text = it.name
+                            transactionAdapter.submitList(it.transactions)
+                            actionButton.setBackgroundResource(it.colorId)
+                            fab.setBackgroundColor(it.colorId)
+                            when (it) {
+                                is WalletDetailItem.CreditItem -> {
+                                    generalLayout.visibility = View.GONE
+                                    creditLayout.visibility = View.VISIBLE
+                                    creditLimitLabel.text = getString(
+                                        R.string.money_amount, currentCurrencySymbol, it.creditLimit
+                                    )
+                                    expenseCredit.text = getString(
+                                        R.string.money_amount, currentCurrencySymbol, it.expense
+                                    )
+                                    dueDate.text = it.dueDate.toFormattedDateString()
+                                    statementDate.text = it.statementDate.toFormattedDateString()
+                                    actionButton.text = getString(R.string.make_payment)
+                                    balanceLabel.text = getString(
+                                        R.string.negative_money_amount,
+                                        currentCurrencySymbol,
+                                        it.creditLimit - it.availableCredit
+                                    )
+                                }
+
+                                is WalletDetailItem.GeneralItem -> {
+                                    initialBalance.text = getString(
+                                        R.string.money_amount,
+                                        currentCurrencySymbol,
+                                        it.initialBalance
+                                    )
+                                    income.text = getString(R.string.transactions_format, it.income)
+                                    expenseGeneral.text =
+                                        getString(R.string.transactions_format, it.expense)
+                                    transfer.text =
+                                        getString(R.string.transactions_format, it.transfer)
+                                    actionButton.text = getString(R.string.adjust_balance)
+                                    balanceLabel.text = getString(
+                                        R.string.money_amount,
+                                        currentCurrencySymbol,
+                                        it.currentBalance
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun setOnClick() {
+        super.setOnClick()
+
+        binding.fab.setOnSafeClickListener {
+            val walletToSent = getVM().walletDetailItemState.value?.wallet
+            appNavigation.openMainScreenToAddFragmentScreen(Bundle().apply {
+                putParcelable("wallet", walletToSent)
+            })
+        }
+        binding.actionButton.setOnSafeClickListener {
+            getVM().walletDetailItemState.value?.let {
+                when (it) {
+                    is WalletDetailItem.CreditItem -> {
+                        appNavigation.openMainScreenToAddFragmentScreen(Bundle().apply {
+                            putParcelable("wallet", it.wallet)
+                        })
+                    }
+
+                    is WalletDetailItem.GeneralItem -> {
+                        appNavigation.openMainScreenToAddWalletScreen(Bundle().apply {
+                            putParcelable("wallet", it.wallet)
+                        })
+                    }
+                }
+            }
+        }
     }
 }
