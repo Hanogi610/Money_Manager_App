@@ -21,7 +21,7 @@ import androidx.room.Relation
     )], tableName = "budget_category_cross_ref"
 )
 data class BudgetCategoryCrossRef(
-    @ColumnInfo(name = "budget_id") val budgetId: Long,
+    @ColumnInfo(name = "budget_id") var budgetId: Long,
     @ColumnInfo(name = "category_id") val categoryId: Long
 )
 

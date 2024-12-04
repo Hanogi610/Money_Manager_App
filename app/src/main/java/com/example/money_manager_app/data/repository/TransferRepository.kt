@@ -26,9 +26,12 @@
 
         fun getAllTransfer(date: Long): Flow<List<Transfer>>
 
+        fun getTransferWithCategoryByAccountId(accountId: Long, categoryId: Long, dateStart : Long, dateEnd : Long): List<Transfer>
+
         suspend fun deleteTransfer(transferId: Long)
 
         fun getTransferWithCategoryByAccountIdAndWalletId(accountId: Long, walletId: Long): Flow<List<Transfer>>
+
     }
 
 
@@ -69,6 +72,10 @@
 
         override fun getAllTransfer(date: Long): Flow<List<Transfer>> {
             return transferDao.getAllTransfer(date)
+        }
+
+        override fun getTransferWithCategoryByAccountId(accountId: Long, categoryId: Long, dateStart: Long, dateEnd: Long): List<Transfer> {
+            return transferDao.getTransferWithCategoryByAccountId(accountId, categoryId, dateStart, dateEnd)
         }
 
         override suspend fun deleteTransfer(transferId: Long) {

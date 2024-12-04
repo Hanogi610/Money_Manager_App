@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/_8dp"
         android:orientation="vertical">
 
         <ImageView
@@ -11,8 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/back"
-            android:src="@drawable/ic_back"
-            app:layout_constraintBottom_toTopOf="@id/divider"
+            android:src="@drawable/arrow_left"
             app:layout_constraintEnd_toStartOf="@id/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,36 +34,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/edit"
-            android:src="@drawable/ic_edit_24"
+            android:src="@drawable/edit"
             app:layout_constraintEnd_toStartOf="@id/deleteButton"
+            android:layout_marginRight="@dimen/_10dp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/_20dp"
+            android:layout_height="@dimen/_20dp"
             android:contentDescription="@string/delete"
-            android:src="@drawable/ic_delete_24"
+            android:src="@drawable/delete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Divider -->
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/backButton" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/budgetWrapper"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/budgetWrapper"
-            android:background="?attr/secondaryBackground"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider">
+            app:layout_constraintTop_toBottomOf="@id/title">
 
             <TextView
                 android:id="@+id/nameLabel"
@@ -126,8 +119,9 @@
                 android:layout_marginTop="@dimen/_8dp"
                 android:layout_marginEnd="@dimen/_16dp"
                 android:layout_marginBottom="@dimen/_12dp"
-                android:progress="0"
-                android:progressTint="#ff000000"
+                android:progress="20"
+                android:progressTint="@color/Brand_Primary"
+                android:progressBackgroundTint="@color/Neutral_50"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/remainLabel" />
@@ -224,14 +218,28 @@
                     app:layout_constraintTop_toBottomOf="@+id/periodLabel" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/transactionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transaction List"
+            android:layout_marginTop="@dimen/_8dp"
+            android:layout_marginBottom="@dimen/_8dp"
+            app:layout_constraintBottom_toTopOf="@+id/transactionRv"
+            app:layout_constraintStart_toStartOf="@+id/transactionRv"
+            app:layout_constraintTop_toBottomOf="@+id/budgetWrapper" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/transactionRv"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="16dp"
+            android:layout_marginTop="@dimen/_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/budgetWrapper" />
+            app:layout_constraintTop_toBottomOf="@id/budgetWrapper"
+            app:layout_constraintVertical_bias="1.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

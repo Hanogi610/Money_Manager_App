@@ -22,7 +22,6 @@ import com.example.money_manager_app.utils.toFormattedTimeString
 import com.example.money_manager_app.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 import java.io.File
-import java.nio.file.Files
 
 class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.layout.fragment_record) {
 

@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
+import com.example.money_manager_app.data.model.CalendarRecord
 import com.example.money_manager_app.data.model.CalendarSummary
 import com.example.money_manager_app.databinding.FragmentCalendarBinding
 import com.example.money_manager_app.fragment.calendar.viewmodel.CalendarViewModel
@@ -64,19 +65,13 @@ class CalendarFragment : Fragment(), View.OnClickListener, CalendarAdapter.OnIte
     }
 
     private fun updateUI(accountSymbol: String, summary: CalendarSummary, balance: Double, date: Date) {
-        setUpSummary(accountSymbol, summary, balance)
         binding.dateLabel.text = CalendarHelper.getFormattedMonthlyDate(date)
         adapter.setList(calendarViewModel.calendarRecord.value)
         adapter.setDate(date)
         adapter.notifyDataSetChanged()
     }
 
-    private fun setUpSummary(symbol: String, summary: CalendarSummary, carryOver: Double) {
-        val isCarryOverOn = SharePreferenceHelper.isCarryOverOn(requireContext())
-        binding.incomeLabel.text = Helper.getBeautifyAmount(symbol, summary.income + if (isCarryOverOn) carryOver else 0.0)
-        binding.expenseLabel.text = Helper.getBeautifyAmount(symbol, summary.expense + if (isCarryOverOn) carryOver else 0.0)
-        binding.amountLabel.text = Helper.getBeautifyAmount(symbol, summary.income + summary.expense + if (isCarryOverOn) carryOver else 0.0)
-    }
+
 
     fun observeData() {
         lifecycleScope.launch {
@@ -90,11 +85,28 @@ class CalendarFragment : Fragment(), View.OnClickListener, CalendarAdapter.OnIte
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 calendarViewModel.calendarRecord.collect {
                     Log.d("CalendarFragment", "observeData: ${it.size}")
+                    setUpSummary(it)
                     adapter.setList(it)
                     adapter.notifyDataSetChanged()
                 }
             }
         }
+    }
+
+    private fun setUpSummary(calendarRecord : List<CalendarRecord>) {
+        var income = 0.0
+        var expense = 0.0
+        var total = 0.0
+
+        for (record in calendarRecord) {
+            income += record.income
+            expense += record.expense
+        }
+        total = income + expense
+
+        binding.incomeLabel.text = income.toString()
+        binding.expenseLabel.text = expense.toString()
+        binding.amountLabel.text = total.toString()
     }
 
     override fun onItemClick(view: View) {

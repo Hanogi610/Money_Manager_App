@@ -1,6 +1,8 @@
 package com.example.money_manager_app.utils
 
+import android.R
 import android.content.Context
+import android.util.TypedValue
 import org.apache.commons.lang3.StringUtils
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -9,11 +11,23 @@ import java.text.NumberFormat
 import java.util.Locale
 
 
-/* loaded from: classes2.dex */
+
 object Helper {
 
     fun convertDpToPixel(context: Context, dp: Float): Float {
         return dp * (context.resources.displayMetrics.densityDpi / 160.0f)
+    }
+
+
+    fun getAttributeColor(context: Context, resource: Int): Int {
+        try {
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(resource, typedValue, true)
+            return typedValue.data
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return R.color.holo_red_dark
+        }
     }
 
 

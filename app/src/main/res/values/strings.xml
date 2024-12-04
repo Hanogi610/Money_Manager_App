@@ -67,6 +67,11 @@
     <string name="income">Income</string>
     <string name="transfer">Transfer</string>
     <string name="save">Save</string>
+    <string name="opening_balance">Opening balance</string>
+    <string name="ending_balance">Ending balance</string>
+    <string name="show_more">Show more</string>
+    <string name="overview">Overview</string>
+    <string name="expense">Expense</string>
     <string name="memo">Memo</string>
     <string name="from_wallet">From Wallet</string>
     <string name="to_wallet">To Wallet</string>
@@ -91,6 +96,12 @@
     <string name="detail_day">Detail</string>
     <string name="select_category">Select Category</string>
     <string name="total">Total</string>
+    <string name="expense_structure">Expense Structure</string>
+    <string name="statistic_empty">No Record</string>
+    <string name="this_month">This Month</string>
+    <string name="weekly_spending">Weekly spending</string>
+    <string name="total_expense">Total Expense</string>
+    <string name="this_week">This Week</string>
     <string name="transaction">Transaction</string>
     <string name="percent">%1$d%%</string>
     <string name="overpaid">Overpaid</string>
@@ -167,6 +178,8 @@
     <string name="withdraw">Withdraw</string>
     <string name="spent">Spent</string>
     <string name="period">Period</string>
+    <string name="day_of_month">Day of month</string>
+    <string name="week_of_month">Week of month</string>
     <string name="back">Back</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
@@ -257,4 +270,56 @@
         <item>Tips</item>
         <item>Others</item>
     </string-array>
+
+    <string-array name="budget_period">
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
+    <string-array name="budget_day">
+        <item>1th</item>
+        <item>2th</item>
+        <item>3th</item>
+        <item>4th</item>
+        <item>5th</item>
+        <item>6th</item>
+        <item>7th</item>
+        <item>8th</item>
+        <item>9th</item>
+        <item>10th</item>
+        <item>11th</item>
+        <item>12th</item>
+        <item>13th</item>
+        <item>14th</item>
+        <item>15th</item>
+        <item>16th</item>
+        <item>17th</item>
+        <item>18th</item>
+        <item>19th</item>
+        <item>20th</item>
+        <item>21th</item>
+        <item>22th</item>
+        <item>23th</item>
+        <item>24th</item>
+        <item>25th</item>
+        <item>26th</item>
+        <item>27th</item>
+        <item>28th</item>
+    </string-array>
+    <string-array name="budget_month_of_year">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
 </resources>
