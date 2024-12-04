@@ -1,26 +1,33 @@
 package com.example.money_manager_app.fragment.wallet.add_budget
 
-import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.view.View
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
+import com.example.money_manager_app.adapter.ColorSpinnerAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.databinding.FragmentAddBudgetBinding
+import com.example.money_manager_app.selecticon.viewmodel.CategoryViewModel
+import com.example.money_manager_app.utils.ColorUtils
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+
+
 
 @AndroidEntryPoint
 class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewModel>(R.layout.fragment_add_budget) {
@@ -28,6 +35,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
     private var budget: Budget? = null
     private val mainViewModel: MainViewModel by activityViewModels()
     private val calendar = Calendar.getInstance()
+    private val categoryViewModel: CategoryViewModel by activityViewModels()
 
     override fun getVM(): AddBudgetViewModel {
         val vm: AddBudgetViewModel by viewModels()
@@ -36,7 +44,6 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-
         arguments?.let {
             budget = it.getParcelable("budget")
         }
@@ -44,109 +51,103 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
+        selectCategory()
+        obseverData()
+        selectColor()
+        selectPeriod()
+        back()
+        save()
+    }
 
-        val periodTypeAdapter = ArrayAdapter(requireContext(),
-            android.R.layout.simple_spinner_item,
-            PeriodType.entries.map { it.name })
+    fun back(){
+        binding.backArrowButton.setOnSafeClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    fun selectPeriod(){
+        val selectPeriod = resources.getStringArray(R.array.budget_period)
+
+        val periodTypeAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.item_period,
+            selectPeriod
+        )
         binding.periodSpinner.adapter = periodTypeAdapter
+        binding.periodSpinner.setSelection(0)
+    }
 
-        // Pre-fill fields if editing
-        budget?.let { budget ->
-            binding.editTextName.setText(budget.name)
-            binding.editTextAmount.setText(getString(R.string.money_amount, "", budget.amount))
-            binding.editTextStartDate.text =
-                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(budget.periodDateStart)
+    fun selectColor(){
+        val colorAdapter = ColorSpinnerAdapter(requireContext(), ColorUtils.getColors())
+        binding.colorSpinner.adapter = colorAdapter
+        binding.colorSpinner.setSelection(0)
+    }
 
-            val periodTypeIndex = PeriodType.entries.indexOf(budget.periodType)
-            binding.periodSpinner.setSelection(periodTypeIndex)
+    fun obseverData(){
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                categoryViewModel.categories.observe(viewLifecycleOwner){
+                    showCategory(it)
+                }
+            }
         }
+    }
 
-        // Default setup for date fields
-        if (budget == null) {
-            binding.editTextStartDate.text =
-                SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
+    fun showCategory(category : List<CategoryData.Category>){
+        var nameCategory =""
+        if(category[0].isCheck == true){
+            nameCategory="All category"
+        } else {
+            for (i in category.indices){
+                if(category[i].isCheck == true){
+                    nameCategory += category[i].name +", "
+                }
+            }
+            nameCategory.removeSuffix(", ")
         }
+        binding.selectCategory.setText(nameCategory)
+    }
 
-        binding.editTextName.addTextChangedListener(textWatcher)
-        binding.editTextAmount.addTextChangedListener(textWatcher)
-        binding.editTextStartDate.addTextChangedListener(textWatcher)
+    private fun selectCategory() {
+        binding.selectCategory.setOnSafeClickListener {
+            appNavigation.openAddBudgetToSelectCategory()
+        }
+    }
+
+    private fun save() {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val calendarToday = Calendar.getInstance()
+        val todayDate = dateFormat.format(calendarToday.time).toDateTimestamp()
+        val calendarNextWeek = Calendar.getInstance()
+        calendarNextWeek.add(Calendar.DAY_OF_YEAR, 7)
+        val nextWeekDate = dateFormat.format(calendarNextWeek.time).toDateTimestamp()
+        Log.d("AddBudgetFragment", "save: ${binding.periodSpinner.selectedItemPosition}")
+        binding.saveButton.setOnSafeClickListener {
+            val amountText = binding.editTextAmount.text.toString()
+            val amount = if (amountText.isNotEmpty()) amountText.toDouble() else 0.0
+            if (amount > 0) {
+                val budget = Budget(
+                    name = binding.editTextName.text.toString(),
+                    amount = amount,
+                    spent = 0,
+                    accountId = mainViewModel.accounts.value.first().account.id,
+                    colorId = ColorUtils.getColors()[binding.colorSpinner.selectedItemPosition],
+                    periodType = PeriodType.values()[binding.periodSpinner.selectedItemPosition],
+                    start_date = todayDate,
+                    end_date = nextWeekDate
+                )
+                getVM().insertBudget(
+                    budget,
+                    mainViewModel.categories.value ?: emptyList(),
+                    categoryViewModel.categories.value ?: emptyList()
+                )
+                findNavController().popBackStack()
+            }
+        }
     }
 
     override fun initToolbar() {
         super.initToolbar()
 
-        binding.backArrowButton.setOnClickListener {
-            appNavigation.navigateUp()
-        }
-
-        binding.saveButton.setOnClickListener {
-            val name = binding.editTextName.text.toString()
-            val amount = binding.editTextAmount.text.toString().toDouble()
-            val startDate = binding.editTextStartDate.text.toString().toDateTimestamp()
-            val periodType =
-                PeriodType.valueOf(binding.periodSpinner.selectedItem.toString())
-//
-//            // Create or update budget
-//            val budget = budget?.copy(
-//                name = name,
-//                amount = amount,
-//                periodDateStart = startDate,
-//                periodType = periodType
-//            ) ?: Budget(
-//                name = name,
-//                amount = amount,
-//                periodDateStart = startDate,
-//                periodType = periodType,
-//                accountId = mainViewModel.currentAccount.value!!.account.id
-//            )
-//
-//            Log.d("hoangph", "budget: $budget")
-//
-//            if (budget == null) {
-//                getVM().addBudget(budget)
-//            } else {
-//                getVM().updateBudget(budget)
-//            }
-
-            appNavigation.navigateUp()
-        }
-    }
-
-    override fun setOnClick() {
-        super.setOnClick()
-
-        binding.editTextStartDate.setOnSafeClickListener {
-            val datePicker = DatePickerDialog(
-                requireContext(),
-                { _, year, month, dayOfMonth ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, month, dayOfMonth)
-                    binding.startDateTextView.text = SimpleDateFormat(
-                        "dd/MM/yyyy", Locale.getDefault()
-                    ).format(binding.editTextStartDate.text ?: selectedDate)
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            )
-            datePicker.show()
-        }
-    }
-
-    private val textWatcher = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-            checkSaveButton()
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-    }
-
-    private fun checkSaveButton() {
-        val name = binding.editTextName.text.toString()
-        val amount = binding.editTextAmount.text.toString().toDoubleOrNull()
-        val startDate = binding.editTextStartDate.text.toString()
-        binding.saveButton.isEnabled =
-            amount != null && name.isNotEmpty() && startDate.isNotEmpty()
     }
 }

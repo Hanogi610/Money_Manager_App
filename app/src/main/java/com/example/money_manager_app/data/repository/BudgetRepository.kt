@@ -1,16 +1,22 @@
 package com.example.money_manager_app.data.repository
 
+import android.util.Log
 import com.example.money_manager_app.data.dao.BudgetDao
 import com.example.money_manager_app.data.model.BudgetDetail
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.BudgetCategoryCrossRef
+import com.example.money_manager_app.data.model.entity.BudgetWithCategory
+import com.example.money_manager_app.data.model.entity.Transfer
+import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.data.model.toBudgetDetail
+import com.example.money_manager_app.utils.totalMoneyDay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface BudgetRepository {
-    suspend fun insertBudget(budgetDetail: BudgetDetail): Long
+    suspend fun insertBudget(budget: Budget): Long
 
     suspend fun editBudget(budget: Budget)
 
@@ -18,30 +24,33 @@ interface BudgetRepository {
 
     fun deleteBudget(id: Long)
 
-    fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetDetail>>
+    fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetWithCategory>>
 
     suspend fun removeCategoryFromBudget(budgetId: Long, categoryId: Long)
+
+    suspend fun insertBudget(budget: Budget,budgetCategoryCrossRefs : List<BudgetCategoryCrossRef>): Long
 }
 
 class BudgetRepositoryImpl @Inject constructor(
-    private val budgetDao: BudgetDao
+    private val budgetDao: BudgetDao,
+    private val tranferRepository: TransferRepository
 ) : BudgetRepository {
-    override suspend fun insertBudget(budgetDetail: BudgetDetail): Long {
-        // Convert BudgetDetail to Budget entity
-        val budget = Budget(
-            id = budgetDetail.id,
-            accountId = budgetDetail.accountId,
-            name = budgetDetail.name,
-            colorId = budgetDetail.colorId,
-            amount = budgetDetail.amount,
-            periodDateStart = budgetDetail.periodDateStart,
-            periodType = budgetDetail.periodType
-        )
-        val budgetId = budgetDao.insertBudget(budget)
+    override suspend fun insertBudget(budget: Budget): Long {
+        TODO("Not yet implemented")
+    }
 
-        // Insert associated categories
-        val budgetCategoryCrossRefs = budgetDetail.categories.map { category ->
-            BudgetCategoryCrossRef(budgetId, category.id)
+    override suspend fun insertBudget(budget: Budget,budgetCategoryCrossRefs : List<BudgetCategoryCrossRef>): Long {
+        var spent = 0.0
+        for(i in budgetCategoryCrossRefs){
+            val transferList= tranferRepository.getTransferWithCategoryByAccountId(budget.accountId, i.categoryId, budget.start_date, budget.end_date)
+            spent += transferList.filter { it.typeOfExpenditure == TransferType.Expense }.sumOf { it.amount }
+
+        }
+        budget.spent = spent.toInt()
+        Log.d("BudgetRepositoryImpl", "insertBudget: ${budget}")
+        val budgetId = budgetDao.insertBudget(budget)
+        for (i in budgetCategoryCrossRefs){
+            i.budgetId = budgetId
         }
         budgetDao.insertBudgetCategoryCrossRefs(budgetCategoryCrossRefs)
         return budgetId
@@ -59,10 +68,8 @@ class BudgetRepositoryImpl @Inject constructor(
         budgetDao.deleteBudget(id)
     }
 
-    override fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetDetail>> {
-        return budgetDao.getBudgetsByAccountId(accountId).map {
-            it.map { it.toBudgetDetail() }
-        }
+    override fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetWithCategory>> {
+        return budgetDao.getBudgetsByAccountId(accountId)
     }
 
     override suspend fun removeCategoryFromBudget(budgetId: Long, categoryId: Long) {

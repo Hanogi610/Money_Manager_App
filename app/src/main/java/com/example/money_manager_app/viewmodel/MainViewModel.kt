@@ -7,6 +7,7 @@ import com.example.money_manager_app.data.model.entity.Account
 import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.money_manager_app.data.model.entity.Category
 import com.example.money_manager_app.data.model.entity.Wallet
+import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.data.repository.AccountRepository
 import com.example.money_manager_app.data.repository.CategoryRepository
@@ -52,6 +53,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun getCategories(){
+        viewModelScope.launch {
+            categoryRepository.getCategory().collect {
+                _categories.value = it
+            }
+        }
+    }
+
     fun insertCategory(listCategory: List<Category>){
         viewModelScope.launch {
             categoryRepository.insertCategory(listCategory)
@@ -76,7 +85,6 @@ class MainViewModel @Inject constructor(
                         isExcluded = false
                     )
                 )
-                // After inserting, fetch the account and update the flow
                 fetchCurrentAccountIfNeeded(accountId)
             }
         }

@@ -7,10 +7,14 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.money_manager_app.data.model.entity.Category
 import com.example.money_manager_app.data.model.entity.CategoryWithTransfer
+import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoryDao {
+
+    @Query("SELECT * FROM category")
+    fun getCategory() : Flow<List<Category>>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertCategory(category: Category)
@@ -28,7 +32,7 @@ interface CategoryDao {
     suspend fun deleteCategory(categoryId: Long)
 
     @Query("SELECT * FROM category WHERE account_id = :accountId")
-    fun getCategoriesWithTransferByAccountId(accountId: Long): Flow<List<CategoryWithTransfer>>
+    fun getCategoriesWithTransferByAccountId(accountId: Long): List<CategoryWithTransfer>
 
     @Query("SELECT * FROM category WHERE account_id = :accountId")
     fun getCategoriesByAccountId(accountId: Long): Flow<List<Category>>

@@ -59,6 +59,6 @@ interface TransferDao {
         fromWalletId: Long?
     ): List<Transfer>
 
-    @Query("SELECT * FROM transfer WHERE account_id = :accountId")
-    fun getTransferWithCategoryByAccountId(accountId: Long): Flow<List<Transfer>>
+    @Query("SELECT * FROM transfer WHERE account_id = :accountId AND category_id = :categoryId AND date BETWEEN :dateStart AND :dateEnd")
+    fun getTransferWithCategoryByAccountId(accountId: Long, categoryId: Long, dateStart: Long, dateEnd: Long): List<Transfer>
 }

@@ -75,6 +75,13 @@
         <action
             android:id="@+id/action_mainFragment_to_createAccountFragment"
             app:destination="@id/createAccountFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addBudgetFragment"
+            app:destination="@id/addBudgetFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailBudgetFragment"
+            app:destination="@id/detailBudgetFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/debtDetailFragment"
@@ -149,5 +156,34 @@
         android:name="com.example.money_manager_app.fragment.Record.view.RecordFragment"
         android:label="RecordFragment"
         tools:layout="@layout/fragment_record"/>
+
+    <fragment
+        android:id="@+id/addBudgetFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.add_budget.AddBudgetFragment"
+        android:label="AddBudgetFragment"
+        tools:layout="@layout/fragment_add_budget" >
+        <action
+            android:id="@+id/action_addBudgetFragment_to_MultipleSelectionCatrgoryFragment"
+            app:destination="@id/MultipleSelectionCatrgoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/MultipleSelectionCatrgoryFragment"
+        android:name="com.example.money_manager_app.selecticon.MultipleSelectioncategoryFragment"
+        android:label="AddBudgetTransactionFragment"
+        tools:layout="@layout/fragment_category" />
+
+
+    <fragment
+        android:id="@+id/detailBudgetFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.budget_detail.BudgetDetailFragment"
+        android:label="AddBudgetTransactionFragment"
+        tools:layout="@layout/fragment_budget_detail" >
+        <action
+            android:id="@+id/action_detailBudgetFragment_to_addBudgetFragment"
+            app:destination="@id/addBudgetFragment" />
+    </fragment>
+
+
 
 </navigation>

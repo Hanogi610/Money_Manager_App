@@ -3,80 +3,78 @@ package com.example.money_manager_app.fragment.wallet.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
-import com.example.money_manager_app.data.model.BudgetDetail
-import com.example.money_manager_app.data.model.entity.Debt
+import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.databinding.AddNewItemBinding
 import com.example.money_manager_app.databinding.BudgetItemBinding
-import com.example.money_manager_app.databinding.DebtItemBinding
 
-class BudgetAdapter (
+class BudgetAdapter(
     private val context: Context,
+    private var list: List<Budget>,
     private val currentCurrencySymbol: String,
-    private val onItemClick: (Debt) -> Unit,
+    private val onItemClick: (Budget) -> Unit,
     private val onAddNewClick: () -> Unit
-) : ListAdapter<BudgetDetail, RecyclerView.ViewHolder>(BudgetDiffCallback()) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun getItemViewType(position: Int): Int {
-        return if (position == currentList.size) TYPE_ADD_NEW else TYPE_ITEM
+    inner class BudgetViewHolder(val binding: BudgetItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(budget: Budget) {
+            binding.dateLabel.text = budget.periodType.toString()
+            binding.nameLabel.text = budget.name
+            binding.progressBar.max = budget.amount.toInt()
+            if (budget.spent > budget.amount) {
+                binding.progressBar.progress = budget.amount.toInt()
+                binding.amountLabel.text = "Overspent ${currentCurrencySymbol} ${budget.amount-budget.spent}"
+            } else {
+                binding.progressBar.progress =  budget.spent
+                binding.amountLabel.text = "Remain ${currentCurrencySymbol} ${budget.amount-budget.spent}"
+            }
+            binding.root.setOnClickListener { onItemClick(budget) }
+        }
+    }
+
+    inner class AddBudgetViewHolder(val binding: AddNewItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.addName.text = context.getString(R.string.add_budget)
+            binding.root.setOnClickListener { onAddNewClick() }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == TYPE_ITEM) {
-            DebtViewHolder(DebtItemBinding.inflate(inflater, parent, false))
+            BudgetViewHolder(BudgetItemBinding.inflate(inflater, parent, false))
         } else {
-            AddDebtViewHolder(AddNewItemBinding.inflate(inflater, parent, false))
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (getItemViewType(position) == TYPE_ITEM) {
-            val budgetDetail = getItem(position)
-            (holder as DebtViewHolder).bind(budgetDetail)
-        } else if (holder is AddDebtViewHolder) {
-            // No binding required for the "Add Debt" button
+            AddBudgetViewHolder(AddNewItemBinding.inflate(inflater, parent, false))
         }
     }
 
     override fun getItemCount(): Int {
-        return currentList.size + 1
+        return list.size + 1
     }
 
-    inner class AddDebtViewHolder(val binding: AddNewItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        init {
-            binding.addName.text = context.getString(R.string.add_debt)
-            binding.root.setOnClickListener { onAddNewClick() }
+    override fun getItemViewType(position: Int): Int {
+        return if (position == list.size) TYPE_ADD_NEW else TYPE_ITEM
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (getItemViewType(position) == TYPE_ITEM) {
+            val budget = list[position]
+            (holder as BudgetViewHolder).bind(budget)
+        } else if (holder is AddBudgetViewHolder) {
+            // No binding required for the "Add Budget" button
         }
     }
 
-    inner class DebtViewHolder(val binding: I) :
-        RecyclerView.ViewHolder(binding.root){
-        fun bind(budgetDetail: BudgetDetail){
-
-        }
-
+    fun setList(newList: List<Budget>) {
+        list = newList
+        notifyDataSetChanged()
     }
 
     companion object {
         private const val TYPE_ITEM = 0
         private const val TYPE_ADD_NEW = 1
-    }
-}
-
-
-class BudgetDiffCallback : DiffUtil.ItemCallback<BudgetDetail>() {
-
-
-    override fun areItemsTheSame(oldItem: BudgetDetail, newItem: BudgetDetail): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun areContentsTheSame(oldItem: BudgetDetail, newItem: BudgetDetail): Boolean {
-        TODO("Not yet implemented")
     }
 }
