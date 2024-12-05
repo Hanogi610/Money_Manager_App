@@ -14,6 +14,7 @@ import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.money_manager_app.databinding.FragmentDebtDetailBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -55,7 +56,11 @@ class DebtDetailFragment :
         val currentCurrencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
         adapter = TransactionAdapter(
-            requireContext(), currentCurrencySymbol, mainViewModel.currentAccount.value!!.wallets, listOf(),::openAddDebtTransactionScreen
+            requireContext(),
+            currentCurrencySymbol,
+            mainViewModel.currentAccount.value!!.wallets,
+            listOf(),
+            ::openAddDebtTransactionScreen
         )
         binding.debtTransactionRv.adapter = adapter
         binding.debtTransactionRv.layoutManager = LinearLayoutManager(requireContext())
@@ -74,6 +79,10 @@ class DebtDetailFragment :
                         binding.apply {
                             nameLabel.text = it.title
                             descriptionLabel.text = it.description
+                            spentTitleLabel.text =
+                                if (it.type == DebtType.PAYABLE) getString(R.string.paid) else getString(
+                                    R.string.received
+                                )
                             spentLabel.text = getString(
                                 R.string.money_amount, currentCurrencySymbol, it.paidAmount
                             )

@@ -15,6 +15,7 @@ import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
+import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.money_manager_app.databinding.FragmentAddDebtTransactionBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toDateTimestamp
@@ -51,9 +52,18 @@ class AddDebtTransactionFragment :
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
-        val debtAction = ArrayAdapter(requireContext(),
-            android.R.layout.simple_spinner_item,
-            DebtActionType.entries.map { it.name })
+        val payableActions =
+            DebtActionType.entries.filter { it != DebtActionType.DEBT_COLLECTION && it != DebtActionType.LOAN_INCREASE }
+                .map { it.name }
+        val receivableActions =
+            DebtActionType.entries.filter { it != DebtActionType.DEBT_INCREASE && it != DebtActionType.REPAYMENT }
+                .map { it.name }
+
+        val debtAction = if(debt!!.type == DebtType.PAYABLE) {
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, payableActions)
+        } else {
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, receivableActions)
+        }
         binding.spinnerActionType.adapter = debtAction
         val walletAdapter = ArrayAdapter(requireContext(),
             android.R.layout.simple_spinner_item,

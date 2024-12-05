@@ -6,6 +6,7 @@ import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.TransactionListItem
 import com.example.money_manager_app.data.model.entity.DebtDetail
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
+import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.money_manager_app.data.repository.DebtRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
@@ -60,7 +61,8 @@ class DebtDetailViewModel @Inject constructor(
             walletId = walletId,
             transactions = groupedTransactions,
             colorId = debtDetail.debt.colorId,
-            iconId = debtDetail.debt.iconId
+            iconId = debtDetail.debt.iconId,
+            type = debtDetail.debt.type
         )
     }
 
@@ -77,6 +79,7 @@ data class DebtDetailItem(
     val description: String,
     val totalAmount: Double,
     val paidAmount: Double,
+    val type: DebtType,
     val remainingAmount: Double,
     val date: String,
     val walletId: Long,

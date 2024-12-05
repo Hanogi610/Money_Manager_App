@@ -6,7 +6,7 @@
 
     <!-- Dashed border with rounded corners -->
     <stroke
-        android:width="2dp"
+        android:width="1dp"
         android:color="@color/cyan"
         android:dashWidth="10dp"
         android:dashGap="5dp" />

@@ -61,6 +61,12 @@ class DebtAdapter(
             binding.nameLabel.text = if (debt.debt.type == DebtType.PAYABLE) context.getString(
                 R.string.i_owe_s, debt.debt.name
             ) else context.getString(R.string.i_lend_s, debt.debt.name)
+            binding.amountLabel.setTextColor(
+                if (debt.debt.type == DebtType.PAYABLE) context.getColor(R.color.color_17) else context.getColor(
+                    R.color.color_1
+                )
+            )
+            binding.circleLabel.setBackgroundColor(context.getColor(debt.debt.colorId))
             binding.detailLabel.text = debt.debt.description
             val currentAmount =
                 debt.debt.amount - debt.transactions.filter { it.action == DebtActionType.REPAYMENT }
@@ -70,6 +76,7 @@ class DebtAdapter(
                 context.getString(R.string.money_amount, currentCurrencySymbol, currentAmount)
             binding.circleLabel.setImageResource(debt.debt.iconId)
             binding.root.setOnClickListener { onItemClick(debt.debt) }
+
         }
     }
 

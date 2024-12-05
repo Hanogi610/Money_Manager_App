@@ -26,6 +26,7 @@ class WalletAdapter(
             binding.walletBalance.text = context.getString(
                 R.string.money_amount, currentCurrencySymbol, wallet.amount
             )
+            binding.walletIcon.setImageResource(wallet.iconId)
             binding.root.setOnClickListener { onWalletItemClick(wallet) }
         }
     }

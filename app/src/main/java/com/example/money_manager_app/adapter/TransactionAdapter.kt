@@ -10,11 +10,13 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.TransactionListItem
 import com.example.money_manager_app.data.model.entity.Category
+import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
+import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.DateHeaderItemBinding
@@ -74,9 +76,7 @@ class TransactionAdapter(
                     context.getString(R.string.positive_money_amount, currencySymbol, header.total)
                 } else {
                     context.getString(
-                        R.string.negative_money_amount,
-                        currencySymbol,
-                        header.total * -1
+                        R.string.negative_money_amount, currencySymbol, header.total * -1
                     )
                 }
             }
@@ -97,17 +97,32 @@ class TransactionAdapter(
                     binding.transactionAmount.text =
                         if (transaction.type == GoalInputType.DEPOSIT) {
                             context.getString(
-                                R.string.negative_money_amount,
-                                currencySymbol,
-                                transaction.amount
+                                R.string.negative_money_amount, currencySymbol, transaction.amount
                             )
                         } else {
                             context.getString(
-                                R.string.positive_money_amount,
-                                currencySymbol,
-                                transaction.amount
+                                R.string.positive_money_amount, currencySymbol, transaction.amount
                             )
                         }
+                }
+
+                is Debt -> {
+                    binding.transactionTypeImageView.setImageResource(transaction.iconId)
+                    if (transaction.type == DebtType.PAYABLE) {
+                        binding.transactionAmount.text = context.getString(
+                            R.string.positive_money_amount, currencySymbol, transaction.amount
+                        )
+                        binding.transactionAmount.setTextColor(context.getColor(R.color.color_1))
+                        binding.transactionTypeTextView.text =
+                            context.getString(R.string.i_owe_s, transaction.name)
+                    } else {
+                        binding.transactionAmount.text = context.getString(
+                            R.string.negative_money_amount, currencySymbol, transaction.amount
+                        )
+                        binding.transactionAmount.setTextColor(context.getColor(R.color.color_17))
+                        binding.transactionTypeTextView.text =
+                            context.getString(R.string.i_lend_s, transaction.name)
+                    }
                 }
 
                 is DebtTransaction -> {
@@ -117,18 +132,14 @@ class TransactionAdapter(
                         transaction.action.toString(),
                         transaction.name
                     )
-                    if (transaction.action == DebtActionType.DEBT_INCREASE) {
+                    if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION) {
                         binding.transactionAmount.text = context.getString(
-                            R.string.positive_money_amount,
-                            currencySymbol,
-                            transaction.amount
+                            R.string.positive_money_amount, currencySymbol, transaction.amount
                         )
                         binding.transactionAmount.setTextColor(context.getColor(R.color.color_1))
                     } else {
                         binding.transactionAmount.text = context.getString(
-                            R.string.negative_money_amount,
-                            currencySymbol,
-                            transaction.amount
+                            R.string.negative_money_amount, currencySymbol, transaction.amount
                         )
                         binding.transactionAmount.setTextColor(context.getColor(R.color.color_17))
                     }
@@ -138,30 +149,30 @@ class TransactionAdapter(
                     categories?.let {
                         val category = it.find { category -> category.id == transaction.categoryId }
                         binding.transactionTypeTextView.text = category?.name
-                        binding.transactionTypeImageView.setImageResource(category?.iconId ?: R.drawable.expense_1)
-                        binding.transactionTypeImageView.setColorFilter(category?.colorId ?: R.color.color_1)
+                        binding.transactionTypeImageView.setImageResource(
+                            category?.iconId ?: R.drawable.expense_1
+                        )
+                        binding.transactionTypeImageView.setColorFilter(
+                            category?.colorId ?: R.color.color_1
+                        )
                     }
 
                     when (transaction.typeOfExpenditure) {
                         TransferType.Expense -> {
                             binding.transactionAmount.text = context.getString(
-                                R.string.negative_money_amount,
-                                currencySymbol,
-                                transaction.amount
+                                R.string.negative_money_amount, currencySymbol, transaction.amount
                             )
                         }
+
                         TransferType.Income -> {
                             binding.transactionAmount.text = context.getString(
-                                R.string.positive_money_amount,
-                                currencySymbol,
-                                transaction.amount
+                                R.string.positive_money_amount, currencySymbol, transaction.amount
                             )
                         }
-                        else ->{
+
+                        else -> {
                             binding.transactionAmount.text = context.getString(
-                                R.string.money_amount,
-                                currencySymbol,
-                                transaction.amount
+                                R.string.money_amount, currencySymbol, transaction.amount
                             )
                         }
                     }

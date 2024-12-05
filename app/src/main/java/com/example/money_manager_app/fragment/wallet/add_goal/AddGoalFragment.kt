@@ -76,7 +76,7 @@ class AddGoalFragment :
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
 
         binding.apply {
-            colorAdapter = ColorSpinnerAdapter(requireContext(), ColorUtils.getColors())
+            colorAdapter = ColorSpinnerAdapter(requireContext(), ColorUtils.getColors(requireContext()))
             colorSpinner.adapter = colorAdapter
             goal?.let {
                 titleText.text = getString(R.string.edit_goal)
@@ -84,7 +84,8 @@ class AddGoalFragment :
                 editTextAmount.hint = getString(R.string.money_amount, currencySymbol, it.amount)
                 editTextAmount.setText(getString(R.string.amount_number, it.amount))
                 dateTextView.text = it.targetDate.toFormattedDateString()
-                colorSpinner.setSelection(colorAdapter.getPosition(it.colorId))
+                val colorIndex = ColorUtils.getColors(requireContext()).indexOf(it.colorId)
+                colorSpinner.setSelection(colorIndex)
             } ?: run {
                 titleText.text = getString(R.string.add_goal)
                 editTextAmount.hint = getString(R.string.money_amount, currencySymbol, 0.0)

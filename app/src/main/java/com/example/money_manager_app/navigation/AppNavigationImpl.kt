@@ -1,15 +1,13 @@
 package com.example.money_manager_app.navigation
 
 import android.os.Bundle
-import android.util.Log
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.navigation.BaseNavigatorImpl
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
-    AppNavigation {
+class AppNavigationImpl @Inject constructor() : BaseNavigatorImpl(), AppNavigation {
 
     override fun openSplashToLanguageScreen(bundle: Bundle?) {
         openScreen(R.id.action_splashScreenFragment_to_languageFragment, bundle)
@@ -85,6 +83,7 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
 
     override fun openMainScreenToAddFragmentScreen(bundle: Bundle?) {
         openScreen(R.id.action_mainFragment_to_addFragment, bundle)
+    }
 
     override fun openMainScreenToAddBudgetScreen(bundle: Bundle?) {
         openScreen(R.id.action_mainFragment_to_addBudgetFragment, bundle)
@@ -102,7 +101,11 @@ class AppNavigationImpl@Inject constructor() : BaseNavigatorImpl(),
         openScreen(R.id.action_detailBudgetFragment_to_addBudgetFragment, bundle)
     }
 
-    companion object {
-        private const val TAG = "AppNavigationImpl"
+    override fun openWalletDetailScreenToStatisticScreen(bundle: Bundle?){
+        openScreen(R.id.action_walletDetailFragment_to_statisticFragment, bundle)
+    }
+
+    override fun openWalletDetailScreenToAddFragmentScreen(bundle: Bundle?) {
+        openScreen(R.id.action_walletDetailFragment_to_addFragment, bundle)
     }
 }

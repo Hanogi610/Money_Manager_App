@@ -78,7 +78,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
     }
 
     fun selectColor(){
-        val colorAdapter = ColorSpinnerAdapter(requireContext(), ColorUtils.getColors())
+        val colorAdapter = ColorSpinnerAdapter(requireContext(), ColorUtils.getColors(requireContext()))
         binding.colorSpinner.adapter = colorAdapter
         binding.colorSpinner.setSelection(0)
     }
@@ -131,8 +131,8 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                     amount = amount,
                     spent = 0,
                     accountId = mainViewModel.accounts.value.first().account.id,
-                    colorId = ColorUtils.getColors()[binding.colorSpinner.selectedItemPosition],
-                    periodType = PeriodType.values()[binding.periodSpinner.selectedItemPosition],
+                    colorId = ColorUtils.getColors(requireContext())[binding.colorSpinner.selectedItemPosition],
+                    periodType = PeriodType.entries[binding.periodSpinner.selectedItemPosition],
                     start_date = todayDate,
                     end_date = nextWeekDate
                 )

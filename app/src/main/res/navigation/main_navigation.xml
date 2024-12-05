@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_mainFragment_to_detailBudgetFragment"
             app:destination="@id/detailBudgetFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_addBudgetFragment"
+            app:destination="@id/addBudgetFragment" />
     </fragment>
     <fragment
         android:id="@+id/debtDetailFragment"
@@ -170,6 +173,12 @@
         <action
             android:id="@+id/action_walletDetailFragment_to_addWalletFragment"
             app:destination="@id/addWalletFragment" />
+        <action
+            android:id="@+id/action_walletDetailFragment_to_statisticFragment"
+            app:destination="@id/statisticFragment" />
+        <action
+            android:id="@+id/action_walletDetailFragment_to_addFragment"
+            app:destination="@id/addFragment" />
     </fragment>
 
     <fragment
@@ -198,7 +207,10 @@
             android:id="@+id/action_detailBudgetFragment_to_addBudgetFragment"
             app:destination="@id/addBudgetFragment" />
     </fragment>
-
+    <fragment
+        android:id="@+id/statisticFragment"
+        android:name="com.example.money_manager_app.fragment.statistic.view.StatisticFragment"
+        android:label="StatisticFragment" />
 
 
 </navigation>

@@ -26,9 +26,9 @@ fun List<Transaction>.totalMoneyDay(listTransaction : List<Transaction>) : Doubl
 
             is Debt -> {
                 total += if (transaction.type == DebtType.RECEIVABLE) {
-                    transaction.amount
-                } else {
                     -transaction.amount
+                } else {
+                    +transaction.amount
                 }
             }
 
@@ -87,7 +87,7 @@ fun List<Transaction>.groupRecordsByDate(): List<CalendarRecord> {
     }
 
     if (lastDate != null  || totalExpense != 0.0 !! || totalIncome != 0.0) {
-        var daily = lastDate?.formatToDayOfMonth()
+        val daily = lastDate?.formatToDayOfMonth()
         groupedList.add(CalendarRecord(daily!!.toInt(), totalIncome, totalExpense))
     }
 
@@ -160,14 +160,15 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
 
             is Debt -> {
                 dailyTotal += if (transaction.type == DebtType.RECEIVABLE) {
-                    transaction.amount
+                    +transaction.amount
                 } else {
                     -transaction.amount
                 }
             }
 
             is DebtTransaction -> {
-                dailyTotal += if (transaction.action == DebtActionType.DEBT_INCREASE) {
+                val action = transaction.action
+                dailyTotal += if (action == DebtActionType.DEBT_INCREASE || action == DebtActionType.DEBT_COLLECTION) {
                     transaction.amount
                 } else {
                     -transaction.amount

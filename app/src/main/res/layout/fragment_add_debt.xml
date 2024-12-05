@@ -10,58 +10,68 @@
         android:clipToPadding="false"
         android:padding="8dp">
 
-        <!-- Back Arrow Button -->
-        <ImageButton
-            android:id="@+id/backArrowButton"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_back_24"
-            app:layout_constraintBottom_toBottomOf="@id/spinnerDebtType"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="@dimen/_16dp"/>
-
-        <!-- Spinner for Debt Type (Receivable or Payable) -->
-        <Spinner
-            android:id="@+id/spinnerDebtType"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:entries="@array/debt_type_options"
-            android:gravity="center"
-            android:padding="8dp"
-            android:spinnerMode="dropdown"
-            android:layout_marginStart="@dimen/_8dp"
-            app:layout_constraintBottom_toBottomOf="@id/backArrowButton"
-            app:layout_constraintEnd_toStartOf="@id/titleText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Title TextView (Add Debt) -->
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/add_debt"
-            app:layout_constraintBottom_toBottomOf="@id/spinnerDebtType"
-            app:layout_constraintEnd_toStartOf="@id/saveButton"
-            app:layout_constraintStart_toEndOf="@id/spinnerDebtType"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <!-- Save Button -->
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/save"
-            android:textColor="@color/white"
-            android:background="@drawable/bg_button"
-            app:layout_constraintBottom_toBottomOf="@id/spinnerDebtType"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/backArrowButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_back_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/spinnerDebtType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:entries="@array/debt_type_options"
+                android:gravity="center"
+                android:padding="8dp"
+                android:spinnerMode="dropdown"
+                android:layout_marginStart="@dimen/_4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/backArrowButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/add_debt"
+                android:textSize="@dimen/_20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button"
+                android:paddingHorizontal="@dimen/_12dp"
+                android:paddingVertical="@dimen/_8dp"
+                android:text="@string/save"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Name Field -->
         <TextView
@@ -73,7 +83,7 @@
             android:text="@string/name"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spinnerDebtType" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <EditText
             android:id="@+id/editTextName"
@@ -220,7 +230,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:padding="@dimen/_16dp"
+            android:padding="@dimen/_4dp"
             android:background="@drawable/rounded_border"
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"

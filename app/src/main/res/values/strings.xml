@@ -71,7 +71,6 @@
     <string name="ending_balance">Ending balance</string>
     <string name="show_more">Show more</string>
     <string name="overview">Overview</string>
-    <string name="expense">Expense</string>
     <string name="memo">Memo</string>
     <string name="from_wallet">From Wallet</string>
     <string name="to_wallet">To Wallet</string>
@@ -205,6 +204,7 @@
     <string name="available_credit">Available credit</string>
     <string name="credit_limit">Credit limit</string>
     <string name="expense">Expense</string>
+    <string name="received">Received</string>
     <string-array name="spinner_color">
         <item>#34BFFF</item>
         <item>#0097E6</item>

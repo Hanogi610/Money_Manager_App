@@ -1,44 +1,33 @@
 package com.example.money_manager_app.utils
 
+import android.content.Context
+import androidx.core.content.ContextCompat
 import com.example.money_manager_app.R
 
+/**
+ * Utility object for managing and providing access to a predefined list of color resources.
+ */
 object ColorUtils {
-    private val colors = listOf(
-        R.color.color_1,
-        R.color.color_2,
-        R.color.color_3,
-        R.color.color_4,
-        R.color.color_5,
-        R.color.color_6,
-        R.color.color_7,
-        R.color.color_8,
-        R.color.color_9,
-        R.color.color_10,
-        R.color.color_11,
-        R.color.color_12,
-        R.color.color_13,
-        R.color.color_14,
-        R.color.color_15,
-        R.color.color_16,
-        R.color.color_17,
-        R.color.color_18,
-        R.color.color_19,
-        R.color.color_20,
-        R.color.color_21,
-        R.color.color_22,
-        R.color.color_23,
-        R.color.color_24,
-        R.color.color_25,
-        R.color.color_26,
-        R.color.color_27,
-        R.color.color_28,
-        R.color.color_29,
-        R.color.color_30,
-        R.color.color_31,
-        R.color.color_32,
-    )
+    private val colors = R.array.color_array
 
-    fun getColors(): List<Int> {
-        return colors
+    /**
+     * Retrieves the list of color resource IDs.
+     */
+    fun getColors(context: Context): List<Int> {
+        val typedArray = context.resources.obtainTypedArray(colors)
+        return List(typedArray.length()) { typedArray.getResourceId(it, 0) }.also { typedArray.recycle() }
+    }
+
+    /**
+     * Gets the index of the given color resource ID from the predefined list.
+     * Returns -1 if the color is not found in the list.
+     *
+     * @param context The context to access resources.
+     * @param colorId The color resource ID to find.
+     * @return The index of the color, or -1 if not found.
+     */
+    fun getColorIndex(context: Context, colorId: Int): Int {
+        val colors = getColors(context)
+        return colors.indexOf(colorId)
     }
 }

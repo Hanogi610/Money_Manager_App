@@ -98,6 +98,24 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                         binding.tvName.text = "Repayment"
                         binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
+
+                    DebtActionType.DEBT_COLLECTION -> {
+                        binding.tvAmount.text = "+${transaction.amount}"
+                        binding.tvAmount.setTextColor(
+                            ContextCompat.getColor(binding.root.context, R.color.blue)
+                        )
+                        binding.tvName.text = "Debt collection"
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
+                    }
+
+                    DebtActionType.LOAN_INCREASE -> {
+                        binding.tvAmount.text = "-${transaction.amount}"
+                        binding.tvAmount.setTextColor(
+                            ContextCompat.getColor(binding.root.context, R.color.blue)
+                        )
+                        binding.tvName.text = "Loan increase"
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
+                    }
                 }
             }
         }

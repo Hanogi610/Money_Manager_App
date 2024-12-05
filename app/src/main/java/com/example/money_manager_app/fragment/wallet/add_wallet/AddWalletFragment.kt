@@ -68,7 +68,7 @@ class AddWalletFragment :
         walletTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.walletTypeSpinner.adapter = walletTypeAdapter
 
-        colorAdapter = ColorSpinnerAdapter(requireContext(), ColorUtils.getColors())
+        colorAdapter = ColorSpinnerAdapter(requireContext(), ColorUtils.getColors(requireContext()))
         binding.colorSpinner.adapter = colorAdapter
         binding.colorSpinner.setSelection(0)
 
@@ -108,6 +108,8 @@ class AddWalletFragment :
                     val selectedType = WalletType.entries[position]
                     binding.creditLayout.visibility =
                         if (selectedType == WalletType.CREDIT_CARD) View.VISIBLE else View.GONE
+                    binding.generalLayout.visibility =
+                        if (selectedType == WalletType.GENERAL) View.VISIBLE else View.GONE
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -165,8 +167,8 @@ class AddWalletFragment :
     private fun populateFieldsWithWalletData(wallet: Wallet) {
         binding.nameEditText.setText(wallet.name)
         binding.amountEditText.setText(getString(R.string.money_amount, "", wallet.amount))
-        wallet.colorId.let { ColorUtils.getColors()[it] }
-            .let { binding.colorSpinner.setSelection(it) }
+        val colorIndex = ColorUtils.getColorIndex(requireContext(), wallet.colorId)
+        binding.colorSpinner.setSelection(colorIndex)
 
         val walletTypes = WalletType.entries.map { it.name }
         val walletTypeIndex = walletTypes.indexOf(wallet.walletType.name)
@@ -193,7 +195,7 @@ class AddWalletFragment :
             id = walletId ?: 0,
             name = binding.nameEditText.text.toString(),
             amount = binding.amountEditText.text.toString().toDouble(),
-            colorId = ColorUtils.getColors()[binding.colorSpinner.selectedItemPosition],
+            colorId = ColorUtils.getColors(requireContext())[binding.colorSpinner.selectedItemPosition],
             accountId = mainViewModel.currentAccount.value!!.account.id,
             walletType = WalletType.valueOf(binding.walletTypeSpinner.selectedItem.toString()),
             iconId = getVM().selectedIcon.value ?: R.drawable.wallet_1,

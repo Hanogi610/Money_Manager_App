@@ -57,6 +57,27 @@ class WalletDetailFragment :
         )
     }
 
+    override fun initToolbar() {
+        super.initToolbar()
+        binding.backArrowButton.setOnSafeClickListener {
+            appNavigation.navigateUp()
+        }
+        binding.editButton.setOnSafeClickListener {
+            wallet?.let {
+                appNavigation.openWalletDetailToAddWalletScreen(Bundle().apply {
+                    putParcelable("wallet", it)
+                })
+            }
+        }
+        binding.statisticButton.setOnSafeClickListener {
+            wallet?.let {
+                appNavigation.openWalletDetailScreenToStatisticScreen(Bundle().apply {
+                    putParcelable("wallet", it)
+                })
+            }
+        }
+    }
+
     override fun bindingStateView() {
         super.bindingStateView()
 
@@ -69,7 +90,7 @@ class WalletDetailFragment :
                             walletIconImageView.setBackgroundResource(it.colorId)
                             nameLabel.text = it.name
                             transactionAdapter.submitList(it.transactions)
-                            actionButton.setBackgroundResource(it.colorId)
+                            actionButton.setBackgroundColor(it.colorId)
                             fab.setBackgroundColor(it.colorId)
                             when (it) {
                                 is WalletDetailItem.CreditItem -> {
@@ -130,13 +151,13 @@ class WalletDetailFragment :
             getVM().walletDetailItemState.value?.let {
                 when (it) {
                     is WalletDetailItem.CreditItem -> {
-                        appNavigation.openMainScreenToAddFragmentScreen(Bundle().apply {
+                        appNavigation.openWalletDetailScreenToAddFragmentScreen(Bundle().apply {
                             putParcelable("wallet", it.wallet)
                         })
                     }
 
                     is WalletDetailItem.GeneralItem -> {
-                        appNavigation.openMainScreenToAddWalletScreen(Bundle().apply {
+                        appNavigation.openWalletDetailToAddWalletScreen(Bundle().apply {
                             putParcelable("wallet", it.wallet)
                         })
                     }

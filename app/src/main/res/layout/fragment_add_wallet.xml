@@ -135,18 +135,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/amountEditText" />
 
-            <Spinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/colorSpinner"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintWidth_percent="0.6"
                 android:layout_margin="16dp"
                 android:background="@drawable/rounded_border"
-                android:minWidth="@dimen/_225dp"
-                android:padding="@dimen/_16dp"
+                android:padding="@dimen/_4dp"
                 android:spinnerMode="dropdown"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/barrier6"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/barrier6"
                 app:layout_constraintTop_toBottomOf="@id/colorLabel" />
 
             <TextView
