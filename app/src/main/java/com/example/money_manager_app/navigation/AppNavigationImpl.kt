@@ -102,8 +102,10 @@ class AppNavigationImpl @Inject constructor() : BaseNavigatorImpl(), AppNavigati
         openScreen(R.id.action_detailBudgetFragment_to_addBudgetFragment, bundle)
     }
 
-    override fun openWalletDetailScreenToStatisticScreen(bundle: Bundle?){
+    override fun openWalletDetailScreenToStatisticScreen(bundle: Bundle?) {
         openScreen(R.id.action_walletDetailFragment_to_statisticFragment, bundle)
+    }
+
     override fun openBudgetDetailToEntertainmentScreen(bundle: Bundle?) {
         openScreen(R.id.action_detailBudgetFragment_to_entertainmentFragment, bundle)
     }
@@ -117,11 +119,11 @@ class AppNavigationImpl @Inject constructor() : BaseNavigatorImpl(), AppNavigati
     }
 
 
-    companion object {
-        private const val TAG = "AppNavigationImpl"
-    }
-
     override fun openWalletDetailScreenToAddFragmentScreen(bundle: Bundle?) {
         openScreen(R.id.action_walletDetailFragment_to_addFragment, bundle)
+    }
+
+    companion object {
+        private const val TAG = "AppNavigationImpl"
     }
 }

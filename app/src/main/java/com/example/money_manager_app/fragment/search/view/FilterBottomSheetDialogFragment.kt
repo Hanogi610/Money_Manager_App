@@ -18,7 +18,6 @@ import com.example.money_manager_app.fragment.search.adapter.IconCategoryAdapter
 import com.example.money_manager_app.fragment.search.adapter.SearchInterface
 import com.example.money_manager_app.fragment.search.viewmodel.SearchViewModel
 import com.example.money_manager_app.fragment.wallet.WalletViewModel
-import com.example.money_manager_app.viewmodel.MainViewModel
 import java.util.Calendar
 
 class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding>() {
@@ -136,7 +135,7 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
     }
 
     fun setSearchInterface(searchInterface: SearchInterface) {
-        this.searchInterface = searchInterface
+        this.searchInterface = searchInterface?: return
     }
 
 

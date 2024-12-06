@@ -40,6 +40,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
     private val mainViewModel: MainViewModel by activityViewModels()
     private val calendar = Calendar.getInstance()
     private val categoryViewModel: CategoryViewModel by activityViewModels()
+    private var budgetEdit: Budget? = null
 
     override fun getVM(): AddBudgetViewModel {
         val vm: AddBudgetViewModel by viewModels()
@@ -54,7 +55,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
             if(budgetEdit != null){
                 binding.editTextName.setText(budgetEdit?.name)
                 binding.editTextAmount.setText(budgetEdit?.amount.toString())
-                binding.colorSpinner.setSelection(ColorUtils.getColors().indexOf(budgetEdit?.colorId))
+                binding.colorSpinner.setSelection(ColorUtils.getColors(requireContext()).indexOf(budgetEdit?.colorId))
                 binding.periodSpinner.setSelection(budgetEdit?.periodType?.ordinal ?: 0)
                 binding.selectCategory.text = category
             }
@@ -264,11 +265,6 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                     accountId = mainViewModel.accounts.value.first().account.id,
                     colorId = ColorUtils.getColors(requireContext())[binding.colorSpinner.selectedItemPosition],
                     periodType = PeriodType.entries[binding.periodSpinner.selectedItemPosition],
-                    start_date = todayDate,
-                    end_date = nextWeekDate
-                    accountId = mainViewModel.accounts.value?.first()?.account?.id ?: 0,
-                    colorId = ColorUtils.getColors()[binding.colorSpinner.selectedItemPosition],
-                    periodType = periodType,
                     start_date = date.first,
                     end_date = date.second
                 )
