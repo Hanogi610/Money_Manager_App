@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,31 +14,39 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/back"
             android:src="@drawable/arrow_left"
+            app:layout_constraintBottom_toTopOf="@+id/budgetWrapper"
             app:layout_constraintEnd_toStartOf="@id/title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/sfprodisplay_medium"
             android:text="@string/budget"
             android:textAlignment="center"
-            android:textSize="18sp"
+            android:textColor="@color/Neutral_700"
+            android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/budgetWrapper"
             app:layout_constraintEnd_toStartOf="@+id/editButton"
             app:layout_constraintStart_toEndOf="@id/backButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
         <ImageView
             android:id="@+id/editButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_10dp"
             android:contentDescription="@string/edit"
             android:src="@drawable/edit"
+            app:layout_constraintBottom_toTopOf="@+id/budgetWrapper"
             app:layout_constraintEnd_toStartOf="@id/deleteButton"
-            android:layout_marginRight="@dimen/_10dp"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
         <ImageView
             android:id="@+id/deleteButton"
@@ -45,8 +54,10 @@
             android:layout_height="@dimen/_20dp"
             android:contentDescription="@string/delete"
             android:src="@drawable/delete"
+            app:layout_constraintBottom_toTopOf="@+id/budgetWrapper"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,7 +76,9 @@
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
-                android:textSize="26sp"
+                android:fontFamily="@font/sfprodisplay_medium"
+                android:textColor="@color/Neutral_700"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -76,7 +89,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
+                android:fontFamily="@font/sfprodisplay_regular"
                 android:text="@string/left"
+                android:textColor="@color/Neutral_300"
                 android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
@@ -87,7 +102,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_16dp"
                 android:layout_marginTop="@dimen/_16dp"
+                android:fontFamily="@font/sfprodisplay_regular"
                 android:text="@string/spent"
+                android:textColor="@color/Neutral_300"
                 android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
@@ -120,8 +137,8 @@
                 android:layout_marginEnd="@dimen/_16dp"
                 android:layout_marginBottom="@dimen/_12dp"
                 android:progress="20"
-                android:progressTint="@color/Brand_Primary"
                 android:progressBackgroundTint="@color/Neutral_50"
+                android:progressTint="@color/Brand_Primary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/remainLabel" />
@@ -149,10 +166,12 @@
                     android:id="@+id/periodTitleLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16dp"
+                    android:layout_marginStart="@dimen/_14dp"
                     android:layout_marginTop="@dimen/_16dp"
+                    android:fontFamily="@font/sfprodisplay_regular"
                     android:text="@string/period"
-                    android:textSize="16sp"
+                    android:textColor="@color/Neutral_300"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/budgetTitleLabel" />
 
@@ -160,12 +179,29 @@
                     android:id="@+id/budgetTitleLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_16dp"
+                    android:layout_marginStart="@dimen/_14dp"
                     android:layout_marginTop="@dimen/_16dp"
+                    android:fontFamily="@font/sfprodisplay_regular"
                     android:text="@string/budget"
-                    android:textSize="16sp"
+                    android:textColor="@color/Neutral_300"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/categoryLabel" />
+
+                <TextView
+                    android:id="@+id/categoryLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_24dp"
+                    android:layout_marginEnd="@dimen/_16dp"
+                    android:fontFamily="@font/sfprodisplay_medium"
+                    android:maxLines="2"
+                    android:textColor="@color/Neutral_700"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/categoryTitleLabel"
+                    app:layout_constraintTop_toTopOf="@+id/categoryTitleLabel" />
 
                 <TextView
                     android:id="@+id/categoryTitleLabel"
@@ -173,41 +209,37 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_16dp"
                     android:layout_marginTop="@dimen/_16dp"
+                    android:fontFamily="@font/sfprodisplay_regular"
                     android:text="@string/category"
-                    android:textSize="16sp"
+                    android:textColor="@color/Neutral_300"
+                    android:textSize="14sp"
                     android:typeface="normal"
+                    app:layout_constraintEnd_toStartOf="@+id/categoryLabel"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/categoryLabel"
+                    android:id="@+id/budgetLabel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_24dp"
-                    android:layout_marginTop="@dimen/_16dp"
-                    android:layout_marginEnd="@dimen/_16dp"
-                    android:textSize="16sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/categoryTitleLabel"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/budgetLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16dp"
-                    android:textSize="16sp"
+                    android:fontFamily="@font/sfprodisplay_medium"
+                    android:textColor="@color/Neutral_700"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/categoryLabel"
                     app:layout_constraintStart_toStartOf="@+id/categoryLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/categoryLabel" />
+                    app:layout_constraintTop_toTopOf="@+id/budgetTitleLabel" />
 
                 <TextView
                     android:id="@+id/periodLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16dp"
-                    android:textSize="16sp"
+                    android:fontFamily="@font/sfprodisplay_medium"
+                    android:textColor="@color/Neutral_700"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@+id/budgetLabel"
                     app:layout_constraintStart_toStartOf="@+id/categoryLabel"
-                    app:layout_constraintTop_toBottomOf="@+id/budgetLabel" />
+                    app:layout_constraintTop_toTopOf="@+id/periodTitleLabel" />
 
                 <TextView
                     android:id="@+id/timeLabel"
@@ -219,22 +251,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/transactionLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Transaction List"
-            android:layout_marginTop="@dimen/_8dp"
-            android:layout_marginBottom="@dimen/_8dp"
-            app:layout_constraintBottom_toTopOf="@+id/transactionRv"
-            app:layout_constraintStart_toStartOf="@+id/transactionRv"
-            app:layout_constraintTop_toBottomOf="@+id/budgetWrapper" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/transactionRv"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="16dp"
+            android:padding="@dimen/_12dp"
+            android:background="@drawable/custom_radius_16"
             android:layout_marginTop="@dimen/_16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

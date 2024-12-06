@@ -3,6 +3,7 @@ package com.example.money_manager_app.fragment.wallet
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
+import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.BudgetWithCategory
 import com.example.money_manager_app.data.model.entity.DebtDetail
@@ -12,14 +13,20 @@ import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.repository.BudgetRepository
 import com.example.money_manager_app.data.repository.DebtRepository
 import com.example.money_manager_app.data.repository.GoalRepository
+import com.example.money_manager_app.data.repository.TransferRepository
 import com.example.money_manager_app.data.repository.WalletRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
+import com.example.money_manager_app.utils.toDateTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +35,8 @@ class WalletViewModel @Inject constructor(
     private val walletRepository: WalletRepository,
     private val debtRepository: DebtRepository,
     private val goalRepository: GoalRepository,
-    private val budgetRepository: BudgetRepository
+    private val budgetRepository: BudgetRepository,
+    private val tranferRepository: TransferRepository
 ) : BaseViewModel() {
 
     private val _wallets = MutableStateFlow<List<Wallet>>(emptyList())
@@ -49,16 +57,42 @@ class WalletViewModel @Inject constructor(
     fun setBudgets(budgets: List<Budget>) {
         _budgets.value = budgets
     }
-
-
     fun getBudgets(accountId: Long) {
         viewModelScope.launch {
             budgetRepository.getBudgetsByAccountId(accountId).collect {
                 _budgetsWithCategory.value = it
-
             }
         }
     }
+
+    fun checkBudgetNeedUpdate(accountId: Long) {
+        viewModelScope.launch(ioDispatcher) {
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val calendarToday = Calendar.getInstance()
+            val todayDate = dateFormat.format(calendarToday.time).toDateTimestamp()
+            val budgets = budgetRepository.getBudgetsByAccountIdAndDate(accountId, todayDate)
+            Log.d("WalletViewModel", "updateBudgets: ${budgets}")
+            for (item in budgets) {
+                var spent = 0.0
+                for(category in item.categories) {
+                    val transactions = tranferRepository.getTransferWithCategoryByAccountId(
+                        item.budget.accountId,
+                        category.id,
+                        item.budget.start_date,
+                        item.budget.end_date
+                    )
+
+                    for (transaction in transactions) {
+                        spent += transaction.amount
+                    }
+                    Log.d("WalletViewModel", "updateBudgets: ${spent}")
+                }
+                budgetRepository.editBudget(item.budget.copy(spent = spent.toInt()))
+                spent = 0.0
+            }
+        }
+    }
+
 
     fun getWallets(accountId: Long) {
         viewModelScope.launch {

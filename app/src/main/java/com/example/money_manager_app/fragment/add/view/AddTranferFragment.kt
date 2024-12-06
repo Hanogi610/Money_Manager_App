@@ -93,7 +93,15 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
 
     fun setButtonFee() {
         binding.ivFee.setOnClickListener {
-
+            if(btnFee){
+                binding.ivFee.setImageResource(R.drawable.toggle_off)
+                binding.etFee.isEnabled = false
+                btnFee = false
+            } else {
+                binding.ivFee.setImageResource(R.drawable.toggle_on)
+                binding.etFee.isEnabled = true
+                btnFee = true
+            }
         }
     }
 

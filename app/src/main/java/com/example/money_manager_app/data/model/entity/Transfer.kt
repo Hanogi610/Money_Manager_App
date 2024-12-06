@@ -1,12 +1,15 @@
 package com.example.money_manager_app.data.model.entity
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.enums.TransferType
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(
     tableName = "transfer", foreignKeys = [ForeignKey(
         entity = Wallet::class,
@@ -46,4 +49,4 @@ data class Transfer(
     @ColumnInfo(name = "icon_id") override val iconId: Int?,
     @ColumnInfo(name = "category_id") val categoryId: Long,
     @ColumnInfo(name = "memo") val memo: String
-) : Transaction(id, iconId, name, amount, accountId, walletId, date, time)
+) : Transaction(id, iconId, name, amount, accountId, walletId, date, time), Parcelable

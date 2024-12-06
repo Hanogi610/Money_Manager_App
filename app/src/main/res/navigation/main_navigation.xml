@@ -165,6 +165,9 @@
         <action
             android:id="@+id/action_addBudgetFragment_to_MultipleSelectionCatrgoryFragment"
             app:destination="@id/MultipleSelectionCatrgoryFragment" />
+        <action
+            android:id="@+id/action_addBudgetFragment_to_walletFragment"
+            app:destination="@id/walletFragment" />
     </fragment>
 
     <fragment
@@ -182,8 +185,24 @@
         <action
             android:id="@+id/action_detailBudgetFragment_to_addBudgetFragment"
             app:destination="@id/addBudgetFragment" />
+        <action
+            android:id="@+id/action_detailBudgetFragment_to_entertainmentFragment"
+            app:destination="@id/entertainmentFragment" />
     </fragment>
-
+    <fragment
+        android:id="@+id/entertainmentFragment"
+        android:name="com.example.money_manager_app.fragment.entertainment.view.EntertainmentFragment"
+        android:label="EntertainmentFragment"
+        tools:layout="@layout/fragment_entertainment">
+        <action
+            android:id="@+id/action_entertainmentFragment_to_recordFragment"
+            app:destination="@id/recordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/walletFragment"
+        android:name="com.example.money_manager_app.fragment.wallet.WalletFragment"
+        tools:layout="@layout/fragment_wallet"
+        android:label="WalletFragment" />
 
 
 </navigation>

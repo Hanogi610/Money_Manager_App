@@ -173,6 +173,18 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
                     -transaction.amount
                 }
             }
+
+            is Transfer -> {
+                dailyTotal += if (transaction.typeOfExpenditure == TransferType.Income) {
+                    +transaction.amount
+                } else {
+                    if (transaction.typeOfExpenditure == TransferType.Expense) {
+                        -transaction.amount
+                    } else {
+                        -transaction.amount
+                    }
+                }
+            }
         }
 
         groupedList.add(TransactionListItem.TransactionItem(transaction))

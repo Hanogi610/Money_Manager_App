@@ -26,6 +26,8 @@ interface BudgetRepository {
 
     fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetWithCategory>>
 
+    fun getBudgetsByAccountIdAndDate(accountId: Long, date : Long): List<BudgetWithCategory>
+
     suspend fun removeCategoryFromBudget(budgetId: Long, categoryId: Long)
 
     suspend fun insertBudget(budget: Budget,budgetCategoryCrossRefs : List<BudgetCategoryCrossRef>): Long
@@ -70,6 +72,13 @@ class BudgetRepositoryImpl @Inject constructor(
 
     override fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetWithCategory>> {
         return budgetDao.getBudgetsByAccountId(accountId)
+    }
+
+    override fun getBudgetsByAccountIdAndDate(
+        accountId: Long,
+        date: Long,
+    ): List<BudgetWithCategory> {
+        return budgetDao.getBudgetsByAccountIdAndDate(accountId, date)
     }
 
     override suspend fun removeCategoryFromBudget(budgetId: Long, categoryId: Long) {
