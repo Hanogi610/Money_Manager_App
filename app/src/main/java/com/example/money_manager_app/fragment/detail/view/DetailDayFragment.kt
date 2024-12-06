@@ -51,6 +51,9 @@ class DetailDayFragment : Fragment() {
         ShowDay(bundle!!)
         setAdapter()
         observeData()
+        binding.ivBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     fun observeData() {

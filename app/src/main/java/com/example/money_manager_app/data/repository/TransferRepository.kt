@@ -1,5 +1,6 @@
     package com.example.money_manager_app.data.repository
 
+    import android.util.Log
     import com.example.money_manager_app.data.dao.TransferDao
     import com.example.money_manager_app.data.model.entity.Category
     import com.example.money_manager_app.data.model.entity.Transfer
@@ -75,6 +76,8 @@
         }
 
         override fun getTransferWithCategoryByAccountId(accountId: Long, categoryId: Long, dateStart: Long, dateEnd: Long): List<Transfer> {
+            Log.d("TransferRepositoryImpl", "getTransferWithCategoryByAccountId: $accountId $categoryId $dateStart $dateEnd")
+            Log.d("TransferRepositoryImpl", "getTransferWithCategoryByAccountId: ${transferDao.getTransferWithCategoryByAccountId(accountId, categoryId, dateStart, dateEnd)}")
             return transferDao.getTransferWithCategoryByAccountId(accountId, categoryId, dateStart, dateEnd)
         }
 

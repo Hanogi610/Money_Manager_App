@@ -1,11 +1,7 @@
 package com.example.money_manager_app.fragment.statistic.adapter
 
 import android.content.Context
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
 import android.graphics.Color
-import android.graphics.PorterDuff
-import android.os.Build
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
@@ -18,7 +14,6 @@ import com.example.money_manager_app.data.model.Stats
 import com.example.money_manager_app.databinding.ListStatisticBalanceBinding
 import com.example.money_manager_app.databinding.ListStatisticOverviewBinding
 import com.example.money_manager_app.databinding.ListStatisticPieBinding
-import com.example.money_manager_app.databinding.ListStatisticMoreBinding
 import com.example.money_manager_app.utils.Helper
 import com.example.money_manager_app.utils.SharePreferenceHelper
 import com.github.mikephil.charting.charts.PieChart
@@ -26,11 +21,6 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.data.Entry
-import java.text.NumberFormat
-import java.util.Locale
 
 class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -79,17 +69,6 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
         }
     }
 
-    inner class MoreHolder(private val binding: ListStatisticMoreBinding) :
-        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
-        init {
-            binding.root.setOnClickListener(this)
-        }
-
-        override fun onClick(view: View) {
-            listener?.OnItemClick(view, layoutPosition)
-        }
-    }
-
     interface OnItemClickListener {
         fun OnItemClick(v: View, position: Int)
     }
@@ -98,8 +77,7 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
         return when (position) {
             0 -> TYPE_BALANCE
             1 -> TYPE_OVERVIEW
-            2 -> TYPE_PIE
-            else -> TYPE_MORE
+            else -> TYPE_PIE
         }
     }
 
@@ -108,8 +86,7 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
         return when (viewType) {
             TYPE_BALANCE -> BalanceHolder(ListStatisticBalanceBinding.inflate(inflater, parent, false))
             TYPE_OVERVIEW -> OverviewHolder(ListStatisticOverviewBinding.inflate(inflater, parent, false))
-            TYPE_PIE -> PieHolder(ListStatisticPieBinding.inflate(inflater, parent, false))
-            else -> MoreHolder(ListStatisticMoreBinding.inflate(inflater, parent, false))
+            else -> PieHolder(ListStatisticPieBinding.inflate(inflater, parent, false))
         }
     }
 
@@ -121,7 +98,7 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
         }
     }
 
-    override fun getItemCount(): Int = 5
+    override fun getItemCount(): Int = 3
 
     fun setBalance(openingBalance: Long, endingBalance: Long) {
         this.openingBalance = openingBalance
@@ -169,13 +146,11 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
         pieChart.data = data
     }
 
-    companion object{
+    companion object {
         private const val TYPE_BALANCE = 0
         private const val TYPE_OVERVIEW = 1
         private const val TYPE_PIE = 2
-        private const val TYPE_MORE = 3
     }
-
 
     private fun getCenterAmount(): SpannableString {
         var totalAmount: Long = 0
