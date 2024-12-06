@@ -148,10 +148,12 @@ class TransactionAdapter(
                 is Transfer -> {
                     categories?.let {
                         val category = it.find { category -> category.id == transaction.categoryId }
-                        binding.transactionTypeTextView.text = category?.name
-                        binding.transactionTypeImageView.setImageResource(
-                            category?.iconId ?: R.drawable.expense_1
-                        )
+                        binding.transactionTypeTextView.text = transaction.description
+                        if(transaction.typeOfExpenditure == TransferType.Expense || transaction.typeOfExpenditure == TransferType.Income) {
+                            binding.transactionTypeImageView.setImageResource(category?.iconId ?: R.drawable.transfer)
+                        } else {
+                            binding.transactionTypeImageView.setImageResource(R.drawable.transfer)
+                        }
                         binding.transactionTypeImageView.setColorFilter(
                             category?.colorId ?: R.color.color_1
                         )

@@ -71,7 +71,6 @@ class WalletViewModel @Inject constructor(
             val calendarToday = Calendar.getInstance()
             val todayDate = dateFormat.format(calendarToday.time).toDateTimestamp()
             val budgets = budgetRepository.getBudgetsByAccountIdAndDate(accountId, todayDate)
-            Log.d("WalletViewModel", "updateBudgets: ${budgets}")
             for (item in budgets) {
                 var spent = 0.0
                 for(category in item.categories) {
@@ -85,7 +84,6 @@ class WalletViewModel @Inject constructor(
                     for (transaction in transactions) {
                         spent += transaction.amount
                     }
-                    Log.d("WalletViewModel", "updateBudgets: ${spent}")
                 }
                 budgetRepository.editBudget(item.budget.copy(spent = spent.toInt()))
                 spent = 0.0
