@@ -1,6 +1,7 @@
 package com.example.money_manager_app.navigation
 
 import android.os.Bundle
+import android.util.Log
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.navigation.BaseNavigatorImpl
 import dagger.hilt.android.scopes.ActivityScoped
@@ -101,11 +102,28 @@ class AppNavigationImpl @Inject constructor() : BaseNavigatorImpl(), AppNavigati
         openScreen(R.id.action_detailBudgetFragment_to_addBudgetFragment, bundle)
     }
 
-    override fun openWalletDetailScreenToStatisticScreen(bundle: Bundle?){
+    override fun openWalletDetailScreenToStatisticScreen(bundle: Bundle?) {
         openScreen(R.id.action_walletDetailFragment_to_statisticFragment, bundle)
     }
 
+    override fun openBudgetDetailToEntertainmentScreen(bundle: Bundle?) {
+        openScreen(R.id.action_detailBudgetFragment_to_entertainmentFragment, bundle)
+    }
+
+    override fun openEntertainmentToRecord(bundle: Bundle?) {
+        openScreen(R.id.action_entertainmentFragment_to_recordFragment, bundle)
+    }
+
+    override fun openAddBudgetToWalletScreen(bundle: Bundle?) {
+        openScreen(R.id.action_addBudgetFragment_to_walletFragment, bundle)
+    }
+
+
     override fun openWalletDetailScreenToAddFragmentScreen(bundle: Bundle?) {
         openScreen(R.id.action_walletDetailFragment_to_addFragment, bundle)
+    }
+
+    companion object {
+        private const val TAG = "AppNavigationImpl"
     }
 }

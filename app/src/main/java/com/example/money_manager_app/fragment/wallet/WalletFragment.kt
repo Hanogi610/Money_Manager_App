@@ -41,12 +41,13 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
     private lateinit var debtAdapter: DebtAdapter
     private lateinit var goalAdapter: GoalAdapter
     private lateinit var budgetAdapter: BudgetAdapter
-
+//
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
         val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
         val currencySymbol = getString(currentCurrency.symbolRes)
+        getVM().checkBudgetNeedUpdate(mainViewModel.currentAccount.value?.account?.id?:0)
 
         walletAdapter = WalletAdapter(requireContext(), currencySymbol, ::onWalletItemClick, ::onAddWalletClick)
         binding.walletRecyclerView.adapter = walletAdapter
@@ -63,8 +64,8 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
         goalAdapter = GoalAdapter(requireContext(),::onGoalItemClick,::onAddGoalClick)
         binding.goalRecyclerView.adapter = goalAdapter
         binding.goalRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-    }
 
+    }
     override fun bindingStateView() {
         super.bindingStateView()
 
@@ -87,7 +88,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().wallets.collect { wallets ->
                     walletAdapter.setWallets(wallets)
-                    binding.managerTextView.text = getString(R.string.manager, wallets.size)
                 }
             }
         }

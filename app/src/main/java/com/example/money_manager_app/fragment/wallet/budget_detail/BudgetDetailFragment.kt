@@ -1,37 +1,36 @@
 package com.example.money_manager_app.fragment.wallet.budget_detail
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
-import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.CategoryTransactionDetail
-import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Budget
-import com.example.money_manager_app.data.model.entity.BudgetWithCategory
 import com.example.money_manager_app.data.model.entity.CategoryWithTransfer
-import com.example.money_manager_app.data.model.entity.Transfer
-import com.example.money_manager_app.data.model.entity.enums.TransferType
+import com.example.money_manager_app.data.model.entity.enums.CategoryType
+import com.example.money_manager_app.data.model.entity.enums.PeriodType
+import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentBudgetDetailBinding
-import com.example.money_manager_app.fragment.wallet.WalletViewModel
 import com.example.money_manager_app.fragment.wallet.adapter.CategoryTransactionAdapter
+import com.example.money_manager_app.fragment.wallet.add_budget.AddBudgetFragment
+import com.example.money_manager_app.fragment.wallet.add_budget.AddBudgetViewModel
 import com.example.money_manager_app.selecticon.viewmodel.CategoryViewModel
 import com.example.money_manager_app.utils.toFormattedDateString
-import com.example.money_manager_app.utils.toFormattedTimeString
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Calendar
+import java.util.Locale
 
 @AndroidEntryPoint
 class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDetailViewModel>(R.layout.fragment_budget_detail) {
@@ -41,29 +40,63 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
         return viewModel
     }
 
+    private val addBudgetViewModel: AddBudgetViewModel by activityViewModels()
     private var budget: Budget? = null
-    private var currencySymbol = ""
-    private val walletViewModel: WalletViewModel by activityViewModels()
+    private var category: String = ""
+    private val categoryViewModel: CategoryViewModel by activityViewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var categoryTransactionAdapter: CategoryTransactionAdapter
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
-        currencySymbol = getString(currentCurrency.symbolRes)
+        initData(savedInstanceState)
         setAdapter()
         observeData()
-        imgBack()
+        setupBackButton()
+        deletButton()
+        editButton()
     }
 
-    private fun imgBack() {
+    private fun editButton() {
+        binding.editButton.setOnClickListener {
+            appNavigation.openBudgetDetailToAddBudgetScreen(Bundle().apply {
+                putParcelable("budget", budget)
+                putString("category", category)
+            })
+        }
+    }
+
+    private fun deletButton() {
+        binding.deleteButton.setOnClickListener {
+            if(budget != null){
+                val AlertDialogBinding = AlertDialogBinding.inflate(layoutInflater)
+
+                var alert = AlertDialog.Builder(requireContext()).create()
+                alert.setView(AlertDialogBinding.root)
+                alert.setCancelable(true)
+                AlertDialogBinding.deleteImageView.setOnClickListener {
+                    getVM().deleteBudget(budget!!)
+                    alert.dismiss()
+                    findNavController().popBackStack()
+                }
+                AlertDialogBinding.cannelImageView.setOnClickListener {
+                    alert.dismiss()
+                }
+                alert.show()
+            }
+        }
+    }
+
+    private fun setupBackButton() {
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
     }
 
     private fun setAdapter() {
-        categoryTransactionAdapter = CategoryTransactionAdapter(listOf(),currencySymbol, ::onTransactionItemClick)
+        val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
+        val currencySymbol = getString(currentCurrency.symbolRes)
+        categoryTransactionAdapter = CategoryTransactionAdapter(listOf(), currencySymbol, ::onTransactionItemClick)
         binding.transactionRv.adapter = categoryTransactionAdapter
         binding.transactionRv.layoutManager = LinearLayoutManager(requireContext())
     }
@@ -74,58 +107,63 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
                 showData(it)
             }
         }
+
         lifecycleScope.launch {
             getVM().budgetsWithCategory.collect {
                 val budgetWithCategory = it.find { it.budget.id == budget!!.id }
-                if(budgetWithCategory != null){
-                    Log.d("BudgetDetailFragment", "budgetWithCategory is ${budgetWithCategory}")
-                    getVM().getCategoryWithTransfer(budgetWithCategory)
+                budgetWithCategory?.let { bwc ->
+                    category = bwc.categories.joinToString(", ") { it.name }
+                    if (bwc.categories.size == categoryViewModel.listCategory.value.filter { it.type == CategoryType.EXPENSE }.size) {
+                        category = "All Category"
+                    }
+                    binding.categoryLabel.text = category
+                    getVM().getCategoryWithTransfer(bwc)
                 }
             }
         }
     }
 
-    fun onTransactionItemClick(transfer: Transfer) {
+    private fun onTransactionItemClick(categoryTransaction : CategoryTransactionDetail) {
+        appNavigation.openBudgetDetailToEntertainmentScreen(Bundle().apply {
+            putParcelable("categoryTransaction", categoryTransaction)
+        })
 
     }
 
     override fun initData(savedInstanceState: Bundle?) {
+        val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
+        val currencySymbol = getString(currentCurrency.symbolRes)
         super.initData(savedInstanceState)
-        budget = arguments?.getParcelable<Budget>("budget")
-        if(budget != null){
-            binding.nameLabel.text = budget!!.name
-            binding.spentLabel.text =  "${currencySymbol}" + budget!!.spent.toString()
-            binding.progressBar.max = budget!!.amount.toInt()
-            if(budget!!.spent > budget!!.amount){
-                binding.remainTitleLabel.text = "Overspent"
-                binding.progressBar.progress = budget!!.amount.toInt()
-            } else {
-                binding.remainTitleLabel.text = "Left"
-                binding.progressBar.progress = budget!!.spent.toInt()
-            }
-            binding.remainLabel.text = "${currencySymbol}" + (budget!!.amount - budget!!.spent).toString()
-            getVM().getBudgets(budget!!.accountId)
-            var budgetWithCategory = getVM().budgetsWithCategory.value?.find { it.budget.id == budget!!.id }
-            var category = ""
-            if(budgetWithCategory != null){
-                for(i in budgetWithCategory.categories){
-                    category += i.name + ", "
-                }
-            }
-            binding.categoryLabel.text = category
-            binding.budgetLabel.text = "${currencySymbol}" + budget!!.amount.toString()
-            binding.periodLabel.text = budget!!.start_date.toFormattedDateString() + " - " + budget!!.end_date.toFormattedDateString()
-
-//            val currentDate = LocalDate.now()
-//            val endDate = LocalDate.parse(budget!!.end_date.toFormattedDateString())
-//            val daysBetween = ChronoUnit.DAYS.between(currentDate, endDate)
-//            binding.timeLabel.text = "$daysBetween days left"
+        budget = arguments?.getParcelable("budget")
+        budget?.let {
+            binding.nameLabel.text = it.name
+            binding.spentLabel.text = "${currencySymbol}${it.spent}"
+            binding.progressBar.max = it.amount.toInt()
+            binding.remainTitleLabel.text = if (it.spent > it.amount) "Overspent" else "Left"
+            binding.progressBar.progress = if (it.spent > it.amount) it.amount.toInt() else it.spent.toInt()
+            categoryViewModel.getCategory()
+            binding.remainLabel.text = "${currencySymbol}${it.amount - it.spent}"
+            getVM().getBudgets(it.accountId)
+            binding.budgetLabel.text = "${currencySymbol}${it.amount}"
+            var start_date = it.start_date.toFormattedDateString()
+            var end_date = it.end_date.toFormattedDateString()
+            binding.periodLabel.text = start_date + " - " + end_date
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val calendarToday = Calendar.getInstance()
+            val todayDate = LocalDate.parse(dateFormat.format(calendarToday.time), DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            val endDate = LocalDate.parse(end_date, formatter)
+            val daysBetween = ChronoUnit.DAYS.between(todayDate, endDate)
+            binding.timeLabel.text = "${daysBetween} left days"
         }
     }
 
-   fun showData(category: List<CategoryWithTransfer>){
-       var listCategoryTransactionDetail = getVM().toCategoryTransactionDetail(category)
-         categoryTransactionAdapter.setDate(listCategoryTransactionDetail)
-   }
+    private fun showData(category: List<CategoryWithTransfer>) {
+        val listCategoryTransactionDetail = getVM().toCategoryTransactionDetail(category)
+        categoryTransactionAdapter.setDate(listCategoryTransactionDetail)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }

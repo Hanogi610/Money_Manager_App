@@ -1,13 +1,8 @@
 package com.example.money_manager_app.data.repository
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
 import com.example.money_manager_app.data.dao.CategoryDao
 import com.example.money_manager_app.data.model.entity.Category
 import com.example.money_manager_app.data.model.entity.CategoryWithTransfer
-import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

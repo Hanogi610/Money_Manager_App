@@ -22,13 +22,13 @@ import kotlinx.parcelize.Parcelize
 )
 data class Budget(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "budget_id") val id: Long = 0,
+    @ColumnInfo(name = "budget_id") var id: Long = 0,
     val name: String,
     val amount: Double,
     var spent : Int,
     @ColumnInfo(name = "account_id") val accountId: Long,
     @ColumnInfo(name = "color_id") val colorId: Int? = R.color.color_1,
     @ColumnInfo(name = "period_type") @TypeConverters(PeriodTypeConverter::class) val periodType: PeriodType,
-    val start_date : Long,
-    val end_date : Long
+    var start_date : Long,
+    var end_date : Long
 ) : Parcelable

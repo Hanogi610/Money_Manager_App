@@ -40,6 +40,13 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
         setAdapter()
         observeData()
         getData()
+        back()
+    }
+
+    fun back(){
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
 

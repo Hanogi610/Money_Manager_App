@@ -15,6 +15,7 @@ class MultipleSelectionCategoryAdapter(
     inner class ViewHolder(private val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(category: CategoryData.Category) {
             binding.ivIcon.setImageResource(category.id)
+
             binding.tvCategoryName.text = category.name
             if(category.isCheck == false){
                 binding.ivRadioButton.setImageResource(R.drawable.radio_button_no)

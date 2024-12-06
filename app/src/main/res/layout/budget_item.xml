@@ -29,7 +29,7 @@
 
                 <TextView
                     android:id="@+id/nameLabel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="@dimen/_8dp"
@@ -45,6 +45,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="viewEnd"
                     android:layout_marginEnd="@dimen/_12dp"
+                    android:textSize="@dimen/_12sp"
                     app:layout_constraintBottom_toBottomOf="@+id/nameLabel"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/nameLabel"/>
