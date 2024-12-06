@@ -29,6 +29,9 @@ interface BudgetDao {
     @Query("SELECT * FROM budget WHERE account_id = :accountId")
     fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetWithCategory>>
 
+    @Query("SELECT * FROM budget WHERE account_id = :accountId AND start_date <= :date AND end_date >= :date")
+    fun getBudgetsByAccountIdAndDate(accountId: Long, date : Long): List<BudgetWithCategory>
+
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertBudgetCategoryCrossRefs(crossRefs: List<BudgetCategoryCrossRef>)
 

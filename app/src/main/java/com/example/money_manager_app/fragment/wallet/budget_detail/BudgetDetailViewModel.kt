@@ -48,7 +48,12 @@ class BudgetDetailViewModel @Inject constructor(
 
     fun getCategoryWithTransfer(accountId: Long, categoryId: Long ,startDate: Long, endDate: Long) : List<Transfer> {
         return transferRepository.getTransferWithCategoryByAccountId(accountId, categoryId, startDate, endDate)
+    }
 
+    fun deleteBudget(budget: Budget) {
+        viewModelScope.launch(ioDispatcher) {
+            budgetRepository.deleteBudget(budget.id)
+        }
     }
 
     fun getCategoryWithTransfer(budgetWithCategory: BudgetWithCategory) {
@@ -63,25 +68,20 @@ class BudgetDetailViewModel @Inject constructor(
     }
 
     fun toCategoryTransactionDetail(listCategoryWithTransfer: List<CategoryWithTransfer>): List<CategoryTransactionDetail> {
-        Log.d("BudgetDetailViewModel", "toCategoryTransactionDetail: ${listCategoryWithTransfer}")
         var listCategoryTransactionDetail = mutableListOf<CategoryTransactionDetail>()
         for(i in listCategoryWithTransfer){
             if(i.transfers.isNotEmpty()){
                 var total = 0.0
                 var name = i.category.name
-                var listTransfer = mutableListOf<Transfer>()
                 var totalCategoryTransaction = 0
                 for(j in i.transfers){
                     total += j.amount
-                    listTransfer.add(j)
                     totalCategoryTransaction++
                 }
-                listCategoryTransactionDetail.add(CategoryTransactionDetail(name = name, totalAmount = total, totalCategoryTransaction = totalCategoryTransaction, listTransfer = listTransfer))
-                listTransfer.clear()
+                listCategoryTransactionDetail.add(CategoryTransactionDetail(name = name, totalAmount = total, totalCategoryTransaction = totalCategoryTransaction, listTransfer = i.transfers))
                 totalCategoryTransaction = 0
                 total = 0.0
                 name = ""
-                listTransfer = mutableListOf()
             }
 
         }

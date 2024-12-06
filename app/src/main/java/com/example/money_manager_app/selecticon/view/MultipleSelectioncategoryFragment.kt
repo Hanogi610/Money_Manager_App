@@ -89,6 +89,7 @@ class MultipleSelectioncategoryFragment : BaseFragmentNotRequireViewModel<Fragme
     fun observeData() {
         lifecycleScope.launch {
             mainViewModel.categories.collect {
+                Log.d("category", it.toString())
                 var list = getCategoryExpense(it)
                 multipleSelectionCategoryAdapter.setListCategory(list)
             }
