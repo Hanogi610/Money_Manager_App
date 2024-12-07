@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.money_manager_app.data.model.entity.BudgetCategoryCrossRef
+import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import kotlinx.coroutines.flow.Flow
 
@@ -48,6 +49,8 @@ interface TransferDao {
     AND (:maxAmount IS NULL OR amount <= :maxAmount)
     AND (:description IS NULL OR description LIKE '%' || :description || '%')
     AND (:fromWalletId IS NULL OR from_wallet_id = :fromWalletId)
+    AND (:categoryId IS NULL OR category_id = :categoryId)
+    AND account_id = :idAccount
 """
     )
     fun searchByDateAndAmountAndDesAndCategoryAndWallet(
@@ -56,15 +59,25 @@ interface TransferDao {
         minAmount: Double?,
         maxAmount: Double?,
         description: String?,
-        fromWalletId: Long?
+        fromWalletId: Long?,
+        categoryId: Long?,
+        idAccount: Long
     ): List<Transfer>
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId")
     fun getTransferWithCategoryByAccountId(accountId: Long): Flow<List<Transfer>>
+
+
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId AND category_id = :categoryId AND date BETWEEN :dateStart AND :dateEnd")
     fun getTransferWithCategoryByAccountId(accountId: Long, categoryId: Long, dateStart: Long, dateEnd: Long): List<Transfer>
 
     @Query("SELECT * FROM transfer WHERE account_id = :accountId AND (from_wallet_id = :walletId OR to_wallet_id = :walletId)")
     fun getTransferWithCategoryByAccountIdAndWalletId(accountId: Long, walletId: Long): Flow<List<Transfer>>
+
+    @Query("SELECT * FROM transfer WHERE account_id = :accountId AND from_wallet_id = :walletId AND date BETWEEN :startDay AND :endDay")
+    fun getTransferByWalletAndDayStartAndDayEnd(accountId: Long, walletId: Long, startDay : Long, endDay : Long): List<Transfer>
+
+    @Query("SELECT * FROM transfer WHERE account_id = :accountId AND to_wallet_id = :walletId")
+    fun getTransferByWalletAndDayStartAndDayEnd(accountId: Long, walletId: Long): List<Transfer>
 }

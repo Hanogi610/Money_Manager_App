@@ -1,5 +1,6 @@
 package com.example.money_manager_app.data.repository
 
+import androidx.room.Query
 import com.example.money_manager_app.data.dao.DebtDao
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtDetail
@@ -12,6 +13,7 @@ interface DebtRepository {
     fun getDebtDetailsByDebtId(debtId: Long): Flow<DebtDetail>
     fun getDebtsByDateAndAccountId(date: Long, accountId: Long): Flow<List<Debt>>
     fun getDebtByDayStartAndDayEnd(accountId: Long, startDay: Long, endDay: Long): Flow<List<Debt>>
+    fun getDebtByWalletAndDayStartAndDayEnd(accountId: Long, walletId: Long, startDay : Long, endDay : Long): List<Debt>
     fun searchByDateAndAmountAndDesAndCategoryAndWallet(
         startDate: Long?,
         endDate: Long?,
@@ -19,7 +21,8 @@ interface DebtRepository {
         maxAmount: Double?,
         description: String?,
         categoryType: Int?,
-        fromWallet: Long?
+        fromWallet: Long?,
+        idAccount: Long
     ): List<Debt>
 
     suspend fun insertDebt(debt: Debt): Long
@@ -27,6 +30,7 @@ interface DebtRepository {
     suspend fun deleteDebt(debtId: Long)
     suspend fun deleteDebt(debt: Debt)
     fun getDebtListByAccountIdAndWalletId(userId: Long, walletId: Long): Flow<List<Debt>>
+    fun getDebtListByAccountIdAndWallet(userId: Long, walletId: Long): List<Debt>
 }
 
 class DebtRepositoryImpl @Inject constructor(
@@ -55,10 +59,11 @@ class DebtRepositoryImpl @Inject constructor(
         maxAmount: Double?,
         description: String?,
         categoryType: Int?,
-        fromWallet: Long?
+        fromWallet: Long?,
+        idAccount: Long
     ): List<Debt> {
         return debtDao.searchByDateAndAmountAndDesAndCategoryAndWallet(
-            startDate, endDate, minAmount, maxAmount, description, categoryType, fromWallet
+            startDate, endDate, minAmount, maxAmount, description, categoryType, fromWallet, idAccount
         )
     }
 
@@ -67,6 +72,15 @@ class DebtRepositoryImpl @Inject constructor(
         accountId: Long, startDay: Long, endDay: Long
     ): Flow<List<Debt>> {
         return debtDao.getDebtByDayStartAndDayEnd(accountId, startDay, endDay)
+    }
+
+    override fun getDebtByWalletAndDayStartAndDayEnd(
+        accountId: Long,
+        walletId: Long,
+        startDay: Long,
+        endDay: Long
+    ): List<Debt> {
+        return debtDao.getDebtByWalletAndDayStartAndDayEnd(accountId, walletId, startDay, endDay)
     }
 
     override suspend fun insertDebt(debt: Debt): Long {
@@ -90,5 +104,9 @@ class DebtRepositoryImpl @Inject constructor(
         walletId: Long
     ): Flow<List<Debt>> {
         return debtDao.getDebtListByAccountIdAndWalletId(userId, walletId)
+    }
+
+    override fun getDebtListByAccountIdAndWallet(userId: Long, walletId: Long): List<Debt> {
+        return debtDao.getDebtListByAccountIdAndWallet(userId, walletId)
     }
 }

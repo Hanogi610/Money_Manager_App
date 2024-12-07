@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -23,16 +24,20 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewModel
 import com.example.money_manager_app.data.model.AddTransfer
+import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddExpenseBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.utils.toDateTimestamp
+import com.example.money_manager_app.utils.toFormattedDateString
+import com.example.money_manager_app.utils.toFormattedTimeString
 import com.example.money_manager_app.utils.toTimeTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.moneymanager.ui.add.adapter.AddTransferInterface
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.File
 
 @AndroidEntryPoint
 class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>(R.layout.fragment_add_expense), AddTransferInterface {
@@ -75,12 +80,8 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>
                 getVM().setBitmap(bitmap)
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("PickImageLauncher", "Error decoding bitmap: ${e.message}")
-                Toast.makeText(requireContext(), "Unable to load image.", Toast.LENGTH_SHORT).show()
             }
         } ?: run {
-            Log.e("PickImageLauncher", "No image selected")
-            Toast.makeText(requireContext(), "No image selected.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -88,7 +89,6 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>
         if (isGranted) {
             takePictureLauncher.launch(null)
         } else {
-            Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -283,8 +283,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>
                 id_category,
                 memo
             )
-            Log.d("AddExpenseFragment", "onSaveExpense: $transfer")
-            getVM().saveIncomeAndExpense(transfer)
+            getVM().saveIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.wallets ?: listOf())
             getVM().onCleared()
             findNavController().navigate(R.id.mainFragment)
         } else {
@@ -294,6 +293,9 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>
 
     override fun onSaveTransfer() {
         TODO("Not yet implemented")
+    }
+
+    override fun onEdit(transaction: Transaction) {
     }
 
 

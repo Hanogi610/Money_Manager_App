@@ -56,7 +56,7 @@ class SearchViewModel @Inject constructor(
         _listTransaction.value = list
     }
 
-    fun searchByDateAndAmountAndDesAndCategoryAndWallet() {
+    fun searchByDateAndAmountAndDesAndCategoryAndWallet(idAcount : Long) {
         Log.d("SearchFragment", "searchByDateAndAmountAndDesAndCategoryAndWallet: ${startDate.value} ${endDate.value} ${minAmount.value} ${maxAmount.value} ${description.value}")
         viewModelScope.launch(ioDispatcher) {
             val list = mutableListOf<Transaction>()
@@ -68,9 +68,9 @@ class SearchViewModel @Inject constructor(
             val endDate = endDate.value?.takeIf { it.isNotEmpty() }?.toDateTimestamp()
             val description = description.value.takeIf { !it.isNullOrEmpty() }
 
-            list.addAll(debtRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, description, category, wallet))
-            list.addAll(debtTransactionRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, category, wallet))
-            list.addAll(transferRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, description, wallet, category?.toLong()))
+            list.addAll(debtRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, description, category, wallet, idAcount))
+            list.addAll(debtTransactionRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, category, wallet, idAcount))
+            list.addAll(transferRepository.searchByDateAndAmountAndDesAndCategoryAndWallet(startDate, endDate, minAmount, maxAmount, description, wallet, category?.toLong(), idAcount))
             setListTransaction(list)
         }
     }

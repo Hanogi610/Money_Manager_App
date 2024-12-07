@@ -79,9 +79,6 @@
         <action
             android:id="@+id/action_mainFragment_to_addFragment"
             app:destination="@id/addFragment" />
-
-            android:id="@+id/action_mainFragment_to_addBudgetFragment"
-            app:destination="@id/addBudgetFragment" />
         <action
             android:id="@+id/action_mainFragment_to_detailBudgetFragment"
             app:destination="@id/detailBudgetFragment" />
@@ -225,12 +222,30 @@
     <fragment
         android:id="@+id/statisticFragment"
         android:name="com.example.money_manager_app.fragment.statistic.view.StatisticFragment"
-        android:label="StatisticFragment" />
+        tools:layout="@layout/fragment_statistic"
+        android:label="StatisticFragment" >
+        <action
+            android:id="@+id/action_statisticFragment_to_structureFragment"
+            app:destination="@id/structureFragment" />
+        <action
+            android:id="@+id/action_statisticFragment_to_transactionFragment"
+            app:destination="@id/transactionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/walletFragment"
         android:name="com.example.money_manager_app.fragment.wallet.WalletFragment"
         tools:layout="@layout/fragment_wallet"
         android:label="WalletFragment" />
+    <fragment
+        android:id="@+id/structureFragment"
+        android:name="com.example.money_manager_app.fragment.structure.view.StructureFragment"
+        tools:layout="@layout/fragment_structure"
+        android:label="StructureFragment" />
+    <fragment
+        android:id="@+id/transactionFragment"
+        tools:layout="@layout/fragment_transaction"
+        android:name="com.example.money_manager_app.fragment.transaction.view.TransactionFragment"
+        android:label="TransactionFragment" />
 
 
 </navigation>

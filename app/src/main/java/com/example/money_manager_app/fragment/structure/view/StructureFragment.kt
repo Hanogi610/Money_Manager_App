@@ -1,11 +1,9 @@
-package com.example.money_manager_app.fragment.statistic.view
-
-import com.example.money_manager_app.R
-
+package com.example.money_manager_app.fragment.structure.view
 
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,13 +11,15 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Wallet
-
-import com.example.money_manager_app.databinding.FragmentStatisticBinding
+import com.example.money_manager_app.databinding.FragmentStructureBinding
 import com.example.money_manager_app.fragment.statistic.adapter.StaticInterface
 import com.example.money_manager_app.fragment.statistic.adapter.StatisticAdapter
-import com.example.money_manager_app.fragment.statistic.viewmodel.StatisticViewModel
+import com.example.money_manager_app.fragment.statistic.view.FilterTimeBottomSheetDialogFragment
+import com.example.money_manager_app.fragment.structure.adapter.StructApdapter
+import com.example.money_manager_app.fragment.structure.viewmodel.StructureViewModel
 import com.example.money_manager_app.utils.CalendarHelper
 import com.example.money_manager_app.utils.DateHelper
 import com.example.money_manager_app.utils.TimeType
@@ -32,67 +32,53 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewModel>(R.layout.fragment_statistic),View.OnClickListener,StaticInterface{
-    override fun getVM(): StatisticViewModel {
-        val viewModel: StatisticViewModel by activityViewModels()
+class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewModel>(R.layout.fragment_structure),View.OnClickListener,
+    StaticInterface {
+
+    override fun getVM(): StructureViewModel {
+        val viewModel: StructureViewModel by activityViewModels()
         return viewModel
     }
 
+    private var time = TimeType.MONTHLY
+    private var date = Date()
+    private var check = true
     private var wallets: List<Wallet> = ArrayList()
-    private var date: Date? = null
-    private var time : TimeType = TimeType.MONTHLY
-    private lateinit var statisticAdapter: StatisticAdapter
+    private lateinit var structApdapter : StructApdapter
     private val mainViewModel : MainViewModel by activityViewModels()
-
-    override fun initView(savedInstanceState: Bundle?) {
-        super.initView(savedInstanceState)
-        date = CalendarHelper.getInitialDate()
-        setUpLayoutContent(date, mainViewModel.currentAccount.value!!.account.id)
-
-    }
 
     override fun initData(savedInstanceState: Bundle?) {
         setUpLayout()
         super.initData(savedInstanceState)
-        val wallet = arguments.let {
-            it?.getParcelable<Wallet>("wallet")
+        time = arguments?.getParcelable<TimeType>("type") ?: TimeType.MONTHLY
+        val stringDate = arguments?.getString("dateStart")
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        if(stringDate != null) {
+            date = dateFormat.parse(stringDate)
         }
-        if(wallet != null) {
-            wallets = listOf(wallet)
-            statisticAdapter.setTitle(wallet.name)
-        } else {
-            wallets = mainViewModel.accounts.value.first().wallets.filter { it.isExcluded == false}
-            statisticAdapter.setTitle("Balance")
+        wallets = arguments?.getParcelableArrayList("wallets") ?: ArrayList()
+        if(!wallets.isEmpty()) {
+            setBalance()
+            observeData()
         }
-        setBalance()
-        observeData()
-    }
-
-    private fun observeData() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getVM().wallets.collect{
-                    val balance = getVM().getWallets(it)
-                    statisticAdapter.setBalance(balance.first,balance.second)
-                }
-            }
+        binding.tvIncome.setOnClickListener{
+            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.customer_select_category_income)
+            it.background = drawable
+            check = false
+            binding.tvIncome.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.tvExpense.background = null
+            binding.tvExpense.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            structApdapter.setPieStatsList(getVM().listStatsIncome.value)
         }
 
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getVM().calendarSummary.collect {
-                    statisticAdapter.setOverviewSummary(it)
-                    statisticAdapter.setPieStatsList(getVM().listStatsExpense.value)
-                }
-            }
-        }
-
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getVM().listStatsExpense.collect {
-                    statisticAdapter.setPieStatsList(it)
-                }
-            }
+        binding.tvExpense.setOnClickListener{
+            val drawable = ContextCompat.getDrawable(requireContext(), R.drawable.customer_select_category_expense)
+            it.background = drawable
+            check = true
+            binding.tvIncome.background = null
+            binding.tvExpense.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.tvIncome.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+            structApdapter.setPieStatsList(getVM().listStatsExpense.value)
         }
     }
 
@@ -100,43 +86,70 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
         getVM().setWallets(wallets)
     }
 
+    private fun observeData() {
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getVM().wallets.collect{
+                    val balance = getVM().getWallets(it)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getVM().calendarSummary.collect {
+                    if(check == true){
+                        structApdapter.setPieStatsList(getVM().listStatsExpense.value)
+                    } else {
+                        structApdapter.setPieStatsList(getVM().listStatsIncome.value)
+                    }
+                }
+            }
+        }
+
+        if(check == true){
+            lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    getVM().listStatsExpense.collect {
+                        structApdapter.setPieStatsList(it)
+                    }
+                }
+            }
+        } else {
+            lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    getVM().listStatsIncome.collect {
+                        structApdapter.setPieStatsList(it)
+                    }
+                }
+            }
+        }
+    }
+
+
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
+        back()
+        date = Date()
+        setUpLayoutContent(date, mainViewModel.currentAccount.value!!.account.id)
+    }
+
+    fun back() {
+        binding.ivBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
     private fun setUpLayout() {
         val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
         val currencySymbol = getString(currentCurrency.symbolRes)
         binding.recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        statisticAdapter = StatisticAdapter(requireContext(),currencySymbol,::onClickOverview ,::onClickPie)
-        binding.recyclerView.adapter = statisticAdapter
+        structApdapter = StructApdapter(requireContext(),currencySymbol)
+        binding.recyclerView.adapter = structApdapter
         binding.backImage.setOnClickListener(this)
         binding.nextImage.setOnClickListener(this)
         binding.dateLabel.setOnClickListener(this)
     }
-
-    fun onClickOverview(){
-        appNavigation.openStatisticScreenToTransactionScreen(
-            Bundle().apply {
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val dateStart = dateFormat.format(date)
-                putString("dateStart",dateStart)
-                putParcelable("type", time)
-            }
-        )
-    }
-
-    fun onClickPie(){
-        Log.d("click","click")
-        findNavController().navigate(R.id.structureFragment,
-            Bundle().apply {
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val dateStart = dateFormat.format(date)
-                putString("dateStart",dateStart)
-                putParcelable("type", time)
-                putParcelableArrayList("wallets", ArrayList(wallets))
-            }
-        )
-    }
-
-
-
 
     private fun setUpLayoutContent(date: Date?, idAccount : Long) {
         if(date != null) {
@@ -272,6 +285,5 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
         date = Date()
         setUpLayoutContent(date, mainViewModel.currentAccount.value!!.account.id)
     }
-
 
 }

@@ -1,7 +1,5 @@
-package com.example.money_manager_app.fragment.statistic.viewmodel
+package com.example.money_manager_app.fragment.structure.viewmodel
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.CalendarSummary
@@ -23,7 +21,6 @@ import com.example.money_manager_app.data.repository.TransferRepository
 import com.example.money_manager_app.data.repository.WalletRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
-import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,20 +28,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.Date
-import javax.annotation.meta.When
 import javax.inject.Inject
 
-
 @HiltViewModel
-class StatisticViewModel @Inject constructor(
+class StructureViewModel @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
     private val walletRepository: WalletRepository,
     private val debtRepository: DebtRepository,
     private val debtTransacitonRepository : DebtTransactionRepository,
     private val transferRepository: TransferRepository,
     private val categoryRepository: CategoryRepository,
-    ) : BaseViewModel() {
+) : BaseViewModel() {
 
     private var _wallets = MutableStateFlow<List<Wallet>>(emptyList())
     val wallets get() = _wallets
@@ -106,14 +100,6 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun getStats(listTransaction: List<Transaction>){
-        for(transaction in listTransaction){
-            println("hello11" + " "+transaction.amount)
-            println("hello11" + " "+transaction.date)
-            println("hello11" + " "+transaction.id)
-            println("hello11" + " "+transaction.walletId)
-            println("hello11" + " "+transaction.accountId)
-            println("hello11" + " "+transaction.iconId)
-        }
         var categoryList = categoryRepository.getAllCategory()
         var listStatsIncome = mutableListOf<Stats>()
         var listStatsExpense: MutableList<Stats> = mutableListOf()
@@ -152,12 +138,12 @@ class StatisticViewModel @Inject constructor(
                 is Debt -> {
                     for(stats in listStatsIncome){
                         if(DebtType.PAYABLE == transaction.type){
-                           for (stats in listStatsIncome){
-                               if(stats.type == CategoryType.PAYABLE){
-                                   stats.amount += transaction.amount
-                                   stats.trans++
-                               }
-                           }
+                            for (stats in listStatsIncome){
+                                if(stats.type == CategoryType.PAYABLE){
+                                    stats.amount += transaction.amount
+                                    stats.trans++
+                                }
+                            }
                         } else {
                             for (stats in listStatsExpense){
                                 if(stats.type == CategoryType.RECEIVABLE){
@@ -244,9 +230,9 @@ class StatisticViewModel @Inject constructor(
             if(listStatsIncome.size == 1) listStatsIncome[0].percent = 100.0
         }
 
+
         listStatsExpense.sortByDescending { it.amount }
         listStatsIncome.sortByDescending { it.amount }
-
         setStatsIncome(listStatsIncome)
         setStatsExpense(listStatsExpense)
     }
@@ -320,7 +306,7 @@ class StatisticViewModel @Inject constructor(
         return listTransaction
     }
 
-    fun totalCalendarSummary(listTransaction : List<Transaction>) : CalendarSummary{
+    fun totalCalendarSummary(listTransaction : List<Transaction>) : CalendarSummary {
         var totalIncome = 0.0
         var totalExpense = 0.0
         for(transaction in listTransaction){

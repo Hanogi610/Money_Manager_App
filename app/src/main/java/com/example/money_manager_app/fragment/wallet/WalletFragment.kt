@@ -41,7 +41,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
     private lateinit var debtAdapter: DebtAdapter
     private lateinit var goalAdapter: GoalAdapter
     private lateinit var budgetAdapter: BudgetAdapter
-//
+
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 

@@ -47,6 +47,6 @@ data class Transfer(
     override val time: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "type_of_expenditure") val typeOfExpenditure: TransferType,
     @ColumnInfo(name = "icon_id") override val iconId: Int?,
-    @ColumnInfo(name = "category_id") val categoryId: Long,
+    @ColumnInfo(name = "category_id")  val categoryId: Long,
     @ColumnInfo(name = "memo") val memo: String
 ) : Transaction(id, iconId, name, amount, accountId, walletId, date, time), Parcelable

@@ -2,6 +2,7 @@ package com.example.money_manager_app.fragment.Record.view
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -15,6 +16,7 @@ import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.data.model.entity.enums.TransferType
+import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentRecordBinding
 import com.example.money_manager_app.fragment.Record.viewmodel.RecordViewModel
 import com.example.money_manager_app.utils.toFormattedDateString
@@ -32,15 +34,70 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
         return vm
     }
 
+    private lateinit var transaction: Transaction
+
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
         observeData()
         back()
         delete()
+        edit()
+    }
+
+    private fun edit() {
+        binding.ivEdit.setOnClickListener {
+            if(transaction!= null){
+                if(transaction is Transfer){
+                    if((transaction as Transfer).typeOfExpenditure == TransferType.Transfer){
+                        val bundle = Bundle()
+                        bundle.putParcelable("transition", transaction)
+                        bundle.putInt("key", 2)
+                        findNavController().navigate(R.id.addFragment, bundle)
+                    }
+                    if((transaction as Transfer).typeOfExpenditure == TransferType.Income){
+                        val bundle = Bundle()
+                        bundle.putParcelable("transition", transaction)
+                        bundle.putInt("key", 0)
+                        findNavController().navigate(R.id.addFragment, bundle)
+                    }
+                    if((transaction as Transfer).typeOfExpenditure == TransferType.Expense){
+                        val bundle = Bundle()
+                        bundle.putParcelable("transition", transaction)
+                        bundle.putInt("key", 1)
+                        findNavController().navigate(R.id.addFragment, bundle)
+                    }
+                }
+
+            }
+        }
     }
 
     private fun delete() {
         binding.ivDelete.setOnClickListener {
+            if( transaction!= null){
+                val AlertDialogBinding = AlertDialogBinding.inflate(layoutInflater)
+
+                var alert = AlertDialog.Builder(requireContext()).create()
+                alert.setView(AlertDialogBinding.root)
+                alert.setCancelable(true)
+                AlertDialogBinding.deleteImageView.setOnClickListener {
+                    if(transaction is Transfer){
+                        getVM().deleteTransfer(transaction as Transfer)
+                    }
+                    if(transaction is DebtTransaction){
+                        getVM().deleteDebtTransaction((transaction as DebtTransaction).id)
+                    }
+                    if(transaction is DebtTransaction){
+                        getVM().deleteDebt((transaction as DebtTransaction).debtId)
+                    }
+                    alert.dismiss()
+                    findNavController().popBackStack()
+                }
+                AlertDialogBinding.cannelImageView.setOnClickListener {
+                    alert.dismiss()
+                }
+                alert.show()
+            }
         }
     }
 
@@ -75,13 +132,15 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                 binding.categoryLabel.text = mainViewModel.categories.value?.find { it.id == transaction.categoryId }?.name
                 binding.tvDescription.text = transaction.description
                 if(transaction?.memo != null){
-                    binding.memoTitleLabel.text = transaction.memo
+                    binding.memoLabel.text = transaction.memo
                     binding.memoLabel.visibility = android.view.View.VISIBLE
+                    binding.memoTitleLabel.visibility = android.view.View.VISIBLE
                 }
                 if (transaction.typeOfExpenditure == TransferType.Transfer){
                     if(transaction?.fee != null){
                         binding.feeLabel.text = transaction.fee.toString()
                         binding.feeLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                        binding.feeLabel.visibility = android.view.View.VISIBLE
                         binding.feeTitleLabel.visibility = android.view.View.VISIBLE
                     }
 
@@ -129,7 +188,7 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-        val transaction = arguments?.getParcelable<Transaction>("transaction")
+        transaction = arguments?.getParcelable<Transaction>("transaction") as Transaction
         if (transaction != null) {
             getVM().setTransaction(transaction)
         }

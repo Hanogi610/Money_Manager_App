@@ -12,5 +12,5 @@ open class Transaction(
     open val accountId: Long,
     open val walletId: Long,
     open val date: Long,
-    open val time: Long
+    open val time: Long,
 ) : Parcelable

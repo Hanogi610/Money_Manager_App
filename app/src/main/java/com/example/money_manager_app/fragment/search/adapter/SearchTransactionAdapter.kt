@@ -1,8 +1,11 @@
 package com.example.money_manager_app.fragment.search.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.Transaction
@@ -16,8 +19,14 @@ import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.ItemTransferBinding
 import com.example.money_manager_app.utils.toFormattedTimeString
 
-class SearchTransactionAdapter (private var listTranfer : List<Transaction>, private var listWallet : List<Wallet>) :
-    RecyclerView.Adapter<SearchTransactionAdapter.ViewHolder>() {
+class SearchTransactionAdapter (
+    private val context: Context,
+    private val onItemClick: (Transaction) -> Unit,
+    private var listTranfer : List<Transaction>,
+    private var listWallet : List<Wallet>,
+    private var currencySymbol: String
+)
+    :RecyclerView.Adapter<SearchTransactionAdapter.ViewHolder>() {
 
     inner class ViewHolder(private var binding: ItemTransferBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: Transaction) {
@@ -26,7 +35,7 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                 when (transaction.typeOfExpenditure) {
                     TransferType.Expense -> {
                         binding.ivItem.setImageResource(transaction.iconId ?: R.drawable.expense_1)
-                        binding.tvAmount.text = "-${transaction.amount}"
+                        binding.tvAmount.text = "-${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.red)
                         )
@@ -35,7 +44,7 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                     }
                     TransferType.Income -> {
                         binding.ivItem.setImageResource(transaction.iconId ?: R.drawable.expense_1)
-                        binding.tvAmount.text = "+${transaction.amount}"
+                        binding.tvAmount.text = "+${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
@@ -44,7 +53,7 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                     }
                     else -> {
                         binding.ivItem.setImageResource(transaction.iconId ?: R.drawable.expense_1)
-                        binding.tvAmount.text = "${transaction.amount}"
+                        binding.tvAmount.text = "${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.black)
                         )
@@ -57,7 +66,7 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
             if (transaction is Debt){
                 when (transaction.type) {
                     DebtType.PAYABLE -> {
-                        binding.tvAmount.text = "+${transaction.amount}"
+                        binding.tvAmount.text = "+${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
@@ -66,7 +75,7 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                     }
 
                     DebtType.RECEIVABLE -> {
-                        binding.tvAmount.text = "-${transaction.amount}"
+                        binding.tvAmount.text = "-${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.red)
                         )
@@ -82,7 +91,7 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                     }
 
                     DebtActionType.DEBT_INCREASE-> {
-                        binding.tvAmount.text = "+${transaction.amount}"
+                        binding.tvAmount.text = "+${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
@@ -91,7 +100,7 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                     }
 
                     DebtActionType.REPAYMENT -> {
-                        binding.tvAmount.text = "-${transaction.amount}"
+                        binding.tvAmount.text = "-${currencySymbol}{transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.red)
                         )
@@ -100,7 +109,7 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                     }
 
                     DebtActionType.DEBT_COLLECTION -> {
-                        binding.tvAmount.text = "+${transaction.amount}"
+                        binding.tvAmount.text = "+${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
@@ -109,7 +118,7 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                     }
 
                     DebtActionType.LOAN_INCREASE -> {
-                        binding.tvAmount.text = "-${transaction.amount}"
+                        binding.tvAmount.text = "-${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
@@ -117,6 +126,10 @@ class SearchTransactionAdapter (private var listTranfer : List<Transaction>, pri
                         binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
                 }
+            }
+
+            binding.root.setOnClickListener {
+                onItemClick(transaction)
             }
         }
     }

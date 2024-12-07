@@ -1,12 +1,14 @@
 package com.example.money_manager_app.fragment.statistic.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.CalendarSummary
@@ -17,61 +19,133 @@ import com.example.money_manager_app.databinding.ListStatisticPieBinding
 import com.example.money_manager_app.utils.Helper
 import com.example.money_manager_app.utils.SharePreferenceHelper
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 
-class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class StatisticAdapter(
+    private val context: Context,
+    private val currentCurrencySymbol: String,
+    private val onClickOverview: () -> Unit,
+    private val onClickPie: () -> Unit,
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),OnChartValueSelectedListener  {
 
-    private var listener: OnItemClickListener? = null
-    private var openingBalance: Long = 0
-    private var endingBalance: Long = 0
+    private var openingBalance = 0.0
+    private var endingBalance =0.0
+    private var pieChart: PieChart? = null
+    private var title: String = "Title"
     private var summary: CalendarSummary = CalendarSummary(0.0, 0.0)
     private var pieStatsList: List<Stats> = ArrayList()
 
-    init {
-        setBalance(5000, 3000)
-        setOverviewSummary(CalendarSummary(2000.0, 3000.0))
-        setPieStatsList(
-            listOf(
-                Stats("Food", "#FF0000", R.drawable.ic_statistic, 1000, 50.0, 1, 1, 1),
-                Stats("Transport", "#00FF00", R.drawable.all_category, 1000, 50.0, 2, 1, 1)
-            )
-        )
-    }
-
     inner class BalanceHolder(private val binding: ListStatisticBalanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(openingBalance: Long, endingBalance: Long) {
-            binding.openingLabel.text = openingBalance.toString()
-            binding.endingLabel.text = endingBalance.toString()
+        fun bind(openingBalance: Double, endingBalance: Double, title : String) {
+            binding.openingLabel.text = "${currentCurrencySymbol} ${openingBalance}"
+            binding.endingLabel.text = "${currentCurrencySymbol} ${endingBalance}"
+            binding.titleLabel.text = title
         }
     }
 
     inner class OverviewHolder(private val binding: ListStatisticOverviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(summary: CalendarSummary) {
-            binding.incomeLabel.text =
-                Helper.getBeautifyAmount(SharePreferenceHelper.getAccountSymbol(context), summary.income)
-            binding.expenseLabel.text =
-                Helper.getBeautifyAmount(SharePreferenceHelper.getAccountSymbol(context), summary.expense)
-            binding.netLabel.text =
-                Helper.getBeautifyAmount(SharePreferenceHelper.getAccountSymbol(context), summary.netIncome)
+            binding.incomeLabel.text = context.getString(
+                R.string.positive_money_amount, currentCurrencySymbol, summary.income
+            )
+            binding.expenseLabel.text = context.getString(
+                R.string.negative_money_amount, currentCurrencySymbol, summary.expense
+            )
+
+            var total = summary.income - summary.expense
+            binding.netLabel.text = if (total >= 0) {
+                context.getString(R.string.positive_money_amount, currentCurrencySymbol, total)
+            } else {
+                context.getString(R.string.negative_money_amount, currentCurrencySymbol, -total)
+            }
+            binding.showMore.setOnClickListener {
+                onClickOverview()
+            }
         }
     }
 
     inner class PieHolder(private val binding: ListStatisticPieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(pieStatsList: List<Stats>) {
-            setPieChart(binding.pieChart)
-            binding.pieStatLabel1.text = "Hêllo"
+            val pieStatViews = listOf(
+                binding.pieStat1,
+                binding.pieStat2,
+                binding.pieStat3,
+                binding.pieStat4,
+                binding.pieStat5
+            )
+            val pieStatViewColors = listOf(
+                binding.pieStatView1,
+                binding.pieStatView2,
+                binding.pieStatView3,
+                binding.pieStatView4,
+                binding.pieStatView5
+            )
+            val pieStatLabels = listOf(
+                binding.pieStatLabel1,
+                binding.pieStatLabel2,
+                binding.pieStatLabel3,
+                binding.pieStatLabel4,
+                binding.pieStatLabel5
+            )
+            val pieStatPercentLabels = listOf(
+                binding.pieStatPercentLabel1,
+                binding.pieStatPercentLabel2,
+                binding.pieStatPercentLabel3,
+                binding.pieStatPercentLabel4,
+                binding.pieStatPercentLabel5
+            )
+            if( pieStatsList.size > 0) {
+                var totalAmount: Double = 0.0
+                var listStats = mutableListOf<Stats>()
+                if(pieStatsList.size > 4) {
+                    for (i in 0 until 4) {
+                        listStats.add(pieStatsList[i])
+                    }
+                    for (i in 4 until pieStatsList.size) {
+                        totalAmount += pieStatsList[i].amount
+                    }
+                    listStats.add(Stats("Other", Color.GRAY, 0, totalAmount, 0.0, 0, 0, pieStatsList[0].type, 0, false))
+
+                    for (i in listStats.indices) {
+                        println("hello" + i)
+                        println("hello" + listStats[i])
+                        pieStatViews[i].visibility = View.VISIBLE
+                        pieStatViewColors[i].setBackgroundColor(listStats[i].color)
+                        pieStatLabels[i].text = listStats[i].name
+                        pieStatPercentLabels[i].text = "${listStats[i].percent}%"
+                    }
+                } else {
+                    for (i in 0 until pieStatsList.size) {
+                        pieStatViews[i].visibility = View.VISIBLE
+                        val color = ContextCompat.getColor(context, pieStatsList[i].color)
+                        pieStatViewColors[i].backgroundTintList = ColorStateList.valueOf(color)
+                        pieStatLabels[i].text = pieStatsList[i].name
+                        pieStatPercentLabels[i].text = "(${pieStatsList[i].percent}%)"
+                    }
+                }
+            } else {
+                for (i in 0 until 5) {
+                    pieStatViews[i].visibility = View.GONE
+                }
+            }
+            pieChart = binding.pieChart
+            pieChart!!.setOnChartValueSelectedListener(this@StatisticAdapter)
+            setPieChart(binding.pieChart,pieStatsList)
+            binding.showMore.setOnClickListener {
+                onClickPie()
+            }
         }
     }
 
-    interface OnItemClickListener {
-        fun OnItemClick(v: View, position: Int)
-    }
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
@@ -92,7 +166,7 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is BalanceHolder -> holder.bind(openingBalance, endingBalance)
+            is BalanceHolder -> holder.bind(openingBalance, endingBalance, title)
             is OverviewHolder -> holder.bind(summary)
             is PieHolder -> holder.bind(pieStatsList)
         }
@@ -100,17 +174,19 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
 
     override fun getItemCount(): Int = 3
 
-    fun setBalance(openingBalance: Long, endingBalance: Long) {
+    fun setTitle(title: String) {
+        this.title = title
+        notifyDataSetChanged()
+    }
+    fun setBalance(openingBalance: Double, endingBalance: Double) {
         this.openingBalance = openingBalance
         this.endingBalance = endingBalance
-    }
-
-    fun setListener(listener: OnItemClickListener) {
-        this.listener = listener
+        notifyDataSetChanged()
     }
 
     fun setOverviewSummary(calendarSummary: CalendarSummary) {
         this.summary = calendarSummary
+        notifyDataSetChanged()
     }
 
     fun setPieStatsList(list: List<Stats>) {
@@ -118,7 +194,7 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
         notifyDataSetChanged()
     }
 
-    private fun setPieChart(pieChart: PieChart) {
+    private fun setPieChart(pieChart: PieChart, statsList : List<Stats>) {
         pieChart.highlightValue(null)
         pieChart.centerText = getCenterAmount()
         pieChart.setUsePercentValues(true)
@@ -128,21 +204,22 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
         pieChart.isRotationEnabled = true
         pieChart.setDrawEntryLabels(false)
         pieChart.legend.isEnabled = false
-
         val entries = ArrayList<PieEntry>()
-        entries.add(PieEntry(30.0f, "Part 1"))
-        entries.add(PieEntry(70.0f, "Part 2"))
-
+        val colors = ArrayList<Int>()
+        for(stats in statsList) {
+            val percentFormatter = stats.percent.toFloat()
+            entries.add(PieEntry(percentFormatter, stats.name))
+            val color = ContextCompat.getColor(context, stats.color)
+            colors.add(color)
+        }
         val dataSet = PieDataSet(entries, "")
-        dataSet.colors = listOf(Color.RED, Color.BLUE)
+        dataSet.colors = colors
         dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-
         val data = PieData(dataSet)
         data.setDrawValues(false)
         data.setValueTextSize(14.0f)
         data.setValueFormatter(PercentFormatter())
         data.setValueTextColor(Color.WHITE)
-
         pieChart.data = data
     }
 
@@ -153,13 +230,31 @@ class StatisticAdapter(private val context: Context) : RecyclerView.Adapter<Recy
     }
 
     private fun getCenterAmount(): SpannableString {
-        var totalAmount: Long = 0
+        var totalAmount: Double = 0.0
         for (stat in pieStatsList) {
             totalAmount += stat.amount
+            stat.percent = stat.amount / totalAmount
         }
-        val beautifyAmount = Helper.getBeautifyAmount(SharePreferenceHelper.getAccountSymbol(context), totalAmount.toDouble())
+        val  beautifyAmount = totalAmount.toString()
         val spannableString = SpannableString(context.getString(R.string.expense) + "\n" + beautifyAmount)
         spannableString.setSpan(RelativeSizeSpan(1.0f), 0, spannableString.length - beautifyAmount.length, 0)
         return spannableString
     }
+
+    override fun onValueSelected(e: Entry?, h: Highlight?) {
+        if (e is PieEntry) {
+            val selectedLabel = e.label
+            val stat = pieStatsList.find { it.name == selectedLabel }
+            val totalAmount = stat?.amount ?: 0.0
+            val beautifyAmount = totalAmount.toString()
+            val spannableString = SpannableString( selectedLabel + "\n" + beautifyAmount)
+            spannableString.setSpan(RelativeSizeSpan(1.0f), 0, spannableString.length - beautifyAmount.length, 0)
+            pieChart?.centerText =  spannableString
+        }
+    }
+
+    override fun onNothingSelected() {
+        pieChart?.centerText = getCenterAmount()
+    }
+
 }

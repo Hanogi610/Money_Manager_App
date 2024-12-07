@@ -21,6 +21,8 @@ interface CategoryRepository {
 
     fun getCategory() : Flow<List<Category>>
 
+    fun getAllCategory() : List<Category>
+
     fun getCategoriesByAccountId(accountId: Long): Flow<List<Category>>
 }
 
@@ -51,6 +53,10 @@ class CategoryRepositoryImpl @Inject constructor(private val categoryDao: Catego
 
     override fun getCategory(): Flow<List<Category>> {
         return categoryDao.getCategory()
+    }
+
+    override fun getAllCategory(): List<Category> {
+        return categoryDao.getAllCategory()
     }
 
     override fun getCategoriesByAccountId(accountId: Long): Flow<List<Category>> {

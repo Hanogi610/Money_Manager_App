@@ -26,6 +26,9 @@ interface DebtDao {
     @Query("SELECT * FROM debt WHERE id = :debtId")
     fun getDebtDetailsByDebtId(debtId: Long): Flow<DebtDetail>
 
+    @Query("SELECT * FROM debt WHERE account_id = :accountId AND wallet_id = :walletId AND date BETWEEN :startDay AND :endDay")
+    fun getDebtByWalletAndDayStartAndDayEnd(accountId: Long, walletId: Long, startDay : Long, endDay : Long): List<Debt>
+
     @Query("SELECT * FROM debt WHERE date BETWEEN :startDay AND :endDay AND account_id = :accountId")
     fun getDebtByDayStartAndDayEnd(accountId: Long, startDay : Long, endDay : Long): Flow<List<Debt>>
 
@@ -38,6 +41,7 @@ interface DebtDao {
     AND (:description IS NULL OR description LIKE '%' || :description || '%')
     AND (:categoryType IS NULL OR icon_id = :categoryType)
     AND (:fromWallet IS NULL OR wallet_id = :fromWallet)
+    AND account_id = :idAccount
 """)
     fun searchByDateAndAmountAndDesAndCategoryAndWallet(
         startDate : Long?,
@@ -46,7 +50,8 @@ interface DebtDao {
         maxAmount : Double?,
         description : String?,
         categoryType: Int?,
-        fromWallet : Long?
+        fromWallet : Long?,
+        idAccount : Long
     ): List<Debt>
 
 
@@ -64,4 +69,7 @@ interface DebtDao {
 
     @Query("SELECT * FROM debt WHERE account_id = :userId AND wallet_id = :walletId")
     fun getDebtListByAccountIdAndWalletId(userId: Long,walletId: Long): Flow<List<Debt>>
+
+    @Query("SELECT * FROM debt WHERE account_id = :userId AND wallet_id = :walletId")
+    fun getDebtListByAccountIdAndWallet(userId: Long,walletId: Long): List<Debt>
 }

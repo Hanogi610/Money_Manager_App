@@ -22,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.AddTransfer
+import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddIncomeBinding
@@ -276,7 +277,7 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, AddViewModel>(R
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer)
+            getVM().saveIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.wallets ?: listOf())
             getVM().onCleared()
             findNavController().navigate(R.id.mainFragment)
         } else {
@@ -291,6 +292,11 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, AddViewModel>(R
     override fun onSaveTransfer() {
         TODO("Not yet implemented")
     }
+
+    override fun onEdit(transaction: Transaction) {
+        TODO("Not yet implemented")
+    }
+
 
 
     override fun onDestroy() {
