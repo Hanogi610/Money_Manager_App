@@ -51,9 +51,7 @@ class CalendarViewModel  @Inject constructor(
             list.addAll(debts)
             list.addAll(debtTransactions)
             setDetailDayTransaction(list)
-            Log.d("CalendarFragment", "getTransactionMonth : ${transfers.size}")
-            Log.d("CalendarFragment", "getTransactionMonth : ${debts.size}")
-            Log.d("CalendarFragment", "getTransactionMonth : ${debtTransactions.size}")
+
 
         }
     }

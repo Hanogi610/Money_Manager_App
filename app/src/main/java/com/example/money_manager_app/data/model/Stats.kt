@@ -1,41 +1,18 @@
 package com.example.money_manager_app.data.model
 
-import android.content.Context
-import com.example.money_manager_app.R
-import com.example.money_manager_app.utils.CategoryUtils
+import com.example.money_manager_app.data.model.entity.enums.CategoryType
 
 class Stats(
-    private var name: String,
-    private var color: String,
-    var icon: Int,
-    var amount: Long,
+    var name: String,
+    var color: Int,
+    var icon: Long,
+    var amount: Double,
     var percent: Double,
     var id: Int,
     var trans: Int,
-    var categoryDefault: Int
+    var type: CategoryType,
+    var categoryDefault: Int,
+    var isDefault: Boolean
 ) {
-    fun getColor(): String {
-        val str = this.color
-        return if (str.isNullOrEmpty()) "#808080" else "#FFFFF0"
-    }
 
-    fun getName(context: Context): String {
-        if (this.id == 0) {
-            return "Oasdsaf"
-        }
-        val str = this.name
-        if (!str.isNullOrEmpty()) {
-            return this.name
-        }
-        val i = this.categoryDefault
-        return if (i != 0) CategoryUtils.listCategory[i - 1].name else "Other"
-    }
-
-    fun setColor(color: String) {
-        this.color = color
-    }
-
-    fun setName(name: String) {
-        this.name = name
-    }
 }

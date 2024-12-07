@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.money_manager_app.R
+import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.databinding.FragmentAddBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.moneymanager.ui.add.adapter.AddPagerAdapter
@@ -68,7 +69,11 @@ class AddFragment : Fragment() {
     }
 
     fun setTab() {
-        val position = arguments?.getInt("position") ?: 1
+        var position = arguments?.getInt("position") ?: 1
+        if(arguments?.getParcelable<Transaction>("transition") != null){
+            position = arguments?.getInt("key") ?: 1
+
+        }
         binding.vpAdd.currentItem = position
         resetTabStyles()
         when (position) {
@@ -76,13 +81,22 @@ class AddFragment : Fragment() {
             1 -> setActiveTab(binding.tvAddExpense, R.drawable.customer_select_category_expense)
             2 -> setActiveTab(binding.tvTransfer, R.drawable.custom_select_tranfer)
         }
+        if(arguments?.getParcelable<Transaction>("transition") != null){
+            val transaction = arguments?.getParcelable<Transaction>("transition")
+            val currentFragment = childFragmentManager.findFragmentByTag("f" + binding.vpAdd.currentItem)
+            if (currentFragment is AddTransferInterface) {
+                if (transaction != null) {
+                    viewModel.setDescriptor(transaction.name)
+                    viewModel.setAmount(transaction.amount)
+                }
+            }
+        }
         setCategory(position)
     }
 
     fun setCategory(position: Int) {
         val bundle = arguments
         val idCategory = bundle?.getInt("idCategory") ?: 0
-        Toast.makeText(requireContext(), "$idCategory $position", Toast.LENGTH_SHORT).show()
 
         if (idCategory != 0) {
             when (position) {
@@ -120,7 +134,6 @@ class AddFragment : Fragment() {
                     binding.vpAdd.currentItem = 2
                 }
             }
-            Toast.makeText(requireContext(), binding.vpAdd.currentItem.toString(), Toast.LENGTH_SHORT).show()
         }
 
         binding.tvIncome.setOnClickListener(tabClickListener)

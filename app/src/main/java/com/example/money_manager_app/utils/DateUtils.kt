@@ -45,3 +45,6 @@ fun Long.formatToDayOfWeek(): String {
     val date = Calendar.getInstance().apply { timeInMillis = this@formatToDayOfWeek }.time
     return SimpleDateFormat("EEEE", Locale.getDefault()).format(date)
 }
+
+
+

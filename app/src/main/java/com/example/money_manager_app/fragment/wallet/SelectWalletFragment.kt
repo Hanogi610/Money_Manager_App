@@ -68,8 +68,6 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
                             listWalletExclude.add(wallet)
                         }
                     }
-                    Log.d("SelectWalletFragment", "observeData: $listWalletInclude")
-                    Log.d("SelectWalletFragment", "observeData: $listWalletExclude")
                     selectWalletAdapterInclude.setUpdateDataWallet(listWalletInclude)
                     selectWalletAdapterExclude.setUpdateDataWallet(listWalletExclude)
                 }
@@ -91,8 +89,6 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
         val bundle = arguments
         var isCheckWallet = bundle?.getBoolean("isCheckWallet")
         var typeExpense = bundle?.getInt("typeExpense")
-        Log.d("SelectWalletFragment", "onItemClick: $typeExpense")
-        Log.d("SelectWalletFragment", "onItemClick: $isCheckWallet")
         if(isCheckWallet == true){
             var listWallet = mutableListOf<Wallet>()
             listWallet.add(wallet)

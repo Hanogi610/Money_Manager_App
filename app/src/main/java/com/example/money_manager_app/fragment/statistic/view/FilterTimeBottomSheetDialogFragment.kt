@@ -59,9 +59,10 @@ class FilterTimeBottomSheetDialogFragment : BaseBottomSheet<SheetDialogFragmentB
         }
 
         binding.ivCustomRadio.setOnClickListener {
-            staticInterface?.onClickTime(TimeType.CUSTOM)
-            dismiss()
+            val bottomSheet = SelectDateBottomSheet()
+            bottomSheet.show(childFragmentManager, "SelectDateBottomSheet")
         }
+
 
     }
 

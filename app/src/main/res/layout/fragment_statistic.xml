@@ -7,8 +7,8 @@
         android:layout_height="match_parent">
         <RelativeLayout
             android:id="@+id/dateWrapper"
-            android:paddingTop="@dimen/_4dp"
-            android:paddingBottom="@dimen/_4dp"
+            android:paddingTop="@dimen/_2dp"
+            android:paddingBottom="@dimen/_2dp"
             android:paddingLeft="@dimen/_8dp"
             android:paddingRight="@dimen/_8dp"
             android:background="@drawable/customer_title_calendar"
@@ -18,16 +18,16 @@
             >
             <ImageView
                 android:id="@+id/backImage"
-                android:layout_width="@dimen/_36dp"
+                android:layout_width="@dimen/_20dp"
                 android:layout_centerVertical="true"
-                android:layout_height="@dimen/_36dp"
+                android:layout_height="@dimen/_20dp"
                 android:src="@drawable/arrow_left"
                 android:layout_marginStart="@dimen/_8dp"
                 />
             <ImageView
                 android:id="@+id/nextImage"
-                android:layout_width="@dimen/_36dp"
-                android:layout_height="@dimen/_36dp"
+                android:layout_width="@dimen/_20dp"
+                android:layout_height="@dimen/_20dp"
                 android:contentDescription="@string/next"
                 android:layout_marginEnd="@dimen/_8dp"
                 android:layout_centerVertical="true"

@@ -58,6 +58,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/pieStat1"
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -99,6 +100,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/pieStat2"
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
@@ -141,6 +143,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/pieStat3"
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
@@ -183,6 +186,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/pieStat4"
                 android:layout_width="0dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
@@ -226,6 +230,7 @@
                 android:id="@+id/pieStat5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/_16dp"
                 android:layout_marginEnd="@dimen/_16dp"
                 app:layout_constraintEnd_toEndOf="parent"

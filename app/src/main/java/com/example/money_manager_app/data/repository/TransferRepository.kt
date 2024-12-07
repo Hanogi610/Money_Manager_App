@@ -1,8 +1,10 @@
     package com.example.money_manager_app.data.repository
 
     import android.util.Log
+    import androidx.room.Query
     import com.example.money_manager_app.data.dao.TransferDao
     import com.example.money_manager_app.data.model.entity.Category
+    import com.example.money_manager_app.data.model.entity.DebtTransaction
     import com.example.money_manager_app.data.model.entity.Transfer
     import kotlinx.coroutines.flow.Flow
     import javax.inject.Inject
@@ -22,7 +24,8 @@
             maxAmount: Double?,
             description: String?,
             fromWallet: Long?,
-            categoryId: Long?
+            categoryId: Long?,
+            idAccount : Long
         ): List<Transfer>
 
         fun getAllTransfer(date: Long): Flow<List<Transfer>>
@@ -32,6 +35,10 @@
         suspend fun deleteTransfer(transferId: Long)
 
         fun getTransferWithCategoryByAccountIdAndWalletId(accountId: Long, walletId: Long): Flow<List<Transfer>>
+
+        fun getTransferByWalletAndDayStartAndDayEnd(accountId: Long, walletId: Long, startDay : Long, endDay : Long): List<Transfer>
+
+        fun getTransferByWalletAndDayStartAndDayEnd(accountId: Long, walletId: Long): List<Transfer>
 
     }
 
@@ -63,10 +70,11 @@
             maxAmount: Double?,
             description: String?,
             fromWallet: Long?,
-            categoryId: Long?
+            categoryId: Long?,
+            idAccount: Long
         ): List<Transfer> {
             return transferDao.searchByDateAndAmountAndDesAndCategoryAndWallet(
-                startDate, endDate, minAmount, maxAmount, description, fromWallet
+                startDate, endDate, minAmount, maxAmount, description, fromWallet,categoryId, idAccount
             )
         }
 
@@ -76,8 +84,6 @@
         }
 
         override fun getTransferWithCategoryByAccountId(accountId: Long, categoryId: Long, dateStart: Long, dateEnd: Long): List<Transfer> {
-            Log.d("TransferRepositoryImpl", "getTransferWithCategoryByAccountId: $accountId $categoryId $dateStart $dateEnd")
-            Log.d("TransferRepositoryImpl", "getTransferWithCategoryByAccountId: ${transferDao.getTransferWithCategoryByAccountId(accountId, categoryId, dateStart, dateEnd)}")
             return transferDao.getTransferWithCategoryByAccountId(accountId, categoryId, dateStart, dateEnd)
         }
 
@@ -90,5 +96,21 @@
             walletId: Long
         ): Flow<List<Transfer>> {
             return transferDao.getTransferWithCategoryByAccountIdAndWalletId(accountId, walletId)
+        }
+
+        override fun getTransferByWalletAndDayStartAndDayEnd(
+            accountId: Long,
+            walletId: Long,
+            startDay: Long,
+            endDay: Long
+        ): List<Transfer> {
+            return transferDao.getTransferByWalletAndDayStartAndDayEnd(accountId, walletId, startDay, endDay)
+        }
+
+        override fun getTransferByWalletAndDayStartAndDayEnd(
+            accountId: Long,
+            walletId: Long
+        ): List<Transfer> {
+            return transferDao.getTransferByWalletAndDayStartAndDayEnd(accountId, walletId)
         }
     }

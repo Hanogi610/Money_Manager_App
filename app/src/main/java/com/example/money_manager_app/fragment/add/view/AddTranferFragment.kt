@@ -22,6 +22,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.AddTransfer
+import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddTranferBinding
@@ -284,7 +285,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
             val typeOfExpenditure: TransferType = TransferType.Transfer
             val toWallet = getVM().toWallet.value?.first()?.id ?: 0
             val fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
-            val fee : Double = 0.0
+            val fee : Double = if(btnFee) binding.etFee.text.toString().toDouble() else 0.0
             val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
             val name = binding.etMemo.text.toString()
             var iconId = R.drawable.transfer
@@ -307,12 +308,16 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer)
+            getVM().saveIncomeAndExpense(transfer,mainViewModel.currentAccount.value?.wallets ?: listOf())
             getVM().onCleared()
             findNavController().navigate(R.id.mainFragment)
         } else {
             Log.e("AddExpenseFragment", "Amount is empty")
         }
+    }
+
+    override fun onEdit(transaction: Transaction) {
+        TODO("Not yet implemented")
     }
 
 }

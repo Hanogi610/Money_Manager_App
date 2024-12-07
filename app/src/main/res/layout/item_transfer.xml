@@ -8,6 +8,7 @@
             android:id="@+id/iv_item"
             android:layout_width="@dimen/_36dp"
             android:layout_height="@dimen/_36dp"
+            android:layout_marginRight="@dimen/_16dp"
             android:src="@drawable/ic_back"/>
         <LinearLayout
             android:layout_toRightOf="@+id/iv_item"

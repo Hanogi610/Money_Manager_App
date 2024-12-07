@@ -251,7 +251,7 @@ class AddViewModel @Inject constructor(
         _currentDateTime.value = Pair(dateFormat.format(currentDate), timeFormat.format(currentDate))
     }
 
-    fun saveIncomeAndExpense(transfer: Transfer) {
+    fun saveIncomeAndExpense(transfer: Transfer, wallets : List<Wallet>) {
         viewModelScope.launch(ioDispatcher) {
             if (transfer.amount > 0) {
                 repository.insertTransferDetail(
@@ -271,6 +271,7 @@ class AddViewModel @Inject constructor(
                         ))
                     }
                 } else {
+
                     if(transfer.typeOfExpenditure == TransferType.Income){
                         var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
                         walletFrom?.let {
@@ -279,8 +280,8 @@ class AddViewModel @Inject constructor(
                             ))
                         }
                     } else {
-                        var walletFrom = toWallet.value.find { it.id == transfer.walletId }
-                        walletFrom?.let {
+                        var wallet = wallets.find { it.id == transfer.walletId }
+                        wallet?.let {
                             walletRepository.editWallet(
                                 it.copy(
                                     amount = it.amount - transfer.amount

@@ -164,12 +164,14 @@ class TransactionAdapter(
                             binding.transactionAmount.text = context.getString(
                                 R.string.negative_money_amount, currencySymbol, transaction.amount
                             )
+                            binding.transactionAmount.setTextColor(context.getColor(R.color.red))
                         }
 
                         TransferType.Income -> {
                             binding.transactionAmount.text = context.getString(
                                 R.string.positive_money_amount, currencySymbol, transaction.amount
                             )
+                            binding.transactionAmount.setTextColor(context.getColor(R.color.color_2))
                         }
 
                         else -> {

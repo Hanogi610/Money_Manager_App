@@ -14,7 +14,10 @@ import com.example.money_manager_app.utils.SharePreferenceHelper
 import java.util.Calendar
 import java.util.Date
 
-class CalendarAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CalendarAdapter(
+    private val currencySymbol: String,
+    private val context: Context
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var listener: OnItemClickListener? = null
@@ -143,11 +146,23 @@ class CalendarAdapter(private val context: Context) : RecyclerView.Adapter<Recyc
         itemViewHolder.totalLabel.text = ""
         for (record in list) {
             if (record.date == i3) {
-                val income = record.income + record.expense
+                val total = record.income - record.expense
                 itemViewHolder.dayLabel.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.stickynote, 0)
-                itemViewHolder.expenseLabel.text = Helper.getBeautifyAmount("", record.expense)
-                itemViewHolder.incomeLabel.text = Helper.getBeautifyAmount("", record.income)
-                itemViewHolder.totalLabel.text = Helper.getBeautifyAmount("", income)
+                itemViewHolder.expenseLabel.text = context.getString(
+                        R.string.positive_money_amount, currencySymbol, record.expense
+                )
+                itemViewHolder.incomeLabel.text =context.getString(
+                    R.string.negative_money_amount, currencySymbol, record.income
+                )
+                itemViewHolder.totalLabel.text =  if (total >= 0) {
+                    context.getString(
+                        R.string.positive_money_amount, currencySymbol, total
+                    )
+                } else {
+                    context.getString(
+                        R.string.negative_money_amount, currencySymbol, -total
+                    )
+                }
                 break
             }
         }

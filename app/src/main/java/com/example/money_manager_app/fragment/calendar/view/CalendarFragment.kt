@@ -41,8 +41,10 @@ class CalendarFragment : Fragment(), View.OnClickListener, CalendarAdapter.OnIte
     private val mainViewmodel : MainViewModel by activityViewModels()
 
     private fun setUpLayout() {
+        val currentCurrency = mainViewmodel.currentAccount.value!!.account.currency
+        val currencySymbol = getString(currentCurrency.symbolRes)
         recyclerView = binding.recyclerView
-        adapter = CalendarAdapter(requireContext())
+        adapter = CalendarAdapter(currencySymbol,requireContext())
         adapter.setListener(this)
         gridLayoutManager = GridLayoutManager(requireContext(), 7)
         recyclerView.layoutManager = gridLayoutManager
@@ -102,11 +104,26 @@ class CalendarFragment : Fragment(), View.OnClickListener, CalendarAdapter.OnIte
             income += record.income
             expense += record.expense
         }
-        total = income + expense
+        total = income - expense
 
-        binding.incomeLabel.text = income.toString()
-        binding.expenseLabel.text = expense.toString()
-        binding.amountLabel.text = total.toString()
+
+        val currentCurrency = mainViewmodel.currentAccount.value!!.account.currency
+        val currencySymbol = getString(currentCurrency.symbolRes)
+        binding.incomeLabel.text = context?.getString(
+            R.string.positive_money_amount, currencySymbol, income
+        )
+        binding.expenseLabel.text = context?.getString(
+            R.string.negative_money_amount, currencySymbol, expense
+        )
+        binding.amountLabel.text = if (total >= 0) {
+            context?.getString(
+                R.string.positive_money_amount, currencySymbol, total
+            )
+        } else {
+            context?.getString(
+                R.string.negative_money_amount, currencySymbol, -total
+            )
+        }
     }
 
     override fun onItemClick(view: View) {

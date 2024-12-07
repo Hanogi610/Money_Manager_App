@@ -3,6 +3,7 @@ package com.example.money_manager_app.utils
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.TransactionListItem
 import com.example.money_manager_app.data.model.CalendarRecord
+import com.example.money_manager_app.data.model.CalendarSummary
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.GoalTransaction
@@ -94,15 +95,51 @@ fun List<Transaction>.groupRecordsByDate(): List<CalendarRecord> {
     return groupedList
 }
 
+
+fun totalCalendarSummary(listTransaction : List<Transaction>) : CalendarSummary {
+    var totalIncome = 0.0
+    var totalExpense = 0.0
+    for(transaction in listTransaction){
+        when(transaction){
+            is Transfer -> {
+                if(transaction.typeOfExpenditure == TransferType.Income){
+                    totalIncome += transaction.amount
+                } else {
+                    if(transaction.typeOfExpenditure == TransferType.Expense){
+                        totalExpense += transaction.amount
+                    }
+                }
+            }
+
+            is Debt -> {
+                if (transaction.type == DebtType.RECEIVABLE) {
+                    totalExpense += transaction.amount
+                } else {
+                    totalIncome += transaction.amount
+                }
+            }
+
+            is DebtTransaction -> {
+                if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION) {
+                    totalIncome += transaction.amount
+                } else {
+                    totalExpense += transaction.amount
+                }
+            }
+        }
+    }
+    return CalendarSummary(totalIncome,totalExpense)
+}
+
 fun Transaction.totalDailyTransactionIncomeAndExpense(): Pair<Double, Double> {
     var dailyTotalIncome = 0.0
     var dailyTotalExpense = 0.0
 
     if (this is Debt) {
         if (this.type == DebtType.RECEIVABLE) {
-            dailyTotalIncome += this.amount
-        } else {
             dailyTotalExpense += this.amount
+        } else {
+            dailyTotalIncome += this.amount
         }
     }
 
@@ -160,9 +197,9 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
 
             is Debt -> {
                 dailyTotal += if (transaction.type == DebtType.RECEIVABLE) {
-                    +transaction.amount
-                } else {
                     -transaction.amount
+                } else {
+                    +transaction.amount
                 }
             }
 

@@ -32,5 +32,46 @@ object DateHelper {
         ).format(date.time)
     }
 
+    fun getDateWeek(date: Date): Pair<String, String> {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        val startOfWeek = calendar.time
+        calendar.add(Calendar.DAY_OF_WEEK, 6)
+        val endOfWeek = calendar.time
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val startOfWeekString = dateFormat.format(startOfWeek)
+        val endOfWeekString = dateFormat.format(endOfWeek)
+        return Pair(startOfWeekString, endOfWeekString)
+    }
+
+    fun getDateMonth(date: Date): Pair<String, String> {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        val startOfMonth = calendar.time
+        calendar.add(Calendar.MONTH, 1)
+        calendar.set(Calendar.DAY_OF_MONTH, 0)
+        val endOfMonth = calendar.time
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return Pair(dateFormat.format(startOfMonth), dateFormat.format(endOfMonth))
+    }
+
+
+
+    fun getDateYear(date: Date): Pair<String, String> {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.set(Calendar.DAY_OF_YEAR, 1)
+        val startOfYear = calendar.time
+        calendar.add(Calendar.YEAR, 1)
+        calendar.set(Calendar.DAY_OF_YEAR, 0)
+        val endOfYear = calendar.time
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return Pair(dateFormat.format(startOfYear), dateFormat.format(endOfYear))
+    }
+
+
+
 
 }

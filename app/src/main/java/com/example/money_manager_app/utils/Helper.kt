@@ -68,8 +68,4 @@ object Helper {
         format = String.format(Locale.getDefault(), "%,.2f", stripTrailingZeros)
         return format
     }
-
-
-
-
 }
