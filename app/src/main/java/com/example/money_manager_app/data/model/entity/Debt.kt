@@ -1,6 +1,8 @@
 package com.example.money_manager_app.data.model.entity
 
 import android.os.Parcelable
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -30,7 +32,7 @@ import kotlinx.parcelize.Parcelize
 )
 data class Debt(
     @PrimaryKey(autoGenerate = true) override val id: Long = 0,
-    @ColumnInfo(name = "icon_id") override val iconId: Int = R.drawable.wallet_6,
+    @DrawableRes @ColumnInfo(name = "icon_id") override val iconId: Int = R.drawable.wallet_6,
     override val name: String,
     override val amount: Double,
     @ColumnInfo(name = "account_id") override val accountId: Long,
@@ -39,7 +41,7 @@ data class Debt(
     override val time: Long,
     val description: String,
     @ColumnInfo(name = "wallet_id") override val walletId: Long,
-    @ColumnInfo(name = "color_id") val colorId: Int = R.color.color_1,
+    @ColorRes @ColumnInfo(name = "color_id") val colorId: Int = R.color.color_1,
 ) : Transaction(id, iconId, name, amount, accountId, walletId, date, time), Parcelable
 
 data class DebtDetail(

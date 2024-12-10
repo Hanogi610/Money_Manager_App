@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +22,6 @@ import com.example.money_manager_app.selecticon.viewmodel.CategoryViewModel
 import com.example.money_manager_app.utils.ColorUtils
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toDateTimestamp
-import com.example.money_manager_app.utils.toFormattedDateString
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -265,8 +263,8 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                     accountId = mainViewModel.accounts.value.first().account.id,
                     colorId = ColorUtils.getColors(requireContext())[binding.colorSpinner.selectedItemPosition],
                     periodType = PeriodType.entries[binding.periodSpinner.selectedItemPosition],
-                    start_date = date.first,
-                    end_date = date.second
+                    startDate = date.first,
+                    endDate = date.second
                 )
                 if (budgetEdit != null) {
                     budget.id = budgetEdit?.id ?: 0

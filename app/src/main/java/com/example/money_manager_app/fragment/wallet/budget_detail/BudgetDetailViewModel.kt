@@ -9,7 +9,6 @@ import com.example.money_manager_app.data.model.entity.BudgetWithCategory
 import com.example.money_manager_app.data.model.entity.CategoryWithTransfer
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.repository.BudgetRepository
-import com.example.money_manager_app.data.repository.CategoryRepository
 import com.example.money_manager_app.data.repository.TransferRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
@@ -60,7 +59,7 @@ class BudgetDetailViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             var listcategoryWithTransfer = mutableListOf<CategoryWithTransfer>()
             for(i in budgetWithCategory.categories){
-                var listTransfer = getCategoryWithTransfer(budgetWithCategory.budget.accountId, i.id, budgetWithCategory.budget.start_date, budgetWithCategory.budget.end_date)
+                var listTransfer = getCategoryWithTransfer(budgetWithCategory.budget.accountId, i.id, budgetWithCategory.budget.startDate, budgetWithCategory.budget.endDate)
                 listcategoryWithTransfer.add(CategoryWithTransfer(i, listTransfer))
             }
             _listCategoryWithTransfer.value = listcategoryWithTransfer

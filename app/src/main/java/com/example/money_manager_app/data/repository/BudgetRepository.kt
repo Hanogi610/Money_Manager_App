@@ -2,17 +2,11 @@ package com.example.money_manager_app.data.repository
 
 import android.util.Log
 import com.example.money_manager_app.data.dao.BudgetDao
-import com.example.money_manager_app.data.model.BudgetDetail
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.BudgetCategoryCrossRef
 import com.example.money_manager_app.data.model.entity.BudgetWithCategory
-import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
-import com.example.money_manager_app.data.model.toBudgetDetail
-import com.example.money_manager_app.utils.totalMoneyDay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface BudgetRepository {
@@ -44,7 +38,7 @@ class BudgetRepositoryImpl @Inject constructor(
     override suspend fun insertBudget(budget: Budget,budgetCategoryCrossRefs : List<BudgetCategoryCrossRef>): Long {
         var spent = 0.0
         for(i in budgetCategoryCrossRefs){
-            val transferList= tranferRepository.getTransferWithCategoryByAccountId(budget.accountId, i.categoryId, budget.start_date, budget.end_date)
+            val transferList= tranferRepository.getTransferWithCategoryByAccountId(budget.accountId, i.categoryId, budget.startDate, budget.endDate)
             spent += transferList.filter { it.typeOfExpenditure == TransferType.Expense }.sumOf { it.amount }
 
         }

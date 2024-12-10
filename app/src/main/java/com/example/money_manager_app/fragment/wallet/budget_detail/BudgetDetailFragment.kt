@@ -1,10 +1,8 @@
 package com.example.money_manager_app.fragment.wallet.budget_detail
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,11 +12,9 @@ import com.example.money_manager_app.data.model.CategoryTransactionDetail
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.CategoryWithTransfer
 import com.example.money_manager_app.data.model.entity.enums.CategoryType
-import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentBudgetDetailBinding
 import com.example.money_manager_app.fragment.wallet.adapter.CategoryTransactionAdapter
-import com.example.money_manager_app.fragment.wallet.add_budget.AddBudgetFragment
 import com.example.money_manager_app.fragment.wallet.add_budget.AddBudgetViewModel
 import com.example.money_manager_app.selecticon.viewmodel.CategoryViewModel
 import com.example.money_manager_app.utils.toFormattedDateString
@@ -145,8 +141,8 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
             binding.remainLabel.text = "${currencySymbol}${it.amount - it.spent}"
             getVM().getBudgets(it.accountId)
             binding.budgetLabel.text = "${currencySymbol}${it.amount}"
-            var start_date = it.start_date.toFormattedDateString()
-            var end_date = it.end_date.toFormattedDateString()
+            var start_date = it.startDate.toFormattedDateString()
+            var end_date = it.endDate.toFormattedDateString()
             binding.periodLabel.text = start_date + " - " + end_date
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val calendarToday = Calendar.getInstance()

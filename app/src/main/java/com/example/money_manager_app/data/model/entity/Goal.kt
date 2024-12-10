@@ -1,6 +1,7 @@
 package com.example.money_manager_app.data.model.entity
 
 import android.os.Parcelable
+import androidx.annotation.ColorRes
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -24,7 +25,7 @@ data class Goal(
     val name: String,
     @ColumnInfo(name = "account_id") val accountId: Long,
     @ColumnInfo(name = "target_date") val targetDate: Long,
-    @ColumnInfo(name = "color_id") val colorId: Int = R.color.color_1,
+    @ColorRes @ColumnInfo(name = "color_id") val colorId: Int = R.color.color_1,
     @ColumnInfo(name = "goal_amount") val amount: Double,
 ) : Parcelable
 

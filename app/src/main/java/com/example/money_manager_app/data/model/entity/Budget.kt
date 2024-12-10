@@ -1,6 +1,7 @@
 package com.example.money_manager_app.data.model.entity
 
 import android.os.Parcelable
+import androidx.annotation.ColorRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -27,8 +28,8 @@ data class Budget(
     val amount: Double,
     var spent : Int,
     @ColumnInfo(name = "account_id") val accountId: Long,
-    @ColumnInfo(name = "color_id") val colorId: Int? = R.color.color_1,
+    @ColorRes @ColumnInfo(name = "color_id") val colorId: Int? = R.color.color_1,
     @ColumnInfo(name = "period_type") @TypeConverters(PeriodTypeConverter::class) val periodType: PeriodType,
-    var start_date : Long,
-    var end_date : Long
+    @ColumnInfo(name = "start_date") val startDate : Long,
+    @ColumnInfo(name = "end_date") val endDate : Long
 ) : Parcelable

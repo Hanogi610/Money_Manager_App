@@ -1,11 +1,14 @@
 package com.example.money_manager_app.data.model
 
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
+
 open class SubTransaction(
     override val id: Long,
-    override val iconId: Int,
+    @DrawableRes override val iconId: Int,
     override val name: String,
     override val amount: Double,
-    open val colorId: Int,
+    @ColorRes open val colorId: Int,
     override val accountId: Long,
     override val walletId: Long,
     override val date: Long,

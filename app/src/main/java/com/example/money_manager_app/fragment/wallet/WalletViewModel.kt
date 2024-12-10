@@ -1,13 +1,10 @@
 package com.example.money_manager_app.fragment.wallet
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
-import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.BudgetWithCategory
 import com.example.money_manager_app.data.model.entity.DebtDetail
-import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.data.model.entity.GoalDetail
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.repository.BudgetRepository
@@ -22,7 +19,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -77,8 +73,8 @@ class WalletViewModel @Inject constructor(
                     val transactions = tranferRepository.getTransferWithCategoryByAccountId(
                         item.budget.accountId,
                         category.id,
-                        item.budget.start_date,
-                        item.budget.end_date
+                        item.budget.startDate,
+                        item.budget.endDate
                     )
 
                     for (transaction in transactions) {

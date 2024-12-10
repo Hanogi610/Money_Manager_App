@@ -1,6 +1,7 @@
 package com.example.money_manager_app.data.model.entity
 
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -46,7 +47,7 @@ data class Transfer(
     override val date: Long = System.currentTimeMillis(),
     override val time: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "type_of_expenditure") val typeOfExpenditure: TransferType,
-    @ColumnInfo(name = "icon_id") override val iconId: Int?,
+    @DrawableRes @ColumnInfo(name = "icon_id") override val iconId: Int?,
     @ColumnInfo(name = "category_id")  val categoryId: Long,
     @ColumnInfo(name = "memo") val memo: String
 ) : Transaction(id, iconId, name, amount, accountId, walletId, date, time), Parcelable
