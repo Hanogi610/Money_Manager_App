@@ -148,7 +148,9 @@ class MainScreenFragment :
     }
 
     private fun addAccount() {
-        appNavigation.openMainScreenToCreateAccountScreen()
+        appNavigation.openMainScreenToCreateAccountScreen(Bundle().apply {
+            putBoolean("isAddAccount", true)
+        })
     }
 
     companion object {
