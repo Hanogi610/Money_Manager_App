@@ -17,6 +17,7 @@
     <string name="_9" translatable="false">9</string>
     <string name="_0" translatable="false">0</string>
     <string name="search">Search</string>
+    <string name="calculator">Enter amount</string>
     <string name="structure">Structure</string>
     <string name="filter_options">Filter options</string>
     <string name="date">Date</string>

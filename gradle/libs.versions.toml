@@ -3,6 +3,9 @@ agp = "8.4.0"
 circleprogress = "1.2.4"
 commonsLang3 = "3.12.0"
 core = "1.15.0"
+evalex = "1.4"
+exp4j = "0.4.8"
+exp4jVersion = "0.4.8"
 hiltAndroid = "2.51.1"
 kotlin = "1.9.23"
 coreKtx = "1.13.1"
@@ -38,6 +41,7 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 circleprogress = { module = "com.github.lzyzsd:circleprogress", version.ref = "circleprogress" }
 commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commonsLang3" }
+exp4j = { module = "de.congrace:exp4j", version.ref = "exp4j" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -58,6 +62,7 @@ androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifec
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
+objecthunter-exp4j = { module = "net.objecthunter:exp4j", version.ref = "exp4jVersion" }
 passcodeview = { module = "com.hanks:passcodeview", version.ref = "passcodeview" }
 pie-chart = { module = "ir.mahozad.android:pie-chart", version.ref = "pieChart" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }

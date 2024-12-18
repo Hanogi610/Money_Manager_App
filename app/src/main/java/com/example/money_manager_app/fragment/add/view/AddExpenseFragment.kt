@@ -58,8 +58,15 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>
         pickTime()
         selectImage()
         observe()
+        setAmount()
         selectWallet()
         selectCategory()
+    }
+
+    fun setAmount(){
+        binding.etAmount.setOnClickListener(View.OnClickListener {
+            findNavController().navigate(R.id.framgmentCaculator)
+        })
     }
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
