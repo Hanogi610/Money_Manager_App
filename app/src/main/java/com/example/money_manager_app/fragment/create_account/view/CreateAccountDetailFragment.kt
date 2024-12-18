@@ -114,7 +114,7 @@ class CreateAccountDetailFragment :
                 }
                 binding.btnNext.isClickable = true
                 binding.btnNext.setOnSafeClickListener {
-                    createAccountViewModel.setInitAmount(binding.etAmount.text.toString().toDouble())
+                    createAccountViewModel.setInitAmount(binding.etAmount.text.toString().toDoubleOrNull() ?: 0.0)
                     mainViewModel.insertAccount(
                         Account(
                             nameAccount = createAccountViewModel.getName(),

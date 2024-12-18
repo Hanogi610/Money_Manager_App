@@ -88,6 +88,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().wallets.collect { wallets ->
                     walletAdapter.setWallets(wallets)
+                    binding.walletManagerTextView.text = getString(R.string.manager, wallets.size)
                 }
             }
         }
