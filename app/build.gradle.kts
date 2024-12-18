@@ -68,7 +68,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.mpandroidchart)
-
+    implementation(libs.objecthunter.exp4j)
     implementation(libs.androidx.room.runtime)
     //noinspection KaptUsageInsteadOfKsp
     kapt(libs.androidx.room.compiler)

@@ -29,7 +29,7 @@ interface BudgetDao {
     @Query("SELECT * FROM budget WHERE account_id = :accountId")
     fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetWithCategory>>
 
-    @Query("SELECT * FROM budget WHERE account_id = :accountId AND startDate <= :date AND end_date >= :date")
+    @Query("SELECT * FROM budget WHERE account_id = :accountId AND start_Date <= :date AND end_date >= :date")
     fun getBudgetsByAccountIdAndDate(accountId: Long, date : Long): List<BudgetWithCategory>
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
