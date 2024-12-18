@@ -54,6 +54,10 @@ class PasswordFragment :
             binding.pc5,
             binding.pc6,
         )
+
+        numberDisplay.forEach { editText ->
+            editText.showSoftInputOnFocus = false
+        }
     }
 
     override fun setOnClick() {

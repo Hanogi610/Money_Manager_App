@@ -19,13 +19,21 @@ class CreateAccountFragment :
 
     private lateinit var adapter: CreateAccountPagerAdapter
     private val createAccountViewModel: CreateAccountViewModel by activityViewModels()
-
+    private var isAddAccount = false
 
     private val fragments = listOf(
         CreateAccountDetailFragment.newInstance(ARG_ADD_ACCOUNT),
         CreateAccountDetailFragment.newInstance(ARG_SELECT_CURRENCY),
         CreateAccountDetailFragment.newInstance(ARG_INIT_AMOUNT)
     )
+
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
+
+        arguments?.let {
+            isAddAccount = it.getBoolean("isAddAccount", false)
+        }
+    }
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
@@ -54,7 +62,10 @@ class CreateAccountFragment :
         super.setOnClick()
 
         binding.ivBack.setOnSafeClickListener {
-            createAccountViewModel.backPage()
+            val isBack = createAccountViewModel.backPage()
+            if (isBack) {
+                appNavigation.navigateUp()
+            }
         }
     }
 

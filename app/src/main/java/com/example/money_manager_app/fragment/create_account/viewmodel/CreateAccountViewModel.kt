@@ -41,9 +41,10 @@ class CreateAccountViewModel @Inject constructor(
         _currentPage.value = page
     }
 
-    fun backPage() {
-        if (_currentPage.value == 0) return
+    fun backPage() : Boolean {
+        if (_currentPage.value == 0) return true
         _currentPage.value = _currentPage.value?.minus(1)
+        return false
     }
 
     fun setName(name: String) {
