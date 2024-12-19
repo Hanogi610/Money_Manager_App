@@ -6,6 +6,7 @@ core = "1.15.0"
 evalex = "1.4"
 exp4j = "0.4.8"
 exp4jVersion = "0.4.8"
+googleMaterial = "1.9.0"
 hiltAndroid = "2.51.1"
 kotlin = "1.9.23"
 coreKtx = "1.13.1"
@@ -61,6 +62,7 @@ glideCompiler = { module = "com.github.bumptech.glide:ksp", version.ref = "glide
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+material-v190 = { module = "com.google.android.material:material", version.ref = "googleMaterial" }
 mpandroidchart = { module = "com.github.PhilJay:MPAndroidChart", version.ref = "mpandroidchart" }
 objecthunter-exp4j = { module = "net.objecthunter:exp4j", version.ref = "exp4jVersion" }
 passcodeview = { module = "com.hanks:passcodeview", version.ref = "passcodeview" }

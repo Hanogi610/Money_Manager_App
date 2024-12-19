@@ -2,9 +2,9 @@ package com.example.moneymanager.ui.add.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.money_manager_app.fragment.add.view.AddExpenseFragment
-import com.example.money_manager_app.fragment.add.view.AddIncomeFragment
-import com.example.money_manager_app.fragment.add.view.AddTranferFragment
+import com.example.money_manager_app.fragment.add.view.expense.AddExpenseFragment
+import com.example.money_manager_app.fragment.add.view.income.AddIncomeFragment
+import com.example.money_manager_app.fragment.add.view.transfer.AddTranferFragment
 
 class AddPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 

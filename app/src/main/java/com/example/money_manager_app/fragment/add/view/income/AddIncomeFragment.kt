@@ -1,4 +1,4 @@
-package com.example.money_manager_app.fragment.add.view
+package com.example.money_manager_app.fragment.add.view.income
 
 import android.app.AlertDialog
 import android.content.pm.PackageManager
@@ -7,13 +7,9 @@ import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +17,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
-import com.example.money_manager_app.data.model.AddTransfer
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType

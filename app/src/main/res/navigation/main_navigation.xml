@@ -258,7 +258,7 @@
         />
     <fragment
         android:id="@+id/addExpenseFragment"
-        android:name="com.example.money_manager_app.fragment.add.view.AddExpenseFragment"
+        android:name="com.example.money_manager_app.fragment.add.view.expense.AddExpenseFragment"
         android:label="AddExpenseFragment" >
         <action
             android:id="@+id/action_addExpenseFragment_to_framgmentCaculator"

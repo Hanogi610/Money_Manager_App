@@ -73,6 +73,8 @@ dependencies {
     //noinspection KaptUsageInsteadOfKsp
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+    implementation("com.google.android.material:material:1.0.0-alpha1")
+
 
     // Glide
     implementation(libs.glide)
