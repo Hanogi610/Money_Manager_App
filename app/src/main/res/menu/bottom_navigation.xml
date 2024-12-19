@@ -16,6 +16,6 @@
         android:icon="@drawable/ic_wallet_selector"
         android:id="@+id/action_wallet"
         android:title="@string/wallet"/>
-<!--    <item-->
-<!--        android:title=""/>-->
+    <item
+        android:title=""/>
 </menu>
