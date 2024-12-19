@@ -21,7 +21,6 @@ import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddExpenseBinding
-import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.utils.toTimeTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -30,10 +29,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>(R.layout.fragment_add_expense), AddTransferInterface {
+class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewModel>(R.layout.fragment_add_expense), AddTransferInterface {
 
-    override fun getVM(): AddViewModel {
-        val viewModel : AddViewModel by activityViewModels()
+    override fun getVM(): ExpenseViewModel {
+        val viewModel : ExpenseViewModel by activityViewModels()
         return viewModel
     }
 
@@ -55,7 +54,8 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>
 
     fun setAmount(){
         binding.etAmount.setOnClickListener(View.OnClickListener {
-            findNavController().navigate(R.id.framgmentCaculator)
+            var bundle = bundleOf("type" to TransferType.Expense)
+            findNavController().navigate(R.id.framgmentCaculator, bundle)
         })
     }
 
@@ -167,9 +167,9 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, AddViewModel>
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().amount.collect { amount ->
                     if(amount != 0.0){
-                        binding.etAmount.setText(amount.toString())
+                        binding.etAmount.text = amount.toString()
                     } else {
-                        binding.etAmount.setText("")
+                        binding.etAmount.text = ""
                     }
                 }
             }

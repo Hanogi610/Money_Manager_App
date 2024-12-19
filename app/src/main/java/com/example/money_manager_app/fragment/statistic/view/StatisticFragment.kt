@@ -123,7 +123,6 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
     }
 
     fun onClickPie(){
-        Log.d("click","click")
         findNavController().navigate(R.id.structureFragment,
             Bundle().apply {
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

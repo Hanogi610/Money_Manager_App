@@ -11,7 +11,6 @@ abstract class BaseNavigatorImpl : BaseNavigator {
 
     override fun bind(navController: NavController) {
         this.navController = navController
-        Log.d(TAG, "bind: $navController")
     }
 
     override fun unbind() {
@@ -21,7 +20,7 @@ abstract class BaseNavigatorImpl : BaseNavigator {
     override fun openScreen(
         @IdRes id: Int, bundle: Bundle?
     ) {
-        Log.d(TAG, "openScreen: $navController")
+        navController?.navigate(id, bundle)
         navController?.navigate(id, bundle)
     }
 

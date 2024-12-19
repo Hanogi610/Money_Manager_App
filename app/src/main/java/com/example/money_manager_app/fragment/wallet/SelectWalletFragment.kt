@@ -1,11 +1,6 @@
 package com.example.money_manager_app.fragment.wallet
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +11,9 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.databinding.FragmentSelectWalletBinding
+import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
+import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
+import com.example.money_manager_app.fragment.add.view.transfer.TransferViewModel
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.fragment.wallet.adapter.SelectWalletAdapter
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -28,7 +26,10 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
     private var selectWalletAdapterInclude: SelectWalletAdapter = SelectWalletAdapter(emptyList(), ::onItemClick)
     private var selectWalletAdapterExclude: SelectWalletAdapter = SelectWalletAdapter(emptyList(), ::onItemClick)
     private val mainViewModel: MainViewModel by activityViewModels()
-    private val addViewModel : AddViewModel by activityViewModels()
+    private val addViewModel: AddViewModel by activityViewModels()
+    private val incomeViewModel : IncomeViewModel by activityViewModels()
+    private val expenseViewModel : ExpenseViewModel by activityViewModels()
+    private val transferViewModel : TransferViewModel by activityViewModels()
 
     override fun getVM(): WalletViewModel {
         val vm: WalletViewModel by activityViewModels()
@@ -92,15 +93,19 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
         if(isCheckWallet == true){
             var listWallet = mutableListOf<Wallet>()
             listWallet.add(wallet)
-            addViewModel.setFromWallet(listWallet)
-            bundle?.putInt("position", typeExpense?:0)
-            findNavController().navigate(R.id.addFragment, bundle)
+            addViewModel.setPosition(typeExpense?:0)
+            when(typeExpense){
+                0 -> incomeViewModel.setFromWallet(listWallet)
+                1 -> expenseViewModel.setFromWallet(listWallet)
+                2 -> transferViewModel.setFromWallet(listWallet)
+            }
+            findNavController().popBackStack()
         }else{
             var listWallet = mutableListOf<Wallet>()
             listWallet.add(wallet)
-            addViewModel.setToWallet(listWallet)
-            bundle?.putInt("position", typeExpense?:0)
-            findNavController().navigate(R.id.addFragment, bundle)
+            transferViewModel.setToWallet(listWallet)
+            addViewModel.setPosition(typeExpense?:0)
+            findNavController().popBackStack()
         }
     }
 

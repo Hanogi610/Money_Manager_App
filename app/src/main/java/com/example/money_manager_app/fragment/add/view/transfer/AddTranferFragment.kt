@@ -7,6 +7,7 @@ import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
@@ -21,7 +22,6 @@ import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddTranferBinding
-import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.utils.toTimeTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -31,13 +31,13 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(R.layout.fragment_add_tranfer), AddTransferInterface {
+class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewModel>(R.layout.fragment_add_tranfer), AddTransferInterface {
 
     private var btnFee = false
     private val mainViewModel: MainViewModel by activityViewModels()
 
-    override fun getVM(): AddViewModel {
-        val viewModel: AddViewModel by activityViewModels()
+    override fun getVM(): TransferViewModel {
+        val viewModel: TransferViewModel by activityViewModels()
         return viewModel
     }
 
@@ -83,8 +83,16 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
         selectImage()
         observe()
         selectFromWallet()
+        setAmount()
         selectToWallet()
         setButtonFee()
+    }
+
+    fun setAmount(){
+        binding.etAmount.setOnClickListener(View.OnClickListener {
+            var bundle = bundleOf("type" to TransferType.Transfer)
+            findNavController().navigate(R.id.framgmentCaculator,bundle)
+        })
     }
 
     fun setButtonFee() {

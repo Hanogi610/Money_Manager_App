@@ -59,7 +59,7 @@
             android:textColor="@color/black"
             android:layout_below="@+id/etDateAndTime"/>
 
-        <EditText
+        <TextView
             android:id="@+id/et_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

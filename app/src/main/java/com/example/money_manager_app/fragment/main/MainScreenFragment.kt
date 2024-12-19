@@ -36,6 +36,7 @@ class MainScreenFragment :
         vpAdapter = MainPagerAdapter(this)
         binding.mainViewPager.adapter = vpAdapter // Make sure to set the adapter
 
+        binding.bottomNavigation.setBackground(null)
         binding.searchIcon.setOnClickListener {
             findNavController().navigate(R.id.searchFragment)
         }
@@ -110,7 +111,6 @@ class MainScreenFragment :
         val sharedPreferences = requireContext().getSharedPreferences("app_preferences", MODE_PRIVATE)
         val isFirstRun = sharedPreferences.getBoolean("firstRun", true)
         if(isFirstRun){
-            Log.d("MainActivity", "checkOnFirstRun: ")
             val listCategory = CategoryUtils.listCategory
             mainViewModel.insertCategory(listCategory)
             sharedPreferences.edit().putBoolean("firstRun", false).apply()

@@ -15,7 +15,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@color/balance_bg"
+            android:background="@drawable/custom_balanc_label"
             android:id="@+id/balanceWrapper">
             <TextView
                 android:id="@+id/balanceLabel"
@@ -50,7 +50,7 @@
                 android:layout_marginTop="@dimen/_32dp"
                 android:layout_marginBottom="@dimen/_16dp"
                 android:contentDescription="@string/balance_visibility_toggle"
-                android:src="@drawable/ic_remove_red_eye"
+                android:src="@drawable/eye"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/balanceAmount" />

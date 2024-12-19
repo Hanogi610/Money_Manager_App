@@ -7,6 +7,7 @@ import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
@@ -21,7 +22,6 @@ import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddIncomeBinding
-import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.utils.toTimeTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -30,12 +30,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, AddViewModel>(R.layout.fragment_add_income), AddTransferInterface {
+class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel>(R.layout.fragment_add_income), AddTransferInterface {
     private val mainViewModel: MainViewModel by activityViewModels()
 
 
-    override fun getVM(): AddViewModel {
-        val viewModel : AddViewModel by activityViewModels()
+    override fun getVM(): IncomeViewModel {
+        val viewModel : IncomeViewModel by activityViewModels()
         return viewModel
     }
 
@@ -81,8 +81,16 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, AddViewModel>(R
         pickTime()
         selectImage()
         observe()
+        setAmount()
         selectWallet()
         selectCategory()
+    }
+
+    fun setAmount(){
+        binding.etAmount.setOnClickListener(View.OnClickListener {
+            var bundle = bundleOf("type" to TransferType.Income)
+            findNavController().navigate(R.id.framgmentCaculator,bundle)
+        })
     }
 
     fun setData(){
@@ -163,9 +171,9 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, AddViewModel>(R
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().amount.collect { amount ->
                     if(amount != 0.0){
-                        binding.etAmount.setText(amount.toString())
+                        binding.etAmount.text = amount.toString()
                     } else {
-                        binding.etAmount.setText("")
+                        binding.etAmount.text = ""
                     }
                 }
             }

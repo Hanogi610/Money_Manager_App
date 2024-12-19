@@ -38,7 +38,6 @@ class BudgetDetailViewModel @Inject constructor(
     fun getBudgets(accountId: Long) {
         viewModelScope.launch {
             budgetRepository.getBudgetsByAccountId(accountId).collect {
-                Log.d("BudgetDetailFragment", "budgetWithCategory is ${it}")
                 _budgetsWithCategory.value = it
 
             }

@@ -9,15 +9,30 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewModel
+import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentCaculatorBinding
-import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
+import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
+import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
+import com.example.money_manager_app.fragment.add.view.transfer.TransferViewModel
 import net.objecthunter.exp4j.ExpressionBuilder
 
 class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBinding>(R.layout.fragment_caculator), View.OnClickListener {
 
-    private val addViewModel: AddViewModel by activityViewModels()
+    private val incomeViewModel: IncomeViewModel by activityViewModels()
+    private val expenseViewModel: ExpenseViewModel by activityViewModels()
+    private val transferViewModel : TransferViewModel by activityViewModels()
 
     private var equation: String = "0"
+    private lateinit var type : TransferType
+
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
+        if(arguments != null){
+            type = arguments?.getSerializable("type") as TransferType
+        } else {
+            type = TransferType.Income
+        }
+    }
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
@@ -50,24 +65,36 @@ class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBind
                 val longResult = result.toLong()
                 if (result == longResult.toDouble()) {
                     binding.total.text = longResult.toString()
-                    equation = longResult.toString()
-                    addViewModel.setAmount(equation.toDouble())
+                    equation = result.toString()
+                    setAmount(equation.toDouble())
                     findNavController().popBackStack()
                 } else{
                     binding.total.text = result.toString()
                     equation = result.toString()
-                    addViewModel.setAmount(equation.toDouble())
+                    setAmount(equation.toDouble())
                     findNavController().popBackStack()
                 }
 
 
             } catch (e: Exception) {
-                Log.d("EXCEPTION", "Message: ${e.message}")
             }
         }
     }
 
+    fun setAmount(result: Double) {
+        when(type){
+            TransferType.Income -> {
+                incomeViewModel.setAmount(result)
+            }
+            TransferType.Expense -> {
+                expenseViewModel.setAmount(result)
+            }
+            TransferType.Transfer -> {
+                transferViewModel.setAmount(result)
+            }
+        }
 
+    }
 
     fun setTotal(total: String) {
         equation  = equation + total
@@ -149,12 +176,12 @@ class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBind
                     if (result == longResult.toDouble()) {
                         binding.total.text = longResult.toString()
                         equation = longResult.toString()
-                    } else
+                    } else{
                         binding.total.text = result.toString()
-                    equation = result.toString()
+                        equation = result.toString()
+                    }
 
                 } catch (e: Exception) {
-                    Log.d("EXCEPTION", "Message: ${e.message}")
                 }
 
             }

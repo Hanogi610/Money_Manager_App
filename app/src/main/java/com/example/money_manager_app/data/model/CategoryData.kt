@@ -16,7 +16,6 @@ class CategoryData {
                 listCategory.add(Category(i+1, listArrayIncome[i],"income_" + (i+1)  , "income"))
             }
         } catch (e: Exception) {
-            Log.e("readJsonData", e.toString())
             }
         return listCategory
     }
@@ -29,7 +28,6 @@ class CategoryData {
                 listCategory.add(Category(i+1, listArrayExpense[i],"expense_" + (i+1) , "expense"))
             }
         } catch (e: Exception) {
-            Log.e("readJsonData", e.toString())
         }
         return listCategory
     }

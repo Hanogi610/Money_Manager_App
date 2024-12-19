@@ -43,7 +43,6 @@ class BudgetRepositoryImpl @Inject constructor(
 
         }
         budget.spent = spent.toInt()
-        Log.d("BudgetRepositoryImpl", "insertBudget: ${budget}")
         val budgetId = budgetDao.insertBudget(budget)
         for (i in budgetCategoryCrossRefs){
             i.budgetId = budgetId

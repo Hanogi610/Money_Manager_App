@@ -49,7 +49,6 @@ class CreateAccountViewModel @Inject constructor(
 
     fun setName(name: String) {
         _name = name
-        Log.d("hoangph", "setName() called with: name = $name")
         _currentPage.value = 1
     }
 
@@ -59,7 +58,6 @@ class CreateAccountViewModel @Inject constructor(
 
     fun setCurrency(currency: Currency) {
         _currency.value = currency
-        Log.d("hoangph", "setCurrency() called with: currency = $currency")
         _currentPage.value = 2
     }
 

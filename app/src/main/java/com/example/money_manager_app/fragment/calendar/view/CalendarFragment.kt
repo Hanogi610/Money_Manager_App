@@ -86,7 +86,6 @@ class CalendarFragment : Fragment(), View.OnClickListener, CalendarAdapter.OnIte
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 calendarViewModel.calendarRecord.collect {
-                    Log.d("CalendarFragment", "observeData: ${it.size}")
                     setUpSummary(it)
                     adapter.setList(it)
                     adapter.notifyDataSetChanged()

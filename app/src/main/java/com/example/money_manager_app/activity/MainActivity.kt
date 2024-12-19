@@ -8,9 +8,9 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.base.activity.BaseActivity
 import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.databinding.ActivityMainBinding
-import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
+import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
+import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
 import com.example.money_manager_app.navigation.AppNavigation
-import com.example.money_manager_app.utils.CategoryUtils
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -20,8 +20,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     @Inject
     lateinit var appNavigation: AppNavigation
-    private val addViewModel: AddViewModel by viewModels()
-    private val mainViewModel : MainViewModel by viewModels()
+    private val incomeViewModel : IncomeViewModel by viewModels()
+    private val expenseViewModel : ExpenseViewModel by viewModels()
 
     override fun getVM(): MainViewModel {
         val viewModel: MainViewModel by viewModels()
@@ -34,8 +34,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val categoryData = CategoryData()
-        addViewModel.setCategoryListExpense(categoryData.readCategoryExpense(this))
-        addViewModel.setCategoryListIncome(categoryData.readCategoryIncome(this))
+        expenseViewModel.setCategoryListExpense(categoryData.readCategoryExpense(this))
+        incomeViewModel.setCategoryListIncome(categoryData.readCategoryIncome(this))
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController

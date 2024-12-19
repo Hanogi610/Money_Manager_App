@@ -10,30 +10,32 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.money_manager_app.R
+import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.databinding.FragmentAddBinding
+import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
+import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.moneymanager.ui.add.adapter.AddPagerAdapter
 import com.example.moneymanager.ui.add.adapter.AddTransferInterface
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddFragment : Fragment() {
+class AddFragment : BaseFragment<FragmentAddBinding, AddViewModel>(R.layout.fragment_add) {
 
-    private val viewModel: AddViewModel by activityViewModels()
-    private lateinit var binding: FragmentAddBinding
+    override fun getVM(): AddViewModel {
+        val vm: AddViewModel by activityViewModels()
+        return vm
+    }
+
+    private val expenseViewModel : ExpenseViewModel by activityViewModels()
+    private val incomeViewModel : IncomeViewModel by activityViewModels()
     private lateinit var adapter: AddPagerAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentAddBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,22 +56,26 @@ class AddFragment : Fragment() {
     fun back(){
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                handleBackEvent()
+                findNavController().popBackStack()
+                onClear()
             }
         })
 
         binding.ivBack.setOnClickListener {
-            handleBackEvent()
+            findNavController().popBackStack()
+            onClear()
         }
     }
 
-    fun handleBackEvent(){
-        viewModel.onCleared()
-        findNavController().navigate(R.id.mainFragment)
+    fun onClear() {
+        expenseViewModel.onCleared()
+        incomeViewModel.onCleared()
+        getVM().onCleared()
     }
 
+
     fun setTab() {
-        var position = arguments?.getInt("position") ?: 1
+        var position = if(getVM().getPosition() == -1) 1 else getVM().getPosition()
         if(arguments?.getParcelable<Transaction>("transition") != null){
             position = arguments?.getInt("key") ?: 1
 
@@ -86,8 +92,14 @@ class AddFragment : Fragment() {
             val currentFragment = childFragmentManager.findFragmentByTag("f" + binding.vpAdd.currentItem)
             if (currentFragment is AddTransferInterface) {
                 if (transaction != null) {
-                    viewModel.setDescriptor(transaction.name)
-                    viewModel.setAmount(transaction.amount)
+                    when (position) {
+                        0 -> {
+                        }
+                        1 -> {
+                        }
+                        2 -> {
+                        }
+                    }
                 }
             }
         }
@@ -96,20 +108,19 @@ class AddFragment : Fragment() {
 
     fun setCategory(position: Int) {
         val bundle = arguments
-        val idCategory = bundle?.getInt("idCategory") ?: 0
+        val idCategory = if(getVM().getIdCategory() == 0) 0 else getVM().getIdCategory()
 
         if (idCategory != 0) {
             when (position) {
                 0 -> {
-
                     val listCategoryIncome = resources.getStringArray(R.array.category_income)
                     val pair : Pair<String, Int> = Pair(listCategoryIncome[idCategory - 1], idCategory)
-                    viewModel.setCategoryNameIncome(pair)
+                    incomeViewModel.setCategoryNameIncome(pair)
                 }
                 1 -> {
                     val listCategoryExpense = resources.getStringArray(R.array.category_expense)
                     val pair : Pair<String, Int> = Pair(listCategoryExpense[idCategory - 1], idCategory)
-                    viewModel.setCategoryNameExpense(pair)
+                    expenseViewModel.setCategoryNameExpense(pair)
                 }
             }
         }

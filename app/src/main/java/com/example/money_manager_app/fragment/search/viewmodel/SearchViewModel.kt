@@ -57,7 +57,6 @@ class SearchViewModel @Inject constructor(
     }
 
     fun searchByDateAndAmountAndDesAndCategoryAndWallet(idAcount : Long) {
-        Log.d("SearchFragment", "searchByDateAndAmountAndDesAndCategoryAndWallet: ${startDate.value} ${endDate.value} ${minAmount.value} ${maxAmount.value} ${description.value}")
         viewModelScope.launch(ioDispatcher) {
             val list = mutableListOf<Transaction>()
             val wallet = walletSearch.value.id.takeIf { it != 0L }
