@@ -18,6 +18,7 @@ import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.data.model.entity.enums.TransferType
+import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentRecordBinding
 import com.example.money_manager_app.fragment.Record.viewmodel.RecordViewModel
@@ -104,7 +105,7 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                         e.printStackTrace()
                     }
                 }
-                var FromWallet = mainViewModel.currentAccount.value?.wallets?.find { it.id == transaction.walletId }
+                var FromWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.walletId }?.toWallet()
                 if(FromWallet != null){
                     var listWallet = mutableListOf<Wallet>()
                     listWallet.add(FromWallet)
@@ -133,7 +134,7 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                         e.printStackTrace()
                     }
                 }
-                var FromWallet = mainViewModel.currentAccount.value?.wallets?.find { it.id == transaction.walletId }
+                var FromWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.walletId }?.toWallet()
                 if(FromWallet != null){
                     var listWallet = mutableListOf<Wallet>()
                     listWallet.add(FromWallet)
@@ -162,14 +163,14 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                         e.printStackTrace()
                     }
                 }
-                var FromWallet = mainViewModel.currentAccount.value?.wallets?.find { it.id == transaction.walletId }
+                var FromWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.walletId }?.toWallet()
                 if(FromWallet != null){
                     var listWallet = mutableListOf<Wallet>()
                     listWallet.add(FromWallet)
                     transferViewModel.setOldWallet(FromWallet)
                     transferViewModel.setFromWallet(listWallet)
                 }
-                var toWallet = mainViewModel.currentAccount.value?.wallets?.find { it.id == transaction.toWalletId }
+                var toWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.toWalletId }?.toWallet()
                 if(toWallet != null){
                     var listWallet = mutableListOf<Wallet>()
                     listWallet.add(toWallet)
@@ -232,8 +233,8 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
        }
         binding.amountLabel.text = transaction.amount.toString()
         binding.dateLabel.text = transaction.date.toFormattedDateString() + " " + transaction.time.toFormattedTimeString()
-        val wallet = mainViewModel.currentAccount.value?.wallets
-        val fromWallet = wallet?.find { it.id == transaction.walletId }
+        val wallet = mainViewModel.currentAccount.value?.walletItems
+        val fromWallet = wallet?.find { it.wallet.id == transaction.walletId }
         when (transaction) {
             is Transfer -> {
                 binding.categoryLabel.visibility = android.view.View.VISIBLE
@@ -252,8 +253,8 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                         binding.feeTitleLabel.visibility = android.view.View.VISIBLE
                     }
 
-                    val toWallet = wallet?.find { it.id == transaction.toWalletId }
-                    binding.walletLabel.text = fromWallet?.name + " -> " + toWallet?.name
+                    val toWallet = wallet?.find { it.wallet.id == transaction.toWalletId }
+                    binding.walletLabel.text = fromWallet?.wallet?.name + " -> " + toWallet?.wallet?.name
                     binding.typeLabel.text = transaction.typeOfExpenditure.name
                 } else {
                     if(transaction.typeOfExpenditure == TransferType.Income){
@@ -263,7 +264,7 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                         binding.typeLabel.text = "Expense"
                         binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                     }
-                    binding.walletLabel.text = fromWallet?.name
+                    binding.walletLabel.text = fromWallet?.wallet?.name
                 }
                 if(transaction.linkImg != null){
                     binding.ivImg.visibility = android.view.View.VISIBLE

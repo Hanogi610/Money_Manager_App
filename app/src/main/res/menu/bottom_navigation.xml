@@ -17,5 +17,6 @@
         android:id="@+id/action_wallet"
         android:title="@string/wallet"/>
     <item
+        android:id="@+id/more_selector"
         android:title=""/>
 </menu>

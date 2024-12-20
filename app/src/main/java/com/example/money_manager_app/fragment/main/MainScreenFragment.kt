@@ -2,7 +2,6 @@ package com.example.money_manager_app.fragment.main
 
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,12 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.data.model.AccountWithWalletItem
 import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.money_manager_app.databinding.FragmentMainScreenBinding
-import com.example.money_manager_app.viewmodel.MainViewModel
-import com.example.moneymanager.ui.main_screen.adapter.MainPagerAdapter
+import com.example.money_manager_app.fragment.main.adapter.MainPagerAdapter
 import com.example.money_manager_app.fragment.main.fragment.AccountSelectorBottomSheet
 import com.example.money_manager_app.utils.CategoryUtils
+import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,29 +30,30 @@ class MainScreenFragment :
         val vm: MainScreenViewModel by viewModels()
         return vm
     }
+
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
         vpAdapter = MainPagerAdapter(this)
-        binding.mainViewPager.adapter = vpAdapter // Make sure to set the adapter
+        binding.mainViewPager.adapter = vpAdapter
 
-        binding.bottomNavigation.setBackground(null)
+        binding.bottomNavigation.background = null
+        binding.bottomNavigation.menu.findItem(R.id.more_selector).isEnabled = false
+
         binding.searchIcon.setOnClickListener {
             findNavController().navigate(R.id.searchFragment)
         }
 
-        // Synchronize BottomNavigationView with ViewPager2
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.action_home -> binding.mainViewPager.currentItem = 0
-                R.id.action_calendar -> binding.mainViewPager.currentItem = 1
-                R.id.action_statistic -> binding.mainViewPager.currentItem = 2
-                R.id.action_wallet -> binding.mainViewPager.currentItem = 3
+                R.id.action_home -> binding.mainViewPager.setCurrentItem(0, false)
+                R.id.action_calendar -> binding.mainViewPager.setCurrentItem(1, false)
+                R.id.action_statistic -> binding.mainViewPager.setCurrentItem(2, false)
+                R.id.action_wallet -> binding.mainViewPager.setCurrentItem(3, false)
             }
             true
         }
 
-        // Synchronize ViewPager2 with BottomNavigationView
         binding.mainViewPager.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
@@ -107,10 +108,11 @@ class MainScreenFragment :
         checkOnFirstRun()
     }
 
-    private fun checkOnFirstRun(){
-        val sharedPreferences = requireContext().getSharedPreferences("app_preferences", MODE_PRIVATE)
+    private fun checkOnFirstRun() {
+        val sharedPreferences =
+            requireContext().getSharedPreferences("app_preferences", MODE_PRIVATE)
         val isFirstRun = sharedPreferences.getBoolean("firstRun", true)
-        if(isFirstRun){
+        if (isFirstRun) {
             val listCategory = CategoryUtils.listCategory
             mainViewModel.insertCategory(listCategory)
             sharedPreferences.edit().putBoolean("firstRun", false).apply()
@@ -132,17 +134,19 @@ class MainScreenFragment :
     }
 
     private fun openAccountSelector(
-        accounts: List<AccountWithWallet>, currentAccount: AccountWithWallet
+        accounts: List<AccountWithWalletItem>, currentAccount: AccountWithWalletItem
     ) {
-        val accountSelector = AccountSelectorBottomSheet(accounts,
+        val accountSelector = AccountSelectorBottomSheet(
+            accounts,
             currentAccount,
             { account -> selectAccount(account) },
-            ::addAccount)
+            ::addAccount
+        )
 
         accountSelector.show(parentFragmentManager, "AccountSelectorBottomSheet")
     }
 
-    private fun selectAccount(account: AccountWithWallet) {
+    private fun selectAccount(account: AccountWithWalletItem) {
         mainViewModel.setCurrentAccount(account)
 
     }

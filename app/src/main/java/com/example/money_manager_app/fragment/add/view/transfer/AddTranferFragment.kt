@@ -18,7 +18,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
-import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddTranferBinding
@@ -32,7 +31,9 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewModel>(R.layout.fragment_add_tranfer), AddTransferInterface {
+class AddTranferFragment :
+    BaseFragment<FragmentAddTranferBinding, TransferViewModel>(R.layout.fragment_add_tranfer),
+    AddTransferInterface {
 
     private var btnFee = false
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -44,43 +45,54 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
         return viewModel
     }
 
-    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
-        bitmap?.let {
-            getVM().setBitmap(it)
-        }
-    }
-
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            try {
-                val bitmap = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-                    ImageDecoder.decodeBitmap(ImageDecoder.createSource(requireContext().contentResolver, it))
-                } else {
-                    @Suppress("DEPRECATION")
-                    MediaStore.Images.Media.getBitmap(requireContext().contentResolver, it)
-                }
-                getVM().setBitmap(bitmap)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("PickImageLauncher", "Error decoding bitmap: ${e.message}")
-                Toast.makeText(requireContext(), "Unable to load image.", Toast.LENGTH_SHORT).show()
+    private val takePictureLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
+            bitmap?.let {
+                getVM().setBitmap(it)
             }
-        } ?: run {
-            Log.e("PickImageLauncher", "No image selected")
-            Toast.makeText(requireContext(), "No image selected.", Toast.LENGTH_SHORT).show()
         }
-    }
 
-    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-        if (isGranted) {
-            takePictureLauncher.launch(null)
-        } else {
-            Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show()
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                try {
+                    val bitmap =
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+                            ImageDecoder.decodeBitmap(
+                                ImageDecoder.createSource(
+                                    requireContext().contentResolver,
+                                    it
+                                )
+                            )
+                        } else {
+                            @Suppress("DEPRECATION")
+                            MediaStore.Images.Media.getBitmap(requireContext().contentResolver, it)
+                        }
+                    getVM().setBitmap(bitmap)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.e("PickImageLauncher", "Error decoding bitmap: ${e.message}")
+                    Toast.makeText(requireContext(), "Unable to load image.", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } ?: run {
+                Log.e("PickImageLauncher", "No image selected")
+                Toast.makeText(requireContext(), "No image selected.", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                takePictureLauncher.launch(null)
+            } else {
+                Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
 
     override fun initView(savedInstanceState: Bundle?) {
-        if(addViewModel.getCheckEdit()){
+        if (addViewModel.getCheckEdit()) {
             getVM().getDateTime()
         } else {
             getVM().updateDateTime()
@@ -95,16 +107,16 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
         setButtonFee()
     }
 
-    fun setAmount(){
+    fun setAmount() {
         binding.etAmount.setOnClickListener(View.OnClickListener {
             var bundle = bundleOf("type" to TransferType.Transfer)
-            findNavController().navigate(R.id.framgmentCaculator,bundle)
+            findNavController().navigate(R.id.framgmentCaculator, bundle)
         })
     }
 
     fun setButtonFee() {
         binding.ivFee.setOnClickListener {
-            if(btnFee){
+            if (btnFee) {
                 binding.ivFee.setImageResource(R.drawable.toggle_off)
                 binding.etFee.isEnabled = false
                 btnFee = false
@@ -116,29 +128,29 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
         }
     }
 
-    fun selectFromWallet(){
-        binding.fromWallet.setOnClickListener{
+    fun selectFromWallet() {
+        binding.fromWallet.setOnClickListener {
             setData()
             var bundle = bundleOf(
                 "typeExpense" to 2,
                 "isCheckWallet" to true,
             )
-            findNavController().navigate(R.id.selectWalletFragment,bundle)
+            findNavController().navigate(R.id.selectWalletFragment, bundle)
         }
     }
 
-    fun selectToWallet(){
-        binding.toWallet.setOnClickListener{
+    fun selectToWallet() {
+        binding.toWallet.setOnClickListener {
             setData()
             var bundle = bundleOf(
                 "typeExpense" to 2,
                 "isCheckWallet" to false,
             )
-            findNavController().navigate(R.id.selectWalletFragment,bundle)
+            findNavController().navigate(R.id.selectWalletFragment, bundle)
         }
     }
 
-    fun observe(){
+    fun observe() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().selectedTime.collect { time ->
@@ -175,10 +187,10 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().amount.collect { amount ->
-                    if(amount != 0.0){
-                        binding.etAmount.setText(amount.toString())
+                    if (amount != 0.0) {
+                        binding.etAmount.text = amount.toString()
                     } else {
-                        binding.etAmount.setText("")
+                        binding.etAmount.text = ""
                     }
                 }
             }
@@ -204,7 +216,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().fromWallet.collect { wallet ->
                     if (wallet.isNotEmpty()) {
-                        binding.fromWallet.setText(wallet.first().name)
+                        binding.fromWallet.text = wallet.first().name
                     }
                 }
             }
@@ -214,7 +226,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().toWallet.collect { wallet ->
                     if (wallet.isNotEmpty()) {
-                        binding.toWallet.setText(wallet.first().name)
+                        binding.toWallet.text = wallet.first().name
                     }
                 }
             }
@@ -232,7 +244,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
     }
 
 
-    fun setData(){
+    fun setData() {
         var amount = binding.etAmount.text.toString()
         var description = binding.etDescription.text.toString()
         var momo = binding.etMemo.text.toString()
@@ -244,7 +256,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
         getVM().setMomo(momo)
     }
 
-    fun selectImage(){
+    fun selectImage() {
         binding.ivMemo.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
             builder.setItems(R.array.select_camera_and_gallery) { _, which ->
@@ -257,6 +269,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
                             requestPermissionLauncher.launch(android.Manifest.permission.CAMERA)
                         }
                     }
+
                     1 -> {
                         setData()
                         pickImageLauncher.launch("image/*")
@@ -267,7 +280,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
         }
     }
 
-    fun pickTime(){
+    fun pickTime() {
         binding.etTime.setOnClickListener {
             getVM().showTimePickerDialog(requireContext())
         }
@@ -275,7 +288,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
     }
 
 
-    fun pickDate(){
+    fun pickDate() {
         binding.etDate.setOnClickListener {
             getVM().showDatePickerDialog(requireContext())
         }
@@ -292,20 +305,20 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
 
     override fun onSaveTransfer() {
         val amountText = binding.etAmount.text.toString()
-        if (amountText.isNotEmpty() && getVM().toWallet.value?.isNotEmpty() == true && getVM().fromWallet.value?.isNotEmpty() == true) {
+        if (amountText.isNotEmpty() && getVM().toWallet.value.isNotEmpty() == true && getVM().fromWallet.value.isNotEmpty() == true) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()
             val time = binding.etTime.text.toString()
             val date = binding.etDate.text.toString()
             val getbitmap = getVM().getBitmap()
             var linkimg = getVM().saveDrawableToAppStorage(requireContext(), getbitmap)
-            if(linkimg == null){
+            if (linkimg == null) {
                 linkimg = ""
             }
             val typeOfExpenditure: TransferType = TransferType.Transfer
-            val toWallet = getVM().toWallet.value?.first()?.id ?: 0
-            val fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
-            val fee : Double = if(btnFee) binding.etFee.text.toString().toDouble() else 0.0
+            val toWallet = getVM().toWallet.value.first()?.id ?: 0
+            val fromWallet = getVM().fromWallet.value.first()?.id ?: 0
+            val fee: Double = if (btnFee) binding.etFee.text.toString().toDouble() else 0.0
             val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
             val name = binding.etMemo.text.toString()
             var iconId = R.drawable.transfer
@@ -328,7 +341,9 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer,mainViewModel.currentAccount.value?.wallets ?: listOf())
+            getVM().saveIncomeAndExpense(
+                transfer,
+                mainViewModel.currentAccount.value?.walletItems?.map { it.wallet } ?: listOf())
             getVM().onCleared()
             findNavController().popBackStack()
         } else {
@@ -338,20 +353,20 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
 
     override fun onEdit() {
         val amountText = binding.etAmount.text.toString()
-        if (amountText.isNotEmpty() && getVM().toWallet.value?.isNotEmpty() == true && getVM().fromWallet.value?.isNotEmpty() == true) {
+        if (amountText.isNotEmpty() && getVM().toWallet.value.isNotEmpty() == true && getVM().fromWallet.value.isNotEmpty() == true) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()
             val time = binding.etTime.text.toString()
             val date = binding.etDate.text.toString()
             val getbitmap = getVM().getBitmap()
             var linkimg = getVM().saveDrawableToAppStorage(requireContext(), getbitmap)
-            if(linkimg == null){
+            if (linkimg == null) {
                 linkimg = ""
             }
             val typeOfExpenditure: TransferType = TransferType.Transfer
-            val toWallet = getVM().toWallet.value?.first()?.id ?: 0
-            val fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
-            val fee : Double = if(btnFee) binding.etFee.text.toString().toDouble() else 0.0
+            val toWallet = getVM().toWallet.value.first()?.id ?: 0
+            val fromWallet = getVM().fromWallet.value.first()?.id ?: 0
+            val fee: Double = if (btnFee) binding.etFee.text.toString().toDouble() else 0.0
             val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
             val name = binding.etMemo.text.toString()
             var iconId = R.drawable.transfer
@@ -374,7 +389,9 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer,mainViewModel.currentAccount.value?.wallets ?: listOf())
+            getVM().saveIncomeAndExpense(
+                transfer,
+                mainViewModel.currentAccount.value?.walletItems?.map { it.wallet } ?: listOf())
             getVM().onCleared()
             findNavController().popBackStack()
         } else {

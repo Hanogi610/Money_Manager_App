@@ -11,6 +11,7 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Wallet
+import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentWalletDetailBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toFormattedDateString
@@ -25,7 +26,7 @@ class WalletDetailFragment :
     private val mainViewModel: MainViewModel by activityViewModels()
     private var wallet: Wallet? = null
     private lateinit var transactionAdapter: TransactionAdapter
-    private lateinit var currentCurrencySymbol: String
+    private var currentCurrencySymbol: String = ""
 
     override fun getVM(): WalletDetailViewModel {
         val viewModel: WalletDetailViewModel by viewModels()
@@ -47,12 +48,14 @@ class WalletDetailFragment :
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
-        currentCurrencySymbol =
-            getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
+        mainViewModel.currentAccount.value?.let {
+            currentCurrencySymbol = getString(it.account.currency.symbolRes)
+        }
+        val wallets = mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf()
         transactionAdapter = TransactionAdapter(
             requireContext(),
             currentCurrencySymbol,
-            mainViewModel.currentAccount.value!!.wallets,
+            wallets,
             listOf()
         )
     }
@@ -143,7 +146,7 @@ class WalletDetailFragment :
 
         binding.fab.setOnSafeClickListener {
             val walletToSent = getVM().walletDetailItemState.value?.wallet
-            appNavigation.openMainScreenToAddFragmentScreen(Bundle().apply {
+            appNavigation.openWalletDetailToToAddFragmentScreen(Bundle().apply {
                 putParcelable("wallet", walletToSent)
             })
         }

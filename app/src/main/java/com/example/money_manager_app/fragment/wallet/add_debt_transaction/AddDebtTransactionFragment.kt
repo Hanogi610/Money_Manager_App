@@ -67,7 +67,7 @@ class AddDebtTransactionFragment :
         binding.spinnerActionType.adapter = debtAction
         val walletAdapter = ArrayAdapter(requireContext(),
             android.R.layout.simple_spinner_item,
-            mainViewModel.currentAccount.value!!.wallets.map { it.name })
+            mainViewModel.currentAccount.value!!.walletItems.map { it.wallet.name })
         binding.spinnerWallet.adapter = walletAdapter
         binding.spinnerWallet.setSelection(0)
 
@@ -83,7 +83,7 @@ class AddDebtTransactionFragment :
             val actionTypeIndex = DebtActionType.entries.indexOf(transaction.action)
             binding.spinnerActionType.setSelection(actionTypeIndex)
             val walletName =
-                mainViewModel.currentAccount.value!!.wallets.find { it.id == transaction.walletId }!!.name
+                mainViewModel.currentAccount.value!!.walletItems.find { it.wallet.id == transaction.walletId }!!.wallet.name
             binding.spinnerWallet.setSelection(walletAdapter.getPosition(walletName))
             binding.delete.visibility = View.VISIBLE
         }
@@ -114,8 +114,8 @@ class AddDebtTransactionFragment :
             val amount = binding.etAmount.text.toString().toDouble()
             val date = binding.etDate.text.toString().toDateTimestamp()
             val time = binding.etTime.text.toString().toTimeTimestamp()
-            val wallet = mainViewModel.accounts.value.flatMap { it.wallets }
-                .find { it.name == binding.spinnerWallet.selectedItem.toString() }!!.id
+            val wallet = mainViewModel.accounts.value.flatMap { it.walletItems }
+                .find { it.wallet.name == binding.spinnerWallet.selectedItem.toString() }!!.wallet.id
             val actionType =
                 DebtActionType.valueOf(binding.spinnerActionType.selectedItem.toString())
 

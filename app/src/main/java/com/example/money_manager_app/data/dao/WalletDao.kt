@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.example.money_manager_app.data.model.entity.Wallet
+import com.example.money_manager_app.data.model.entity.WalletFullDetail
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -29,4 +30,7 @@ interface WalletDao {
 
     @Delete
     suspend fun deleteWallet(wallet: Wallet)
+
+    @Query("SELECT * FROM wallet where account_id = :userId")
+    fun getWalletsFullDetailByUserId(userId: Long) : Flow<List<WalletFullDetail>>
 }

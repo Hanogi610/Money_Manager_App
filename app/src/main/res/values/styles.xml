@@ -61,4 +61,9 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+
+    <style name="Widget.App.BottomAppBar" parent="Widget.MaterialComponents.BottomAppBar">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
 </resources>

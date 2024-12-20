@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.viewpager2.widget.ViewPager2
 import com.example.money_manager_app.R
 import com.example.money_manager_app.fragment.create_account.viewmodel.CreateAccountViewModel
 import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewModel
@@ -39,13 +40,19 @@ class CreateAccountFragment :
         super.initView(savedInstanceState)
         adapter = CreateAccountPagerAdapter(this, fragments)
         binding.viewPager.adapter = adapter
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                createAccountViewModel.setCurrentPage(position)
+            }
+        })
     }
 
     override fun bindingStateView() {
         super.bindingStateView()
 
         createAccountViewModel.currentPage.observe(viewLifecycleOwner) {
-            binding.ivBack.isVisible = it != 0
+            binding.ivBack.isVisible = isAddAccount || it != 0
 
             when (it) {
                 0 -> binding.viewPager.currentItem = 0

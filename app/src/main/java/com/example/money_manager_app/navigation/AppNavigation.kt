@@ -30,7 +30,7 @@ interface AppNavigation : BaseNavigator {
     fun openBudgetDetailToEntertainmentScreen(bundle: Bundle? = null)
     fun openEntertainmentToRecord(bundle: Bundle? = null)
     fun openAddBudgetToWalletScreen(bundle: Bundle? = null)
-
+    fun openWalletDetailToToAddFragmentScreen(bundle: Bundle? = null)
     fun openWalletDetailScreenToStatisticScreen(bundle: Bundle? = null)
     fun openWalletDetailScreenToAddFragmentScreen(bundle: Bundle? = null)
     fun openStatisticScreenToStructureScreen(bundle: Bundle? = null)
