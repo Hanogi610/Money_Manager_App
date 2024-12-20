@@ -99,6 +99,10 @@ class ExpenseViewModel @Inject constructor(
         _toWallet.value = list
     }
 
+    fun setDateAndTime(date: String, time: String) {
+        _currentDateTime.value = Pair(date, time)
+    }
+
     fun setAmount(amount: Double) {
         _amount.value = amount
     }
@@ -129,6 +133,10 @@ class ExpenseViewModel @Inject constructor(
 
     fun getMomo(): String {
         return momo.value
+    }
+
+    fun getDateTime(): Pair<String, String> {
+        return currentDateTime.value
     }
 
     fun setCategoryNameIncome(pair : Pair<String, Int>) {
@@ -252,6 +260,49 @@ class ExpenseViewModel @Inject constructor(
     }
 
     fun saveIncomeAndExpense(transfer: Transfer, wallets : List<Wallet>) {
+        viewModelScope.launch(ioDispatcher) {
+            if (transfer.amount > 0) {
+                repository.insertTransferDetail(
+                    transfer
+                )
+                if(transfer.typeOfExpenditure == TransferType.Transfer){
+                    var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
+                    var walletTo = toWallet.value.find { it.id == transfer.toWalletId }
+                    walletFrom?.let {
+                        walletRepository.editWallet(it.copy(
+                            amount = it.amount - transfer.amount - transfer.fee
+                        ))
+                    }
+                    walletTo?.let {
+                        walletRepository.editWallet(it.copy(
+                            amount = it.amount + transfer.amount
+                        ))
+                    }
+                } else {
+
+                    if(transfer.typeOfExpenditure == TransferType.Income){
+                        var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
+                        walletFrom?.let {
+                            walletRepository.editWallet(it.copy(
+                                amount = it.amount + transfer.amount
+                            ))
+                        }
+                    } else {
+                        var wallet = wallets.find { it.id == transfer.walletId }
+                        wallet?.let {
+                            walletRepository.editWallet(
+                                it.copy(
+                                    amount = it.amount - transfer.amount
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun editIncomeAndExpense(transfer: Transfer, wallets : List<Wallet>) {
         viewModelScope.launch(ioDispatcher) {
             if (transfer.amount > 0) {
                 repository.insertTransferDetail(

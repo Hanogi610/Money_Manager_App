@@ -296,8 +296,7 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
         TODO("Not yet implemented")
     }
 
-    override fun onEdit(transaction: Transaction) {
-        TODO("Not yet implemented")
+    override fun onEdit() {
     }
 
 

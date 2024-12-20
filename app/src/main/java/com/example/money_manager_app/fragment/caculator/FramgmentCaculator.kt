@@ -14,6 +14,7 @@ import com.example.money_manager_app.databinding.FragmentCaculatorBinding
 import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
 import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
 import com.example.money_manager_app.fragment.add.view.transfer.TransferViewModel
+import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import net.objecthunter.exp4j.ExpressionBuilder
 
 class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBinding>(R.layout.fragment_caculator), View.OnClickListener {
@@ -21,6 +22,7 @@ class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBind
     private val incomeViewModel: IncomeViewModel by activityViewModels()
     private val expenseViewModel: ExpenseViewModel by activityViewModels()
     private val transferViewModel : TransferViewModel by activityViewModels()
+    private val addViewModel : AddViewModel by activityViewModels()
 
     private var equation: String = "0"
     private lateinit var type : TransferType
@@ -84,12 +86,15 @@ class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBind
     fun setAmount(result: Double) {
         when(type){
             TransferType.Income -> {
+                addViewModel.setPosition(0)
                 incomeViewModel.setAmount(result)
             }
             TransferType.Expense -> {
+                addViewModel.setPosition(1)
                 expenseViewModel.setAmount(result)
             }
             TransferType.Transfer -> {
+                addViewModel.setPosition(2)
                 transferViewModel.setAmount(result)
             }
         }

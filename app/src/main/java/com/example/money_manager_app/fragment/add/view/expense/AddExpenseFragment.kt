@@ -26,6 +26,7 @@ import com.example.money_manager_app.utils.toTimeTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.moneymanager.ui.add.adapter.AddTransferInterface
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -37,12 +38,25 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
     }
 
     private val mainViewModel: MainViewModel by activityViewModels()
+    private var checkEdit = false
 
 
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
+        if (arguments != null) {
+            if(arguments?.getBoolean("isEdit") == true){
+                checkEdit = true
+            }
+        }
+    }
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
-        getVM().updateDateTime()
+       if(checkEdit){
+           getVM().getDateTime()
+       } else {
+           getVM().updateDateTime()
+       }
         pickDate()
         pickTime()
         selectImage()
@@ -50,6 +64,9 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         setAmount()
         selectWallet()
         selectCategory()
+        getVM().getDateTime()
+        Log.d("AddExpenseFragment", "initView: ${getVM().currentDateTime.value.first}")
+        Log.d("AddExpenseFragment", "initView: ${getVM().currentDateTime.value.second}")
     }
 
     fun setAmount(){
@@ -292,7 +309,8 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         TODO("Not yet implemented")
     }
 
-    override fun onEdit(transaction: Transaction) {
+    override fun onEdit() {
+
     }
 
 

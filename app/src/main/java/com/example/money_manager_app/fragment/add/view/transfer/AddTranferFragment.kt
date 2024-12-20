@@ -319,7 +319,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
         }
     }
 
-    override fun onEdit(transaction: Transaction) {
+    override fun onEdit() {
         TODO("Not yet implemented")
     }
 

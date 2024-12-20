@@ -194,6 +194,14 @@ class IncomeViewModel @Inject constructor(
         return _imageUri.value
     }
 
+    fun setDateAndTime(date: String, time: String) {
+        _currentDateTime.value = Pair(date, time)
+    }
+
+    fun getDateTime(): Pair<String, String> {
+        return currentDateTime.value
+    }
+
     fun saveDrawableToAppStorage(context: Context, bitmap : Bitmap?): String? {
         if (bitmap == null) {
             return null

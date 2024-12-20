@@ -43,6 +43,16 @@ class AddViewModel @Inject constructor(
     private val _idCategory = MutableStateFlow(0)
     val idCategory: StateFlow<Int> = _idCategory
 
+    private val _checkEdit = MutableStateFlow(false)
+    val checkEdit: StateFlow<Boolean> = _checkEdit
+
+    fun setCheckEdit(check: Boolean){
+        _checkEdit.value = check
+    }
+    fun getCheckEdit(): Boolean {
+        return checkEdit.value
+    }
+
 
     fun setIdCategory(id: Int){
         _idCategory.value = id
@@ -64,6 +74,7 @@ class AddViewModel @Inject constructor(
         super.onCleared()
         _position.value = -1
         _idCategory.value = 0
+        _checkEdit.value = false
     }
 
 }

@@ -99,6 +99,11 @@ class TransferViewModel @Inject constructor(
         _toWallet.value = list
     }
 
+    fun setDateAndTime(date: String, time: String) {
+        _selectedDate.value = date
+        _selectedTime.value = time
+    }
+
     fun setAmount(amount: Double) {
         _amount.value = amount
     }

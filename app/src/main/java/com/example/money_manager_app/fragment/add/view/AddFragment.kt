@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.add.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.Transaction
+import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.databinding.FragmentAddBinding
 import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
 import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
@@ -76,32 +78,12 @@ class AddFragment : BaseFragment<FragmentAddBinding, AddViewModel>(R.layout.frag
 
     fun setTab() {
         var position = if(getVM().getPosition() == -1) 1 else getVM().getPosition()
-        if(arguments?.getParcelable<Transaction>("transition") != null){
-            position = arguments?.getInt("key") ?: 1
-
-        }
         binding.vpAdd.currentItem = position
         resetTabStyles()
         when (position) {
             0 -> setActiveTab(binding.tvIncome, R.drawable.customer_select_category_income)
             1 -> setActiveTab(binding.tvAddExpense, R.drawable.customer_select_category_expense)
             2 -> setActiveTab(binding.tvTransfer, R.drawable.custom_select_tranfer)
-        }
-        if(arguments?.getParcelable<Transaction>("transition") != null){
-            val transaction = arguments?.getParcelable<Transaction>("transition")
-            val currentFragment = childFragmentManager.findFragmentByTag("f" + binding.vpAdd.currentItem)
-            if (currentFragment is AddTransferInterface) {
-                if (transaction != null) {
-                    when (position) {
-                        0 -> {
-                        }
-                        1 -> {
-                        }
-                        2 -> {
-                        }
-                    }
-                }
-            }
         }
         setCategory(position)
     }
