@@ -150,12 +150,23 @@ class AddFragment : BaseFragment<FragmentAddBinding, AddViewModel>(R.layout.frag
 
     fun saveTransfer() {
         binding.tvSave.setOnClickListener {
-            val currentFragment = childFragmentManager.findFragmentByTag("f" + binding.vpAdd.currentItem)
-            if (currentFragment is AddTransferInterface) {
-                when (binding.vpAdd.currentItem) {
-                    0 -> currentFragment.onSaveIncome()
-                    1 -> currentFragment.onSaveExpense()
-                    2 -> currentFragment.onSaveTransfer()
+            if(getVM().getCheckEdit()){
+                val currentFragment = childFragmentManager.findFragmentByTag("f" + binding.vpAdd.currentItem)
+                if (currentFragment is AddTransferInterface) {
+                    when (binding.vpAdd.currentItem) {
+                        0 -> currentFragment.onEdit()
+                        1 -> currentFragment.onEdit()
+                        2 -> currentFragment.onEdit()
+                    }
+                }
+            } else {
+                val currentFragment = childFragmentManager.findFragmentByTag("f" + binding.vpAdd.currentItem)
+                if (currentFragment is AddTransferInterface) {
+                    when (binding.vpAdd.currentItem) {
+                        0 -> currentFragment.onSaveIncome()
+                        1 -> currentFragment.onSaveExpense()
+                        2 -> currentFragment.onSaveTransfer()
+                    }
                 }
             }
         }

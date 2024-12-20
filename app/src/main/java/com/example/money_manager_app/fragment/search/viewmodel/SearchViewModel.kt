@@ -111,5 +111,6 @@ class SearchViewModel @Inject constructor(
         _startDate.value = null
         _endDate.value = null
         _description.value = null
+        _listTransaction.value = emptyList()
     }
 }

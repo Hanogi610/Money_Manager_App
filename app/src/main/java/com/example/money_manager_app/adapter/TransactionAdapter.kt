@@ -1,6 +1,7 @@
 package com.example.money_manager_app.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -148,6 +149,8 @@ class TransactionAdapter(
                 is Transfer -> {
                     categories?.let {
                         val category = it.find { category -> category.id == transaction.categoryId }
+                        Log.d("Category", category.toString())
+                        Log.d("Category", R.drawable.expense_2.toString())
                         binding.transactionTypeTextView.text = transaction.description
                         if(transaction.typeOfExpenditure == TransferType.Expense || transaction.typeOfExpenditure == TransferType.Income) {
                             binding.transactionTypeImageView.setImageResource(category?.iconId ?: R.drawable.transfer)

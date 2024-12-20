@@ -15,6 +15,7 @@ import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.TransferType
+import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.data.repository.TransferRepository
 import com.example.money_manager_app.data.repository.WalletRepository
 import com.example.money_manager_app.di.AppDispatchers
@@ -74,6 +75,9 @@ class TransferViewModel @Inject constructor(
     private var _momo = MutableStateFlow<String>("")
     val momo: StateFlow<String> get() = _momo
 
+    private var _id = MutableStateFlow<Long>(0)
+    val id: StateFlow<Long> get() = _id
+
     private var _categoryNameExpense = MutableStateFlow(Pair("", 0))
     val categoryNameExpense: StateFlow<Pair<String, Int>> get() = _categoryNameExpense
 
@@ -83,16 +87,37 @@ class TransferViewModel @Inject constructor(
     private var _toWallet : MutableStateFlow<List<Wallet>> = MutableStateFlow(emptyList())
     val toWallet: StateFlow<List<Wallet>> get() = _toWallet
 
-    fun getCategoryIncome(): List<CategoryData.Category> {
-        return _categoryListIncome.value
+    private var _oldwallet = MutableStateFlow<Wallet>(Wallet(0,0.0,0, WalletType.GENERAL,"",0,0,true,))
+    val oldwallet: StateFlow<Wallet> get() = _oldwallet
+
+    private var _oldwallet2 = MutableStateFlow<Wallet>(Wallet(0,0.0,0, WalletType.GENERAL,"",0,0,true,))
+    val oldwallet2: StateFlow<Wallet> get() = _oldwallet2
+
+    private var _oldAmount = MutableStateFlow<Double>(0.0)
+    val oldAmount: StateFlow<Double> get() = _oldAmount
+
+    fun setOldAmount(amount: Double) {
+        _oldAmount.value = amount
     }
 
-    fun getCategoryExpense(): List<CategoryData.Category> {
-        return _categoryListExpense.value
+    fun setOldWallet(wallet: Wallet) {
+        _oldwallet.value = wallet
+    }
+
+    fun setOldToWallet(wallet: Wallet) {
+        _oldwallet2.value = wallet
     }
 
     fun setFromWallet (list: List<Wallet>){
         _fromWallet.value = list
+    }
+
+    fun setId(id: Long) {
+        _id.value = id
+    }
+
+    fun getId(): Long {
+        return id.value
     }
 
     fun setToWallet (list: List<Wallet>){
@@ -100,8 +125,11 @@ class TransferViewModel @Inject constructor(
     }
 
     fun setDateAndTime(date: String, time: String) {
-        _selectedDate.value = date
-        _selectedTime.value = time
+        _currentDateTime.value = Pair(date, time)
+    }
+
+    fun getDateTime(): Pair<String, String> {
+        return currentDateTime.value
     }
 
     fun setAmount(amount: Double) {
@@ -136,60 +164,7 @@ class TransferViewModel @Inject constructor(
         return momo.value
     }
 
-    fun setCategoryNameIncome(pair : Pair<String, Int>) {
-        _categoryNameIncome.value = pair
-    }
 
-    fun getCategoryNameIncome(): Pair<String, Int> {
-        return categoryNameIncome.value
-    }
-
-    fun setCategoryNameExpense(pair : Pair<String, Int>) {
-        _categoryNameExpense.value = pair
-    }
-
-    fun getCategoryNameExpense(): Pair<String, Int> {
-        return categoryNameExpense.value
-    }
-
-
-
-    fun setCategoryListExpense(list: List<CategoryData.Category>) {
-        _categoryListExpense.value = list
-    }
-    fun setCategoryListIncome(list: List<CategoryData.Category>) {
-        _categoryListIncome.value = list
-    }
-
-    fun getCategoryListExpense(): List<CategoryData.Category> {
-        return _categoryListExpense.value
-    }
-
-    fun setOneCategoryExpense(category: CategoryData.Category) {
-        val updatedList = _categoryListExpense.value.map {
-            if (it.id == category.id) {
-                it.copy(isCheck = true)
-            } else {
-                it.copy(isCheck = false)
-            }
-        }
-        _categoryListExpense.value = updatedList
-    }
-
-    fun setOneCategoryIcome(category: CategoryData.Category) {
-        val updatedList = _categoryListIncome.value.map {
-            if (it.id == category.id) {
-                it.copy(isCheck = true)
-            } else {
-                it.copy(isCheck = false)
-            }
-        }
-        _categoryListIncome.value = updatedList
-    }
-
-    fun getCategoryListIncome(): List<CategoryData.Category> {
-        return _categoryListIncome.value
-    }
 
     fun setBitmap(bitmap: Bitmap) {
         _imageUri.value = bitmap
@@ -275,25 +250,108 @@ class TransferViewModel @Inject constructor(
                             amount = it.amount + transfer.amount
                         ))
                     }
-                } else {
+                }
+            }
+        }
+    }
 
-                    if(transfer.typeOfExpenditure == TransferType.Income){
-                        var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
-                        walletFrom?.let {
-                            walletRepository.editWallet(it.copy(
-                                amount = it.amount + transfer.amount
-                            ))
-                        }
-                    } else {
-                        var wallet = wallets.find { it.id == transfer.walletId }
-                        wallet?.let {
-                            walletRepository.editWallet(
-                                it.copy(
-                                    amount = it.amount - transfer.amount
+    fun editIncomeAndExpense(transfer: Transfer, wallets : List<Wallet>) {
+        viewModelScope.launch(ioDispatcher) {
+            if (transfer.amount > 0) {
+                repository.editTransferDetail(
+                    transfer
+                )
+                var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
+                var walletTo = toWallet.value.find { it.id == transfer.toWalletId }
+                if(transfer.typeOfExpenditure == TransferType.Transfer){
+                    if( oldwallet.value.id != walletFrom?.id || oldwallet2.value.id != walletTo?.id) {
+                        if (walletFrom?.id == oldwallet.value.id) {
+                            walletTo?.let {
+                                walletRepository.editWallet(
+                                    it.copy(
+                                        amount = it.amount + oldAmount.value
+                                    )
                                 )
-                            )
+                            }
+                            oldwallet2.value?.let {
+                                walletRepository.editWallet(
+                                    it.copy(
+                                        amount = it.amount - oldAmount.value
+                                    )
+                                )
+                            }
+                        } else {
+                            if(walletTo?.id == oldwallet2.value.id){
+                                walletFrom?.let {
+                                    walletRepository.editWallet(
+                                        it.copy(
+                                            amount = it.amount + oldAmount.value
+                                        )
+                                    )
+                                }
+                                oldwallet.value?.let {
+                                    walletRepository.editWallet(
+                                        it.copy(
+                                            amount = it.amount - oldAmount.value
+                                        )
+                                    )
+                                }
+                            } else {
+                                if(walletTo?.id == oldwallet2.value.id){
+                                    oldwallet.value?.let {
+                                        walletRepository.editWallet(
+                                            it.copy(
+                                                amount = it.amount + oldAmount.value
+                                            )
+                                        )
+                                    }
+                                    walletFrom?.let {
+                                        walletRepository.editWallet(
+                                            it.copy(
+                                                amount = it.amount - oldAmount.value
+                                            )
+                                        )
+                                    }
+                                } else {
+                                    if (walletTo?.id != oldwallet2.value.id && walletFrom?.id != oldwallet.value.id) {
+                                        oldwallet.value.let {
+                                            walletRepository.editWallet(
+                                                it.copy(
+                                                    amount = it.amount + oldAmount.value
+                                                )
+                                            )
+                                        }
+
+                                        oldwallet2.value.let {
+                                            walletRepository.editWallet(
+                                                it.copy(
+                                                    amount = it.amount - oldAmount.value
+                                                )
+                                            )
+                                        }
+
+                                        walletFrom?.let {
+                                            walletRepository.editWallet(
+                                                it.copy(
+                                                    amount = it.amount - transfer.amount - transfer.fee
+                                                )
+                                            )
+                                        }
+
+                                        walletTo?.let {
+                                            walletRepository.editWallet(
+                                                it.copy(
+                                                    amount = it.amount + transfer.amount
+                                                )
+                                            )
+                                        }
+
+                                    }
+                                }
+                            }
                         }
                     }
+
                 }
             }
         }
@@ -301,6 +359,7 @@ class TransferViewModel @Inject constructor(
 
     public override fun onCleared(){
         super.onCleared()
+        _id.value = 0
         _imageUri.value = null
         _selectedDate.value = ""
         _selectedTime.value = ""

@@ -85,7 +85,9 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
     private fun setIncomeExpense(transaction: Transaction){
         if(transaction is Transfer){
             if(transaction.typeOfExpenditure == TransferType.Income){
+                incomeViewModel.setId(transaction.id)
                 incomeViewModel.setAmount(transaction.amount)
+                incomeViewModel.setOldAmount(transaction.amount)
                 incomeViewModel.setDescriptor(transaction.description)
                 addViewModel.setIdCategory(transaction.categoryId.toInt())
                 addViewModel.setPosition(0)
@@ -107,11 +109,14 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                     var listWallet = mutableListOf<Wallet>()
                     listWallet.add(FromWallet)
                     incomeViewModel.setFromWallet(listWallet)
+                    incomeViewModel.setOldWallet(FromWallet)
                 }
 
             }
             if(transaction.typeOfExpenditure == TransferType.Expense){
+                expenseViewModel.setId(transaction.id)
                 expenseViewModel.setAmount(transaction.amount)
+                expenseViewModel.setOldAmount(transaction.amount)
                 expenseViewModel.setDescriptor(transaction.description)
                 addViewModel.setIdCategory(transaction.categoryId.toInt()-9)
                 addViewModel.setPosition(1)
@@ -133,17 +138,21 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                     var listWallet = mutableListOf<Wallet>()
                     listWallet.add(FromWallet)
                     expenseViewModel.setFromWallet(listWallet)
+                    expenseViewModel.setOldWallet(FromWallet)
                 }
             }
 
             if(transaction.typeOfExpenditure == TransferType.Transfer){
+                transferViewModel.setId(transaction.id)
                 transferViewModel.setAmount(transaction.amount)
+                transferViewModel.setOldAmount(transaction.amount)
                 transferViewModel.setDescriptor(transaction.description)
                 addViewModel.setPosition(2)
                 transferViewModel.setMomo(transaction.memo)
+                transferViewModel.setFee(transaction.fee)
                 var date = transaction.date.toFormattedDateString()
                 var time = transaction.time.toFormattedTimeString()
-                incomeViewModel.setDateAndTime(date, time)
+                transferViewModel.setDateAndTime(date, time)
                 val imgFile: File = File(transaction.linkImg)
                 if (imgFile.exists()) {
                     try {
@@ -157,13 +166,15 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                 if(FromWallet != null){
                     var listWallet = mutableListOf<Wallet>()
                     listWallet.add(FromWallet)
+                    transferViewModel.setOldWallet(FromWallet)
                     transferViewModel.setFromWallet(listWallet)
                 }
                 var toWallet = mainViewModel.currentAccount.value?.wallets?.find { it.id == transaction.toWalletId }
                 if(toWallet != null){
                     var listWallet = mutableListOf<Wallet>()
                     listWallet.add(toWallet)
-                    transferViewModel.setFromWallet(listWallet)
+                    transferViewModel.setToWallet(listWallet)
+                    transferViewModel.setOldToWallet(toWallet)
                 }
             }
         }

@@ -22,6 +22,7 @@ import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentAddTranferBinding
+import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.utils.toTimeTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -35,6 +36,8 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
 
     private var btnFee = false
     private val mainViewModel: MainViewModel by activityViewModels()
+    private var checkEdit = false
+    private val addViewModel: AddViewModel by activityViewModels()
 
     override fun getVM(): TransferViewModel {
         val viewModel: TransferViewModel by activityViewModels()
@@ -77,7 +80,11 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
     }
 
     override fun initView(savedInstanceState: Bundle?) {
-        getVM().updateDateTime()
+        if(addViewModel.getCheckEdit()){
+            getVM().getDateTime()
+        } else {
+            getVM().updateDateTime()
+        }
         pickDate()
         pickTime()
         selectImage()
@@ -212,6 +219,16 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getVM().fee.collect { fee ->
+                    binding.etFee.setText(fee.toString())
+                }
+            }
+        }
+
+
     }
 
 
@@ -275,7 +292,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
 
     override fun onSaveTransfer() {
         val amountText = binding.etAmount.text.toString()
-        if (amountText.isNotEmpty()) {
+        if (amountText.isNotEmpty() && getVM().toWallet.value?.isNotEmpty() == true && getVM().fromWallet.value?.isNotEmpty() == true) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()
             val time = binding.etTime.text.toString()
@@ -293,7 +310,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
             val name = binding.etMemo.text.toString()
             var iconId = R.drawable.transfer
             var memo = binding.etMemo.text.toString()
-            var id_category = 1L
+            var id_category = 24L
             val transfer = Transfer(
                 0,
                 fromWallet,
@@ -313,14 +330,56 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
             )
             getVM().saveIncomeAndExpense(transfer,mainViewModel.currentAccount.value?.wallets ?: listOf())
             getVM().onCleared()
-            findNavController().navigate(R.id.mainFragment)
+            findNavController().popBackStack()
         } else {
             Log.e("AddExpenseFragment", "Amount is empty")
         }
     }
 
     override fun onEdit() {
-        TODO("Not yet implemented")
+        val amountText = binding.etAmount.text.toString()
+        if (amountText.isNotEmpty() && getVM().toWallet.value?.isNotEmpty() == true && getVM().fromWallet.value?.isNotEmpty() == true) {
+            val amount = amountText.toDouble()
+            val description = binding.etDescription.text.toString()
+            val time = binding.etTime.text.toString()
+            val date = binding.etDate.text.toString()
+            val getbitmap = getVM().getBitmap()
+            var linkimg = getVM().saveDrawableToAppStorage(requireContext(), getbitmap)
+            if(linkimg == null){
+                linkimg = ""
+            }
+            val typeOfExpenditure: TransferType = TransferType.Transfer
+            val toWallet = getVM().toWallet.value?.first()?.id ?: 0
+            val fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
+            val fee : Double = if(btnFee) binding.etFee.text.toString().toDouble() else 0.0
+            val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
+            val name = binding.etMemo.text.toString()
+            var iconId = R.drawable.transfer
+            var memo = binding.etMemo.text.toString()
+            var id_category = 24L
+            val transfer = Transfer(
+                getVM().getId(),
+                fromWallet,
+                toWallet,
+                amount,
+                name,
+                fee,
+                description,
+                accountId,
+                linkimg,
+                date.toDateTimestamp(),
+                time.toTimeTimestamp(),
+                typeOfExpenditure,
+                iconId,
+                id_category,
+                memo
+            )
+            getVM().saveIncomeAndExpense(transfer,mainViewModel.currentAccount.value?.wallets ?: listOf())
+            getVM().onCleared()
+            findNavController().popBackStack()
+        } else {
+            Log.e("AddExpenseFragment", "Amount is empty")
+        }
     }
 
 }
