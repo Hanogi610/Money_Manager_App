@@ -6,6 +6,6 @@ interface AddTransferInterface {
     fun onSaveIncome()
     fun onSaveExpense()
     fun onSaveTransfer()
-    fun onEdit(transaction: Transaction)
+    fun onEdit()
 
 }

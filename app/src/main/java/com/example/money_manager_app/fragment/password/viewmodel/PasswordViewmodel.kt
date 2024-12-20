@@ -47,7 +47,6 @@ class PasswordViewmodel @Inject constructor(
         val cursor = _currentCursor.value ?: return
         val type = _currentPasswordType.value ?: return
 
-        Log.d("hainv", "addNumber: $number $cursor $type")
 
         numbers[cursor] = number
 

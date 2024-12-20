@@ -54,8 +54,6 @@ class AddBudgetViewModel @Inject constructor(
                }
             }
         }
-        Log.d("AddBudgetFragment",budgetCategoryCrossRefs.toString())
-        Log.d("AddBudgetFragment",budget.toString())
         viewModelScope.launch(ioDispatcher) {
             budgetRepository.insertBudget(budget, budgetCategoryCrossRefs)
         }

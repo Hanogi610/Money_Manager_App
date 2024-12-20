@@ -9,6 +9,5 @@ fun getCurrencyName(context: Context, currency: Currency): String {
 }
 
 fun getCurrencySymbol(context: Context, currency: Currency): String {
-    Log.d("hoangph", "getCurrencySymbol() called with: context = $context, currency = $currency")
     return context.getString(currency.symbolRes)
 }

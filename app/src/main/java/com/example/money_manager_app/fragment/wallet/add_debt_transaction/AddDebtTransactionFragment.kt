@@ -138,7 +138,6 @@ class AddDebtTransactionFragment :
                 debtId = debt!!.id
             )
 
-            Log.d("hoangph", "debtTransaction: $debtTransaction")
 
             if (debTransaction == null) {
                 getVM().addDebtTransaction(debtTransaction)

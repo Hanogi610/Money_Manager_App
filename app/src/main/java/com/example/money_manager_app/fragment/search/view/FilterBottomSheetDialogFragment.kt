@@ -13,7 +13,8 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.base.BaseBottomSheet
 import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.databinding.FilterBottomSheetBinding
-import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
+import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
+import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
 import com.example.money_manager_app.fragment.search.adapter.IconCategoryAdapter
 import com.example.money_manager_app.fragment.search.adapter.SearchInterface
 import com.example.money_manager_app.fragment.search.viewmodel.SearchViewModel
@@ -24,7 +25,8 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
 
     private val walletViewModel : WalletViewModel by activityViewModels()
     private val searchViewModel : SearchViewModel by activityViewModels()
-    private val addViewModel : AddViewModel by activityViewModels()
+    private val incomeViewModel : IncomeViewModel by activityViewModels()
+    private val expenseViewModel : ExpenseViewModel by activityViewModels()
     private var searchInterface: SearchInterface? = null
 
     override fun getLayoutId(): Int {
@@ -61,7 +63,6 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
     fun selectWallet() {
         binding.filterWallet.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
-            Log.d("FilterBottomSheetDialogFragment", "selectWallet: ${walletViewModel.wallets.value}")
             val listWallet = walletViewModel.wallets.value?.map { it.name as CharSequence }?.toTypedArray()
 
             if (listWallet.isNullOrEmpty()) {
@@ -88,8 +89,8 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
         binding.filterCategory.setOnClickListener {
             val dialogView = layoutInflater.inflate(R.layout.dialog_category, null)
             val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerView)
-            val listCategoryIncome = addViewModel.getCategoryListIncome()
-            val listCategoryExpense = addViewModel.getCategoryListExpense()
+            val listCategoryIncome = incomeViewModel.getCategoryListIncome()
+            val listCategoryExpense = expenseViewModel.getCategoryListExpense()
             val listCategory = mutableListOf<CategoryData.Category>()
             listCategory.addAll(listCategoryIncome.filter { it.name != "Other"})
             listCategory.addAll(listCategoryExpense.filter { it.name != "Other"})

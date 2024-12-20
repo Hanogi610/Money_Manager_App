@@ -93,10 +93,6 @@ class MainViewModel @Inject constructor(
     private fun fetchAccountsAndSetCurrentAccount() {
         viewModelScope.launch(ioDispatcher) {
             accountRepository.getAccount().collect { accountList ->
-                Log.d(
-                    "hoangph",
-                    "fetchAccountsAndSetCurrentAccount() called with: accountList = $accountList"
-                )
                 _accounts.value = accountList
 
                 // Set the current account only if it is not already set

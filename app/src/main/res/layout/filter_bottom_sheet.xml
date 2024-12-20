@@ -194,11 +194,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <Button
+            <TextView
                 android:id="@+id/cancel_filter_button"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="@dimen/_8dp"
+                android:paddingBottom="@dimen/_8dp"
+                android:paddingLeft="@dimen/_16dp"
+                android:paddingRight="@dimen/_16dp"
                 android:layout_weight="1"
                 android:textColor="@color/white"
                 android:background="@drawable/background_cannel"
@@ -206,13 +210,17 @@
                 android:layout_marginRight="@dimen/_4dp"
                 android:text="@string/cancel" />
 
-            <Button
+            <TextView
                 android:layout_marginLeft="@dimen/_4dp"
                 android:id="@+id/apply_filter_button"
-                style="?android:attr/buttonBarButtonStyle"
                 android:background="@drawable/background_save"
                 android:textColor="@color/white"
                 android:layout_width="0dp"
+                android:gravity="center"
+                android:paddingTop="@dimen/_8dp"
+                android:paddingBottom="@dimen/_8dp"
+                android:paddingLeft="@dimen/_16dp"
+                android:paddingRight="@dimen/_16dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="16sp"

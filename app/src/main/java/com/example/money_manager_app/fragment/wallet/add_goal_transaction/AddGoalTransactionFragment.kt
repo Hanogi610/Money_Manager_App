@@ -124,7 +124,6 @@ class AddGoalTransactionFragment :
                 goalId = goal!!.id
             )
 
-            Log.d("hoangph", "goalTransaction: $goalTransaction")
 
             if (goalTransaction.id > 0L) {
                 getVM().addGoalTransaction(goalTransaction)

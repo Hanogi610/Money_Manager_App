@@ -129,7 +129,11 @@
         android:id="@+id/addFragment"
         android:name="com.example.money_manager_app.fragment.add.view.AddFragment"
         android:label="AddFragment"
-        tools:layout="@layout/fragment_add"/>
+        tools:layout="@layout/fragment_add">
+        <action
+            android:id="@+id/action_addFragment_to_addExpenseFragment"
+            app:destination="@id/addExpenseFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/selectIncomeExpenseFragment"
@@ -246,6 +250,20 @@
         tools:layout="@layout/fragment_transaction"
         android:name="com.example.money_manager_app.fragment.transaction.view.TransactionFragment"
         android:label="TransactionFragment" />
+    <fragment
+        android:id="@+id/framgmentCaculator"
+        android:name="com.example.money_manager_app.fragment.caculator.FramgmentCaculator"
+        android:label="FramgmentCaculator"
+        tools:layout="@layout/fragment_caculator"
+        />
+    <fragment
+        android:id="@+id/addExpenseFragment"
+        android:name="com.example.money_manager_app.fragment.add.view.expense.AddExpenseFragment"
+        android:label="AddExpenseFragment" >
+        <action
+            android:id="@+id/action_addExpenseFragment_to_framgmentCaculator"
+            app:destination="@id/framgmentCaculator" />
+    </fragment>
 
 
 </navigation>

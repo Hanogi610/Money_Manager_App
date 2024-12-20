@@ -33,7 +33,6 @@ class DebtDetailViewModel @Inject constructor(
     fun getDebtDetails(debtId: Long) {
         viewModelScope.launch(ioDispatcher) {
             debtRepository.getDebtDetailsByDebtId(debtId).collect {
-                Log.d("hoangph", "getDebtDetails: $it")
                 _debtInfo.value = it
                 it.let {
                     _debtDetailItem.value = convertDebtDetailToDebtDetailItem(it)

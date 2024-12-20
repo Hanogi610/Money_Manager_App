@@ -1,4 +1,4 @@
-package com.example.money_manager_app.fragment.add.view
+package com.example.money_manager_app.fragment.add.view.expense
 
 import android.app.AlertDialog
 import android.content.pm.PackageManager
@@ -7,11 +7,7 @@ import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -21,29 +17,55 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
-import com.example.money_manager_app.data.model.AddTransfer
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
-import com.example.money_manager_app.databinding.FragmentAddTranferBinding
+import com.example.money_manager_app.databinding.FragmentAddExpenseBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.utils.toTimeTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.moneymanager.ui.add.adapter.AddTransferInterface
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-
 @AndroidEntryPoint
-class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(R.layout.fragment_add_tranfer), AddTransferInterface {
+class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewModel>(R.layout.fragment_add_expense), AddTransferInterface {
 
-    private var btnFee = false
-    private val mainViewModel: MainViewModel by activityViewModels()
-
-    override fun getVM(): AddViewModel {
-        val viewModel: AddViewModel by activityViewModels()
+    override fun getVM(): ExpenseViewModel {
+        val viewModel : ExpenseViewModel by activityViewModels()
         return viewModel
+    }
+
+    private val addViewModel: AddViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
+    private var checkEdit = false
+
+    override fun initView(savedInstanceState: Bundle?) {
+        super.initView(savedInstanceState)
+       if(addViewModel.getCheckEdit()){
+           getVM().getDateTime()
+       } else {
+           getVM().updateDateTime()
+       }
+        pickDate()
+        pickTime()
+        selectImage()
+        observe()
+        setAmount()
+        selectWallet()
+        selectCategory()
+        getVM().getDateTime()
+        Log.d("AddExpenseFragment", "initView: ${getVM().currentDateTime.value.first}")
+        Log.d("AddExpenseFragment", "initView: ${getVM().currentDateTime.value.second}")
+    }
+
+    fun setAmount(){
+        binding.etAmount.setOnClickListener(View.OnClickListener {
+            var bundle = bundleOf("type" to TransferType.Expense)
+            findNavController().navigate(R.id.framgmentCaculator, bundle)
+        })
     }
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
@@ -64,12 +86,8 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
                 getVM().setBitmap(bitmap)
             } catch (e: Exception) {
                 e.printStackTrace()
-                Log.e("PickImageLauncher", "Error decoding bitmap: ${e.message}")
-                Toast.makeText(requireContext(), "Unable to load image.", Toast.LENGTH_SHORT).show()
             }
         } ?: run {
-            Log.e("PickImageLauncher", "No image selected")
-            Toast.makeText(requireContext(), "No image selected.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -77,52 +95,36 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
         if (isGranted) {
             takePictureLauncher.launch(null)
         } else {
-            Toast.makeText(requireContext(), "Camera permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 
-    override fun initView(savedInstanceState: Bundle?) {
-        getVM().updateDateTime()
-        pickDate()
-        pickTime()
-        selectImage()
-        observe()
-        selectFromWallet()
-        selectToWallet()
-        setButtonFee()
+    fun setData(){
+        var amount = binding.etAmount.text.toString()
+        var description = binding.etDescription.text.toString()
+        var momo = binding.etMemo.text.toString()
+        if (amount.isEmpty()) {
+            amount = "0"
+        }
+        getVM().setAmount(amount.toDouble())
+        getVM().setDescriptor(description)
+        getVM().setMomo(momo)
     }
 
-    fun setButtonFee() {
-        binding.ivFee.setOnClickListener {
-            if(btnFee){
-                binding.ivFee.setImageResource(R.drawable.toggle_off)
-                binding.etFee.isEnabled = false
-                btnFee = false
-            } else {
-                binding.ivFee.setImageResource(R.drawable.toggle_on)
-                binding.etFee.isEnabled = true
-                btnFee = true
-            }
+    fun selectCategory(){
+        val navController = findNavController()
+        binding.etCategory.setOnClickListener {
+            setData()
+            var bundle = bundleOf("type" to TransferType.Expense.toString())
+            navController.navigate(R.id.selectIncomeExpenseFragment,bundle)
         }
     }
 
-    fun selectFromWallet(){
-        binding.fromWallet.setOnClickListener{
+    fun selectWallet(){
+        binding.spWallet.setOnClickListener{
             setData()
             var bundle = bundleOf(
-                "typeExpense" to 2,
+                "typeExpense" to 1,
                 "isCheckWallet" to true,
-            )
-            findNavController().navigate(R.id.selectWalletFragment,bundle)
-        }
-    }
-
-    fun selectToWallet(){
-        binding.toWallet.setOnClickListener{
-            setData()
-            var bundle = bundleOf(
-                "typeExpense" to 2,
-                "isCheckWallet" to false,
             )
             findNavController().navigate(R.id.selectWalletFragment,bundle)
         }
@@ -133,6 +135,14 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().selectedTime.collect { time ->
                     binding.etTime.setText(time)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getVM().categoryNameExpense.collect { category ->
+                    binding.etCategory.setText(category.first)
                 }
             }
         }
@@ -166,9 +176,9 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().amount.collect { amount ->
                     if(amount != 0.0){
-                        binding.etAmount.setText(amount.toString())
+                        binding.etAmount.text = amount.toString()
                     } else {
-                        binding.etAmount.setText("")
+                        binding.etAmount.text = ""
                     }
                 }
             }
@@ -194,34 +204,11 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().fromWallet.collect { wallet ->
                     if (wallet.isNotEmpty()) {
-                        binding.fromWallet.setText(wallet.first().name)
+                        binding.spWallet.setText(wallet.first().name)
                     }
                 }
             }
         }
-
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getVM().toWallet.collect { wallet ->
-                    if (wallet.isNotEmpty()) {
-                        binding.toWallet.setText(wallet.first().name)
-                    }
-                }
-            }
-        }
-    }
-
-
-    fun setData(){
-        var amount = binding.etAmount.text.toString()
-        var description = binding.etDescription.text.toString()
-        var momo = binding.etMemo.text.toString()
-        if (amount.isEmpty()) {
-            amount = "0"
-        }
-        getVM().setAmount(amount.toDouble())
-        getVM().setDescriptor(description)
-        getVM().setMomo(momo)
     }
 
     fun selectImage(){
@@ -261,18 +248,22 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
         }
     }
 
-
     override fun onSaveIncome() {
         TODO("Not yet implemented")
     }
 
     override fun onSaveExpense() {
-        TODO("Not yet implemented")
-    }
-
-    override fun onSaveTransfer() {
         val amountText = binding.etAmount.text.toString()
-        if (amountText.isNotEmpty()) {
+        var fromWallet = 0L
+        try {
+            fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
+
+        } catch (e: Exception) {
+            0L
+        }
+        var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.iconId ?: 0
+        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.id ?: 0L
+        if (amountText.isNotEmpty() && fromWallet != 0L && iconId != 0 && id_category != 0L) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()
             val time = binding.etTime.text.toString()
@@ -282,15 +273,12 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
             if(linkimg == null){
                 linkimg = ""
             }
-            val typeOfExpenditure: TransferType = TransferType.Transfer
-            val toWallet = getVM().toWallet.value?.first()?.id ?: 0
-            val fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
-            val fee : Double = if(btnFee) binding.etFee.text.toString().toDouble() else 0.0
+            val memo = binding.etMemo.text.toString()
+            val toWallet = 1L
+            val fee : Double = 0.0
             val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
             val name = binding.etMemo.text.toString()
-            var iconId = R.drawable.transfer
-            var memo = binding.etMemo.text.toString()
-            var id_category = 1L
+
             val transfer = Transfer(
                 0,
                 fromWallet,
@@ -303,21 +291,79 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,AddViewModel>(
                 linkimg,
                 date.toDateTimestamp(),
                 time.toTimeTimestamp(),
-                typeOfExpenditure,
+                TransferType.Expense,
                 iconId,
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer,mainViewModel.currentAccount.value?.wallets ?: listOf())
+            getVM().saveIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.wallets ?: listOf())
             getVM().onCleared()
-            findNavController().navigate(R.id.mainFragment)
+            addViewModel.onCleared()
+            findNavController().popBackStack()
         } else {
             Log.e("AddExpenseFragment", "Amount is empty")
         }
     }
 
-    override fun onEdit(transaction: Transaction) {
-        TODO("Not yet implemented")
+    override fun onSaveTransfer() {
+
     }
 
+    override fun onEdit() {
+        val amountText = binding.etAmount.text.toString()
+        var fromWallet = 0L
+        try {
+            fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
+        } catch (e: Exception) {
+            0L
+        }
+        var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.iconId ?: 0
+        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.id ?: 0L
+        if (amountText.isNotEmpty() && fromWallet != 0L && iconId != 0 && id_category != 0L) {
+            val amount = amountText.toDouble()
+            val description = binding.etDescription.text.toString()
+            val time = binding.etTime.text.toString()
+            val date = binding.etDate.text.toString()
+            val getbitmap = getVM().getBitmap()
+            var linkimg = getVM().saveDrawableToAppStorage(requireContext(), getbitmap)
+            if(linkimg == null){
+                linkimg = ""
+            }
+            val memo = binding.etMemo.text.toString()
+            val toWallet = 1L
+            val fee : Double = 0.0
+            val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
+            val name = binding.etMemo.text.toString()
+
+            val transfer = Transfer(
+                getVM().getId(),
+                fromWallet,
+                toWallet,
+                amount,
+                name,
+                fee,
+                description,
+                accountId,
+                linkimg,
+                date.toDateTimestamp(),
+                time.toTimeTimestamp(),
+                TransferType.Expense,
+                iconId,
+                id_category,
+                memo
+            )
+            getVM().editIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.wallets ?: listOf())
+            getVM().onCleared()
+            addViewModel.onCleared()
+            findNavController().popBackStack()
+        } else {
+            Log.e("AddExpenseFragment", "Amount is empty")
+        }
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        getVM().setCategoryNameExpense(Pair("",0))
+    }
 }

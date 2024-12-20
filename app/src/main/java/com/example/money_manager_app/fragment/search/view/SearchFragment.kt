@@ -93,7 +93,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.la
     fun back() {
         binding.backButton.setOnSafeClickListener {
             searchViewModel.clearFilter()
-            findNavController().navigate(R.id.mainFragment)
+            adapter.setTransfers(listOf())
+            findNavController().popBackStack()
         }
     }
 

@@ -14,6 +14,8 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.FragmentSelectIncomeExpenseBinding
+import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
+import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.selecticon.Adapter.SelectIncomeExpenseAdapter
 
@@ -23,6 +25,8 @@ class SelectIncomeExpenseFragment : Fragment() {
     private var typeExpense: String? = null
     private var selectIncomeExpenseAdapter = SelectIncomeExpenseAdapter(listOf(),::clickRadioButtonIconCategory)
     private val viewModel: AddViewModel by activityViewModels()
+    private val incomeViewModel: IncomeViewModel by activityViewModels()
+    private val expenseViewModel: ExpenseViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +41,13 @@ class SelectIncomeExpenseFragment : Fragment() {
         initView()
         showData()
         setupListeners()
+        back()
+    }
+
+    private fun back(){
+        binding.ivBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun setupListeners() {
@@ -58,7 +69,7 @@ class SelectIncomeExpenseFragment : Fragment() {
             setBackgroundResource(R.drawable.customer_select_category)
         }
         typeExpense = TransferType.Income.toString()
-        selectIncomeExpenseAdapter.updateData(viewModel.getCategoryListIncome())
+        selectIncomeExpenseAdapter.updateData(incomeViewModel.getCategoryListIncome())
     }
 
     private fun updateUIForExpense() {
@@ -71,7 +82,7 @@ class SelectIncomeExpenseFragment : Fragment() {
             setBackgroundResource(R.drawable.customer_select_category)
         }
         typeExpense = TransferType.Expense.toString()
-        selectIncomeExpenseAdapter.updateData(viewModel.getCategoryListExpense())
+        selectIncomeExpenseAdapter.updateData(expenseViewModel.getCategoryListExpense())
     }
 
     private fun initView() {
@@ -85,19 +96,19 @@ class SelectIncomeExpenseFragment : Fragment() {
     private fun clickRadioButtonIconCategory(categoryData: CategoryData.Category) {
         if (!categoryData.isCheck) {
             if (typeExpense == TransferType.Expense.toString()) {
-                viewModel.setOneCategoryExpense(categoryData)
+                expenseViewModel.setOneCategoryExpense(categoryData)
             } else {
-                viewModel.setOneCategoryIcome(categoryData)
+                incomeViewModel.setOneCategoryIcome(categoryData)
             }
-            val bundle = bundleOf("idCategory" to categoryData.id)
+            viewModel.setIdCategory(categoryData.id)
             val destination = if (typeExpense == TransferType.Expense.toString()) {
-                bundle.putInt("position", 1)
+                viewModel.setPosition(1)
                 R.id.addFragment
             } else {
-                bundle.putInt("position", 0)
+                viewModel.setPosition(0)
                 R.id.addFragment
             }
-            findNavController().navigate(destination, bundle)
+            findNavController().popBackStack()
         }
     }
 

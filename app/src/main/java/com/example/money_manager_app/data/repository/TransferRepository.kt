@@ -11,6 +11,7 @@
 
     interface TransferRepository {
         suspend fun insertTransferDetail(transfer: Transfer): Long
+        suspend fun editTransferDetail(transfer: Transfer)
         fun getTransferFromDayStartAndDayEnd(
             startDay: Long,
             endDay: Long,
@@ -49,6 +50,10 @@
 
         override suspend fun insertTransferDetail(transfer: Transfer): Long {
             return transferDao.insertTransfer(transfer)
+        }
+
+        override suspend fun editTransferDetail(transfer: Transfer) {
+            transferDao.editTransfer(transfer)
         }
 
         override fun getTransferFromDayStartAndDayEnd(

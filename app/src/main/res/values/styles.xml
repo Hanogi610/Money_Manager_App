@@ -4,6 +4,7 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+
     <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="colorPrimaryDark">@color/white</item>
@@ -34,6 +35,11 @@
 
     <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="ThemeMoneyManager" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">

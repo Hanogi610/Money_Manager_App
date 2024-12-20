@@ -1,0 +1,7 @@
+version 2
+JvmtiExport can_access_local_variables 112
+JvmtiExport can_hotswap_or_post_breakpoint 0
+JvmtiExport can_post_on_exceptions 116
+# -1040379392 ciObject found
+instanceKlass java/lang/invoke/LambdaFormEditor
+compile 
