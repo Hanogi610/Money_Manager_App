@@ -241,3 +241,48 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
 
     return groupedList.reversed()
 }
+
+fun List<Transaction>.calculateCurrentWalletAmount(): Double {
+    var walletAmount = 0.0
+
+    val sortedList = this.sortedByDescending { it.date }
+
+    for (transaction in sortedList) {
+        when (transaction) {
+            is GoalTransaction -> {
+                walletAmount += if (transaction.type == GoalInputType.WITHDRAW) {
+                    transaction.amount
+                } else {
+                    -transaction.amount
+                }
+            }
+
+            is Debt -> {
+                walletAmount += if (transaction.type == DebtType.RECEIVABLE) {
+                    -transaction.amount
+                } else {
+                    transaction.amount
+                }
+            }
+
+            is DebtTransaction -> {
+                val action = transaction.action
+                walletAmount += if (action == DebtActionType.DEBT_INCREASE || action == DebtActionType.DEBT_COLLECTION) {
+                    transaction.amount
+                } else {
+                    -transaction.amount
+                }
+            }
+
+            is Transfer -> {
+                walletAmount += if (transaction.typeOfExpenditure == TransferType.Income) {
+                    transaction.amount
+                } else {
+                    -transaction.amount
+                }
+            }
+        }
+    }
+
+    return walletAmount
+}

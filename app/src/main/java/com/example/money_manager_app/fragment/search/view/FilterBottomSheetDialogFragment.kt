@@ -50,22 +50,23 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
         selectWallet()
         selectCategory()
         applyFilter()
-        cannel()
+        cancel()
     }
 
 
-    fun cannel(){
+    private fun cancel(){
         binding.cancelFilterButton.setOnClickListener {
             dismiss()
         }
     }
 
-    fun selectWallet() {
+    private fun selectWallet() {
         binding.filterWallet.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
-            val listWallet = walletViewModel.wallets.value?.map { it.name as CharSequence }?.toTypedArray()
+            val listWallet = walletViewModel.wallets.value.map { it.wallet.name }
+                .toTypedArray()
 
-            if (listWallet.isNullOrEmpty()) {
+            if (listWallet.isEmpty()) {
                 Toast.makeText(requireContext(), "Không có ví nào để chọn!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -74,8 +75,8 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
             builder.setItems(listWallet) { _, which ->
                 val selectedWallet = listWallet[which]
                 for(wallet in walletViewModel.wallets.value){
-                    if(wallet.name == selectedWallet){
-                        searchViewModel.setWalletSearch(wallet)
+                    if(wallet.wallet.name == selectedWallet){
+                        searchViewModel.setWalletSearch(wallet.wallet)
                     }
                 }
                 binding.filterWallet.setText(selectedWallet.toString())

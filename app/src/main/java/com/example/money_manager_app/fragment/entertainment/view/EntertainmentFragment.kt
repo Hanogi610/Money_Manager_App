@@ -11,6 +11,7 @@ import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewModel
 import com.example.money_manager_app.data.model.CategoryTransactionDetail
 import com.example.money_manager_app.data.model.Transaction
+import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentEntertainmentBinding
 import com.example.money_manager_app.utils.groupTransactionsByDate
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -37,7 +38,7 @@ class EntertainmentFragment : BaseFragmentNotRequireViewModel<FragmentEntertainm
         transactionAdapter = TransactionAdapter(
             requireContext(),
             currencySymbol,
-            mainViewModel.currentAccount.value!!.wallets,
+            mainViewModel.currentAccount.value!!.walletItems.map { it.toWallet() },
             mainViewModel.categories.value
         ) {
             val bundle = bundleOf("transaction" to it)

@@ -6,15 +6,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.BaseBottomSheet
+import com.example.money_manager_app.data.model.AccountWithWalletItem
 import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.money_manager_app.databinding.AccountSelectionBottomSheetBinding
 import com.example.money_manager_app.fragment.main.adapter.AccountAdapter
 import com.example.money_manager_app.viewmodel.MainViewModel
 
 class AccountSelectorBottomSheet(
-    private val accounts: List<AccountWithWallet>,
-    private val currentAccount: AccountWithWallet,
-    private val onAccountSelected: (AccountWithWallet) -> Unit,
+    private val accounts: List<AccountWithWalletItem>,
+    private val currentAccount: AccountWithWalletItem,
+    private val onAccountSelected: (AccountWithWalletItem) -> Unit,
     private val onAddAccount: () -> Unit
 ) : BaseBottomSheet<AccountSelectionBottomSheetBinding>() {
 

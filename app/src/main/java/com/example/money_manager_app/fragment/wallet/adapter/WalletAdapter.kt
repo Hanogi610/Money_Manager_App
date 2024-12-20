@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
+import com.example.money_manager_app.data.model.WalletItem
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.databinding.AddNewWalletItemBinding
 import com.example.money_manager_app.databinding.WalletItemBinding
@@ -17,14 +18,15 @@ class WalletAdapter(
     private val onAddWalletClick: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var wallets: List<Wallet> = emptyList()
+    private var wallets: List<WalletItem> = emptyList()
 
     inner class WalletViewHolder(private val binding: WalletItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(wallet: Wallet) {
+        fun bind(walletItem: WalletItem) {
+            val wallet = walletItem.wallet
             binding.walletName.text = wallet.name
             binding.walletBalance.text = context.getString(
-                R.string.money_amount, currentCurrencySymbol, wallet.amount
+                R.string.money_amount, currentCurrencySymbol, walletItem.currentAmount
             )
             binding.walletIcon.setImageResource(wallet.iconId)
             binding.root.setOnClickListener { onWalletItemClick(wallet) }
@@ -66,7 +68,7 @@ class WalletAdapter(
         return if (position == wallets.size) TYPE_ADD_WALLET else TYPE_WALLET
     }
 
-    fun setWallets(newWallets: List<Wallet>) {
+    fun setWallets(newWallets: List<WalletItem>) {
         val diffCallback = WalletDiffCallback(wallets, newWallets)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         wallets = newWallets
@@ -80,14 +82,14 @@ class WalletAdapter(
 }
 
 class WalletDiffCallback(
-    private val oldList: List<Wallet>,
-    private val newList: List<Wallet>
+    private val oldList: List<WalletItem>,
+    private val newList: List<WalletItem>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].id == newList[newItemPosition].id
+        return oldList[oldItemPosition].wallet.id == newList[newItemPosition].wallet.id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

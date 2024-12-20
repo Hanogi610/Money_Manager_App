@@ -57,7 +57,7 @@ class AddGoalTransactionFragment :
         binding.spinnerActionType.adapter = goalInputTypeAdapter
         val walletAdapter = ArrayAdapter(requireContext(),
             android.R.layout.simple_spinner_item,
-            mainViewModel.currentAccount.value!!.wallets.map { it.name })
+            mainViewModel.currentAccount.value!!.walletItems.map { it.wallet.name })
         binding.spinnerWallet.adapter = walletAdapter
         binding.spinnerWallet.setSelection(0)
 
@@ -81,7 +81,7 @@ class AddGoalTransactionFragment :
             binding.spinnerActionType.setSelection(inputTypeIndex)
             binding.delete.visibility = View.VISIBLE
             val walletName =
-                mainViewModel.currentAccount.value!!.wallets.find { it.id == transaction.walletId }!!.name
+                mainViewModel.currentAccount.value!!.walletItems.find { it.wallet.id == transaction.walletId }!!.wallet.name
             binding.spinnerWallet.setSelection(walletAdapter.getPosition(walletName))
         }
 
@@ -101,8 +101,8 @@ class AddGoalTransactionFragment :
             val amount = binding.etAmount.text.toString().toDouble()
             val date = binding.etDate.text.toString().toDateTimestamp()
             val time = binding.etTime.text.toString().toTimeTimestamp()
-            val wallet = mainViewModel.accounts.value.flatMap { it.wallets }
-                .find { it.name == binding.spinnerWallet.selectedItem.toString() }!!.id
+            val wallet = mainViewModel.accounts.value.flatMap { it -> it.walletItems }
+                .find { it.wallet.name == binding.spinnerWallet.selectedItem.toString() }!!.wallet.id
             val inputType = GoalInputType.valueOf(binding.spinnerActionType.selectedItem.toString())
 
             // Create or update transaction

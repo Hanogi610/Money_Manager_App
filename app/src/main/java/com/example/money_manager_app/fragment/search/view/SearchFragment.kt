@@ -85,7 +85,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>(R.la
 
         lifecycleScope.launch {
             mainViewModel.accounts.collect { wallet ->
-               adapter.setWallets(wallet.first().wallets)
+               adapter.setWallets(wallet.first().walletItems.map { it.wallet })
             }
         }
     }

@@ -56,7 +56,7 @@ class DetailDayFragment : Fragment() {
         }
     }
 
-    fun observeData() {
+    private fun observeData() {
         lifecycleScope.launch {
             detailViewModel.detailTransaction.collect { transaction ->
                 adapter.setTransfers(transaction)

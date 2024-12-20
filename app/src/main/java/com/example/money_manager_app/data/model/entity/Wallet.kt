@@ -4,13 +4,19 @@ import android.os.Parcelable
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
+import androidx.room.DatabaseView
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import androidx.room.Relation
 import androidx.room.TypeConverters
 import com.example.money_manager_app.R
+import com.example.money_manager_app.data.model.Transaction
+import com.example.money_manager_app.data.model.WalletItem
 import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.utils.WalletTypeConverter
+import com.example.money_manager_app.utils.calculateCurrentWalletAmount
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -34,3 +40,55 @@ data class Wallet(
     @ColumnInfo(name = "statement_date") val statementDate: Long? = null,
     @ColumnInfo(name = "due_date") val dueDate: Long? = null,
 ) : Parcelable
+
+@DatabaseView(
+    "SELECT * FROM wallet"
+)
+data class WalletFullDetail(
+    @Embedded
+    val wallet: Wallet,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "wallet_id"
+    )
+    val goalTransactions: List<GoalTransaction>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "wallet_id"
+    )
+    val debts: List<Debt>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "wallet_id"
+    )
+    val debtTransactions: List<DebtTransaction>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "from_wallet_id"
+    )
+    val transferOuts: List<Transfer>,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "to_wallet_id"
+    )
+    val transferIns: List<Transfer>,
+)
+
+fun WalletFullDetail.toWalletItem() : WalletItem {
+    var currentAmount = 0.0
+    val transactions = mutableListOf<Transaction>()
+    transactions.addAll(goalTransactions)
+    transactions.addAll(debts)
+    transactions.addAll(debtTransactions)
+    currentAmount = transactions.calculateCurrentWalletAmount()
+    for (transfer in transferOuts) {
+        currentAmount -= transfer.amount
+    }
+    for (transfer in transferIns) {
+        currentAmount += transfer.amount
+    }
+    return WalletItem(
+        wallet = wallet,
+        currentAmount = currentAmount + wallet.amount
+    )
+}

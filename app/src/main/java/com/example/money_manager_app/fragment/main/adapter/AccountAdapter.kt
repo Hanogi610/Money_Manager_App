@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
+import com.example.money_manager_app.data.model.AccountWithWalletItem
 import com.example.money_manager_app.data.model.entity.AccountWithWallet
+import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.databinding.AccountItemBinding
 
 class AccountAdapter(
     private val context: Context,
-    private val accounts: List<AccountWithWallet>,
-    private val currentAccount: AccountWithWallet,
-    private val onAccountSelected: (AccountWithWallet) -> Unit
+    private val accounts: List<AccountWithWalletItem>,
+    private val currentAccount: AccountWithWalletItem,
+    private val onAccountSelected: (AccountWithWalletItem) -> Unit
 ) : RecyclerView.Adapter<AccountAdapter.AccountViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
@@ -32,10 +34,16 @@ class AccountAdapter(
 
     inner class AccountViewHolder(private val binding: AccountItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(account: AccountWithWallet, isSelect: Boolean = false) {
+        fun bind(account: AccountWithWalletItem, isSelect: Boolean = false) {
             binding.accountName.text = account.account.nameAccount
             val currencySymbol = context.getString(account.account.currency.symbolRes)
-            binding.accountBalance.text = context.getString(R.string.money_amount, currencySymbol , account.wallets.sumOf { it.amount })
+            var balance = 0.0
+            for (walletItem in account.walletItems) {
+                if (walletItem.wallet.walletType == WalletType.GENERAL && walletItem.wallet.isExcluded == false) {
+                    balance += walletItem.currentAmount
+                }
+            }
+            binding.accountBalance.text = context.getString(R.string.money_amount, currencySymbol , balance)
             binding.checkIcon.visibility = if (isSelect) View.VISIBLE else View.GONE
 
             itemView.setOnClickListener {

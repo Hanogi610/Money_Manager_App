@@ -1,6 +1,5 @@
 package com.example.money_manager_app.fragment.wallet.debt_detail
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.TransactionListItem
@@ -19,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+// DebtDetailViewModel.kt
 @HiltViewModel
 class DebtDetailViewModel @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
@@ -32,9 +32,9 @@ class DebtDetailViewModel @Inject constructor(
 
     fun getDebtDetails(debtId: Long) {
         viewModelScope.launch(ioDispatcher) {
-            debtRepository.getDebtDetailsByDebtId(debtId).collect {
-                _debtInfo.value = it
-                it.let {
+            debtRepository.getDebtDetailsByDebtId(debtId).collect { debtDetail ->
+                _debtInfo.value = debtDetail
+                debtDetail.let {
                     _debtDetailItem.value = convertDebtDetailToDebtDetailItem(it)
                 }
             }
@@ -44,8 +44,9 @@ class DebtDetailViewModel @Inject constructor(
     private fun convertDebtDetailToDebtDetailItem(debtDetail: DebtDetail): DebtDetailItem {
         val paidAmount = debtDetail.transactions.filter { it.action == DebtActionType.REPAYMENT }
             .sumOf { it.amount }
-        val interestAmount = debtDetail.transactions.filter { it.action == DebtActionType.INTEREST || it.action == DebtActionType.DEBT_INCREASE }
-            .sumOf { it.amount }
+        val interestAmount =
+            debtDetail.transactions.filter { it.action == DebtActionType.INTEREST || it.action == DebtActionType.DEBT_INCREASE }
+                .sumOf { it.amount }
         val remainingAmount = debtDetail.debt.amount + interestAmount - paidAmount
         val date = debtDetail.debt.date.toFormattedDateString()
         val walletId = debtDetail.debt.walletId
@@ -73,7 +74,7 @@ class DebtDetailViewModel @Inject constructor(
 }
 
 data class DebtDetailItem(
-    val iconId : Int,
+    val iconId: Int,
     val title: String,
     val description: String,
     val totalAmount: Double,

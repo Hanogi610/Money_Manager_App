@@ -2,6 +2,7 @@ package com.example.money_manager_app.fragment.wallet
 
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
+import com.example.money_manager_app.data.model.WalletItem
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.BudgetWithCategory
 import com.example.money_manager_app.data.model.entity.DebtDetail
@@ -32,11 +33,11 @@ class WalletViewModel @Inject constructor(
     private val debtRepository: DebtRepository,
     private val goalRepository: GoalRepository,
     private val budgetRepository: BudgetRepository,
-    private val tranferRepository: TransferRepository
+    private val transferRepository: TransferRepository
 ) : BaseViewModel() {
 
-    private val _wallets = MutableStateFlow<List<Wallet>>(emptyList())
-    val wallets: StateFlow<List<Wallet>> get() = _wallets
+    private val _wallets = MutableStateFlow<List<WalletItem>>(emptyList())
+    val wallets: StateFlow<List<WalletItem>> get() = _wallets
 
     private val _debts = MutableStateFlow<List<DebtDetail>>(emptyList())
     val debts: StateFlow<List<DebtDetail>> get() = _debts
@@ -70,7 +71,7 @@ class WalletViewModel @Inject constructor(
             for (item in budgets) {
                 var spent = 0.0
                 for(category in item.categories) {
-                    val transactions = tranferRepository.getTransferWithCategoryByAccountId(
+                    val transactions = transferRepository.getTransferWithCategoryByAccountId(
                         item.budget.accountId,
                         category.id,
                         item.budget.startDate,
@@ -90,7 +91,7 @@ class WalletViewModel @Inject constructor(
 
     fun getWallets(accountId: Long) {
         viewModelScope.launch {
-            walletRepository.getWalletsByUserId(accountId).collect {
+            walletRepository.getWalletItemsByUserId(accountId).collect {
                 _wallets.value = it
             }
         }

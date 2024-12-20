@@ -276,7 +276,7 @@ class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewMo
                     }
                 }
             }
-            TimeType.CUSTOM -> TODO()
+            TimeType.CUSTOM -> {}
         }
     }
 

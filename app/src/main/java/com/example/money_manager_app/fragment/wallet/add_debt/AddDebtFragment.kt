@@ -125,8 +125,8 @@ class AddDebtFragment :
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.accounts.collect { accounts ->
-                    val wallets = accounts.flatMap { it.wallets }
-                    val walletNames = wallets.map { it.name }
+                    val wallets = accounts.flatMap { it.walletItems }
+                    val walletNames = wallets.map { it.wallet.name }
                     val walletAdapter = ArrayAdapter(
                         requireContext(), android.R.layout.simple_spinner_item, walletNames
                     )
@@ -197,15 +197,15 @@ class AddDebtFragment :
 
 
     private fun getWalletIndex(walletId: Long): Int {
-        val wallets = mainViewModel.currentAccount.value?.wallets.orEmpty()
-        return wallets.indexOfFirst { it.id == walletId }.takeIf { it >= 0 } ?: 0
+        val wallets = mainViewModel.currentAccount.value?.walletItems.orEmpty()
+        return wallets.indexOfFirst { it.wallet.id == walletId }.takeIf { it >= 0 } ?: 0
     }
 
     private fun buildDebtFromFields(debtId: Long? = null): Debt {
         val selectedWalletName = binding.walletSpinner.selectedItem.toString()
-        val selectedWallet = mainViewModel.accounts.value.flatMap { it.wallets }
-            .find { it.name == selectedWalletName }
-        val selectedWalletId = selectedWallet?.id ?: 0 // Default to 0 if not found
+        val selectedWallet = mainViewModel.accounts.value.flatMap { it.walletItems }
+            .find { it.wallet.name == selectedWalletName }
+        val selectedWalletId = selectedWallet?.wallet?.id ?: 0 // Default to 0 if not found
 
         return Debt(
             id = debtId ?: 0, // Use existing debt id if editing, otherwise 0 for new debt
