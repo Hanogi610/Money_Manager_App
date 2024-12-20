@@ -1,8 +1,6 @@
 package com.example.money_manager_app.fragment.wallet
 
 import android.os.Bundle
-import android.util.Log
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,25 +9,24 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
-import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.money_manager_app.base.fragment.BaseFragment
-import com.example.money_manager_app.data.model.BudgetDetail
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.BudgetWithCategory
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.data.model.entity.Wallet
-import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.databinding.FragmentWalletBinding
 import com.example.money_manager_app.fragment.wallet.adapter.BudgetAdapter
 import com.example.money_manager_app.fragment.wallet.adapter.DebtAdapter
 import com.example.money_manager_app.fragment.wallet.adapter.GoalAdapter
 import com.example.money_manager_app.fragment.wallet.adapter.WalletAdapter
+import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.layout.fragment_wallet) {
+class WalletFragment :
+    BaseFragment<FragmentWalletBinding, WalletViewModel>(R.layout.fragment_wallet) {
 
     override fun getVM(): WalletViewModel {
         val vm: WalletViewModel by viewModels()
@@ -47,25 +44,34 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
 
         val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
         val currencySymbol = getString(currentCurrency.symbolRes)
-        getVM().checkBudgetNeedUpdate(mainViewModel.currentAccount.value?.account?.id?:0)
+        getVM().checkBudgetNeedUpdate(mainViewModel.currentAccount.value?.account?.id ?: 0)
 
-        walletAdapter = WalletAdapter(requireContext(), currencySymbol, ::onWalletItemClick, ::onAddWalletClick)
+        walletAdapter =
+            WalletAdapter(requireContext(), currencySymbol, ::onWalletItemClick, ::onAddWalletClick)
         binding.walletRecyclerView.adapter = walletAdapter
         binding.walletRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
-        budgetAdapter = BudgetAdapter(requireContext(), listOf(),currencySymbol,::onBudgetItemClick,::onAddBudgetItemClick)
+        budgetAdapter = BudgetAdapter(
+            requireContext(),
+            listOf(),
+            currencySymbol,
+            ::onBudgetItemClick,
+            ::onAddBudgetItemClick
+        )
         binding.budgetRecyclerView.adapter = budgetAdapter
         binding.budgetRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        debtAdapter = DebtAdapter(requireContext(),currencySymbol,::onDebtItemClick,::onAddDebtClick)
+        debtAdapter =
+            DebtAdapter(requireContext(), currencySymbol, ::onDebtItemClick, ::onAddDebtClick)
         binding.debtRecyclerView.adapter = debtAdapter
         binding.debtRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        goalAdapter = GoalAdapter(requireContext(),::onGoalItemClick,::onAddGoalClick)
+        goalAdapter = GoalAdapter(requireContext(), ::onGoalItemClick, ::onAddGoalClick)
         binding.goalRecyclerView.adapter = goalAdapter
         binding.goalRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
     }
+
     override fun bindingStateView() {
         super.bindingStateView()
 
@@ -113,8 +119,8 @@ class WalletFragment : BaseFragment<FragmentWalletBinding,WalletViewModel>(R.lay
     }
 
     private fun showBudgets(budgets: List<BudgetWithCategory>) {
-        var  budgetList = mutableListOf<Budget>()
-        for(budgetWithCategory in budgets){
+        var budgetList = mutableListOf<Budget>()
+        for (budgetWithCategory in budgets) {
             budgetList.add(budgetWithCategory.budget)
         }
         getVM().setBudgets(budgetList)

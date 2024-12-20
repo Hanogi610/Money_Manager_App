@@ -16,6 +16,7 @@ import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.WalletType
+import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentHomeBinding
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,19 +38,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
         val currencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
+        val wallets = mainViewModel.currentAccount.value!!.walletItems.map { it.toWallet() }
         transactionAdapter = TransactionAdapter(
             requireContext(),
             currencySymbol,
-            mainViewModel.currentAccount.value!!.wallets,
+            wallets,
             mainViewModel.categories.value
         ) {
-            if (it is Transfer || it is DebtTransaction ) {
+            if (it is Transfer || it is DebtTransaction) {
                 val bundle = bundleOf(
                     "transaction" to it
                 )
                 findNavController().navigate(R.id.recordFragment, bundle)
             }
-            if(it is Debt){
+            if (it is Debt) {
                 val bundle = bundleOf(
                     "debt" to it
                 )
@@ -66,11 +68,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mainViewModel.currentAccount.collect {
+                    var balance = 0.0
                     it?.let {
-                        val balance =
-                            it.wallets.filter { wallet -> wallet.walletType == WalletType.GENERAL && wallet.isExcluded == false }
-                                .sumOf { wallet -> wallet.amount }
-                        val currencySymbol = getString(it.account.currency.symbolRes)
+                        for (walletItem in it.walletItems) {
+                            if (walletItem.wallet.walletType == WalletType.GENERAL && walletItem.wallet.isExcluded == false) {
+                                balance += walletItem.currentAmount
+                            }
+                        }
+                        val currencySymbol =
+                            mainViewModel.currentAccount.value?.account?.currency?.symbolRes?.let {
+                                getString(it)
+                            } ?: ""
                         binding.balanceAmount.text =
                             getString(R.string.money_amount, currencySymbol, balance)
                     }

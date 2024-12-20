@@ -52,21 +52,21 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
 
 
 
-    fun getData(){
+    private fun getData(){
         getVM().getWallets(mainViewModel.currentAccount.value!!.account.id)
     }
 
-    fun observeData(){
+    private fun observeData(){
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 getVM().wallets.collect {
                     var listWalletInclude = mutableListOf<Wallet>()
                     var listWalletExclude = mutableListOf<Wallet>()
                     for(wallet in it){
-                        if(wallet.isExcluded == false){
-                            listWalletInclude.add(wallet)
+                        if(wallet.wallet.isExcluded == false){
+                            listWalletInclude.add(wallet.wallet)
                         }else{
-                            listWalletExclude.add(wallet)
+                            listWalletExclude.add(wallet.wallet)
                         }
                     }
                     selectWalletAdapterInclude.setUpdateDataWallet(listWalletInclude)

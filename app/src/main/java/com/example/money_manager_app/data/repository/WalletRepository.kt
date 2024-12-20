@@ -1,8 +1,11 @@
 package com.example.money_manager_app.data.repository
 
 import com.example.money_manager_app.data.dao.WalletDao
+import com.example.money_manager_app.data.model.WalletItem
 import com.example.money_manager_app.data.model.entity.Wallet
+import com.example.money_manager_app.data.model.entity.toWalletItem
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface WalletRepository {
@@ -12,6 +15,7 @@ interface WalletRepository {
     suspend fun editWallet(wallet: Wallet)
     suspend fun deleteWallet(walletId: Long)
     suspend fun deleteWallet(wallet: Wallet)
+    suspend fun getWalletItemsByUserId(userId: Long) : Flow<List<WalletItem>>
 }
 
 class WalletRepositoryImpl @Inject constructor(
@@ -40,4 +44,14 @@ class WalletRepositoryImpl @Inject constructor(
     override suspend fun deleteWallet(wallet: Wallet) {
         walletDao.deleteWallet(wallet)
     }
+
+    override suspend fun getWalletItemsByUserId(userId: Long): Flow<List<WalletItem>> {
+        return walletDao.getWalletsFullDetailByUserId(userId)
+            .map { list ->
+                list.map { walletFullDetail ->
+                    walletFullDetail.toWalletItem()
+                }
+            }
+    }
+
 }

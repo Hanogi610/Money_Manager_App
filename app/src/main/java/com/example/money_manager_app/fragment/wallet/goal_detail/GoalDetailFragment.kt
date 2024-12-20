@@ -12,6 +12,7 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Goal
+import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentGoalDetailBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -51,14 +52,18 @@ class GoalDetailFragment :
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
-        currentCurrencySymbol =
-            getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
+        mainViewModel.currentAccount.value?.let {
+            currentCurrencySymbol = getString(it.account.currency.symbolRes)
+        }
+        val wallets =
+            mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf()
 
         binding.apply {
             transactionAdapter = TransactionAdapter(
                 requireContext(),
                 currentCurrencySymbol,
-                mainViewModel.currentAccount.value!!.wallets
+                wallets,
+                listOf()
             )
             goalTransactionRv.adapter = transactionAdapter
             goalTransactionRv.layoutManager = LinearLayoutManager(requireContext())
@@ -93,7 +98,8 @@ class GoalDetailFragment :
                             goalDateLabel.text = it.goalDate
                             timeLabel.text = getString(R.string.days_left, it.daysLeft)
                             progressBar.progress = it.progress
-                            progressBar.indeterminateTintList = ContextCompat.getColorStateList(requireContext(),it.colorId)
+                            progressBar.indeterminateTintList =
+                                ContextCompat.getColorStateList(requireContext(), it.colorId)
                             transactionAdapter.submitList(it.transactions)
                         }
                     }

@@ -3,12 +3,15 @@ package com.example.money_manager_app.viewmodel
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
+import com.example.money_manager_app.data.model.AccountWithWalletItem
+import com.example.money_manager_app.data.model.WalletItem
 import com.example.money_manager_app.data.model.entity.Account
 import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.money_manager_app.data.model.entity.Category
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import com.example.money_manager_app.data.model.entity.enums.WalletType
+import com.example.money_manager_app.data.model.entity.toWalletItem
 import com.example.money_manager_app.data.repository.AccountRepository
 import com.example.money_manager_app.data.repository.CategoryRepository
 import com.example.money_manager_app.data.repository.WalletRepository
@@ -30,11 +33,11 @@ class MainViewModel @Inject constructor(
     private val walletRepository: WalletRepository,
     private val categoryRepository: CategoryRepository
 ) : BaseViewModel() {
-    private val _accounts: MutableStateFlow<List<AccountWithWallet>> = MutableStateFlow(emptyList())
-    val accounts: StateFlow<List<AccountWithWallet>> get() = _accounts
+    private val _accounts: MutableStateFlow<List<AccountWithWalletItem>> = MutableStateFlow(emptyList())
+    val accounts: StateFlow<List<AccountWithWalletItem>> get() = _accounts
 
-    private val _currentAccount: MutableStateFlow<AccountWithWallet?> = MutableStateFlow(null)
-    val currentAccount: StateFlow<AccountWithWallet?> get() = _currentAccount
+    private val _currentAccount: MutableStateFlow<AccountWithWalletItem?> = MutableStateFlow(null)
+    val currentAccount: StateFlow<AccountWithWalletItem?> get() = _currentAccount
 
     private val _categories: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
     val categories: StateFlow<List<Category>> get() = _categories
@@ -43,7 +46,6 @@ class MainViewModel @Inject constructor(
         fetchAccountsAndSetCurrentAccount()
         observeCurrentAccount()
     }
-
 
     fun getAccount() {
         viewModelScope.launch {
@@ -67,7 +69,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun setCurrentAccount(account: AccountWithWallet) {
+    fun setCurrentAccount(account: AccountWithWalletItem) {
         _currentAccount.value = account
         appPreferences.setCurrentAccount(account.account.id)
     }

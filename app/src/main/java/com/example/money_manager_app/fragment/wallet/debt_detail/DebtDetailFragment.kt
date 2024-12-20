@@ -15,6 +15,7 @@ import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.enums.DebtType
+import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentDebtDetailBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -55,10 +56,11 @@ class DebtDetailFragment :
         super.initView(savedInstanceState)
         val currentCurrencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
+        val wallets = mainViewModel.currentAccount.value!!.walletItems.map { it.toWallet() }
         adapter = TransactionAdapter(
             requireContext(),
             currentCurrencySymbol,
-            mainViewModel.currentAccount.value!!.wallets,
+            wallets,
             listOf(),
             ::openAddDebtTransactionScreen
         )
@@ -102,7 +104,8 @@ class DebtDetailFragment :
                             progressBar.indeterminateTintList =
                                 ContextCompat.getColorStateList(requireContext(), it.colorId)
                             walletLabel.text =
-                                mainViewModel.currentAccount.value!!.wallets.find { wallet -> wallet.id == it.walletId }?.name
+                                mainViewModel.currentAccount.value!!.walletItems.map { it.toWallet() }
+                                    .find { wallet -> wallet.id == it.walletId }?.name
                             adapter.submitList(it.transactions)
                         }
                     }

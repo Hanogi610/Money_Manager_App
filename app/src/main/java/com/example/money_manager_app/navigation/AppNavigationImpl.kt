@@ -118,6 +118,10 @@ class AppNavigationImpl @Inject constructor() : BaseNavigatorImpl(), AppNavigati
         openScreen(R.id.action_addBudgetFragment_to_walletFragment, bundle)
     }
 
+    override fun openWalletDetailToToAddFragmentScreen(bundle: Bundle?) {
+        openScreen(R.id.action_walletDetailFragment_to_addFragment, bundle)
+    }
+
 
     override fun openWalletDetailScreenToAddFragmentScreen(bundle: Bundle?) {
         openScreen(R.id.action_walletDetailFragment_to_addFragment, bundle)

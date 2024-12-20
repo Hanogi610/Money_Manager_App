@@ -7,6 +7,11 @@
         android:layout_height="match_parent"
         tools:context=".fragment.create_account.view.CreateAccountFragment">
 
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/viewPager"/>
+
         <ImageView
             android:id="@+id/ivBack"
             android:layout_width="@dimen/_20dp"
@@ -16,13 +21,7 @@
             android:layout_marginTop="@dimen/_16dp"
             android:layout_marginStart="@dimen/_16dp"
             android:src="@drawable/ic_back"
-            android:visibility="gone"
             tools:visibility="visible"/>
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/viewPager"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

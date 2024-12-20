@@ -20,6 +20,7 @@ import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
+import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentAddExpenseBinding
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.utils.toDateTimestamp
@@ -296,7 +297,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.wallets ?: listOf())
+            getVM().saveIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf())
             getVM().onCleared()
             addViewModel.onCleared()
             findNavController().popBackStack()
@@ -352,7 +353,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
                 id_category,
                 memo
             )
-            getVM().editIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.wallets ?: listOf())
+            getVM().editIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf())
             getVM().onCleared()
             addViewModel.onCleared()
             findNavController().popBackStack()

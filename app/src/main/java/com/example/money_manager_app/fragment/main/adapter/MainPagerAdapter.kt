@@ -1,4 +1,4 @@
-package com.example.moneymanager.ui.main_screen.adapter
+package com.example.money_manager_app.fragment.main.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
