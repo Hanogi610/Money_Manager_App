@@ -331,7 +331,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer,mainViewModel.currentAccount.value?.wallets ?: listOf())
+            getVM().saveIncomeAndExpense(transfer)
             getVM().onCleared()
             findNavController().popBackStack()
         } else {
@@ -377,7 +377,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
                 id_category,
                 memo
             )
-            getVM().editIncomeAndExpense(transfer,mainViewModel.currentAccount.value?.wallets ?: listOf())
+            getVM().editIncomeAndExpense(transfer)
             getVM().onCleared()
             addViewModel.onCleared()
             findNavController().popBackStack()

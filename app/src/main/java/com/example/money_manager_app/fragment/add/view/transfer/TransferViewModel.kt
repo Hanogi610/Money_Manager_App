@@ -231,7 +231,7 @@ class TransferViewModel @Inject constructor(
         _currentDateTime.value = Pair(dateFormat.format(currentDate), timeFormat.format(currentDate))
     }
 
-    fun saveIncomeAndExpense(transfer: Transfer, wallets : List<Wallet>) {
+    fun saveIncomeAndExpense(transfer: Transfer) {
         viewModelScope.launch(ioDispatcher) {
             if (transfer.amount > 0) {
                 repository.insertTransferDetail(
@@ -255,7 +255,7 @@ class TransferViewModel @Inject constructor(
         }
     }
 
-    fun editIncomeAndExpense(transfer: Transfer, wallets : List<Wallet>) {
+    fun editIncomeAndExpense(transfer: Transfer) {
         viewModelScope.launch(ioDispatcher) {
             if (transfer.amount > 0) {
                 repository.editTransferDetail(

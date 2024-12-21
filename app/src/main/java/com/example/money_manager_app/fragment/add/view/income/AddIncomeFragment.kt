@@ -292,7 +292,7 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf())
+            getVM().saveIncomeAndExpense(transfer)
             getVM().onCleared()
             findNavController().popBackStack()
         } else {
@@ -351,7 +351,7 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
                 id_category,
                 memo
             )
-            getVM().editIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf())
+            getVM().editIncomeAndExpense(transfer)
             getVM().onCleared()
             addViewModel.onCleared()
             findNavController().popBackStack()

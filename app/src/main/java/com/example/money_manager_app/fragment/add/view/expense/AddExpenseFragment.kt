@@ -295,7 +295,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf())
+            getVM().saveIncomeAndExpense(transfer)
             getVM().onCleared()
             addViewModel.onCleared()
             findNavController().popBackStack()
@@ -351,7 +351,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
                 id_category,
                 memo
             )
-            getVM().editIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf())
+            getVM().editIncomeAndExpense(transfer)
             getVM().onCleared()
             addViewModel.onCleared()
             findNavController().popBackStack()
