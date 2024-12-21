@@ -15,7 +15,7 @@ interface WalletRepository {
     suspend fun editWallet(wallet: Wallet)
     suspend fun deleteWallet(walletId: Long)
     suspend fun deleteWallet(wallet: Wallet)
-    fun getWalletItemsByUserId(userId: Long, startDate: Long?, endDate: Long?) : Flow<List<WalletItem>>
+    fun getWalletItemsByUserId(userId: Long, startDate: Long? = null, endDate: Long? = System.currentTimeMillis()) : Flow<List<WalletItem>>
 }
 
 class WalletRepositoryImpl @Inject constructor(
