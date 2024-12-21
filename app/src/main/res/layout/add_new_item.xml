@@ -31,7 +31,7 @@
             android:layout_marginVertical="@dimen/_8dp"
             android:text="@string/add_wallet"
             android:textColor="@color/cyan"
-            android:textSize="@dimen/_18sp"
+            android:textSize="@dimen/_16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
