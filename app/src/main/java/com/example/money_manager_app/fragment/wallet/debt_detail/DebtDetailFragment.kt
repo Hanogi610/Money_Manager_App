@@ -1,12 +1,14 @@
 package com.example.money_manager_app.fragment.wallet.debt_detail
 
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
 import com.example.money_manager_app.adapter.TransactionAdapter
@@ -16,6 +18,7 @@ import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.money_manager_app.data.model.toWallet
+import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentDebtDetailBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -123,8 +126,22 @@ class DebtDetailFragment :
             })
         }
         binding.deleteButton.setOnSafeClickListener {
-            getVM().deleteDebt(debt!!.id)
-            appNavigation.navigateUp()
+            val alertDialogBinding = AlertDialogBinding.inflate(layoutInflater)
+
+            val alert = AlertDialog.Builder(requireContext()).create()
+            alert.setView(alertDialogBinding.root)
+            alert.setCancelable(true)
+            alertDialogBinding.deleteImageView.setOnClickListener {
+                debt?.let {
+                    getVM().deleteDebt(it.id)
+                }
+                alert.dismiss()
+                appNavigation.navigateUp()
+            }
+            alertDialogBinding.cannelImageView.setOnClickListener {
+                alert.dismiss()
+            }
+            alert.show()
         }
 
         binding.addDebtAction.setOnSafeClickListener {

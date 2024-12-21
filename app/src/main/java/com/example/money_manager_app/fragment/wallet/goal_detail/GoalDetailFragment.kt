@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.wallet.goal_detail
 
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -13,6 +14,7 @@ import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.data.model.toWallet
+import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentGoalDetailBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -118,8 +120,20 @@ class GoalDetailFragment :
             })
         }
         binding.deleteButton.setOnSafeClickListener {
-            getVM().deleteGoal()
-            appNavigation.navigateUp()
+            val alertDialogBinding = AlertDialogBinding.inflate(layoutInflater)
+
+            val alert = AlertDialog.Builder(requireContext()).create()
+            alert.setView(alertDialogBinding.root)
+            alert.setCancelable(true)
+            alertDialogBinding.deleteImageView.setOnClickListener {
+                getVM().deleteGoal()
+                alert.dismiss()
+                appNavigation.navigateUp()
+            }
+            alertDialogBinding.cannelImageView.setOnClickListener {
+                alert.dismiss()
+            }
+            alert.show()
         }
     }
 }

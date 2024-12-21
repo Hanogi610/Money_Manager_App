@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -128,14 +129,24 @@ class AddWalletFragment :
                         populateFieldsWithWalletData(wallet)
                         binding.saveButton.setOnSafeClickListener {
                             val updatedWallet = buildWalletFromFields(wallet.id)
-                            getVM().editWallet(updatedWallet)
-                            appNavigation.navigateUp()
+                            if(updatedWallet.name.isEmpty()||updatedWallet.amount <= 0){
+                                Toast.makeText(requireActivity(),getString(R.string.blank_input),
+                                    Toast.LENGTH_SHORT).show()
+                            }else{
+                                getVM().editWallet(updatedWallet)
+                                appNavigation.navigateUp()
+                            }
                         }
                     } else {
                         binding.saveButton.setOnSafeClickListener {
                             val newWallet = buildWalletFromFields()
-                            getVM().addWallet(newWallet)
-                            appNavigation.navigateUp()
+                            if(newWallet.name.isEmpty()||newWallet.amount <= 0){
+                                Toast.makeText(requireActivity(),getString(R.string.blank_input),
+                                    Toast.LENGTH_SHORT).show()
+                            }else{
+                                getVM().addWallet(newWallet)
+                                appNavigation.navigateUp()
+                            }
                         }
                     }
                 }
@@ -194,7 +205,7 @@ class AddWalletFragment :
         return Wallet(
             id = walletId ?: 0,
             name = binding.nameEditText.text.toString(),
-            amount = binding.amountEditText.text.toString().toDouble(),
+            amount = binding.amountEditText.text.toString().toDoubleOrNull() ?: 0.0,
             colorId = ColorUtils.getColors(requireContext())[binding.colorSpinner.selectedItemPosition],
             accountId = mainViewModel.currentAccount.value!!.account.id,
             walletType = WalletType.valueOf(binding.walletTypeSpinner.selectedItem.toString()),

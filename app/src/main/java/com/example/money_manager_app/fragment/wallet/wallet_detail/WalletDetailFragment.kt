@@ -99,12 +99,13 @@ class WalletDetailFragment :
                                 is WalletDetailItem.CreditItem -> {
                                     generalLayout.visibility = View.GONE
                                     creditLayout.visibility = View.VISIBLE
-                                    creditLimitLabel.text = getString(
+                                    creditLimit.text = getString(
                                         R.string.money_amount, currentCurrencySymbol, it.creditLimit
                                     )
-                                    expenseCredit.text = getString(
-                                        R.string.money_amount, currentCurrencySymbol, it.expense
+                                    availableCredit.text = getString(
+                                        R.string.money_amount, currentCurrencySymbol, it.availableCredit
                                     )
+                                    expenseCredit.text = getString(R.string.transactions_format, it.expense)
                                     dueDate.text = it.dueDate.toFormattedDateString()
                                     statementDate.text = it.statementDate.toFormattedDateString()
                                     actionButton.text = getString(R.string.make_payment)

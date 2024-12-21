@@ -1,6 +1,8 @@
 package com.example.money_manager_app.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.AccountWithWalletItem
@@ -28,6 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+    @Dispatcher(AppDispatchers.Default) private val defaultDispatcher: CoroutineDispatcher,
     private val appPreferences: AppPreferences,
     private val accountRepository: AccountRepository,
     private val walletRepository: WalletRepository,
@@ -39,19 +42,38 @@ class MainViewModel @Inject constructor(
     private val _currentAccount: MutableStateFlow<AccountWithWalletItem?> = MutableStateFlow(null)
     val currentAccount: StateFlow<AccountWithWalletItem?> get() = _currentAccount
 
+    private val _currentBalance: MutableLiveData<Double> = MutableLiveData(0.0)
+    val currentBalance: LiveData<Double> get() = _currentBalance
+
     private val _categories: MutableStateFlow<List<Category>> = MutableStateFlow(emptyList())
     val categories: StateFlow<List<Category>> get() = _categories
 
+    private val _hiddenBalance = MutableLiveData<Boolean>(false)
+    val hiddenBalance : LiveData<Boolean> get() = _hiddenBalance
+
     init {
+        fetchHiddenState()
         fetchAccountsAndSetCurrentAccount()
         observeCurrentAccount()
     }
+
+    private fun fetchHiddenState(){
+        _hiddenBalance.postValue(appPreferences.getHiddenBalance())
+    }
+
+    fun toggleHiddenBalance() {
+        val currentValue = _hiddenBalance.value ?: false
+        val newValue = !currentValue
+        appPreferences.setHiddenBalance(newValue)
+        _hiddenBalance.postValue(newValue) // Update LiveData
+    }
+
 
     fun getAccount() {
         viewModelScope.launch {
             accountRepository.getAccount().collect {
                 _accounts.value = it
-                Log.d("hoangph", "getAccount() called: $it")
+//                Log.d("hoangph", "getAccount() called: $it")
             }
         }
     }
@@ -73,7 +95,7 @@ class MainViewModel @Inject constructor(
     fun setCurrentAccount(account: AccountWithWalletItem) {
         _currentAccount.value = account
         appPreferences.setCurrentAccount(account.account.id)
-        Log.d("hoangph", "getAccount() called: ${_currentAccount.value}")
+//        Log.d("hoangph", "getAccount() called: ${_currentAccount.value}")
     }
 
     fun insertAccount(account: Account, initAmount: Double) {
@@ -106,6 +128,24 @@ class MainViewModel @Inject constructor(
                     val savedAccountId = appPreferences.getCurrentAccount()
                     val current = accountList.find { it.account.id == savedAccountId } ?: accountList.first()
                     _currentAccount.value = current
+                    observeBalance()
+                }
+
+            }
+        }
+    }
+
+    private fun observeBalance() {
+        viewModelScope.launch(defaultDispatcher) {
+            currentAccount.collect {
+                var balance = 0.0
+                it?.let {
+                    for (walletItem in it.walletItems) {
+                        if (walletItem.wallet.walletType == WalletType.GENERAL && walletItem.wallet.isExcluded == false) {
+                            balance += walletItem.currentAmount
+                        }
+                    }
+                    _currentBalance.postValue(balance)
                 }
             }
         }

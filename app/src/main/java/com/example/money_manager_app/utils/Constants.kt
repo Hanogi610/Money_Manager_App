@@ -8,6 +8,7 @@ object Constants {
     object Preferences {
         const val PREF_FILE_NAME = "Preferences"
         const val PREF_PARAM_CURRENT_ACCOUNT = "CURRENT_ACCOUNT"
+        const val PREF_HIDDEN_BALANCE = "HIDDEN_BALANCE"
     }
 
     object Timing {

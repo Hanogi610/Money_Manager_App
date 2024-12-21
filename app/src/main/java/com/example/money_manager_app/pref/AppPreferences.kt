@@ -37,4 +37,8 @@ interface AppPreferences {
     fun setCurrentAccount(accountId: Long)
 
     fun getCurrentAccount() : Long
+
+    fun getHiddenBalance() : Boolean
+
+    fun setHiddenBalance(hidden: Boolean)
 }

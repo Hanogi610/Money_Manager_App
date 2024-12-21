@@ -234,6 +234,9 @@
         <action
             android:id="@+id/action_statisticFragment_to_transactionFragment"
             app:destination="@id/transactionFragment" />
+        <action
+            android:id="@+id/action_statisticFragment_to_createAccountFragment"
+            app:destination="@+id/createAccountFragment" />
     </fragment>
     <fragment
         android:id="@+id/walletFragment"
