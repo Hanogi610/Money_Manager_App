@@ -26,7 +26,7 @@ class WalletAdapter(
             val wallet = walletItem.wallet
             binding.walletName.text = wallet.name
             binding.walletBalance.text = context.getString(
-                R.string.money_amount, currentCurrencySymbol, walletItem.currentAmount
+                R.string.money_amount, currentCurrencySymbol, walletItem.endingAmount
             )
             binding.walletIcon.setImageResource(wallet.iconId)
             binding.root.setOnClickListener { onWalletItemClick(wallet) }

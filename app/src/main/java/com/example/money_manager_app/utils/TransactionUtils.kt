@@ -4,6 +4,7 @@ import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.TransactionListItem
 import com.example.money_manager_app.data.model.CalendarRecord
 import com.example.money_manager_app.data.model.CalendarSummary
+import com.example.money_manager_app.data.model.DateRangeAmount
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.GoalTransaction
@@ -242,15 +243,33 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
     return groupedList.reversed()
 }
 
-fun List<Transaction>.calculateCurrentWalletAmount(): Double {
-    var walletAmount = 0.0
+fun List<Transaction>.calculateCurrentWalletAmount(walletId: Long,startDate: Long? = null, endDate: Long = System.currentTimeMillis()): DateRangeAmount {
+    val filteredList = this.filter { transaction ->
+        val isInStartDateRange = startDate?.let { transaction.date >= it } ?: true
+        val isInEndDateRange = endDate.let { transaction.date <= it }
 
-    val sortedList = this.sortedByDescending { it.date }
+        isInStartDateRange && isInEndDateRange
+    }
 
-    for (transaction in sortedList) {
+    val startingList = this.filter { transaction ->
+        startDate?.let { transaction.date < it } ?: true
+    }
+
+    val startingAmount = startingList.calculateAmount(walletId)
+    val endingAmount = startingAmount + filteredList.calculateAmount(walletId)
+
+    return DateRangeAmount(
+        startingAmount = startingAmount,
+        endingAmount = endingAmount
+    )
+}
+
+fun List<Transaction>.calculateAmount(walletId: Long) : Double{
+    var amount = 0.0
+    for (transaction in this) {
         when (transaction) {
             is GoalTransaction -> {
-                walletAmount += if (transaction.type == GoalInputType.WITHDRAW) {
+                amount += if (transaction.type == GoalInputType.WITHDRAW) {
                     transaction.amount
                 } else {
                     -transaction.amount
@@ -258,7 +277,7 @@ fun List<Transaction>.calculateCurrentWalletAmount(): Double {
             }
 
             is Debt -> {
-                walletAmount += if (transaction.type == DebtType.RECEIVABLE) {
+                amount += if (transaction.type == DebtType.RECEIVABLE) {
                     -transaction.amount
                 } else {
                     transaction.amount
@@ -267,7 +286,7 @@ fun List<Transaction>.calculateCurrentWalletAmount(): Double {
 
             is DebtTransaction -> {
                 val action = transaction.action
-                walletAmount += if (action == DebtActionType.DEBT_INCREASE || action == DebtActionType.DEBT_COLLECTION) {
+                amount += if (action == DebtActionType.DEBT_INCREASE || action == DebtActionType.DEBT_COLLECTION) {
                     transaction.amount
                 } else {
                     -transaction.amount
@@ -275,14 +294,21 @@ fun List<Transaction>.calculateCurrentWalletAmount(): Double {
             }
 
             is Transfer -> {
-                walletAmount += if (transaction.typeOfExpenditure == TransferType.Income) {
-                    transaction.amount
-                } else {
-                    -transaction.amount
+                when (transaction.typeOfExpenditure) {
+                    TransferType.Income -> {
+                        amount += transaction.amount
+                    }
+                    TransferType.Expense -> {
+                        amount -= transaction.amount
+                    }
+                    TransferType.Transfer -> {
+                        if(walletId == transaction.toWalletId) amount += transaction.amount
+                        if(walletId == transaction.walletId) amount -= transaction.amount
+                    }
                 }
             }
         }
     }
-
-    return walletAmount
+    return amount
 }
+
