@@ -74,21 +74,17 @@ data class WalletFullDetail(
     val transferIns: List<Transfer>,
 )
 
-fun WalletFullDetail.toWalletItem() : WalletItem {
-    var currentAmount = 0.0
+fun WalletFullDetail.toWalletItem(startDate: Long? = null, endDate: Long = System.currentTimeMillis()) : WalletItem {
     val transactions = mutableListOf<Transaction>()
     transactions.addAll(goalTransactions)
     transactions.addAll(debts)
     transactions.addAll(debtTransactions)
-    currentAmount = transactions.calculateCurrentWalletAmount()
-    for (transfer in transferOuts) {
-        currentAmount -= transfer.amount
-    }
-    for (transfer in transferIns) {
-        currentAmount += transfer.amount
-    }
+    transactions.addAll(transferIns)
+    transactions.addAll(transferOuts)
+    val dateRangeAmount = transactions.calculateCurrentWalletAmount(wallet.id,startDate,endDate)
     return WalletItem(
         wallet = wallet,
-        currentAmount = currentAmount + wallet.amount
+        startingAmount = wallet.amount + dateRangeAmount.startingAmount,
+        endingAmount = wallet.amount + dateRangeAmount.endingAmount
     )
 }

@@ -1,19 +1,14 @@
 package com.example.money_manager_app.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.AccountWithWalletItem
-import com.example.money_manager_app.data.model.WalletItem
 import com.example.money_manager_app.data.model.entity.Account
-import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.money_manager_app.data.model.entity.Category
 import com.example.money_manager_app.data.model.entity.Wallet
-import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import com.example.money_manager_app.data.model.entity.enums.WalletType
-import com.example.money_manager_app.data.model.entity.toWalletItem
 import com.example.money_manager_app.data.repository.AccountRepository
 import com.example.money_manager_app.data.repository.CategoryRepository
 import com.example.money_manager_app.data.repository.WalletRepository
@@ -142,7 +137,7 @@ class MainViewModel @Inject constructor(
                 it?.let {
                     for (walletItem in it.walletItems) {
                         if (walletItem.wallet.walletType == WalletType.GENERAL && walletItem.wallet.isExcluded == false) {
-                            balance += walletItem.currentAmount
+                            balance += walletItem.endingAmount
                         }
                     }
                     _currentBalance.postValue(balance)
