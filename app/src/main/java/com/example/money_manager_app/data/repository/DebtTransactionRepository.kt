@@ -36,7 +36,7 @@ interface DebtTransactionRepository {
         endDate: Long?,
         minAmount: Double?,
         maxAmount: Double?,
-        categoryType: Int?,
+        categoryType: Long?,
         fromWallet: Long?,
         idAccount: Long
     ): List<DebtTransaction>
@@ -76,7 +76,7 @@ class DebtTransactionRepositoryImpl @Inject constructor(
         endDate : Long?,
         minAmount : Double?,
         maxAmount : Double?,
-        categoryType: Int?,
+        categoryType: Long?,
         fromWallet : Long?,
         idAccount : Long
     ): List<DebtTransaction> {

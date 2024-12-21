@@ -158,7 +158,7 @@
                 android:orientation="horizontal"
                 android:weightSum="10"
                 app:layout_constraintTop_toBottomOf="@id/colorLabel">
-                <Spinner
+                <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/colorSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -190,7 +190,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/llcolorContainer" />
 
-            <Spinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/periodSpinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -214,8 +214,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/periodSpinner" />
 
-            <Spinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/dayOfMonthSpinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_border"
+                android:padding="@dimen/_16dp"
+                android:spinnerMode="dropdown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/dayOfMonthLabel" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/dayOfWeekSpinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -237,7 +249,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dayOfMonthSpinner" />
 
-            <Spinner
+            <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/dayOfYearSpinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

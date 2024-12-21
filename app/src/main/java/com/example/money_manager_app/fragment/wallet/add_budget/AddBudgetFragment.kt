@@ -47,6 +47,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
+
         arguments?.let {
             budgetEdit = it.getParcelable("budget")
             var category = it.getString("category")
@@ -54,7 +55,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                 binding.editTextName.setText(budgetEdit?.name)
                 binding.editTextAmount.setText(budgetEdit?.amount.toString())
                 binding.colorSpinner.setSelection(ColorUtils.getColors(requireContext()).indexOf(budgetEdit?.colorId))
-                binding.periodSpinner.setSelection(budgetEdit?.periodType?.ordinal ?: 0)
+                binding.periodSpinner.setSelection(PeriodType.entries.indexOf(budgetEdit?.periodType))
                 binding.selectCategory.text = category
             }
         }
@@ -68,13 +69,16 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
         obseverData()
         selectColor()
         selectPeriod()
-        back()
         option()
+        back()
         save()
     }
 
 
     fun option() {
+        setSpinnerDayOfWeek(R.array.budget_day_of_week)
+        setSpinnerDayOfMonth(R.array.budget_day)
+        setSpinnerDayOfYear(R.array.budget_month_of_year)
         binding.periodSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -85,22 +89,24 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                 when (position) {
                     0 -> {
                         binding.dayOfMonthLabel.text = "Day of Week"
-                        setSpinnerDayOfMonth(R.array.budget_day_of_week)
+                        binding.dayOfWeekSpinner.visibility = View.VISIBLE
+                        binding.dayOfMonthSpinner.visibility = View.GONE
                         binding.dayOfYearLabel.visibility = View.GONE
                         binding.dayOfYearSpinner.visibility = View.GONE
                     }
                     1 -> {
                         binding.dayOfMonthLabel.text = "Day of Month"
-                        setSpinnerDayOfMonth(R.array.budget_day)
+                        binding.dayOfWeekSpinner.visibility = View.GONE
+                        binding.dayOfMonthSpinner.visibility = View.VISIBLE
                         binding.dayOfYearLabel.visibility = View.GONE
                         binding.dayOfYearSpinner.visibility = View.GONE
                     }
                     else -> {
                         binding.dayOfMonthLabel.text = "Day of Month"
-                        setSpinnerDayOfMonth(R.array.budget_day)
+                        binding.dayOfWeekSpinner.visibility = View.GONE
+                        binding.dayOfMonthSpinner.visibility = View.VISIBLE
                         binding.dayOfYearLabel.visibility = View.VISIBLE
                         binding.dayOfYearSpinner.visibility = View.VISIBLE
-                        setSpinnerDayOfYear(R.array.budget_month_of_year)
                     }
                 }
             }
@@ -108,6 +114,22 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
         }
+        if(budgetEdit != null){
+            binding.colorSpinner.setSelection(5)
+            binding.periodSpinner.setSelection(PeriodType.entries.indexOf(budgetEdit?.periodType))
+        }
+    }
+
+    fun setSpinnerDayOfWeek(array: Int){
+        val selectPeriod = resources.getStringArray(array)
+
+        val periodTypeAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.item_period,
+            selectPeriod
+        )
+        binding.dayOfWeekSpinner.adapter = periodTypeAdapter
+        binding.dayOfWeekSpinner.setSelection(0)
     }
 
 

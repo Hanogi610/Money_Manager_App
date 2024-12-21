@@ -34,8 +34,8 @@ class StatisticAdapter(
     private val onClickPie: () -> Unit,
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),OnChartValueSelectedListener  {
 
-    private var openingBalance = 0.0
-    private var endingBalance =0.0
+    private var openingBalance : Double = 0.0
+    private var endingBalance : Double =0.0
     private var pieChart: PieChart? = null
     private var title: String = "Title"
     private var summary: CalendarSummary = CalendarSummary(0.0, 0.0)
@@ -45,7 +45,7 @@ class StatisticAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(openingBalance: Double, endingBalance: Double, title : String) {
             binding.openingLabel.text = "${currentCurrencySymbol} ${openingBalance}"
-            binding.endingLabel.text = "${currentCurrencySymbol} ${endingBalance}"
+            binding.endingLabel.text = context.getString(R.string.money_amount, currentCurrencySymbol, endingBalance)
             binding.titleLabel.text = title
         }
     }

@@ -76,7 +76,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="16dp" />
 
-        <EditText
+        <TextView
             android:id="@+id/filter_wallet"
             android:layout_width="0dp"
             android:layout_marginTop="@dimen/_8dp"
@@ -101,7 +101,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="16dp" />
 
-        <EditText
+        <TextView
             android:id="@+id/filter_category"
             android:layout_marginTop="@dimen/_8dp"
             android:layout_width="0dp"

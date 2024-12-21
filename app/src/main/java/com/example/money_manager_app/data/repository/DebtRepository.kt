@@ -20,7 +20,7 @@ interface DebtRepository {
         minAmount: Double?,
         maxAmount: Double?,
         description: String?,
-        categoryType: Int?,
+        categoryType: Long?,
         fromWallet: Long?,
         idAccount: Long
     ): List<Debt>
@@ -58,7 +58,7 @@ class DebtRepositoryImpl @Inject constructor(
         minAmount: Double?,
         maxAmount: Double?,
         description: String?,
-        categoryType: Int?,
+        categoryType: Long?,
         fromWallet: Long?,
         idAccount: Long
     ): List<Debt> {

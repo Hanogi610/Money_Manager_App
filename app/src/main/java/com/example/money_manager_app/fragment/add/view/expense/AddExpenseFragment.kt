@@ -58,8 +58,6 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         selectWallet()
         selectCategory()
         getVM().getDateTime()
-        Log.d("AddExpenseFragment", "initView: ${getVM().currentDateTime.value.first}")
-        Log.d("AddExpenseFragment", "initView: ${getVM().currentDateTime.value.second}")
     }
 
     fun setAmount(){

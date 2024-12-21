@@ -264,92 +264,15 @@ class TransferViewModel @Inject constructor(
                 var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
                 var walletTo = toWallet.value.find { it.id == transfer.toWalletId }
                 if(transfer.typeOfExpenditure == TransferType.Transfer){
-                    if( oldwallet.value.id != walletFrom?.id || oldwallet2.value.id != walletTo?.id) {
-                        if (walletFrom?.id == oldwallet.value.id) {
-                            walletTo?.let {
-                                walletRepository.editWallet(
-                                    it.copy(
-                                        amount = it.amount + oldAmount.value
-                                    )
-                                )
-                            }
-                            oldwallet2.value?.let {
-                                walletRepository.editWallet(
-                                    it.copy(
-                                        amount = it.amount - oldAmount.value
-                                    )
-                                )
-                            }
-                        } else {
-                            if(walletTo?.id == oldwallet2.value.id){
-                                walletFrom?.let {
-                                    walletRepository.editWallet(
-                                        it.copy(
-                                            amount = it.amount + oldAmount.value
-                                        )
-                                    )
-                                }
-                                oldwallet.value?.let {
-                                    walletRepository.editWallet(
-                                        it.copy(
-                                            amount = it.amount - oldAmount.value
-                                        )
-                                    )
-                                }
-                            } else {
-                                if(walletTo?.id == oldwallet2.value.id){
-                                    oldwallet.value?.let {
-                                        walletRepository.editWallet(
-                                            it.copy(
-                                                amount = it.amount + oldAmount.value
-                                            )
-                                        )
-                                    }
-                                    walletFrom?.let {
-                                        walletRepository.editWallet(
-                                            it.copy(
-                                                amount = it.amount - oldAmount.value
-                                            )
-                                        )
-                                    }
-                                } else {
-                                    if (walletTo?.id != oldwallet2.value.id && walletFrom?.id != oldwallet.value.id) {
-                                        oldwallet.value.let {
-                                            walletRepository.editWallet(
-                                                it.copy(
-                                                    amount = it.amount + oldAmount.value
-                                                )
-                                            )
-                                        }
-
-                                        oldwallet2.value.let {
-                                            walletRepository.editWallet(
-                                                it.copy(
-                                                    amount = it.amount - oldAmount.value
-                                                )
-                                            )
-                                        }
-
-                                        walletFrom?.let {
-                                            walletRepository.editWallet(
-                                                it.copy(
-                                                    amount = it.amount - transfer.amount - transfer.fee
-                                                )
-                                            )
-                                        }
-
-                                        walletTo?.let {
-                                            walletRepository.editWallet(
-                                                it.copy(
-                                                    amount = it.amount + transfer.amount
-                                                )
-                                            )
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
+                    walletFrom?.let {
+                        walletRepository.editWallet(it.copy(
+                            amount = it.amount - transfer.amount - transfer.fee
+                        ))
+                    }
+                    walletTo?.let {
+                        walletRepository.editWallet(it.copy(
+                            amount = it.amount + transfer.amount
+                        ))
                     }
 
                 }

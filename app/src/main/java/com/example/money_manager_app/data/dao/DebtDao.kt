@@ -49,7 +49,7 @@ interface DebtDao {
         minAmount : Double?,
         maxAmount : Double?,
         description : String?,
-        categoryType: Int?,
+        categoryType: Long?,
         fromWallet : Long?,
         idAccount : Long
     ): List<Debt>
