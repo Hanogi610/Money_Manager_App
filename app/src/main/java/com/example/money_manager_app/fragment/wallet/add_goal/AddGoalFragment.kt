@@ -71,6 +71,7 @@ class AddGoalFragment :
                 getVM().saveGoal(
                     null, mainViewModel.currentAccount.value!!.account.id, targetDate, colorId
                 )
+                appNavigation.navigateUp()
             }
         }
     }

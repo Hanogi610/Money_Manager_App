@@ -17,6 +17,7 @@ import com.example.money_manager_app.data.model.entity.Goal
 import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 import com.example.money_manager_app.databinding.FragmentAddGoalTransactionBinding
+import com.example.money_manager_app.fragment.wallet.goal_detail.GoalDetailFragment
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.utils.toTimeTimestamp
@@ -33,6 +34,7 @@ class AddGoalTransactionFragment :
     private val mainViewModel: MainViewModel by activityViewModels()
     private var goal: Goal? = null
     private var goalTransaction: GoalTransaction? = null
+    private var inputType: GoalInputType ? = GoalInputType.DEPOSIT
     private val calendar = Calendar.getInstance()
 
     override fun getVM(): AddGoalTransactionViewModel {
@@ -46,6 +48,7 @@ class AddGoalTransactionFragment :
         arguments?.let {
             goal = it.getParcelable("goal")
             goalTransaction = it.getParcelable("goalTransaction")
+            inputType = it.getParcelable(GoalDetailFragment.GOAL_ACTION_TYPE)
         }
     }
 
@@ -94,37 +97,37 @@ class AddGoalTransactionFragment :
     override fun initToolbar() {
         super.initToolbar()
 
-        binding.backButton.setOnClickListener {
+        binding.backButton.setOnSafeClickListener {
             appNavigation.navigateUp()
         }
 
-        binding.saveButton.setOnClickListener {
+        binding.saveButton.setOnSafeClickListener {
             val amount = binding.etAmount.text.toString().toDoubleOrNull() ?: 0.0
             val date = binding.etDate.text.toString().toDateTimestamp()
             val time = binding.etTime.text.toString().toTimeTimestamp()
             val wallet = mainViewModel.accounts.value.flatMap { it -> it.walletItems }
                 .find { it.wallet.name == binding.spinnerWallet.selectedItem.toString() }!!.wallet.id
-            val inputType = GoalInputType.valueOf(binding.spinnerActionType.selectedItem.toString())
+            val _inputType = GoalInputType.valueOf(binding.spinnerActionType.selectedItem.toString())
 
-            // Create or update transaction
             val goalTransaction = goalTransaction?.copy(
-                name = "GOAL $inputType",
+                name = "GOAL $_inputType",
                 amount = amount,
                 date = date,
                 time = time,
                 walletId = wallet,
-                type = inputType
+                type = _inputType
             ) ?: GoalTransaction(
-                name = "GOAL $inputType",
+                name = "GOAL $_inputType",
                 amount = amount,
-                date = date,
-                time = time,
+                date = System.currentTimeMillis(),
+                time = System.currentTimeMillis(),
                 walletId = wallet,
                 type = inputType,
                 accountId = mainViewModel.currentAccount.value!!.account.id,
                 goalId = goal!!.id
             )
 
+            Log.d("hoangph", "saveButton() called: $goalTransaction")
             if(goalTransaction.amount <= 0 || goalTransaction.name.isEmpty()){
                 Toast.makeText(requireActivity(),getString(R.string.blank_input),
                     Toast.LENGTH_SHORT).show()

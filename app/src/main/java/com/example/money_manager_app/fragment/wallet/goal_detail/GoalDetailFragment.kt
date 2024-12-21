@@ -13,6 +13,7 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Goal
+import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentGoalDetailBinding
@@ -135,5 +136,23 @@ class GoalDetailFragment :
             }
             alert.show()
         }
+        binding.depositWrapper.setOnSafeClickListener {
+            val goalToSend = getVM().goal.value?.goal ?: goal
+            appNavigation.openGoalDetailToAddGoalTransactionScreen(Bundle().apply {
+                putParcelable(GOAL_ACTION_TYPE,GoalInputType.DEPOSIT)
+                putParcelable("goal", goalToSend)
+            })
+        }
+        binding.withdrawWrapper.setOnSafeClickListener {
+            val goalToSend = getVM().goal.value?.goal ?: goal
+            appNavigation.openGoalDetailToAddGoalTransactionScreen(Bundle().apply {
+                putParcelable(GOAL_ACTION_TYPE,GoalInputType.WITHDRAW)
+                putParcelable("goal", goalToSend)
+            })
+        }
+    }
+
+    companion object{
+        const val GOAL_ACTION_TYPE = "GOAL_ACTION_TYPE"
     }
 }

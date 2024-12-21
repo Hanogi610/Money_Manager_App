@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.AccountWithWalletItem
-import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.databinding.AccountItemBinding
 
@@ -41,7 +40,7 @@ class AccountAdapter(
             var balance = 0.0
             for (walletItem in account.walletItems) {
                 if (walletItem.wallet.walletType == WalletType.GENERAL && walletItem.wallet.isExcluded == false) {
-                    balance += walletItem.currentAmount
+                    balance += walletItem.endingAmount
                 }
             }
             binding.accountBalance.text = if(!isBalanceHidden) context.getString(R.string.money_amount, currencySymbol , balance) else context.getString(R.string.hidden_balance)
