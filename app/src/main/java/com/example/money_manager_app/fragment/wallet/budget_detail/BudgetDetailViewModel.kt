@@ -39,7 +39,6 @@ class BudgetDetailViewModel @Inject constructor(
         viewModelScope.launch {
             budgetRepository.getBudgetsByAccountId(accountId).collect {
                 _budgetsWithCategory.value = it
-
             }
         }
     }

@@ -106,14 +106,6 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun getStats(listTransaction: List<Transaction>){
-        for(transaction in listTransaction){
-            println("hello11" + " "+transaction.amount)
-            println("hello11" + " "+transaction.date)
-            println("hello11" + " "+transaction.id)
-            println("hello11" + " "+transaction.walletId)
-            println("hello11" + " "+transaction.accountId)
-            println("hello11" + " "+transaction.iconId)
-        }
         var categoryList = categoryRepository.getAllCategory()
         var listStatsIncome = mutableListOf<Stats>()
         var listStatsExpense: MutableList<Stats> = mutableListOf()

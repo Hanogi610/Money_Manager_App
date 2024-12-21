@@ -16,6 +16,10 @@
     <string name="enter_description">输入描述</string>
     <string name="amount">金额</string>
     <string name="enter_amount">输入金额</string>
+    <string name="all_category">所有类别</string>
+    <string name="all_wallet">选择类别</string>
+    <string name="calculator">输入金额</string>
+
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
     <string name="min_amount">最小金额</string>

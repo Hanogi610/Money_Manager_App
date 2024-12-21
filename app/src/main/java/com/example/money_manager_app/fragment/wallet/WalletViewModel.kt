@@ -8,6 +8,7 @@ import com.example.money_manager_app.data.model.entity.BudgetWithCategory
 import com.example.money_manager_app.data.model.entity.DebtDetail
 import com.example.money_manager_app.data.model.entity.GoalDetail
 import com.example.money_manager_app.data.model.entity.Wallet
+import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.data.repository.BudgetRepository
 import com.example.money_manager_app.data.repository.DebtRepository
 import com.example.money_manager_app.data.repository.GoalRepository
@@ -62,11 +63,70 @@ class WalletViewModel @Inject constructor(
         }
     }
 
+    fun updatePeriodBudget(startDate: Long, endDate: Long, today: Long, periodType: PeriodType): Pair<Long, Long> {
+        if (endDate < today) {
+            val diffInMillis = today - endDate
+            val diffInDays = diffInMillis / (1000 * 60 * 60 * 24)
+
+            when (periodType) {
+                PeriodType.WEEKLY -> {
+                    val weeksPassed = diffInDays / 7
+                    var newStartDate = endDate
+                    val calendarNew = Calendar.getInstance()
+                    calendarNew.timeInMillis = newStartDate
+                    calendarNew.add(Calendar.WEEK_OF_YEAR, weeksPassed.toInt())
+                    newStartDate = calendarNew.timeInMillis
+                    calendarNew.add(Calendar.WEEK_OF_YEAR, 1)
+                    val newEndDate = calendarNew.timeInMillis
+                    return Pair(newStartDate, newEndDate)
+                }
+                PeriodType.MONTHLY -> {
+                    val monthsPassed = diffInDays / 30
+                    var newStartDate = endDate
+                    val calendarNew = Calendar.getInstance()
+                    calendarNew.timeInMillis = newStartDate
+                    calendarNew.add(Calendar.MONTH, monthsPassed.toInt())
+                    newStartDate = calendarNew.timeInMillis
+                    calendarNew.add(Calendar.MONTH, 1)
+                    val newEndDate = calendarNew.timeInMillis
+                    return Pair(newStartDate, newEndDate)
+                }
+                PeriodType.YEARLY -> {
+                    val yearsPassed = diffInDays / 365
+                    var newStartDate = endDate
+                    val calendarNew = Calendar.getInstance()
+                    calendarNew.timeInMillis = newStartDate
+                    calendarNew.add(Calendar.YEAR, yearsPassed.toInt())
+                    newStartDate = calendarNew.timeInMillis
+                    calendarNew.add(Calendar.YEAR, 1)
+                    val newEndDate = calendarNew.timeInMillis
+                    return Pair(newStartDate, newEndDate)
+                }
+            }
+        }
+        return Pair(startDate, endDate)
+    }
+
+
     fun checkBudgetNeedUpdate(accountId: Long) {
         viewModelScope.launch(ioDispatcher) {
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val calendarToday = Calendar.getInstance()
             val todayDate = dateFormat.format(calendarToday.time).toDateTimestamp()
+            val listBudget = budgetRepository.getAllBudgets(accountId)
+            if (listBudget.isEmpty()) {
+                for (item in listBudget) {
+                    if (item.endDate < todayDate) {
+                        val start_date = item.startDate
+                        val end_date = item.endDate
+                        val periodType = item.periodType
+                        val newPeriod = updatePeriodBudget(start_date, end_date, todayDate, periodType)
+                        val newStartDate = newPeriod.first
+                        val newEndDate = newPeriod.second
+                        budgetRepository.editBudget(item.copy(startDate = newStartDate, endDate = newEndDate))
+                    }
+                }
+            }
             val budgets = budgetRepository.getBudgetsByAccountIdAndDate(accountId, todayDate)
             for (item in budgets) {
                 var spent = 0.0

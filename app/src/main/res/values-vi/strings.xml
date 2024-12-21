@@ -26,6 +26,11 @@
     <string name="choose_a_name_for_your_account">Chọn tên cho tài khoản của bạn.</string>
     <string name="name">Tên</string>
     <string name="next">Tiếp theo</string>
+    <string name="all_category">Tất cả các danh mục</string>
+    <string name="all_wallet">Chọn danh mục</string>
+    <string name="calculator">Nhập số tiền</string>
+    <string name="Memo">Ghi chú</string>
+
     <string name="select_currency">Chọn tiền tệ</string>
     <string name="favorite_currency_prompt">Đơn vị tiền tệ yêu thích của bạn là gì?</string>
     <string name="skip">Bỏ qua</string>

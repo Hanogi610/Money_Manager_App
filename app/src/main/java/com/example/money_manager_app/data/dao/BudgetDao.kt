@@ -23,6 +23,9 @@ interface BudgetDao {
     @Delete
     fun deleteBudget(budget: Budget)
 
+    @Query("SELECT * FROM budget WHERE budget_id = :id")
+    fun getAllBudgets(id : Long): List<Budget>
+
     @Query("DELETE FROM budget WHERE budget_id = :id")
     fun deleteBudget(id: Long)
 
