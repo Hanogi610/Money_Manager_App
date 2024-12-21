@@ -28,7 +28,7 @@ import com.example.money_manager_app.utils.toFormattedTimeString
 class TransactionAdapter(
     private val context: Context,
     private val currencySymbol: String,
-    private val wallets: List<Wallet>,
+    private val wallets: List<Wallet>?,
     private val categories: List<Category>? = null,
     private val onTransactionClick: (Transaction) -> Unit = {}
 ) : ListAdapter<TransactionListItem, RecyclerView.ViewHolder>(TransactionListItemDiffCallback()) {
@@ -192,7 +192,7 @@ class TransactionAdapter(
                 }
             }
             binding.transactionTime.text = transaction.time.toFormattedTimeString()
-            binding.walletName.text = wallets.find { it.id == transaction.walletId }?.name
+            binding.walletName.text = wallets?.find { it.id == transaction.walletId }?.name ?: ""
             binding.root.setOnSafeClickListener {
                 onTransactionClick(transaction)
             }

@@ -24,7 +24,7 @@ interface DebtDao {
 
 
     @Query("SELECT * FROM debt WHERE id = :debtId")
-    fun getDebtDetailsByDebtId(debtId: Long): Flow<DebtDetail>
+    fun getDebtDetailsByDebtId(debtId: Long): Flow<DebtDetail?>
 
     @Query("SELECT * FROM debt WHERE account_id = :accountId AND wallet_id = :walletId AND date BETWEEN :startDay AND :endDay")
     fun getDebtByWalletAndDayStartAndDayEnd(accountId: Long, walletId: Long, startDay : Long, endDay : Long): List<Debt>

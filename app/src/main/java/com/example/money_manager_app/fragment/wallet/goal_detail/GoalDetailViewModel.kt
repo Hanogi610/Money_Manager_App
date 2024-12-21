@@ -31,7 +31,7 @@ class GoalDetailViewModel @Inject constructor(
         viewModelScope.launch {
             goalRepository.getGoalById(goalId).collect {
                 _goal.value = it
-                it.let {
+                it?.let {
                     _goalDetailItem.value = convertGoalDetailToGoalDetailItem(it)
                 }
             }

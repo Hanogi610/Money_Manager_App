@@ -38,7 +38,7 @@ class EntertainmentFragment : BaseFragmentNotRequireViewModel<FragmentEntertainm
         transactionAdapter = TransactionAdapter(
             requireContext(),
             currencySymbol,
-            mainViewModel.currentAccount.value!!.walletItems.map { it.toWallet() },
+            mainViewModel.currentAccount.value!!.walletItems?.map { it.toWallet() } ?: emptyList(),
             mainViewModel.categories.value
         ) {
             val bundle = bundleOf("transaction" to it)

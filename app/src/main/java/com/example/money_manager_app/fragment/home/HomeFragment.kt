@@ -42,7 +42,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
         currencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
-        val wallets = mainViewModel.currentAccount.value!!.walletItems.map { it.toWallet() }
+        val wallets = mainViewModel.currentAccount.value!!.walletItems?.map { it.toWallet() }
         transactionAdapter = TransactionAdapter(
             requireContext(),
             currencySymbol,

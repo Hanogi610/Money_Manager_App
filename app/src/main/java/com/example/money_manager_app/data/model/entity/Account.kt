@@ -22,5 +22,5 @@ data class AccountWithWallet(
         parentColumn = "id",
         entityColumn = "account_id"
     )
-    val wallets: List<Wallet>
+    val wallets: List<Wallet>?
 )

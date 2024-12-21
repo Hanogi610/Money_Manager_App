@@ -243,26 +243,39 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
     return groupedList.reversed()
 }
 
-fun List<Transaction>.calculateCurrentWalletAmount(walletId: Long,startDate: Long? = null, endDate: Long = System.currentTimeMillis()): DateRangeAmount {
+fun List<Transaction>.calculateCurrentWalletAmount(
+    walletId: Long,
+    startDate: Long? = null,
+    endDate: Long = System.currentTimeMillis()
+): DateRangeAmount {
     val filteredList = this.filter { transaction ->
-        val isInStartDateRange = startDate?.let { transaction.date >= it } ?: true
+        val isInStartDateRange = startDate?.let { transaction.date > it } ?: true
         val isInEndDateRange = endDate.let { transaction.date <= it }
-
         isInStartDateRange && isInEndDateRange
-    }
+    }.sortedBy { it.date }
 
     val startingList = this.filter { transaction ->
-        startDate?.let { transaction.date < it } ?: true
-    }
+        startDate?.let { transaction.date <= it } ?: true
+    }.sortedBy { it.date }
 
     val startingAmount = startingList.calculateAmount(walletId)
-    val endingAmount = startingAmount + filteredList.calculateAmount(walletId)
+
+    var endingAmount = 0.0
+
+    if (filteredList.isNotEmpty()) {
+        endingAmount += if (startingList.isNotEmpty() && startingList.last().date <= filteredList.first().date) {
+            filteredList.calculateAmount(walletId)
+        } else{
+            startingAmount
+        }
+    }
 
     return DateRangeAmount(
         startingAmount = startingAmount,
         endingAmount = endingAmount
     )
 }
+
 
 fun List<Transaction>.calculateAmount(walletId: Long) : Double{
     var amount = 0.0

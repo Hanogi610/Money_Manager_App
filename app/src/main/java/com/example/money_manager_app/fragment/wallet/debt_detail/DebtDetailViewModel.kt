@@ -34,7 +34,7 @@ class DebtDetailViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             debtRepository.getDebtDetailsByDebtId(debtId).collect { debtDetail ->
                 _debtInfo.value = debtDetail
-                debtDetail.let {
+                debtDetail?.let {
                     _debtDetailItem.value = convertDebtDetailToDebtDetailItem(it)
                 }
             }

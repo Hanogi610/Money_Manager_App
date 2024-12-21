@@ -38,9 +38,11 @@ class AccountAdapter(
             binding.accountName.text = account.account.nameAccount
             val currencySymbol = context.getString(account.account.currency.symbolRes)
             var balance = 0.0
-            for (walletItem in account.walletItems) {
-                if (walletItem.wallet.walletType == WalletType.GENERAL && walletItem.wallet.isExcluded == false) {
-                    balance += walletItem.endingAmount
+            account.walletItems?.let {
+                for (walletItem in it) {
+                    if (walletItem.wallet.walletType == WalletType.GENERAL && walletItem.wallet.isExcluded == false) {
+                        balance += walletItem.endingAmount
+                    }
                 }
             }
             binding.accountBalance.text = if(!isBalanceHidden) context.getString(R.string.money_amount, currencySymbol , balance) else context.getString(R.string.hidden_balance)

@@ -11,7 +11,7 @@ interface GoalRepository {
     suspend fun updateGoal(goal: Goal): Int
     suspend fun deleteGoal(goal: Goal)
     suspend fun deleteGoalById(id: Long)
-    fun getGoalById(id: Long): Flow<GoalDetail>
+    fun getGoalById(id: Long): Flow<GoalDetail?>
     fun getAllGoals(): Flow<List<GoalDetail>>
     fun getGoalsByAccountId(accountId: Long): Flow<List<GoalDetail>>
 }
@@ -35,7 +35,7 @@ class GoalRepositoryImpl @Inject constructor(
         goalDao.deleteGoalById(id)
     }
 
-    override fun getGoalById(id: Long): Flow<GoalDetail> {
+    override fun getGoalById(id: Long): Flow<GoalDetail?> {
         return goalDao.getGoalById(id)
     }
 

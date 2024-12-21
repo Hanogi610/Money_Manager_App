@@ -140,14 +140,14 @@ class GoalDetailFragment :
             val goalToSend = getVM().goal.value?.goal ?: goal
             appNavigation.openGoalDetailToAddGoalTransactionScreen(Bundle().apply {
                 putParcelable(GOAL_ACTION_TYPE,GoalInputType.DEPOSIT)
-                putParcelable("goal", goalToSend)
+                putLong("goal", goalToSend?.id ?: 0)
             })
         }
         binding.withdrawWrapper.setOnSafeClickListener {
             val goalToSend = getVM().goal.value?.goal ?: goal
             appNavigation.openGoalDetailToAddGoalTransactionScreen(Bundle().apply {
                 putParcelable(GOAL_ACTION_TYPE,GoalInputType.WITHDRAW)
-                putParcelable("goal", goalToSend)
+                putLong("goal", goalToSend?.id ?: 0)
             })
         }
     }

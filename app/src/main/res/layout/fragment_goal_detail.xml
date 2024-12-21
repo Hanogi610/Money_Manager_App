@@ -30,7 +30,7 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/debt"
+                android:text="@string/goal"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textStyle="bold"

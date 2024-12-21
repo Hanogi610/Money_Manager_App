@@ -1,5 +1,6 @@
 package com.example.money_manager_app.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -68,7 +69,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             accountRepository.getAccount().collect {
                 _accounts.value = it
-//                Log.d("hoangph", "getAccount() called: $it")
+                Log.d("hoangph", "getAccount() called: $it")
             }
         }
     }
@@ -134,8 +135,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch(defaultDispatcher) {
             currentAccount.collect {
                 var balance = 0.0
-                it?.let {
-                    for (walletItem in it.walletItems) {
+                it?.walletItems?.let { walletItems ->
+                    for (walletItem in walletItems) {
                         if (walletItem.wallet.walletType == WalletType.GENERAL && walletItem.wallet.isExcluded == false) {
                             balance += walletItem.endingAmount
                         }
