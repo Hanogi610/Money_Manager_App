@@ -15,6 +15,7 @@ class AccountAdapter(
     private val context: Context,
     private val accounts: List<AccountWithWalletItem>,
     private val currentAccount: AccountWithWalletItem,
+    private val isBalanceHidden : Boolean = false,
     private val onAccountSelected: (AccountWithWalletItem) -> Unit
 ) : RecyclerView.Adapter<AccountAdapter.AccountViewHolder>() {
 
@@ -43,7 +44,7 @@ class AccountAdapter(
                     balance += walletItem.currentAmount
                 }
             }
-            binding.accountBalance.text = context.getString(R.string.money_amount, currencySymbol , balance)
+            binding.accountBalance.text = if(!isBalanceHidden) context.getString(R.string.money_amount, currencySymbol , balance) else context.getString(R.string.hidden_balance)
             binding.checkIcon.visibility = if (isSelect) View.VISIBLE else View.GONE
 
             itemView.setOnClickListener {

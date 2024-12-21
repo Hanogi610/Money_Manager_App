@@ -14,9 +14,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.data.model.AccountWithWalletItem
 import com.example.money_manager_app.data.model.entity.Wallet
 
 import com.example.money_manager_app.databinding.FragmentStatisticBinding
+import com.example.money_manager_app.fragment.main.fragment.AccountSelectorBottomSheet
 import com.example.money_manager_app.fragment.statistic.adapter.StaticInterface
 import com.example.money_manager_app.fragment.statistic.adapter.StatisticAdapter
 import com.example.money_manager_app.fragment.statistic.viewmodel.StatisticViewModel
@@ -33,11 +35,6 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewModel>(R.layout.fragment_statistic),View.OnClickListener,StaticInterface{
-    override fun getVM(): StatisticViewModel {
-        val viewModel: StatisticViewModel by activityViewModels()
-        return viewModel
-    }
-
     private var wallets: List<Wallet> = ArrayList()
     private var date: Date? = null
     private var time : TimeType = TimeType.MONTHLY
@@ -49,6 +46,11 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
         date = CalendarHelper.getInitialDate()
         setUpLayoutContent(date, mainViewModel.currentAccount.value!!.account.id)
 
+    }
+
+    override fun getVM(): StatisticViewModel {
+        val viewModel: StatisticViewModel by activityViewModels()
+        return viewModel
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -273,4 +275,62 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
     }
 
 
+    override fun bindingStateView() {
+        super.bindingStateView()
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.currentAccount.collect {
+                    it?.let {
+                        binding.profileName.text = it.account.nameAccount
+                    }
+                }
+            }
+        }
+    }
+
+    override fun setOnClick() {
+        super.setOnClick()
+
+        binding.profileName.setOnClickListener {
+            mainViewModel.accounts.value.let { accounts ->
+                mainViewModel.currentAccount.value?.let { currentAccount ->
+                    openAccountSelector(accounts, currentAccount)
+                }
+            }
+        }
+
+        binding.dropdownIcon.setOnClickListener {
+            mainViewModel.accounts.value.let { accounts ->
+                mainViewModel.currentAccount.value?.let { currentAccount ->
+                    openAccountSelector(accounts, currentAccount)
+                }
+            }
+        }
+    }
+
+    private fun openAccountSelector(
+        accounts: List<AccountWithWalletItem>, currentAccount: AccountWithWalletItem
+    ) {
+        val accountSelector = AccountSelectorBottomSheet(
+            accounts,
+            currentAccount,
+            { account -> selectAccount(account) },
+            ::addAccount,
+            mainViewModel.hiddenBalance.value ?: false
+        )
+
+        accountSelector.show(parentFragmentManager, "AccountSelectorBottomSheet")
+    }
+
+    private fun selectAccount(account: AccountWithWalletItem) {
+        mainViewModel.setCurrentAccount(account)
+
+    }
+
+    private fun addAccount() {
+        appNavigation.openStatisticScreenToCreateAccountScreen(Bundle().apply {
+            putBoolean("isAddAccount", true)
+        })
+    }
 }

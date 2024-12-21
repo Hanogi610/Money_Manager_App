@@ -35,4 +35,5 @@ interface AppNavigation : BaseNavigator {
     fun openWalletDetailScreenToAddFragmentScreen(bundle: Bundle? = null)
     fun openStatisticScreenToStructureScreen(bundle: Bundle? = null)
     fun openStatisticScreenToTransactionScreen(bundle: Bundle? = null)
+    fun openStatisticScreenToCreateAccountScreen(bundle: Bundle? = null)
 }

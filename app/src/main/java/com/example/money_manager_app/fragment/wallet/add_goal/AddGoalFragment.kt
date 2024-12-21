@@ -3,6 +3,7 @@ package com.example.money_manager_app.fragment.wallet.add_goal
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.money_manager_app.R
@@ -59,13 +60,18 @@ class AddGoalFragment :
             val colorId =
                 colorAdapter.getItem(binding.colorSpinner.selectedItemPosition) ?: R.color.color_1
             goal?.let {
-                getVM().saveGoal(it.id, it.accountId, targetDate, colorId)
+                if(it.amount <= 0 || it.name.isEmpty()){
+                    Toast.makeText(requireActivity(),getString(R.string.blank_input),
+                        Toast.LENGTH_SHORT).show()
+                }else{
+                    getVM().saveGoal(it.id, it.accountId, targetDate, colorId)
+                    appNavigation.navigateUp()
+                }
             } ?: run {
                 getVM().saveGoal(
                     null, mainViewModel.currentAccount.value!!.account.id, targetDate, colorId
                 )
             }
-            appNavigation.navigateUp()
         }
     }
 

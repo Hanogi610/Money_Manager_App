@@ -16,7 +16,8 @@ class AccountSelectorBottomSheet(
     private val accounts: List<AccountWithWalletItem>,
     private val currentAccount: AccountWithWalletItem,
     private val onAccountSelected: (AccountWithWalletItem) -> Unit,
-    private val onAddAccount: () -> Unit
+    private val onAddAccount: () -> Unit,
+    private val isBalanceHidden: Boolean = false
 ) : BaseBottomSheet<AccountSelectionBottomSheetBinding>() {
 
     override fun getLayoutId(): Int {
@@ -31,7 +32,8 @@ class AccountSelectorBottomSheet(
         accountAdapter = AccountAdapter(
             requireContext(),
             accounts,
-            currentAccount
+            currentAccount,
+            isBalanceHidden
         ) { account ->
             onAccountSelected(account)
             dismiss()

@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -139,19 +140,27 @@ class AddDebtFragment :
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().debt.collect { debt ->
                     if (debt != null) {
-                        // Editing an existing debt
                         populateFieldsWithDebtData(debt.debt)
                         binding.saveButton.setOnSafeClickListener {
                             val updatedDebt = buildDebtFromFields(debt.debt.id)
-                            getVM().editDebt(updatedDebt)
-                            findNavController().popBackStack()
+                            if(updatedDebt.amount <= 0 || updatedDebt.name.isEmpty()){
+                                Toast.makeText(requireActivity(),getString(R.string.blank_input),
+                                    Toast.LENGTH_SHORT).show()
+                            }else{
+                                getVM().editDebt(updatedDebt)
+                                appNavigation.navigateUp()
+                            }
                         }
                     } else {
-                        // Adding a new debt
                         binding.saveButton.setOnSafeClickListener {
                             val newDebt = buildDebtFromFields()
-                            getVM().addDebt(newDebt)
-                            findNavController().popBackStack()
+                            if(newDebt.amount < 0 || newDebt.name.isEmpty()){
+                                Toast.makeText(requireActivity(),getString(R.string.blank_input),
+                                    Toast.LENGTH_SHORT).show()
+                            }else{
+                                getVM().addDebt(newDebt)
+                                appNavigation.navigateUp()
+                            }
                         }
                     }
                 }
@@ -210,7 +219,7 @@ class AddDebtFragment :
         return Debt(
             id = debtId ?: 0, // Use existing debt id if editing, otherwise 0 for new debt
             name = binding.editTextName.text.toString(),
-            amount = binding.editTextAmount.text.toString().replace(",", ".").toDouble(),
+            amount = binding.editTextAmount.text.toString().replace(",", ".").toDoubleOrNull() ?: 0.0,
             accountId = mainViewModel.currentAccount.value!!.account.id, // Set the account ID as needed
             type = DebtType.valueOf(binding.spinnerDebtType.selectedItem.toString()),
             date = binding.dateTextView.text.toString().toDateTimestamp(),

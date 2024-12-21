@@ -49,7 +49,7 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
         setAdapter()
         observeData()
         setupBackButton()
-        deletButton()
+        deleteButton()
         editButton()
     }
 
@@ -62,7 +62,7 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
         }
     }
 
-    private fun deletButton() {
+    private fun deleteButton() {
         binding.deleteButton.setOnClickListener {
             if(budget != null){
                 val AlertDialogBinding = AlertDialogBinding.inflate(layoutInflater)

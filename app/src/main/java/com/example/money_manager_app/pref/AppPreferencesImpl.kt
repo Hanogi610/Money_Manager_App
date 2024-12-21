@@ -96,6 +96,12 @@ class AppPreferencesImpl @Inject constructor(
         put(Constants.Preferences.PREF_PARAM_CURRENT_ACCOUNT, accountId)
     }
 
-    override fun getCurrentAccount(): Long = get(Constants.Preferences.PREF_PARAM_CURRENT_ACCOUNT, 0L) 
+    override fun getCurrentAccount(): Long = get(Constants.Preferences.PREF_PARAM_CURRENT_ACCOUNT, 0L)
+
+    override fun getHiddenBalance(): Boolean = get(Constants.Preferences.PREF_HIDDEN_BALANCE, false)
+
+    override fun setHiddenBalance(hidden: Boolean){
+        put(Constants.Preferences.PREF_HIDDEN_BALANCE, hidden)
+    }
 
 }

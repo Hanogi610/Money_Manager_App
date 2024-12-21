@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,9 +16,11 @@ import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
+import com.example.money_manager_app.data.model.entity.enums.Currency
 import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentHomeBinding
+import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,6 +30,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
     private lateinit var transactionAdapter: TransactionAdapter
     private val mainViewModel: MainViewModel by activityViewModels()
+    private var currencySymbol: String = ""
 
     override fun getVM(): HomeViewModel {
         val vm: HomeViewModel by viewModels()
@@ -36,7 +40,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
-        val currencySymbol =
+        currencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
         val wallets = mainViewModel.currentAccount.value!!.walletItems.map { it.toWallet() }
         transactionAdapter = TransactionAdapter(
@@ -66,24 +70,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
     override fun bindingStateView() {
         super.bindingStateView()
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.currentAccount.collect {
-                    var balance = 0.0
-                    it?.let {
-                        for (walletItem in it.walletItems) {
-                            if (walletItem.wallet.walletType == WalletType.GENERAL && walletItem.wallet.isExcluded == false) {
-                                balance += walletItem.currentAmount
-                            }
-                        }
-                        val currencySymbol =
-                            mainViewModel.currentAccount.value?.account?.currency?.symbolRes?.let {
-                                getString(it)
-                            } ?: ""
-                        binding.balanceAmount.text =
-                            getString(R.string.money_amount, currencySymbol, balance)
-                    }
-                }
+
+            mainViewModel.currentBalance.observe(viewLifecycleOwner) {
+                binding.balanceAmount.text = if (!isHidden)
+                    getString(
+                        R.string.money_amount,
+                        currencySymbol,
+                        it
+                    ) else getString(R.string.hidden_balance)
+
             }
+
         }
 
         lifecycleScope.launch {
@@ -92,6 +89,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
                     transactionAdapter.submitList(it)
                 }
             }
+        }
+
+        mainViewModel.hiddenBalance.observe(viewLifecycleOwner) {
+            binding.eyeIcon.setImageResource(
+                if (!it) R.drawable.eye else R.drawable.closed_eye
+            )
+            binding.balanceAmount.text = if (!it)
+                getString(
+                    R.string.money_amount,
+                    currencySymbol,
+                    mainViewModel.currentBalance.value ?: 0.0
+                ) else getString(R.string.hidden_balance)
+        }
+    }
+
+    override fun setOnClick() {
+        super.setOnClick()
+
+        binding.eyeIcon.setOnSafeClickListener {
+            Log.d("hoangph", "setOnClick() called ${mainViewModel.hiddenBalance.value}")
+            mainViewModel.toggleHiddenBalance()
+            Log.d("hoangph", "setOnClick() called ${mainViewModel.hiddenBalance.value}")
         }
     }
 }

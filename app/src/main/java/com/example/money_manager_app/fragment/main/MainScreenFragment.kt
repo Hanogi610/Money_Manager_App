@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -140,7 +141,8 @@ class MainScreenFragment :
             accounts,
             currentAccount,
             { account -> selectAccount(account) },
-            ::addAccount
+            ::addAccount,
+            mainViewModel.hiddenBalance.value ?: false
         )
 
         accountSelector.show(parentFragmentManager, "AccountSelectorBottomSheet")

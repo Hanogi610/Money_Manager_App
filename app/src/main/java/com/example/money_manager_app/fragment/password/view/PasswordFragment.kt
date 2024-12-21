@@ -8,8 +8,10 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.databinding.FragmentPasswordBinding
@@ -17,6 +19,8 @@ import com.example.money_manager_app.fragment.password.viewmodel.PasswordType
 import com.example.money_manager_app.fragment.password.viewmodel.PasswordViewmodel
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PasswordFragment :
@@ -35,6 +39,7 @@ class PasswordFragment :
         super.initView(savedInstanceState)
 
         numbersInput = mutableListOf(
+            binding.number0,
             binding.number1,
             binding.number2,
             binding.number3,
@@ -142,6 +147,19 @@ class PasswordFragment :
                 }, 1000)
             }
         }
+
+        getVM().inputPasswordCount.observe(viewLifecycleOwner) {
+            if (it in 1..4) {
+                Toast.makeText(requireActivity(), getString(R.string.input_count, 5 - it), Toast.LENGTH_SHORT).show()
+            } else if (it > 4) {
+                Toast.makeText(requireActivity(), getString(R.string.input_count, 5 - it), Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    delay(500)
+                    requireActivity().finish()
+                }
+            }
+        }
+
     }
 
     private fun resetNumberDisplay() {
@@ -154,9 +172,5 @@ class PasswordFragment :
         numberDisplay.forEach {
             it.isActivated = true
         }
-    }
-
-    companion object {
-        private const val TAG = "PasswordFragment"
     }
 }

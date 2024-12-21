@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.example.money_manager_app.R
@@ -98,7 +99,7 @@ class AddGoalTransactionFragment :
         }
 
         binding.saveButton.setOnClickListener {
-            val amount = binding.etAmount.text.toString().toDouble()
+            val amount = binding.etAmount.text.toString().toDoubleOrNull() ?: 0.0
             val date = binding.etDate.text.toString().toDateTimestamp()
             val time = binding.etTime.text.toString().toTimeTimestamp()
             val wallet = mainViewModel.accounts.value.flatMap { it -> it.walletItems }
@@ -124,14 +125,18 @@ class AddGoalTransactionFragment :
                 goalId = goal!!.id
             )
 
-
-            if (goalTransaction.id > 0L) {
-                getVM().addGoalTransaction(goalTransaction)
-            } else {
-                getVM().editGoalTransaction(goalTransaction)
+            if(goalTransaction.amount <= 0 || goalTransaction.name.isEmpty()){
+                Toast.makeText(requireActivity(),getString(R.string.blank_input),
+                    Toast.LENGTH_SHORT).show()
+            }else{
+                if (goalTransaction.id > 0L) {
+                    getVM().addGoalTransaction(goalTransaction)
+                } else {
+                    getVM().editGoalTransaction(goalTransaction)
+                }
+                appNavigation.navigateUp()
             }
 
-            appNavigation.navigateUp()
         }
     }
 
