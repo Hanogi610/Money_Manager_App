@@ -63,7 +63,8 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
             wallets = listOf(wallet)
             statisticAdapter.setTitle(wallet.name)
         } else {
-            wallets = mainViewModel.currentAccount.value!!.walletItems.map { it.wallet }
+            wallets  = mainViewModel.currentAccount.value!!.walletItems.map { it.wallet }
+            wallets = wallets.filter { it.isExcluded != true }
             statisticAdapter.setTitle("Balance")
         }
         setBalance()

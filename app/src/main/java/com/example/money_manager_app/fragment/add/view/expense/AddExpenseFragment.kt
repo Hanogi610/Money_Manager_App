@@ -262,6 +262,8 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         }
         var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.iconId ?: 0
         var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.id ?: 0L
+        Log.d("AddExpenseFragment", "onSaveExpense: $iconId")
+        Log.d("AddExpenseFragment", "onSaveExpense: $id_category")
         if (amountText.isNotEmpty() && fromWallet != 0L && iconId != 0 && id_category != 0L) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()

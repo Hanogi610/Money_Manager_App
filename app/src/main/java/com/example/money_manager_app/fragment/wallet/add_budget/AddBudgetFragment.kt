@@ -327,7 +327,9 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                 if (budgetEdit != null) {
                     budget.id = budgetEdit?.id ?: 0
                     budget.spent = budgetEdit?.spent ?: 0
-                    getVM().editBudget(budget)
+                    getVM().editBudget(budget,
+                        mainViewModel.categories.value,
+                        categoryViewModel.categories.value ?: emptyList())
                     findNavController().popBackStack()
                 } else {
 

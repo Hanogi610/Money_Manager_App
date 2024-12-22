@@ -14,6 +14,7 @@ import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.data.repository.BudgetRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
+import com.example.money_manager_app.utils.CategoryUtils.listCategory
 import com.example.money_manager_app.utils.toFormattedDateString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -59,6 +60,26 @@ class AddBudgetViewModel @Inject constructor(
         }
         viewModelScope.launch(ioDispatcher) {
             budgetRepository.insertBudget(budget, budgetCategoryCrossRefs)
+        }
+    }
+
+    fun editBudget(budget: Budget, listCategory: List<Category>,listCategoryData: List<CategoryData.Category>){
+        var budgetCategoryCrossRefs = mutableListOf<BudgetCategoryCrossRef>()
+        if(listCategoryData[0].isCheck){
+            for(i in listCategory.indices){
+                if(listCategory[i].type == CategoryType.EXPENSE){
+                    budgetCategoryCrossRefs.add(BudgetCategoryCrossRef(budget.id,listCategory[i].id))
+                }
+            }
+        } else {
+            for(i in listCategoryData){
+                if(i.isCheck){
+                    budgetCategoryCrossRefs.add(BudgetCategoryCrossRef(budget.id,i.icon.toLong()))
+                }
+            }
+        }
+        viewModelScope.launch(ioDispatcher) {
+            budgetRepository.editBudget(budget,budgetCategoryCrossRefs)
         }
     }
 
@@ -117,10 +138,6 @@ class AddBudgetViewModel @Inject constructor(
         return dateFormat.format(calendar.time)
     }
 
-    fun editBudget(budget: Budget){
-        viewModelScope.launch(ioDispatcher) {
-            budgetRepository.editBudget(budget)
-        }
-    }
+
 
 }

@@ -54,9 +54,10 @@ class StructApdapter(
         fun bind(stats : Stats) {
             binding.imageView.setImageResource(stats.categoryDefault)
             binding.nameLabel.text = stats.name
-            binding.amountLabel.text = Helper.getBeautifyAmount(currentCurrencySymbol, stats.amount)
-            binding.transLabel.text = "${1} transactions"
-            binding.detailLabel.text = ""
+            binding.amountLabel.text = context.getString(
+                R.string.negative_money_amount, currentCurrencySymbol, stats.amount)
+            binding.transLabel.text = "${stats.trans} transactions"
+            binding.detailLabel.text = stats.percent.toString() + "%"
         }
     }
 
@@ -134,9 +135,8 @@ class StructApdapter(
         var totalAmount: Double = 0.0
         for (stat in pieStatsList) {
             totalAmount += stat.amount
-            stat.percent = stat.amount / totalAmount
         }
-        val beautifyAmount = Helper.getBeautifyAmount(SharePreferenceHelper.getAccountSymbol(context), totalAmount.toDouble())
+        val beautifyAmount = context.getString(R.string.negative_money_amount, currentCurrencySymbol, totalAmount)
         val spannableString = SpannableString(context.getString(R.string.expense) + "\n" + beautifyAmount)
         spannableString.setSpan(RelativeSizeSpan(1.0f), 0, spannableString.length - beautifyAmount.length, 0)
         return spannableString
@@ -148,7 +148,7 @@ class StructApdapter(
 
             val stat = pieStatsList.find { it.name == selectedLabel }
             val totalAmount = stat?.amount ?: 0.0
-            val beautifyAmount = Helper.getBeautifyAmount(SharePreferenceHelper.getAccountSymbol(context), totalAmount.toDouble())
+            val beautifyAmount = context.getString(R.string.negative_money_amount, currentCurrencySymbol, totalAmount)
             val spannableString = SpannableString( selectedLabel + "\n" + beautifyAmount)
             spannableString.setSpan(RelativeSizeSpan(1.0f), 0, spannableString.length - beautifyAmount.length, 0)
             pieChart?.centerText =  spannableString

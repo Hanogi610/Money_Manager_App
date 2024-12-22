@@ -108,6 +108,7 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
             getVM().budgetsWithCategory.collect {
                 val budgetWithCategory = it.find { it.budget.id == budget!!.id }
                 budgetWithCategory?.let { bwc ->
+                    binding.budgetLabel.text = "${getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)}${bwc.budget.amount}"
                     category = bwc.categories.joinToString(", ") { it.name }
                     if (bwc.categories.size == categoryViewModel.listCategory.value.filter { it.type == CategoryType.EXPENSE }.size) {
                         category = "All Category"

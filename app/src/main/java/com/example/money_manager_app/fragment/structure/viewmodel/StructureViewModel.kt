@@ -136,20 +136,18 @@ class StructureViewModel @Inject constructor(
                 }
 
                 is Debt -> {
-                    for(stats in listStatsIncome){
-                        if(DebtType.PAYABLE == transaction.type){
-                            for (stats in listStatsIncome){
-                                if(stats.type == CategoryType.PAYABLE){
-                                    stats.amount += transaction.amount
-                                    stats.trans++
-                                }
+                    if(transaction.type == DebtType.RECEIVABLE) {
+                        for (stats in listStatsExpense) {
+                            if (stats.type == CategoryType.RECEIVABLE) {
+                                stats.amount += transaction.amount
+                                stats.trans++
                             }
-                        } else {
-                            for (stats in listStatsExpense){
-                                if(stats.type == CategoryType.RECEIVABLE){
-                                    stats.amount += transaction.amount
-                                    stats.trans++
-                                }
+                        }
+                    }
+                    if(transaction.type == DebtType.PAYABLE) {
+                        for (stats in listStatsIncome) {
+                            if (stats.type == CategoryType.PAYABLE) {
+                                stats.amount += transaction.amount
                             }
                         }
                     }

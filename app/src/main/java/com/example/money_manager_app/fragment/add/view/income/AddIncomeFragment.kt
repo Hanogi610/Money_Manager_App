@@ -258,9 +258,9 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
         } catch (e: Exception) {
             fromWallet = 0L
         }
-        var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.iconId ?: 0
-        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.id ?: 0
-        if (amountText.isNotEmpty() && iconId != 0 && id_category != 0L && fromWallet != 0L) {
+        var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.iconId ?: -1
+        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.id ?: -1
+        if (amountText.isNotEmpty() && iconId != 0 && id_category != -1L && fromWallet != -1L) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()
             val time = binding.etTime.text.toString()
