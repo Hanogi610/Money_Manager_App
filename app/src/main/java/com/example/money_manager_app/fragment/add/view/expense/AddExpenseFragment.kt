@@ -58,8 +58,6 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         selectWallet()
         selectCategory()
         getVM().getDateTime()
-        Log.d("AddExpenseFragment", "initView: ${getVM().currentDateTime.value.first}")
-        Log.d("AddExpenseFragment", "initView: ${getVM().currentDateTime.value.second}")
     }
 
     fun setAmount(){
@@ -264,6 +262,8 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         }
         var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.iconId ?: 0
         var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.id ?: 0L
+        Log.d("AddExpenseFragment", "onSaveExpense: $iconId")
+        Log.d("AddExpenseFragment", "onSaveExpense: $id_category")
         if (amountText.isNotEmpty() && fromWallet != 0L && iconId != 0 && id_category != 0L) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()
@@ -297,7 +297,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
                 id_category,
                 memo
             )
-            getVM().saveIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf())
+            getVM().saveIncomeAndExpense(transfer)
             getVM().onCleared()
             addViewModel.onCleared()
             findNavController().popBackStack()
@@ -353,7 +353,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
                 id_category,
                 memo
             )
-            getVM().editIncomeAndExpense(transfer, mainViewModel.currentAccount.value?.walletItems?.map { it.toWallet() } ?: listOf())
+            getVM().editIncomeAndExpense(transfer)
             getVM().onCleared()
             addViewModel.onCleared()
             findNavController().popBackStack()

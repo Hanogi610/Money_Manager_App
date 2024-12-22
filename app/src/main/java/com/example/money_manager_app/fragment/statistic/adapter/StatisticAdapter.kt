@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,8 +35,8 @@ class StatisticAdapter(
     private val onClickPie: () -> Unit,
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),OnChartValueSelectedListener  {
 
-    private var openingBalance = 0.0
-    private var endingBalance =0.0
+    private var openingBalance : Double = 0.0
+    private var endingBalance : Double =0.0
     private var pieChart: PieChart? = null
     private var title: String = "Title"
     private var summary: CalendarSummary = CalendarSummary(0.0, 0.0)
@@ -45,7 +46,7 @@ class StatisticAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(openingBalance: Double, endingBalance: Double, title : String) {
             binding.openingLabel.text = "${currentCurrencySymbol} ${openingBalance}"
-            binding.endingLabel.text = "${currentCurrencySymbol} ${endingBalance}"
+            binding.endingLabel.text = context.getString(R.string.money_amount, currentCurrencySymbol, endingBalance)
             binding.titleLabel.text = title
         }
     }
@@ -116,8 +117,6 @@ class StatisticAdapter(
                     listStats.add(Stats("Other", Color.GRAY, 0, totalAmount, 0.0, 0, 0, pieStatsList[0].type, 0, false))
 
                     for (i in listStats.indices) {
-                        println("hello" + i)
-                        println("hello" + listStats[i])
                         pieStatViews[i].visibility = View.VISIBLE
                         pieStatViewColors[i].setBackgroundColor(listStats[i].color)
                         pieStatLabels[i].text = listStats[i].name
@@ -218,7 +217,7 @@ class StatisticAdapter(
         val data = PieData(dataSet)
         data.setDrawValues(false)
         data.setValueTextSize(14.0f)
-        data.setValueFormatter(PercentFormatter())
+        data.setValueFormatter(PercentFormatter(pieChart))
         data.setValueTextColor(Color.WHITE)
         pieChart.data = data
     }
@@ -233,7 +232,6 @@ class StatisticAdapter(
         var totalAmount: Double = 0.0
         for (stat in pieStatsList) {
             totalAmount += stat.amount
-            stat.percent = stat.amount / totalAmount
         }
         val  beautifyAmount = totalAmount.toString()
         val spannableString = SpannableString(context.getString(R.string.expense) + "\n" + beautifyAmount)

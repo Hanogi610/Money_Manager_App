@@ -2,7 +2,7 @@ package com.example.money_manager_app.data.model
 
 import com.example.money_manager_app.data.model.entity.enums.CategoryType
 
-class Stats(
+data class Stats(
     var name: String,
     var color: Int,
     var icon: Long,

@@ -16,6 +16,10 @@
     <string name="enter_description">输入描述</string>
     <string name="amount">金额</string>
     <string name="enter_amount">输入金额</string>
+    <string name="all_category">所有类别</string>
+    <string name="all_wallet">选择类别</string>
+    <string name="calculator">输入金额</string>
+
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
     <string name="min_amount">最小金额</string>
@@ -23,6 +27,7 @@
     <string name="apply">应用</string>
     <string name="cancel">取消</string>
     <string name="add_account">添加账户</string>
+    <string name="blank_input">某些字段无效，请在保存前输入有效值</string>
     <string name="choose_a_name_for_your_account">为您的账户选择一个名称。</string>
     <string name="name">名称</string>
     <string name="next">下一步</string>
@@ -150,4 +155,5 @@
     <string name="credit_limit">信用额度</string>
     <string name="expense">开支</string>
     <string name="received">已收到</string>
+    <string name="input_count">在应用程序被解雇之前，您有 %1$d 次机会 xD!</string>
 </resources>

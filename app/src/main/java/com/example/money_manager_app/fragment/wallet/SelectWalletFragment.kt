@@ -23,8 +23,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletViewModel>(R.layout.fragment_select_wallet) {
 
-    private var selectWalletAdapterInclude: SelectWalletAdapter = SelectWalletAdapter(emptyList(), ::onItemClick)
-    private var selectWalletAdapterExclude: SelectWalletAdapter = SelectWalletAdapter(emptyList(), ::onItemClick)
+    private lateinit var selectWalletAdapterInclude: SelectWalletAdapter
+    private lateinit var selectWalletAdapterExclude: SelectWalletAdapter
     private val mainViewModel: MainViewModel by activityViewModels()
     private val addViewModel: AddViewModel by activityViewModels()
     private val incomeViewModel : IncomeViewModel by activityViewModels()
@@ -78,6 +78,10 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
 
 
     fun setAdapter() {
+        val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
+        val currencySymbol = getString(currentCurrency.symbolRes)
+        selectWalletAdapterInclude = SelectWalletAdapter(listOf(), ::onItemClick, requireContext(), currencySymbol)
+        selectWalletAdapterExclude = SelectWalletAdapter(listOf(), ::onItemClick, requireContext(), currencySymbol)
         binding.lvIncludeInToal.layoutManager = LinearLayoutManager(requireContext())
         binding.lvIncludeInToal.adapter = selectWalletAdapterInclude
 

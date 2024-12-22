@@ -30,6 +30,7 @@ data class Budget(
     @ColumnInfo(name = "account_id") val accountId: Long,
     @ColorRes @ColumnInfo(name = "color_id") val colorId: Int? = R.color.color_1,
     @ColumnInfo(name = "period_type") @TypeConverters(PeriodTypeConverter::class) val periodType: PeriodType,
+    @ColumnInfo(name = "init_date") val initDate : Long,
     @ColumnInfo(name = "start_date") val startDate : Long,
     @ColumnInfo(name = "end_date") val endDate : Long
 ) : Parcelable

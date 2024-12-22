@@ -285,55 +285,23 @@ class IncomeViewModel @Inject constructor(
         _currentDateTime.value = Pair(dateFormat.format(currentDate), timeFormat.format(currentDate))
     }
 
-    fun saveIncomeAndExpense(transfer: Transfer, wallets : List<Wallet>) {
+    fun saveIncomeAndExpense(transfer: Transfer) {
         viewModelScope.launch(ioDispatcher) {
             if (transfer.amount > 0) {
                 repository.insertTransferDetail(
                     transfer
                 )
-                if(transfer.typeOfExpenditure == TransferType.Income){
-                    var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
-                    walletFrom?.let {
-                        walletRepository.editWallet(it.copy(
-                            amount = it.amount + transfer.amount
-                        ))
-                    }
-                }
+
             }
         }
     }
 
-    fun editIncomeAndExpense(transfer: Transfer, wallets : List<Wallet>) {
+    fun editIncomeAndExpense(transfer: Transfer) {
         viewModelScope.launch(ioDispatcher) {
             if (transfer.amount > 0) {
                 repository.editTransferDetail(
                     transfer
                 )
-                if(oldwallet.value.id != transfer.walletId){
-                    var wallet = wallets.find { it.id == transfer.walletId }
-                    wallet?.let {
-                        walletRepository.editWallet(
-                            it.copy(
-                                amount = it.amount + transfer.amount
-                            )
-                        )
-                    }
-                    oldwallet.value.let {
-                        walletRepository.editWallet(
-                            it.copy(
-                                amount = it.amount - _oldAmount.value
-                            )
-                        )
-                    }
-
-                } else {
-                    var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
-                    walletFrom?.let {
-                        walletRepository.editWallet(it.copy(
-                            amount = it.amount - _oldAmount.value + transfer.amount
-                        ))
-                    }
-                }
             }
         }
     }

@@ -28,7 +28,7 @@ object CategoryUtils {
         Category(20, "Shopping", 1, R.drawable.expense_11, R.color.color_20, CategoryType.EXPENSE),
         Category(21, "Transportation", 1, R.drawable.expense_12, R.color.color_21, CategoryType.EXPENSE),
         Category(22, "Travel", 1, R.drawable.expense_13, R.color.color_22, CategoryType.EXPENSE),
-        Category(23, "Other", 1, R.drawable.expense_14, R.color.color_23, CategoryType.EXPENSE),
+        Category(23, "Others", 1, R.drawable.expense_14, R.color.color_23, CategoryType.EXPENSE),
         Category(24, "Transfer", 1, R.drawable.transfer_1, R.color.color_24, CategoryType.TRANSFER),
         Category(25, "Repayment", 1, R.drawable.arrow_left, R.color.color_25, CategoryType.REPAYMENT),
         Category(26, "Debt Increase", 1, R.drawable.arrow_left, R.color.color_26, CategoryType.DEBT_INCREASE),

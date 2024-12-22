@@ -48,7 +48,7 @@ interface DebtTransactionDao {
         endDate : Long?,
         minAmount : Double?,
         maxAmount : Double?,
-        categoryType: Int?,
+        categoryType: Long?,
         fromWallet : Long?,
         idAccount : Long
     ): List<DebtTransaction>

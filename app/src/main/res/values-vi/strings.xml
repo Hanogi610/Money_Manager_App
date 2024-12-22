@@ -26,6 +26,11 @@
     <string name="choose_a_name_for_your_account">Chọn tên cho tài khoản của bạn.</string>
     <string name="name">Tên</string>
     <string name="next">Tiếp theo</string>
+    <string name="all_category">Tất cả các danh mục</string>
+    <string name="all_wallet">Chọn danh mục</string>
+    <string name="calculator">Nhập số tiền</string>
+    <string name="Memo">Ghi chú</string>
+
     <string name="select_currency">Chọn tiền tệ</string>
     <string name="favorite_currency_prompt">Đơn vị tiền tệ yêu thích của bạn là gì?</string>
     <string name="skip">Bỏ qua</string>
@@ -71,6 +76,7 @@
     <string name="home">Trang chủ</string>
     <string name="calendar">Lịch</string>
     <string name="statistic">Thống kê</string>
+    <string name="blank_input">Một số trường không hợp lệ, vui lòng nhập giá trị hợp lệ trước khi lưu</string>
     <string name="detail_day">Chi tiết</string>
     <string name="select_category">Chọn danh mục</string>
     <string name="total">Tổng cộng</string>
@@ -149,5 +155,6 @@
     <string name="credit_limit">Hạn mức tín dụng</string>
     <string name="expense">Chi phí</string>
     <string name="received">Đã nhận</string>
+    <string name="input_count">Bạn có %1$d cơ hội trước khi ứng dụng bị loại bỏ xD!</string>
 
 </resources>

@@ -35,6 +35,11 @@
     <string name="money_amount" translatable="false">%1$s %2$.2f</string>
     <string name="transactions_format">%1$d लेनदेन</string>
     <string name="adjust_balance">शेष राशि समायोजित करें</string>
+    <string name="all_category">सभी श्रेणियाँ</string>
+    <string name="all_wallet">श्रेणी चुनें</string>
+    <string name="calculator">राशि दर्ज करें</string>
+
+
     <string name="make_payment">भुगतान करें</string>
     <string name="days_left">%1$s दिन बचे</string>
     <string name="amount_number">%1$.2f</string>
@@ -99,6 +104,8 @@
     <string name="budget">बजट</string>
     <string name="who_do_you_lend_from">आपने किससे उधार लिया?</string>
     <string name="who_do_you_borrow_to">आपने किसे उधार दिया?</string>
+    <string name="Memo">स्मृति</string>
+    <string name="blank_input">कुछ फ़ील्ड अमान्य हैं, कृपया सहेजने से पहले मान्य मान दर्ज करें</string>
     <string name="what_was_it_for">यह किसके लिए था?</string>
     <string name="i_owe_s">मैं %1$s का ऋणी हूं</string>
     <string name="i_lend_s">मैंने %1$s को उधार दिया</string>
@@ -149,5 +156,6 @@
     <string name="credit_limit">क्रेडिट सीमा</string>
     <string name="expense">व्यय</string>
     <string name="received">प्राप्त किया</string>
+    <string name="input_count">ऐप के खारिज होने से पहले आपके पास %1$d मौके हैं xD!</string>
 
 </resources>

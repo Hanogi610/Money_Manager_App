@@ -19,6 +19,7 @@ import com.example.money_manager_app.fragment.search.adapter.IconCategoryAdapter
 import com.example.money_manager_app.fragment.search.adapter.SearchInterface
 import com.example.money_manager_app.fragment.search.viewmodel.SearchViewModel
 import com.example.money_manager_app.fragment.wallet.WalletViewModel
+import com.example.money_manager_app.viewmodel.MainViewModel
 import java.util.Calendar
 
 class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding>() {
@@ -27,6 +28,7 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
     private val searchViewModel : SearchViewModel by activityViewModels()
     private val incomeViewModel : IncomeViewModel by activityViewModels()
     private val expenseViewModel : ExpenseViewModel by activityViewModels()
+    private val mainViewModel : MainViewModel by activityViewModels()
     private var searchInterface: SearchInterface? = null
 
     override fun getLayoutId(): Int {
@@ -93,7 +95,7 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
             val listCategoryIncome = incomeViewModel.getCategoryListIncome()
             val listCategoryExpense = expenseViewModel.getCategoryListExpense()
             val listCategory = mutableListOf<CategoryData.Category>()
-            listCategory.addAll(listCategoryIncome.filter { it.name != "Other"})
+            listCategory.addAll(listCategoryIncome.filter { it.name != "Others"})
             listCategory.addAll(listCategoryExpense.filter { it.name != "Other"})
             listCategory.sortedBy { it.name }
             listCategory.add(
@@ -118,6 +120,12 @@ class FilterBottomSheetDialogFragment : BaseBottomSheet<FilterBottomSheetBinding
 
     fun onItemSelected(selectedCategory: CategoryData.Category) {
         searchViewModel.setCategorySearch(selectedCategory)
+        var listCategory  = mainViewModel.categories.value
+        for(category in listCategory){
+            if(category.name == selectedCategory.name){
+                searchViewModel.setIdCategory(category.id)
+            }
+        }
         binding.filterCategory.setText(selectedCategory.name)
     }
 

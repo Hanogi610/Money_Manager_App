@@ -148,7 +148,7 @@ class PasswordFragment :
             }
         }
 
-        getVM().inputPasswordCount.observe(viewLifecycleOwner) {
+            getVM().inputPasswordCount.observe(viewLifecycleOwner) {
             if (it in 1..4) {
                 Toast.makeText(requireActivity(), getString(R.string.input_count, 5 - it), Toast.LENGTH_SHORT).show()
             } else if (it > 4) {

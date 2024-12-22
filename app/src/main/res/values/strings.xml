@@ -17,6 +17,8 @@
     <string name="_9" translatable="false">9</string>
     <string name="_0" translatable="false">0</string>
     <string name="search">Search</string>
+    <string name="all_category">All category</string>
+    <string name="all_wallet">Select category</string>
     <string name="calculator">Enter amount</string>
     <string name="structure">Structure</string>
     <string name="filter_options">Filter options</string>
@@ -38,7 +40,7 @@
     <string name="vietnam_flag" translatable="false">Vietnam Flag</string>
     <string name="vietnamese" translatable="false">Vietnamese</string>
     <string name="tieng_viet" translatable="false">(Tiếng Việt)</string>
-    <string name="hindi" translatable="false">(हिंदी)</string>
+    <string name="hindi" translatable="false" >(हिंदी)</string>
     <string name="hindi_en" translatable="false">Hindi</string>
     <string name="india_flag" translatable="false">India Flag</string>
     <string name="chinese" translatable="false">(中文)</string>
@@ -145,7 +147,6 @@
     <string name="select_account">Select account</string>
     <string name="hinted_passcode" translatable="false">-</string>
     <string name="confirm_your_pass_code">Confirm your pass code</string>
-    <string name="input_count">You have %1$d chances before the app got dissed xD! </string>
 
     <string-array name="select_camera_and_gallery">
         <item>Camera</item>
@@ -221,6 +222,7 @@
     <string name="expense">Expense</string>
     <string name="received">Received</string>
     <string name="blank_input">Some fields are invalid, please input valid value before saving</string>
+    <string name="input_count">You have %1$d chances before the app got dissed xD! </string>
 
     <string-array name="spinner_color">
         <item>#34BFFF</item>

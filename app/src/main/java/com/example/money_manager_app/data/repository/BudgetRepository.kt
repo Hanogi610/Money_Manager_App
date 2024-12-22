@@ -18,6 +18,8 @@ interface BudgetRepository {
 
     fun deleteBudget(id: Long)
 
+    fun getAllBudgets(id : Long): List<Budget>
+
     fun getBudgetsByAccountId(accountId: Long): Flow<List<BudgetWithCategory>>
 
     fun getBudgetsByAccountIdAndDate(accountId: Long, date : Long): List<BudgetWithCategory>
@@ -25,6 +27,7 @@ interface BudgetRepository {
     suspend fun removeCategoryFromBudget(budgetId: Long, categoryId: Long)
 
     suspend fun insertBudget(budget: Budget,budgetCategoryCrossRefs : List<BudgetCategoryCrossRef>): Long
+    suspend fun editBudget(budget: Budget,budgetCategoryCrossRefs : List<BudgetCategoryCrossRef>)
 }
 
 class BudgetRepositoryImpl @Inject constructor(
@@ -52,6 +55,26 @@ class BudgetRepositoryImpl @Inject constructor(
     }
 
     override suspend fun editBudget(budget: Budget) {
+        budgetDao.editBudget(budget)
+    }
+
+    override fun getAllBudgets(id : Long): List<Budget> {
+        return budgetDao.getAllBudgets(id)
+    }
+
+    override suspend fun editBudget(budget: Budget,budgetCategoryCrossRefs : List<BudgetCategoryCrossRef>) {
+        var spent = 0.0
+        for(i in budgetCategoryCrossRefs){
+            val transferList= tranferRepository.getTransferWithCategoryByAccountId(budget.accountId, i.categoryId, budget.startDate, budget.endDate)
+            spent += transferList.filter { it.typeOfExpenditure == TransferType.Expense }.sumOf { it.amount }
+
+        }
+        budget.spent = spent.toInt()
+        val budgetId =  budget.id
+        for (i in budgetCategoryCrossRefs){
+            i.budgetId = budgetId
+        }
+        budgetDao.editBudgetCategoryCrossRefs(budgetCategoryCrossRefs)
         budgetDao.editBudget(budget)
     }
 

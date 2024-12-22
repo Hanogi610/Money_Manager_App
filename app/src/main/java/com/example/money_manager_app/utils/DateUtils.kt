@@ -46,5 +46,31 @@ fun Long.formatToDayOfWeek(): String {
     return SimpleDateFormat("EEEE", Locale.getDefault()).format(date)
 }
 
+fun String.takeDayOfWeek(format: String = "dd/MM/yyyy"): Int {
+    val sdf = SimpleDateFormat(format, Locale.getDefault())
+    val date = sdf.parse(this)
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    return calendar.get(Calendar.DAY_OF_WEEK)
+}
+
+fun String.takeDayofMonth(format: String = "dd/MM/yyyy"): Int {
+    val sdf = SimpleDateFormat(format, Locale.getDefault())
+    val date = sdf.parse(this)
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    return calendar.get(Calendar.DAY_OF_MONTH)
+}
+
+fun String.takeMonthYear(format: String = "dd/MM/yyyy"): Int {
+    val sdf = SimpleDateFormat(format, Locale.getDefault())
+    val date = sdf.parse(this)
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    return calendar.get(Calendar.MONTH) + 1
+}
+
+
+
 
 

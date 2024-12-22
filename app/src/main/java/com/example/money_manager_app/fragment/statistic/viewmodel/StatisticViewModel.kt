@@ -64,6 +64,13 @@ class StatisticViewModel @Inject constructor(
     private var _listTransfer = MutableStateFlow<List<Transfer>>(emptyList())
     val listTransfer: StateFlow<List<Transfer>> get() = _listTransfer
 
+    private var _listTransaction = mutableListOf<Transaction>()
+    val listTransaction = _listTransaction
+
+
+    fun getTransaciton () : List<Transaction> {
+        return listTransaction
+    }
 
     fun setStatsIncome(stats: List<Stats>) {
         _listStatsIncome.value = stats
@@ -106,17 +113,10 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun getStats(listTransaction: List<Transaction>){
-        for(transaction in listTransaction){
-            println("hello11" + " "+transaction.amount)
-            println("hello11" + " "+transaction.date)
-            println("hello11" + " "+transaction.id)
-            println("hello11" + " "+transaction.walletId)
-            println("hello11" + " "+transaction.accountId)
-            println("hello11" + " "+transaction.iconId)
-        }
+        _listTransaction = listTransaction.toMutableList()
         var categoryList = categoryRepository.getAllCategory()
         var listStatsIncome = mutableListOf<Stats>()
-        var listStatsExpense: MutableList<Stats> = mutableListOf()
+        var listStatsExpense: MutableList<Stats> = mutableListOf<Stats>()
         var id = 0
         for(category in categoryList){
             id++
@@ -150,20 +150,19 @@ class StatisticViewModel @Inject constructor(
                 }
 
                 is Debt -> {
-                    for(stats in listStatsIncome){
-                        if(DebtType.PAYABLE == transaction.type){
-                           for (stats in listStatsIncome){
-                               if(stats.type == CategoryType.PAYABLE){
-                                   stats.amount += transaction.amount
-                                   stats.trans++
-                               }
-                           }
-                        } else {
-                            for (stats in listStatsExpense){
-                                if(stats.type == CategoryType.RECEIVABLE){
-                                    stats.amount += transaction.amount
-                                    stats.trans++
-                                }
+                    if(transaction.type == DebtType.RECEIVABLE) {
+                        for (stats in listStatsExpense) {
+                            if (stats.type == CategoryType.RECEIVABLE) {
+                                stats.amount += transaction.amount
+                                stats.trans++
+                            }
+                        }
+                    }
+                    if(transaction.type == DebtType.PAYABLE) {
+                        for (stats in listStatsIncome) {
+                            if (stats.type == CategoryType.PAYABLE) {
+                                stats.amount += transaction.amount
+                                stats.trans++
                             }
                         }
                     }
@@ -206,7 +205,7 @@ class StatisticViewModel @Inject constructor(
             }
         }
 
-        listStatsExpense.removeAll { it.trans == 0 }
+        listStatsExpense.removeAll { it.trans == 0}
         listStatsIncome.removeAll {it.trans == 0}
         var totalAmountIncome = 0.0
         var totalAmountExpense = 0.0

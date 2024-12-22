@@ -1,5 +1,6 @@
 package com.example.money_manager_app.fragment.wallet.add_budget
 
+import android.content.res.Resources
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.R
@@ -13,6 +14,8 @@ import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.data.repository.BudgetRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
+import com.example.money_manager_app.utils.CategoryUtils.listCategory
+import com.example.money_manager_app.utils.toFormattedDateString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +23,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.ResourceBundle
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +32,7 @@ class AddBudgetViewModel @Inject constructor(
     private val budgetRepository: BudgetRepository
 ): BaseViewModel() {
 
-    private val _budget = MutableStateFlow(Budget(0L, "", 0.0, 0, 0, 0, PeriodType.YEARLY, 0, 0))
+    private val _budget = MutableStateFlow(Budget(0L, "", 0.0, 0, 0, 0, PeriodType.YEARLY, 0, 0,0))
     val budget get() = _budget
 
     fun setBudget(budget: Budget){
@@ -58,6 +62,28 @@ class AddBudgetViewModel @Inject constructor(
             budgetRepository.insertBudget(budget, budgetCategoryCrossRefs)
         }
     }
+
+    fun editBudget(budget: Budget, listCategory: List<Category>,listCategoryData: List<CategoryData.Category>){
+        var budgetCategoryCrossRefs = mutableListOf<BudgetCategoryCrossRef>()
+        if(listCategoryData[0].isCheck){
+            for(i in listCategory.indices){
+                if(listCategory[i].type == CategoryType.EXPENSE){
+                    budgetCategoryCrossRefs.add(BudgetCategoryCrossRef(budget.id,listCategory[i].id))
+                }
+            }
+        } else {
+            for(i in listCategoryData){
+                if(i.isCheck){
+                    budgetCategoryCrossRefs.add(BudgetCategoryCrossRef(budget.id,i.icon.toLong()))
+                }
+            }
+        }
+        viewModelScope.launch(ioDispatcher) {
+            budgetRepository.editBudget(budget,budgetCategoryCrossRefs)
+        }
+    }
+
+
 
     fun getDateFromDayOfWeek(dayOfWeek: String): String {
         val calendar = Calendar.getInstance()
@@ -112,10 +138,6 @@ class AddBudgetViewModel @Inject constructor(
         return dateFormat.format(calendar.time)
     }
 
-    fun editBudget(budget: Budget){
-        viewModelScope.launch(ioDispatcher) {
-            budgetRepository.editBudget(budget)
-        }
-    }
+
 
 }

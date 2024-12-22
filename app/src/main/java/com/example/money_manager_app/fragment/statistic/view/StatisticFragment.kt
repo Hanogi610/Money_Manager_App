@@ -63,7 +63,8 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
             wallets = listOf(wallet)
             statisticAdapter.setTitle(wallet.name)
         } else {
-            wallets = mainViewModel.currentAccount.value!!.walletItems.map { it.wallet }
+            wallets  = mainViewModel.currentAccount.value!!.walletItems.map { it.wallet }
+            wallets = wallets.filter { it.isExcluded != true }
             statisticAdapter.setTitle("Balance")
         }
         setBalance()
@@ -114,12 +115,15 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
     }
 
     fun onClickOverview(){
-        appNavigation.openStatisticScreenToTransactionScreen(
+        findNavController().navigate(R.id.transactionFragment,
             Bundle().apply {
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val dateStart = dateFormat.format(date)
                 putString("dateStart",dateStart)
                 putParcelable("type", time)
+                putParcelableArrayList("wallets", ArrayList(wallets))
+                val listTransaction = getVM().listTransaction
+                putParcelableArrayList("listTransaction", ArrayList(listTransaction))
             }
         )
     }
