@@ -115,12 +115,15 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
     }
 
     fun onClickOverview(){
-        appNavigation.openStatisticScreenToTransactionScreen(
+        findNavController().navigate(R.id.transactionFragment,
             Bundle().apply {
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val dateStart = dateFormat.format(date)
                 putString("dateStart",dateStart)
                 putParcelable("type", time)
+                putParcelableArrayList("wallets", ArrayList(wallets))
+                val listTransaction = getVM().listTransaction
+                putParcelableArrayList("listTransaction", ArrayList(listTransaction))
             }
         )
     }

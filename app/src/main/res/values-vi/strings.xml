@@ -76,6 +76,7 @@
     <string name="home">Trang chủ</string>
     <string name="calendar">Lịch</string>
     <string name="statistic">Thống kê</string>
+    <string name="blank_input">Một số trường không hợp lệ, vui lòng nhập giá trị hợp lệ trước khi lưu</string>
     <string name="detail_day">Chi tiết</string>
     <string name="select_category">Chọn danh mục</string>
     <string name="total">Tổng cộng</string>
@@ -154,5 +155,6 @@
     <string name="credit_limit">Hạn mức tín dụng</string>
     <string name="expense">Chi phí</string>
     <string name="received">Đã nhận</string>
+    <string name="input_count">Bạn có %1$d cơ hội trước khi ứng dụng bị loại bỏ xD!</string>
 
 </resources>

@@ -41,7 +41,6 @@
     <string name="vietnamese" translatable="false">Vietnamese</string>
     <string name="tieng_viet" translatable="false">(Tiếng Việt)</string>
     <string name="hindi" translatable="false" >(हिंदी)</string>
-    <string name="hindi" translatable="false">(हिंदी)</string>
     <string name="hindi_en" translatable="false">Hindi</string>
     <string name="india_flag" translatable="false">India Flag</string>
     <string name="chinese" translatable="false">(中文)</string>
@@ -223,6 +222,7 @@
     <string name="expense">Expense</string>
     <string name="received">Received</string>
     <string name="blank_input">Some fields are invalid, please input valid value before saving</string>
+    <string name="input_count">You have %1$d chances before the app got dissed xD! </string>
 
     <string-array name="spinner_color">
         <item>#34BFFF</item>

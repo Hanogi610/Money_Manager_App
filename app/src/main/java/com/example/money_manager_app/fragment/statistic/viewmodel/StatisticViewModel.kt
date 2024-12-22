@@ -64,6 +64,13 @@ class StatisticViewModel @Inject constructor(
     private var _listTransfer = MutableStateFlow<List<Transfer>>(emptyList())
     val listTransfer: StateFlow<List<Transfer>> get() = _listTransfer
 
+    private var _listTransaction = mutableListOf<Transaction>()
+    val listTransaction = _listTransaction
+
+
+    fun getTransaciton () : List<Transaction> {
+        return listTransaction
+    }
 
     fun setStatsIncome(stats: List<Stats>) {
         _listStatsIncome.value = stats
@@ -106,11 +113,7 @@ class StatisticViewModel @Inject constructor(
     }
 
     fun getStats(listTransaction: List<Transaction>){
-        for (transaction in listTransaction){
-            Log.d("Transaction",transaction.toString())
-        }
-
-        Log.d("Transaction","=====================")
+        _listTransaction = listTransaction.toMutableList()
         var categoryList = categoryRepository.getAllCategory()
         var listStatsIncome = mutableListOf<Stats>()
         var listStatsExpense: MutableList<Stats> = mutableListOf<Stats>()
