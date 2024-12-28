@@ -88,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_16dp"
             android:layout_marginVertical="@dimen/_8dp"
-            android:text="Action Type"
+            android:text="@string/action_type"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_name" />
 
