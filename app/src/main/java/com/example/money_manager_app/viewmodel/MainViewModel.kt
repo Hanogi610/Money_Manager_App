@@ -91,7 +91,7 @@ class MainViewModel @Inject constructor(
     fun setCurrentAccount(account: AccountWithWalletItem) {
         _currentAccount.value = account
         appPreferences.setCurrentAccount(account.account.id)
-//        Log.d("hoangph", "getAccount() called: ${_currentAccount.value}")
+        Log.d("hoangph", "getAccount() called: ${_currentAccount.value}")
     }
 
     fun insertAccount(account: Account, initAmount: Double) {

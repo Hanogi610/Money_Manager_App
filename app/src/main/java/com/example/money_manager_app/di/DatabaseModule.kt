@@ -1,10 +1,8 @@
-package com.example.moneymanager.di
+package com.example.money_manager_app.di
 
 import android.content.Context
 import androidx.room.Room
 import com.example.money_manager_app.data.AppDatabase
-import com.example.money_manager_app.di.AppDispatchers
-import com.example.money_manager_app.di.Dispatcher
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

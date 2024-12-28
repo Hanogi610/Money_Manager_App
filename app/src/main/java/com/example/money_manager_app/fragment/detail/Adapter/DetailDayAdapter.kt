@@ -91,7 +91,7 @@ class DetailDayAdapter(
 
             if (transaction is DebtTransaction) {
                 when (transaction.action) {
-                    DebtActionType.INTEREST -> {
+                    DebtActionType.LOAN_INTEREST -> {
                     }
 
                     DebtActionType.DEBT_INCREASE -> {
@@ -133,6 +133,8 @@ class DetailDayAdapter(
                         binding.tvBank.text =
                             listWallet.find { it.wallet.id == transaction.walletId}?.wallet?.name ?: ""
                     }
+
+                    DebtActionType.DEBT_INTEREST -> {}
                 }
             }
             binding.root.setOnClickListener {

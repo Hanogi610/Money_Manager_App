@@ -50,6 +50,7 @@
     <string name="add_account">Add Account</string>
     <string name="choose_a_name_for_your_account">Choose a name for your account.</string>
     <string name="name">Name</string>
+    <string name="enter_name">Enter Name</string>
     <string name="next">Next</string>
     <string name="select_currency">Select Currency</string>
     <string name="favorite_currency_prompt">What is your favourite currency?</string>
@@ -166,6 +167,7 @@
     <string name="debt">Debt</string>
     <string name="add_debt">Add Debt</string>
     <string name="add_goal">Add Goal</string>
+    <string name="formatted_double_percentage" translatable="false">%1$.2f%%</string>
     <string name="add_budget">Add Budget</string>
     <string name="budget">Budget</string>
     <string name="who_do_you_lend_from">Who do you lend from?</string>
@@ -223,6 +225,8 @@
     <string name="received">Received</string>
     <string name="blank_input">Some fields are invalid, please input valid value before saving</string>
     <string name="input_count">You have %1$d chances before the app got dissed xD! </string>
+    <string name="debt_type_instruction">Swipe left or right to change debt type.</string>
+    <string name="add_debt_transaction">Add Debt Transaction</string>
 
     <string-array name="spinner_color">
         <item>#34BFFF</item>

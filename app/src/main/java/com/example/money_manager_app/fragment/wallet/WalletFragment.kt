@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.wallet
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -94,6 +95,7 @@ class WalletFragment :
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().wallets.collect { wallets ->
                     walletAdapter.setWallets(wallets)
+                    Log.d("hoangph", "bindingStateView() called with: wallets = $wallets")
                     binding.walletManagerTextView.text = getString(R.string.manager, wallets.size)
                 }
             }

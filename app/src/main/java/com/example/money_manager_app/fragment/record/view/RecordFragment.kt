@@ -1,8 +1,7 @@
-package com.example.money_manager_app.fragment.Record.view
+package com.example.money_manager_app.fragment.record.view
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -14,14 +13,16 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
+import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentRecordBinding
-import com.example.money_manager_app.fragment.Record.viewmodel.RecordViewModel
+import com.example.money_manager_app.fragment.record.viewmodel.RecordViewModel
 import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
 import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
 import com.example.money_manager_app.fragment.add.view.transfer.TransferViewModel
@@ -258,38 +259,42 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                     binding.typeLabel.text = transaction.typeOfExpenditure.name
                 } else {
                     if(transaction.typeOfExpenditure == TransferType.Income){
-                        binding.typeLabel.text = "Income"
+                        binding.typeLabel.text = getString(R.string.income)
                         binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_2))
                     } else {
-                        binding.typeLabel.text = "Expense"
+                        binding.typeLabel.text = getString(R.string.expense)
                         binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                     }
                     binding.walletLabel.text = fromWallet?.wallet?.name
                 }
-                if(transaction.linkImg != null){
-                    binding.ivImg.visibility = android.view.View.VISIBLE
-                    val file = File(transaction.linkImg)
-                    if (file.exists()) {
-                        val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-                        binding.ivImg.setImageBitmap(bitmap)
-                    }
+                binding.ivImg.visibility = android.view.View.VISIBLE
+                val file = File(transaction.linkImg)
+                if (file.exists()) {
+                    val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                    binding.ivImg.setImageBitmap(bitmap)
                 }
             }
 
             is DebtTransaction-> {
-                if(transaction.action == DebtActionType.DEBT_INCREASE ){
-                    binding.tvDescription.text = DebtActionType.DEBT_INCREASE.name
-                    binding.typeLabel.text = "Income"
+                binding.tvDescription.text = transaction.action.name
+                if(transaction.action in listOf(DebtActionType.DEBT_INCREASE, DebtActionType.DEBT_COLLECTION, DebtActionType.LOAN_INTEREST)){
+                    binding.typeLabel.text = getString(R.string.income)
                     binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_2))
-                }
-                if(transaction.action == DebtActionType.INTEREST ){
-                    binding.tvDescription.text = DebtActionType.INTEREST.name
-                }
-                if(transaction.action == DebtActionType.REPAYMENT ){
-                    binding.tvDescription.text = DebtActionType.REPAYMENT.name
-                    binding.typeLabel.text = "Expense"
+                }else{
+                    binding.typeLabel.text = getString(R.string.expense)
                     binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                }
+            }
 
+            is GoalTransaction -> {
+                if(transaction.type == GoalInputType.WITHDRAW){
+                    binding.tvDescription.text = GoalInputType.WITHDRAW.name
+                    binding.typeLabel.text = getString(R.string.withdraw)
+                    binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_2))
+                }else{
+                    binding.tvDescription.text = GoalInputType.DEPOSIT.name
+                    binding.typeLabel.text = getString(R.string.deposit)
+                    binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
                 }
             }
         }

@@ -87,7 +87,10 @@ class SearchTransactionAdapter (
 
             if (transaction is DebtTransaction){
                 when (transaction.action) {
-                    DebtActionType.INTEREST -> {
+                    DebtActionType.DEBT_INTEREST -> {
+                    }
+
+                    DebtActionType.LOAN_INTEREST -> {
                     }
 
                     DebtActionType.DEBT_INCREASE-> {

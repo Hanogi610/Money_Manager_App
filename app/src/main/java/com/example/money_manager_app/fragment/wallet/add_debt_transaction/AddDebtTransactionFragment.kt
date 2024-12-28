@@ -53,10 +53,10 @@ class AddDebtTransactionFragment :
         super.initView(savedInstanceState)
 
         val payableActions =
-            DebtActionType.entries.filter { it != DebtActionType.DEBT_COLLECTION && it != DebtActionType.LOAN_INCREASE }
+            DebtActionType.entries.filter { it != DebtActionType.DEBT_COLLECTION && it != DebtActionType.LOAN_INCREASE && it != DebtActionType.LOAN_INTEREST }
                 .map { it.name }
         val receivableActions =
-            DebtActionType.entries.filter { it != DebtActionType.DEBT_INCREASE && it != DebtActionType.REPAYMENT }
+            DebtActionType.entries.filter { it != DebtActionType.DEBT_INCREASE && it != DebtActionType.REPAYMENT && it != DebtActionType.DEBT_INTEREST }
                 .map { it.name }
 
         val debtAction = if(debt!!.type == DebtType.PAYABLE) {
@@ -157,11 +157,9 @@ class AddDebtTransactionFragment :
             val datePicker = DatePickerDialog(
                 requireContext(),
                 { _, year, month, dayOfMonth ->
-                    val selectedDate = Calendar.getInstance()
-                    selectedDate.set(year, month, dayOfMonth)
-                    binding.etDate.text = SimpleDateFormat(
-                        "dd/MM/yyyy", Locale.getDefault()
-                    ).format(binding.etDate.text ?: selectedDate)
+                    calendar.set(year, month, dayOfMonth)
+                    binding.etDate.text =
+                        SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(calendar.time)
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -170,15 +168,13 @@ class AddDebtTransactionFragment :
             datePicker.show()
         }
 
-        binding.etTime.setOnSafeClickListener {
+        binding.etTime.setOnClickListener {
             val timePicker = TimePickerDialog(
                 requireContext(), { _, hourOfDay, minute ->
-                    val selectedTime = Calendar.getInstance()
-                    selectedTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                    selectedTime.set(Calendar.MINUTE, minute)
-                    binding.etTime.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(
-                        binding.etTime.text ?: selectedTime.time
-                    )
+                    calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                    calendar.set(Calendar.MINUTE, minute)
+                    binding.etTime.text =
+                        SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
                 }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true
             )
             timePicker.show()

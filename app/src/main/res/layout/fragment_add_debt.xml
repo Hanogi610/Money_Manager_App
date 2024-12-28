@@ -22,23 +22,21 @@
                 android:id="@+id/backArrowButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="@dimen/_16dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_arrow_back_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Spinner
-                android:id="@+id/spinnerDebtType"
+            <TextView
+                android:id="@+id/debtTypeTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:entries="@array/debt_type_options"
-                android:gravity="center"
-                android:padding="8dp"
-                android:spinnerMode="dropdown"
-                android:layout_marginStart="@dimen/_4dp"
+                android:layout_marginStart="@dimen/_12dp"
+                android:textSize="@dimen/_16sp"
+                android:text="Debt Type"
+                android:textStyle="italic"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/backArrowButton"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -73,17 +71,28 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Name Field -->
+        <TextView
+            android:id="@+id/instructionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:text="@string/debt_type_instruction"
+            android:textSize="@dimen/_14sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:layout_marginVertical="@dimen/_8dp"
             android:text="@string/name"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/instructionTextView" />
 
         <EditText
             android:id="@+id/editTextName"
@@ -91,7 +100,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="@drawable/rounded_border"
-            android:hint="@string/who_do_you_lend_from"
             android:padding="16dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -102,7 +110,7 @@
             android:id="@+id/desTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="@dimen/_16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
             android:text="@string/description"
@@ -128,8 +136,8 @@
             android:id="@+id/amountTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:layout_marginVertical="@dimen/_8dp"
             android:text="@string/amount"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -154,8 +162,8 @@
             android:id="@+id/dateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:layout_marginVertical="@dimen/_8dp"
             android:text="@string/date"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -196,8 +204,8 @@
             android:id="@+id/walletLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:layout_marginVertical="@dimen/_8dp"
             android:text="@string/wallet"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -218,8 +226,8 @@
             android:id="@+id/colorLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
+            android:layout_marginHorizontal="@dimen/_16dp"
+            android:layout_marginVertical="@dimen/_8dp"
             android:text="@string/color"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -236,6 +244,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/colorLabel" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

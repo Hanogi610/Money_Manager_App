@@ -1,4 +1,4 @@
-package com.example.money_manager_app.fragment.Record.viewmodel
+package com.example.money_manager_app.fragment.record.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.R

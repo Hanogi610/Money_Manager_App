@@ -154,9 +154,9 @@ class DebtDetailFragment :
     }
 
     private fun openAddDebtTransactionScreen(transaction: Transaction) {
-        appNavigation.openDebtDetailToAddDebtTransactionScreen(Bundle().apply {
+        appNavigation.openDebtDetailScreenToRecordScreen(Bundle().apply {
             putParcelable("debt", debt)
-            putParcelable("debtTransaction", transaction as DebtTransaction)
+            putParcelable("transaction", transaction as DebtTransaction)
         })
     }
 }

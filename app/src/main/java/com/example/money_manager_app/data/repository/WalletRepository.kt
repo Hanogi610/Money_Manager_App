@@ -9,13 +9,17 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface WalletRepository {
-    fun getWalletsByUserId(userId: Long) : Flow<List<Wallet>>
-    fun getWalletById(walletId: Long) : Flow<Wallet>
-    suspend fun insertWallet(wallet: Wallet) : Long
+    fun getWalletsByUserId(userId: Long): Flow<List<Wallet>>
+    fun getWalletById(walletId: Long): Flow<Wallet>
+    suspend fun insertWallet(wallet: Wallet): Long
     suspend fun editWallet(wallet: Wallet)
     suspend fun deleteWallet(walletId: Long)
     suspend fun deleteWallet(wallet: Wallet)
-    fun getWalletItemsByUserId(userId: Long, startDate: Long? = null, endDate: Long? = System.currentTimeMillis()) : Flow<List<WalletItem>>
+    fun getWalletItemsByUserId(
+        userId: Long,
+        startDate: Long? = null,
+        endDate: Long? = System.currentTimeMillis()
+    ): Flow<List<WalletItem>>
 }
 
 class WalletRepositoryImpl @Inject constructor(
@@ -45,15 +49,14 @@ class WalletRepositoryImpl @Inject constructor(
         walletDao.deleteWallet(wallet)
     }
 
-    override fun getWalletItemsByUserId(userId: Long, startDate: Long?, endDate: Long?): Flow<List<WalletItem>> {
+    override fun getWalletItemsByUserId(
+        userId: Long,
+        startDate: Long?,
+        endDate: Long?
+    ): Flow<List<WalletItem>> {
         return walletDao.getWalletsFullDetailByUserId(userId)
-            .map { list ->
-                list.map { walletFullDetail ->
-                    walletFullDetail.toWalletItem(
-                        startDate ?: 0L,
-                        endDate ?: System.currentTimeMillis()
-                    )
-                }
+            .map { wallets ->
+                wallets.map { it.toWalletItem() }
             }
     }
 
