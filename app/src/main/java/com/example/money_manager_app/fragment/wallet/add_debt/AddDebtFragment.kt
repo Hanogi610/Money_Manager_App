@@ -1,11 +1,14 @@
 package com.example.money_manager_app.fragment.wallet.add_debt
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
@@ -31,6 +34,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import kotlin.math.abs
 
 @AndroidEntryPoint
 class AddDebtFragment :
@@ -38,6 +42,7 @@ class AddDebtFragment :
 
     private var debt: Debt? = null
     private val mainViewModel: MainViewModel by activityViewModels()
+    private lateinit var gestureDetector: GestureDetector
     override fun getVM(): AddDebtViewModel {
         val vm: AddDebtViewModel by viewModels()
         return vm
@@ -57,14 +62,9 @@ class AddDebtFragment :
         binding.backArrowButton.setOnClickListener {
             appNavigation.navigateUp()
         }
-        val debtTypeAdapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_spinner_item,
-            DebtType.entries.map { it.name })
-        binding.spinnerDebtType.adapter = debtTypeAdapter
-        binding.spinnerDebtType.setSelection(0)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
 
@@ -74,7 +74,7 @@ class AddDebtFragment :
         binding.timeTextView.text =
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
 
-        binding.dateTextView.setOnClickListener {
+        binding.dateTextView.setOnSafeClickListener {
             val datePicker = DatePickerDialog(
                 requireContext(),
                 { _, year, month, dayOfMonth ->
@@ -119,6 +119,51 @@ class AddDebtFragment :
             ),
             0.0
         )
+
+        if (debt == null) {
+            getVM().initDebtTypeIndex(0)
+        }
+
+        gestureDetector = GestureDetector(requireContext(), object : GestureDetector.SimpleOnGestureListener() {
+            override fun onFling(
+                e1: MotionEvent?,
+                e2: MotionEvent,
+                velocityX: Float,
+                velocityY: Float
+            ): Boolean {
+                if (e1 == null) return false
+
+                val deltaX = e2.x - e1.x
+                val deltaY = e2.y - e1.y
+                val velocityThreshold = 1000 // Minimum velocity for a swipe
+                val distanceThreshold = 150 // Minimum distance for a swipe
+
+                // Log debug information
+                Log.d(
+                    "hoangph",
+                    "onFling() called with: e1 = $e1, e2 = $e2, velocityX = $velocityX, velocityY = $velocityY"
+                )
+
+                // Check if it's a horizontal swipe
+                if (abs(deltaX) > abs(deltaY) && abs(deltaX) > distanceThreshold && abs(velocityX) > velocityThreshold) {
+                    if (deltaX > 0) {
+                        // Swipe right
+                        getVM().toggleCurrentDebtTypeIndex()
+                    } else {
+                        // Swipe left
+                        getVM().toggleCurrentDebtTypeIndex()
+                    }
+                    return true
+                }
+                return false
+            }
+        })
+
+        binding.root.setOnTouchListener { _, event ->
+            gestureDetector.onTouchEvent(event)
+            true
+        }
+
     }
 
     override fun bindingStateView() {
@@ -167,6 +212,14 @@ class AddDebtFragment :
             }
         }
 
+        lifecycleScope.launch {
+            getVM().currentDebtTypeIndex.observe(viewLifecycleOwner) {
+                binding.debtTypeTextView.text = DebtType.entries[it].name
+                binding.editTextName.hint = if(it == 0) getString(R.string.who_do_you_borrow_to)
+                    else getString(R.string.who_do_you_lend_from)
+            }
+        }
+
     }
 
     private val textWatcher = object : TextWatcher {
@@ -197,7 +250,6 @@ class AddDebtFragment :
             SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(debt.date)
         binding.timeTextView.text =
             SimpleDateFormat("HH:mm", Locale.getDefault()).format(debt.time)
-        binding.spinnerDebtType.setSelection(DebtType.valueOf(debt.type.name).ordinal)
         binding.walletSpinner.setSelection(getWalletIndex(debt.walletId))
 
         val colorIndex = ColorUtils.getColorIndex(requireContext(), debt.colorId)
@@ -221,7 +273,7 @@ class AddDebtFragment :
             name = binding.editTextName.text.toString(),
             amount = binding.editTextAmount.text.toString().replace(",", ".").toDoubleOrNull() ?: 0.0,
             accountId = mainViewModel.currentAccount.value!!.account.id, // Set the account ID as needed
-            type = DebtType.valueOf(binding.spinnerDebtType.selectedItem.toString()),
+            type = DebtType.valueOf(binding.debtTypeTextView.text.toString()),
             date = binding.dateTextView.text.toString().toDateTimestamp(),
             time = binding.timeTextView.text.toString().toTimeTimestamp(),
             description = binding.editTextDescription.text.toString(),

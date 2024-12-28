@@ -118,7 +118,7 @@ class WalletDetailViewModel @Inject constructor(
                 }
 
                 is DebtTransaction -> {
-                    if (transaction.action == DebtActionType.DEBT_INCREASE) {
+                    if (transaction.action in listOf(DebtActionType.DEBT_INCREASE, DebtActionType.DEBT_COLLECTION, DebtActionType.LOAN_INTEREST)) {
                         income += 1
                         incomeAmount += transaction.amount
                     } else {

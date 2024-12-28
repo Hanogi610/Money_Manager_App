@@ -19,6 +19,10 @@ class SplashFragment : BaseFragmentNotRequireViewModel<FragmentSplashBinding>(R.
         goToNextScreen()
     }
 
+    override fun onBack() {
+        requireActivity().finish()
+    }
+
     private fun goToNextScreen() {
         lifecycleScope.launch {
             delay(2000)

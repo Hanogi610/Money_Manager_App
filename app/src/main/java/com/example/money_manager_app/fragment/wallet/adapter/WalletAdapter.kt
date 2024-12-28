@@ -24,9 +24,10 @@ class WalletAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(walletItem: WalletItem) {
             val wallet = walletItem.wallet
+            val balance = wallet.amount + walletItem.endingAmount
             binding.walletName.text = wallet.name
             binding.walletBalance.text = context.getString(
-                R.string.money_amount, currentCurrencySymbol, walletItem.endingAmount
+                R.string.money_amount, currentCurrencySymbol, balance
             )
             binding.walletIcon.setImageResource(wallet.iconId)
             binding.root.setOnClickListener { onWalletItemClick(wallet) }

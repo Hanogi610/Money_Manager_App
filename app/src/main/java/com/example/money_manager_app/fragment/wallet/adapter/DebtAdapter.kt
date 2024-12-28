@@ -68,15 +68,46 @@ class DebtAdapter(
             )
             binding.circleLabel.setBackgroundColor(context.getColor(debt.debt.colorId))
             binding.detailLabel.text = debt.debt.description
-            val currentAmount =
-                debt.debt.amount - debt.transactions.filter { it.action == DebtActionType.REPAYMENT }
-                    .sumOf { it.amount } + debt.transactions.filter { it.action == DebtActionType.INTEREST || it.action == DebtActionType.DEBT_INCREASE }
-                    .sumOf { it.amount }
-            binding.amountLabel.text =
+            var paidAmount = 0.0
+            var increasedAmount = 0.0
+            for (transaction in debt.transactions) {
+                when (transaction.action) {
+                    DebtActionType.REPAYMENT -> {
+                        paidAmount += transaction.amount
+                    }
+
+                    DebtActionType.DEBT_INTEREST -> {
+                        increasedAmount += transaction.amount
+                    }
+
+                    DebtActionType.DEBT_INCREASE -> {
+                        increasedAmount += transaction.amount
+                    }
+
+                    DebtActionType.DEBT_COLLECTION -> {
+                        paidAmount += transaction.amount
+                    }
+
+                    DebtActionType.LOAN_INTEREST -> {
+                        increasedAmount += transaction.amount
+                    }
+
+                    DebtActionType.LOAN_INCREASE -> {
+                        increasedAmount += transaction.amount
+                    }
+                }
+            }
+            val currentAmount = debt.debt.amount - paidAmount + increasedAmount
+            val amountText = if(currentAmount < 0) {
+                context.getString(R.string.overpaid)
+            } else if (currentAmount == 0.0) {
+                context.getString(R.string.paid)
+            } else {
                 context.getString(R.string.money_amount, currentCurrencySymbol, currentAmount)
+            }
+            binding.amountLabel.text = amountText
             binding.circleLabel.setImageResource(debt.debt.iconId)
             binding.root.setOnClickListener { onItemClick(debt.debt) }
-
         }
     }
 

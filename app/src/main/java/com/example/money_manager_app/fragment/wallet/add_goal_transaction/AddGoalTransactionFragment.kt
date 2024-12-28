@@ -71,7 +71,6 @@ class AddGoalTransactionFragment :
                 spinnerActionType.visibility = View.VISIBLE
                 dateLabel.visibility = View.VISIBLE
                 etDate.visibility = View.VISIBLE
-                timeLabel.visibility = View.VISIBLE
                 etTime.visibility = View.VISIBLE
             }
             binding.etAmount.setText(getString(R.string.money_amount, "", transaction.amount))

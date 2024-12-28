@@ -139,6 +139,10 @@ class AppNavigationImpl @Inject constructor() : BaseNavigatorImpl(), AppNavigati
         openScreen(R.id.action_statisticFragment_to_createAccountFragment)
     }
 
+    override fun openDebtDetailScreenToRecordScreen(bundle: Bundle?) {
+        openScreen(R.id.action_debtDetailFragment_to_recordFragment, bundle)
+    }
+
     companion object {
         private const val TAG = "AppNavigationImpl"
     }

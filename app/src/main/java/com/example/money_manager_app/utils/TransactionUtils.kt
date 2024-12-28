@@ -1,5 +1,6 @@
 package com.example.money_manager_app.utils
 
+import android.util.Log
 import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.TransactionListItem
 import com.example.money_manager_app.data.model.CalendarRecord
@@ -145,7 +146,7 @@ fun Transaction.totalDailyTransactionIncomeAndExpense(): Pair<Double, Double> {
     }
 
     if (this is DebtTransaction) {
-        if (this.action == DebtActionType.DEBT_INCREASE) {
+        if (this.action in listOf(DebtActionType.DEBT_INCREASE, DebtActionType.DEBT_COLLECTION, DebtActionType.LOAN_INTEREST)) {
             dailyTotalIncome += this.amount
         } else {
             dailyTotalExpense += this.amount
@@ -206,7 +207,7 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
 
             is DebtTransaction -> {
                 val action = transaction.action
-                dailyTotal += if (action == DebtActionType.DEBT_INCREASE || action == DebtActionType.DEBT_COLLECTION) {
+                dailyTotal += if (action in listOf(DebtActionType.DEBT_INCREASE, DebtActionType.DEBT_COLLECTION, DebtActionType.LOAN_INTEREST)) {
                     transaction.amount
                 } else {
                     -transaction.amount
@@ -263,7 +264,7 @@ fun List<Transaction>.calculateCurrentWalletAmount(
     var endingAmount = 0.0
 
     if (filteredList.isNotEmpty()) {
-        endingAmount += if (startingList.isNotEmpty() && startingList.last().date <= filteredList.first().date) {
+        endingAmount += if (startingList.isNotEmpty() && startingList.last().date < filteredList.first().date) {
             filteredList.calculateAmount(walletId)
         } else{
             startingAmount
@@ -280,6 +281,7 @@ fun List<Transaction>.calculateCurrentWalletAmount(
 fun List<Transaction>.calculateAmount(walletId: Long) : Double{
     var amount = 0.0
     for (transaction in this) {
+        Log.d("hoangph", "calculateAmount() called with: amount = $amount | transaction = ${transaction.amount}")
         when (transaction) {
             is GoalTransaction -> {
                 amount += if (transaction.type == GoalInputType.WITHDRAW) {
@@ -299,7 +301,7 @@ fun List<Transaction>.calculateAmount(walletId: Long) : Double{
 
             is DebtTransaction -> {
                 val action = transaction.action
-                amount += if (action == DebtActionType.DEBT_INCREASE || action == DebtActionType.DEBT_COLLECTION) {
+                amount += if (action in listOf(DebtActionType.DEBT_INCREASE, DebtActionType.DEBT_COLLECTION, DebtActionType.LOAN_INTEREST)) {
                     transaction.amount
                 } else {
                     -transaction.amount

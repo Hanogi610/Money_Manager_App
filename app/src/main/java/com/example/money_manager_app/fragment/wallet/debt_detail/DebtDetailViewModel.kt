@@ -42,19 +42,43 @@ class DebtDetailViewModel @Inject constructor(
     }
 
     private fun convertDebtDetailToDebtDetailItem(debtDetail: DebtDetail): DebtDetailItem {
-        val paidAmount = debtDetail.transactions.filter { it.action == DebtActionType.REPAYMENT }
-            .sumOf { it.amount }
-        val interestAmount =
-            debtDetail.transactions.filter { it.action == DebtActionType.INTEREST || it.action == DebtActionType.DEBT_INCREASE }
-                .sumOf { it.amount }
-        val remainingAmount = debtDetail.debt.amount + interestAmount - paidAmount
+        var paidAmount = 0.0
+        var increasedAmount = 0.0
+        for (transaction in debtDetail.transactions) {
+            when (transaction.action) {
+                DebtActionType.REPAYMENT -> {
+                    paidAmount += transaction.amount
+                }
+
+                DebtActionType.DEBT_INTEREST -> {
+                    increasedAmount += transaction.amount
+                }
+
+                DebtActionType.DEBT_INCREASE -> {
+                    increasedAmount += transaction.amount
+                }
+
+                DebtActionType.DEBT_COLLECTION -> {
+                    paidAmount += transaction.amount
+                }
+
+                DebtActionType.LOAN_INTEREST -> {
+                    increasedAmount += transaction.amount
+                }
+
+                DebtActionType.LOAN_INCREASE -> {
+                    increasedAmount += transaction.amount
+                }
+            }
+        }
+        val remainingAmount = debtDetail.debt.amount - paidAmount + increasedAmount
         val date = debtDetail.debt.date.toFormattedDateString()
         val walletId = debtDetail.debt.walletId
         val groupedTransactions = debtDetail.transactions.groupTransactionsByDate()
         return DebtDetailItem(
             title = debtDetail.debt.name,
             description = debtDetail.debt.description,
-            totalAmount = debtDetail.debt.amount + interestAmount,
+            totalAmount = remainingAmount + paidAmount,
             paidAmount = paidAmount,
             remainingAmount = remainingAmount,
             date = date,

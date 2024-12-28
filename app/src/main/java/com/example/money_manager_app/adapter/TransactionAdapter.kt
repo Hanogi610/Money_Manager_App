@@ -133,7 +133,9 @@ class TransactionAdapter(
                         transaction.action.toString(),
                         transaction.name
                     )
-                    if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION) {
+                    if (transaction.action == DebtActionType.DEBT_INCREASE
+                        || transaction.action == DebtActionType.DEBT_COLLECTION
+                        || transaction.action == DebtActionType.LOAN_INTEREST) {
                         binding.transactionAmount.text = context.getString(
                             R.string.positive_money_amount, currencySymbol, transaction.amount
                         )
