@@ -58,13 +58,15 @@ class CalendarAdapter(
 
     override fun getItemCount(): Int {
         val dayOfMonth = CalendarHelper.getDayOfMonth(date)
-        var dayOfWeek = CalendarHelper.getDayOfWeek(date) - SharePreferenceHelper.getFirstDayOfWeek(context)
+        var dayOfWeek = CalendarHelper.getDayOfWeek(date) -
+                SharePreferenceHelper.getFirstDayOfWeek(context)
         if (dayOfWeek < 0) dayOfWeek += 7
         val totalDays = dayOfMonth + dayOfWeek
         return (((totalDays / 7) + if (totalDays % 7 == 0) 0 else 1) * 7) + 7
     }
 
-    override fun getItemViewType(position: Int): Int = if (position >= 7) 1 else 0
+    override fun getItemViewType(position: Int): Int =
+        if (position >= 7) 1 else 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == 0) {

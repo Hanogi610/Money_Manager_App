@@ -99,6 +99,13 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
+    fun checkCategory(category: Category) : Boolean{
+        return category.type == CategoryType.INCOME ||
+                category.type == CategoryType.PAYABLE ||
+                category.type == CategoryType.DEBT_COLLECTION ||
+                category.type == CategoryType.DEBT_INCREASE
+    }
+
     fun getStats(listTransaction: List<Transaction>){
         var categoryList = categoryRepository.getAllCategory()
         var listStatsIncome = mutableListOf<Stats>()
@@ -106,10 +113,12 @@ class TransactionViewModel @Inject constructor(
         var id = 0
         for(category in categoryList){
             id++
-            if(category.type == CategoryType.INCOME || category.type == CategoryType.PAYABLE || category.type == CategoryType.DEBT_COLLECTION || category.type == CategoryType.DEBT_INCREASE){
-                listStatsIncome.add(Stats(category.name,category.colorId,category.id,0.0,0.0,id,0,category.type,category.iconId,false))
+            if(checkCategory(category)){
+                listStatsIncome.add(Stats(category.name,category.colorId,category.id,0.0,0.0,
+                    id,0,category.type,category.iconId,false))
             } else {
-                listStatsExpense.add(Stats(category.name,category.colorId,category.id,0.0,0.0,id,0,category.type,category.iconId,false))
+                listStatsExpense.add(Stats(category.name,category.colorId,category.id,0.0,0.0,
+                    id,0,category.type,category.iconId,false))
             }
         }
 
