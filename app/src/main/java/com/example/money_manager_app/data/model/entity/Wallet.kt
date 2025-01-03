@@ -76,21 +76,31 @@ data class WalletFullDetail(
     val transferIns: List<Transfer>,
 )
 
-fun WalletFullDetail.toWalletItem(startDate: Long? = null, endDate: Long = System.currentTimeMillis()) : WalletItem {
-    val transactions = mutableListOf<Transaction>()
+fun WalletFullDetail.toWalletItem(startDate: Long, endDate: Long) : WalletItem {
+    val transactions = mutableSetOf<Transaction>()
     transactions.addAll(goalTransactions)
     transactions.addAll(debts)
     transactions.addAll(debtTransactions)
     transactions.addAll(transferIns)
-    var listTransferOuts = mutableListOf<Transfer>()
-    for(transfer in transferOuts) {
-        if (transfer.toWalletId !=transfer.walletId) {
-            listTransferOuts.add(transfer)
-        }
-    }
-    transactions.addAll(listTransferOuts)
+    transactions.addAll(transferOuts)
     Log.d("WalletFullDetail", "toWalletItem: $transactions")
-    val dateRangeAmount = transactions.calculateCurrentWalletAmount(wallet.id,startDate,endDate)
+    val dateRangeAmount = transactions.toMutableList().calculateCurrentWalletAmount(wallet.id,startDate,endDate)
+    return WalletItem(
+        wallet = wallet,
+        startingAmount = wallet.amount + dateRangeAmount.startingAmount,
+        endingAmount = wallet.amount + dateRangeAmount.endingAmount
+    )
+}
+
+fun WalletFullDetail.toWalletItem() : WalletItem {
+    val transactions = mutableSetOf<Transaction>()
+    transactions.addAll(goalTransactions)
+    transactions.addAll(debts)
+    transactions.addAll(debtTransactions)
+    transactions.addAll(transferIns)
+    transactions.addAll(transferOuts)
+    Log.d("WalletFullDetail", "toWalletItem: $transactions")
+    val dateRangeAmount = transactions.toMutableList().calculateCurrentWalletAmount(wallet.id)
     return WalletItem(
         wallet = wallet,
         startingAmount = wallet.amount + dateRangeAmount.startingAmount,

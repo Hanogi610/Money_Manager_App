@@ -17,9 +17,10 @@ interface WalletRepository {
     suspend fun deleteWallet(wallet: Wallet)
     fun getWalletItemsByUserId(
         userId: Long,
-        startDate: Long? = null,
-        endDate: Long? = System.currentTimeMillis()
+        startDate: Long,
+        endDate: Long
     ): Flow<List<WalletItem>>
+    fun getWalletItemsByUserId(userId: Long): Flow<List<WalletItem>>
 }
 
 class WalletRepositoryImpl @Inject constructor(
@@ -51,13 +52,19 @@ class WalletRepositoryImpl @Inject constructor(
 
     override fun getWalletItemsByUserId(
         userId: Long,
-        startDate: Long?,
-        endDate: Long?
+        startDate: Long,
+        endDate: Long
     ): Flow<List<WalletItem>> {
+        return walletDao.getWalletsFullDetailByUserId(userId)
+            .map { wallets ->
+                wallets.map { it.toWalletItem(startDate, endDate) }
+            }
+    }
+
+    override fun getWalletItemsByUserId(userId: Long): Flow<List<WalletItem>> {
         return walletDao.getWalletsFullDetailByUserId(userId)
             .map { wallets ->
                 wallets.map { it.toWalletItem() }
             }
     }
-
 }
