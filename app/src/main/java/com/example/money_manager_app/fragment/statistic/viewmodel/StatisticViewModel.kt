@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.statistic.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.CalendarSummary
@@ -22,13 +23,19 @@ import com.example.money_manager_app.data.repository.TransferRepository
 import com.example.money_manager_app.data.repository.WalletRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
+import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.util.Date
+import javax.annotation.meta.When
 import javax.inject.Inject
 
 
@@ -95,6 +102,8 @@ class StatisticViewModel @Inject constructor(
                 }
                 Log.d("StatisticViewModel", "Opening balance: $openingBalance, Ending balance: $endingBalance")
                 Pair(openingBalance, endingBalance)
+            }.collect { pair ->
+                _pairWallet.value = pair
             }
         }
     }

@@ -6,11 +6,20 @@ import android.view.View
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.BaseBottomSheet
 import com.example.money_manager_app.databinding.SheetDateTimeBinding
+import com.example.money_manager_app.fragment.statistic.adapter.StaticInterface
+import com.example.money_manager_app.utils.toDateTimestamp
 import java.util.Calendar
+import java.util.Date
 
 class SelectDateBottomSheet : BaseBottomSheet<SheetDateTimeBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.sheet_date_time
+    }
+
+    private var staticInterface : StaticInterface? = null
+
+    fun setStaticInterfacce(staticInterface: StaticInterface) {
+        this.staticInterface = staticInterface
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -21,10 +30,21 @@ class SelectDateBottomSheet : BaseBottomSheet<SheetDateTimeBinding>() {
             }
         }
 
-        binding.dateLabel2.setOnClickListener {
+        binding.enddate.setOnClickListener {
             showDatePicker { selectedDate ->
                 binding.enddate.setText(selectedDate)
             }
+        }
+
+        binding.cancelFilterButton.setOnClickListener {
+            dismiss()
+        }
+
+        binding.applyFilterButton.setOnClickListener {
+            var startDate = binding.startDate.text.toString().toDateTimestamp()
+            var endDate = binding.enddate.text.toString().toDateTimestamp()
+            staticInterface?.onClickTime(Date(startDate), Date(endDate))
+            dismiss()
         }
     }
 
