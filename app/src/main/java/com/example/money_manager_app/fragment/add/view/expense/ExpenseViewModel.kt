@@ -6,22 +6,16 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.icu.util.Calendar
 import android.os.Environment
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.AddTransfer
 import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
-import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.data.repository.TransferRepository
-import com.example.money_manager_app.data.repository.WalletRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
-import com.example.money_manager_app.utils.toDateTimestamp
-import com.example.money_manager_app.utils.toTimeTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,45 +31,39 @@ import javax.inject.Inject
 @HiltViewModel
 class ExpenseViewModel @Inject constructor(
     private val repository: TransferRepository,
-    private val walletRepository: WalletRepository,
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 )  : BaseViewModel() {
     private val _categoryListExpense = MutableStateFlow<List<CategoryData.Category>>(emptyList())
-    val categoryListExpense: StateFlow<List<CategoryData.Category>> get() = _categoryListExpense
-
-    private val _categoryListIncome = MutableStateFlow<List<CategoryData.Category>>(emptyList())
-    val categoryListIncome: StateFlow<List<CategoryData.Category>> get() = _categoryListIncome
 
     private val _addTransfer = MutableStateFlow(AddTransfer())
 
-    private val _selectedDate = MutableStateFlow<String>("")
+    private val _selectedDate = MutableStateFlow("")
     val selectedDate: StateFlow<String> get() = _selectedDate
 
-    private val _selectedTime = MutableStateFlow<String>("")
+    private val _selectedTime = MutableStateFlow("")
     val selectedTime: StateFlow<String> get() = _selectedTime
 
-    private val _currentDateTime = MutableStateFlow<Pair<String, String>>(Pair("", ""))
+    private val _currentDateTime = MutableStateFlow(Pair("", ""))
     val currentDateTime: StateFlow<Pair<String, String>> get() = _currentDateTime
 
     private val _imageUri = MutableStateFlow<Bitmap?>(null)
     val imageUri: StateFlow<Bitmap?> get() = _imageUri
 
     private var _categoryNameIncome = MutableStateFlow(Pair("", 0))
-    val categoryNameIncome: StateFlow<Pair<String, Int>> get() = _categoryNameIncome
 
-    private var _amount = MutableStateFlow<Double>(0.0)
+    private var _amount = MutableStateFlow(0.0)
     val amount: StateFlow<Double> get() = _amount
 
     private var _id = MutableStateFlow<Long>(0)
     val id: StateFlow<Long> get() = _id
 
-    private var _descriptor = MutableStateFlow<String>("")
+    private var _descriptor = MutableStateFlow("")
     val descriptor: StateFlow<String> get() = _descriptor
 
-    private var _fee = MutableStateFlow<Double>(0.0)
+    private var _fee = MutableStateFlow(0.0)
     val fee: StateFlow<Double> get() = _fee
 
-    private var _momo = MutableStateFlow<String>("")
+    private var _momo = MutableStateFlow("")
     val momo: StateFlow<String> get() = _momo
 
     private var _categoryNameExpense = MutableStateFlow(Pair("", 0))
@@ -87,11 +75,9 @@ class ExpenseViewModel @Inject constructor(
     private var _toWallet : MutableStateFlow<List<Wallet>> = MutableStateFlow(emptyList())
     val toWallet: StateFlow<List<Wallet>> get() = _toWallet
 
-    private var _oldwallet = MutableStateFlow<Wallet>(Wallet(0,0.0,0, WalletType.GENERAL,"",0,0,true,))
-    val oldwallet: StateFlow<Wallet> get() = _oldwallet
+    private var _oldwallet = MutableStateFlow(Wallet(0,0.0,0, WalletType.GENERAL,"",0,0,true))
 
-    private var _oldAmount = MutableStateFlow<Double>(0.0)
-    val oldAmount: StateFlow<Double> get() = _oldAmount
+    private var _oldAmount = MutableStateFlow(0.0)
 
     fun setOldAmount(amount: Double) {
         _oldAmount.value = amount
@@ -147,11 +133,6 @@ class ExpenseViewModel @Inject constructor(
         return currentDateTime.value
     }
 
-
-    fun getCategoryNameIncome(): Pair<String, Int> {
-        return categoryNameIncome.value
-    }
-
     fun setCategoryNameExpense(pair : Pair<String, Int>) {
         _categoryNameExpense.value = pair
     }
@@ -190,7 +171,7 @@ class ExpenseViewModel @Inject constructor(
         return _imageUri.value
     }
 
-    fun saveDrawableToAppStorage(context: Context, bitmap : Bitmap?): String? {
+    fun saveDrawableToAppStorage(bitmap : Bitmap?): String? {
         if (bitmap == null) {
             return null
         }
@@ -285,7 +266,7 @@ class ExpenseViewModel @Inject constructor(
         _addTransfer.value = AddTransfer()
         _toWallet.value = emptyList()
         _fromWallet.value = emptyList()
-        _oldwallet.value = Wallet(0,0.0,0, WalletType.GENERAL,"",0,0,true,)
+        _oldwallet.value = Wallet(0,0.0,0, WalletType.GENERAL,"",0,0,true)
     }
 
 }
