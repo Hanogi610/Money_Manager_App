@@ -258,9 +258,9 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
         } catch (e: Exception) {
             fromWallet = 0L
         }
-        var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.iconId ?: -1
-        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.id ?: -1
-        if (amountText.isNotEmpty() && iconId != 0 && id_category != -1L && fromWallet != -1L) {
+        var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.iconId ?: 0
+        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.id ?: 0L
+        if (amountText.isNotEmpty() && iconId != 0 && id_category != 0L && fromWallet != 0L) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()
             val time = binding.etTime.text.toString()
@@ -271,7 +271,7 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
                 linkimg = ""
             }
             val memo = binding.etMemo.text.toString()
-            val toWallet = 1L
+            val toWallet = fromWallet
             val fee : Double = 0.0
             val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
             val name = binding.etMemo.text.toString()
@@ -317,7 +317,7 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
             fromWallet = 0L
         }
         var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.iconId ?: 0
-        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.id ?: 0
+        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameIncome().first }?.id ?: 0L
         if (amountText.isNotEmpty() && iconId != 0 && id_category != 0L && fromWallet != 0L) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()
@@ -329,7 +329,7 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
                 linkimg = ""
             }
             val memo = binding.etMemo.text.toString()
-            val toWallet = 1L
+            val toWallet = fromWallet
             val fee : Double = 0.0
             val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
             val name = binding.etMemo.text.toString()

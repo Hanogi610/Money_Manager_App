@@ -93,7 +93,6 @@ class WalletDetailFragment :
                             walletIconImageView.setBackgroundResource(it.colorId)
                             nameLabel.text = it.name
                             transactionAdapter.submitList(it.transactions)
-                            actionButton.setBackgroundColor(it.colorId)
                             fab.setBackgroundColor(it.colorId)
                             when (it) {
                                 is WalletDetailItem.CreditItem -> {

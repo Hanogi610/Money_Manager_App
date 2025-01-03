@@ -28,6 +28,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -67,6 +70,9 @@ class StatisticViewModel @Inject constructor(
     private var _listTransaction = mutableListOf<Transaction>()
     val listTransaction = _listTransaction
 
+    private var _pairWallet = MutableStateFlow<Pair<Double,Double>>(Pair(0.0,0.0))
+    val pairWallet get() = _pairWallet
+
 
     fun getTransaciton () : List<Transaction> {
         return listTransaction
@@ -84,14 +90,40 @@ class StatisticViewModel @Inject constructor(
         _wallets.value = wallets
     }
 
-    fun getWallets(listWallet : List<Wallet>) : Pair<Double,Double>{
-        var openingBalance = 0.0
-        var endingBalance = 0.0
-        for(wallet in listWallet){
-            endingBalance += wallet.amount.toLong()
+    fun getWallets(id: Long, wallets: List<Wallet>,start_date: Long?, end_date: Long?) {
+        viewModelScope.launch {
+            combine(
+                // lấy tất cả tiền của các ví từ ngày Bắt đầu
+                walletRepository.getWalletItemsByUserId(id, start_date),
+                // lấy tất cả tiền của các ví từ ngày Kết thúc
+                walletRepository.getWalletItemsByUserId(id, end_date)
+            ) { listWalletStart, listWalletEnd ->
+                var openingBalance = 0.0
+                var endingBalance = 0.0
+
+                Log.d("StatisticViewModel", "List wallet start: $listWalletStart")
+                Log.d("StatisticViewModel", "List wallet end: $listWalletEnd")
+
+                // lấy ra số tiền của các ví từ ngày Bắt đầu và kiểm tra cái ví đấy có trong listWallet không thì cộng vào
+                for (wallet in listWalletStart) {
+                    if (wallets.contains(wallet.wallet)) {
+                        openingBalance += wallet.startingAmount
+                    }
+                }
+
+                for (wallet in listWalletEnd) {
+                    if (wallets.contains(wallet.wallet)) {
+                        endingBalance += wallet.startingAmount
+                    }
+                }
+                Log.d("StatisticViewModel", "Opening balance: $openingBalance, Ending balance: $endingBalance")
+                Pair(openingBalance, endingBalance)
+            }.collect { pair ->
+                _pairWallet.value = pair
+            }
         }
-        return Pair(openingBalance,endingBalance)
     }
+
 
     fun setCalendarSummary(calendarSummary: CalendarSummary) {
         _CalendarSummary.value = calendarSummary

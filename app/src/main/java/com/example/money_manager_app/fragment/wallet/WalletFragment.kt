@@ -95,7 +95,6 @@ class WalletFragment :
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().wallets.collect { wallets ->
                     walletAdapter.setWallets(wallets)
-                    Log.d("hoangph", "bindingStateView() called with: wallets = $wallets")
                     binding.walletManagerTextView.text = getString(R.string.manager, wallets.size)
                 }
             }

@@ -58,6 +58,9 @@ class TransactionViewModel @Inject constructor(
     private var _listTransfer = MutableStateFlow<List<Transfer>>(emptyList())
     val listTransfer: StateFlow<List<Transfer>> get() = _listTransfer
 
+    private var _listTransaction = MutableStateFlow<List<Transaction>>(emptyList())
+    val listTransaction: StateFlow<List<Transaction>> get() = _listTransaction
+
 
     fun setStatsIncome(stats: List<Stats>) {
         _listStatsIncome.value = stats
@@ -99,17 +102,27 @@ class TransactionViewModel @Inject constructor(
         }
     }
 
+    fun checkCategory(category: Category) : Boolean{
+        return category.type == CategoryType.INCOME ||
+                category.type == CategoryType.PAYABLE ||
+                category.type == CategoryType.DEBT_COLLECTION ||
+                category.type == CategoryType.DEBT_INCREASE
+    }
+
     fun getStats(listTransaction: List<Transaction>){
+        _listTransaction.value = listTransaction
         var categoryList = categoryRepository.getAllCategory()
         var listStatsIncome = mutableListOf<Stats>()
         var listStatsExpense: MutableList<Stats> = mutableListOf()
         var id = 0
         for(category in categoryList){
             id++
-            if(category.type == CategoryType.INCOME || category.type == CategoryType.PAYABLE || category.type == CategoryType.DEBT_COLLECTION || category.type == CategoryType.DEBT_INCREASE){
-                listStatsIncome.add(Stats(category.name,category.colorId,category.id,0.0,0.0,id,0,category.type,category.iconId,false))
+            if(checkCategory(category)){
+                listStatsIncome.add(Stats(category.name,category.colorId,category.id,0.0,0.0,
+                    id,0,category.type,category.iconId,false))
             } else {
-                listStatsExpense.add(Stats(category.name,category.colorId,category.id,0.0,0.0,id,0,category.type,category.iconId,false))
+                listStatsExpense.add(Stats(category.name,category.colorId,category.id,0.0,0.0,
+                    id,0,category.type,category.iconId,false))
             }
         }
 

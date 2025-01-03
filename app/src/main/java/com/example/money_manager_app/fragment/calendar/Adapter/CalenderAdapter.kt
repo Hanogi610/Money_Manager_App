@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
@@ -46,6 +47,7 @@ class CalendarAdapter(
         val incomeLabel: TextView = itemView.findViewById(R.id.incomeLabel)
         val expenseLabel: TextView = itemView.findViewById(R.id.expenseLabel)
         val totalLabel: TextView = itemView.findViewById(R.id.totalLabel)
+        val llItem : LinearLayout = itemView.findViewById(R.id.ll_item)
 
         init {
             itemView.setOnClickListener(this)
@@ -58,13 +60,15 @@ class CalendarAdapter(
 
     override fun getItemCount(): Int {
         val dayOfMonth = CalendarHelper.getDayOfMonth(date)
-        var dayOfWeek = CalendarHelper.getDayOfWeek(date) - SharePreferenceHelper.getFirstDayOfWeek(context)
+        var dayOfWeek = CalendarHelper.getDayOfWeek(date) -
+                SharePreferenceHelper.getFirstDayOfWeek(context)
         if (dayOfWeek < 0) dayOfWeek += 7
         val totalDays = dayOfMonth + dayOfWeek
         return (((totalDays / 7) + if (totalDays % 7 == 0) 0 else 1) * 7) + 7
     }
 
-    override fun getItemViewType(position: Int): Int = if (position >= 7) 1 else 0
+    override fun getItemViewType(position: Int): Int =
+        if (position >= 7) 1 else 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == 0) {
@@ -167,7 +171,7 @@ class CalendarAdapter(
             }
         }
         if (isToday) {
-            itemViewHolder.dayLabel.setBackgroundColor(context.getColor(R.color.blue_alpha))
+            itemViewHolder.llItem.setBackground(context.getDrawable(R.drawable.custom_border_1))
             itemViewHolder.dayLabel.setTextColor(context.getColor(R.color.white))
         } else {
             itemViewHolder.dayLabel.background = null

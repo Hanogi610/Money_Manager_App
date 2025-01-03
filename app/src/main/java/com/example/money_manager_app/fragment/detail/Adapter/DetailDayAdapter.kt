@@ -29,7 +29,7 @@ class DetailDayAdapter(
             if (transaction is Transfer) {
                 when (transaction.typeOfExpenditure) {
                     TransferType.Expense -> {
-                        binding.ivItem.setImageResource(transaction.iconId ?: R.drawable.expense_1)
+                        binding.ivItem.setImageResource(transaction.iconId ?: 0)
                         binding.tvAmount.text = "-${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.red)
@@ -41,7 +41,7 @@ class DetailDayAdapter(
                     }
 
                     TransferType.Income -> {
-                        binding.ivItem.setImageResource(transaction.iconId ?: R.drawable.expense_1)
+                        binding.ivItem.setImageResource(transaction.iconId ?: 0)
                         binding.tvAmount.text = "+${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
