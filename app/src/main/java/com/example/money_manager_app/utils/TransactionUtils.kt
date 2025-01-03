@@ -317,8 +317,11 @@ fun List<Transaction>.calculateAmount(walletId: Long) : Double{
                         amount -= transaction.amount
                     }
                     TransferType.Transfer -> {
-                        if(walletId == transaction.toWalletId) amount += transaction.amount
-                        if(walletId == transaction.walletId) amount -= transaction.amount
+                        if(transaction.walletId == walletId){
+                            amount -= transaction.amount
+                        } else {
+                            amount += transaction.amount
+                        }
                     }
                 }
             }

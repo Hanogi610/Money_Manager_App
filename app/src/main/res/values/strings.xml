@@ -266,7 +266,7 @@
         <item>#66757F</item>
     </string-array>
     <string-array name="category_expense">
-        <item>Bills</item>
+        <item>Bill</item>
         <item>Clothing</item>
         <item>Education</item>
         <item>Entertainment</item>

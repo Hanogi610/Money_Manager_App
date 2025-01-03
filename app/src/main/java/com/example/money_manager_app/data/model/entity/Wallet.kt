@@ -1,6 +1,7 @@
 package com.example.money_manager_app.data.model.entity
 
 import android.os.Parcelable
+import android.util.Log
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.room.ColumnInfo
@@ -18,6 +19,7 @@ import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.utils.WalletTypeConverter
 import com.example.money_manager_app.utils.calculateCurrentWalletAmount
 import kotlinx.parcelize.Parcelize
+import kotlin.math.log
 
 @Parcelize
 @Entity(
@@ -80,7 +82,14 @@ fun WalletFullDetail.toWalletItem(startDate: Long? = null, endDate: Long = Syste
     transactions.addAll(debts)
     transactions.addAll(debtTransactions)
     transactions.addAll(transferIns)
-    transactions.addAll(transferOuts)
+    var listTransferOuts = mutableListOf<Transfer>()
+    for(transfer in transferOuts) {
+        if (transfer.toWalletId !=transfer.walletId) {
+            listTransferOuts.add(transfer)
+        }
+    }
+    transactions.addAll(listTransferOuts)
+    Log.d("WalletFullDetail", "toWalletItem: $transactions")
     val dateRangeAmount = transactions.calculateCurrentWalletAmount(wallet.id,startDate,endDate)
     return WalletItem(
         wallet = wallet,

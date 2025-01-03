@@ -24,7 +24,7 @@ class WalletAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(walletItem: WalletItem) {
             val wallet = walletItem.wallet
-            val balance = wallet.amount + walletItem.endingAmount
+            val balance = walletItem.endingAmount
             binding.walletName.text = wallet.name
             binding.walletBalance.text = context.getString(
                 R.string.money_amount, currentCurrencySymbol, balance

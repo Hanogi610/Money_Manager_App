@@ -224,6 +224,7 @@ class ExpenseViewModel @Inject constructor(
         val datePickerDialog = DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
             val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
             _selectedDate.value = selectedDate
+            _currentDateTime.value = Pair(selectedDate, _currentDateTime.value.second)
         }, year, month, day)
         datePickerDialog.show()
     }
