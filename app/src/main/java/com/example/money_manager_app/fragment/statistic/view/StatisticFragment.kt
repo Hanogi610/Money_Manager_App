@@ -181,12 +181,19 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                     getVM().getWallets(idAccount,wallets, null, null)
 
                 }
-                TimeType.CUSTOM -> {
-                    binding.dateLabel.text = "Custom"
-
-                }
+                TimeType.CUSTOM -> TODO()
             }
         }
+    }
+
+    fun setUpLayoutContentCustom(startDate: Date, endDate: Date) {
+        binding.dateLabel.text = CalendarHelper.getFormattedCustomDate(requireContext(),startDate,endDate)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateStart = dateFormat.format(startDate)
+        val dateEnd = dateFormat.format(endDate)
+        getVM().getCalendarSummary(wallets,dateStart.toDateTimestamp(),dateEnd.toDateTimestamp(), mainViewModel.currentAccount.value!!.account.id)
+        getVM().getWallets(mainViewModel.currentAccount.value!!.account.id,wallets, dateStart.toDateTimestamp(),dateEnd.toDateTimestamp())
+
     }
 
     override fun onClick(view: View) {
@@ -275,7 +282,21 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                     }
                 }
             }
-            TimeType.CUSTOM -> TODO()
+            TimeType.CUSTOM -> {
+                when(view.id) {
+                    R.id.backImage -> {
+//                        setUpLayoutContentCustom()
+                    }
+                    R.id.dateLabel -> {
+                        val filterTimeBottomSheetDialogFragment = FilterTimeBottomSheetDialogFragment()
+                        filterTimeBottomSheetDialogFragment.setStaticInterfacce(this)
+                        filterTimeBottomSheetDialogFragment.show(parentFragmentManager, filterTimeBottomSheetDialogFragment.tag)
+                    }
+                    R.id.nextImage -> {
+//                        setUpLayoutContentCustom()
+                    }
+                }
+            }
         }
     }
 
@@ -283,6 +304,11 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
         time = timeType
         date = Date()
         setUpLayoutContent(date, mainViewModel.currentAccount.value!!.account.id)
+    }
+
+    override fun onClickTime(startDate: Date, endDate: Date) {
+        time = TimeType.CUSTOM
+        setUpLayoutContentCustom(startDate,endDate)
     }
 
 
