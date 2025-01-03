@@ -1,7 +1,6 @@
 package com.example.money_manager_app.fragment.statistic.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.CalendarSummary
@@ -23,19 +22,13 @@ import com.example.money_manager_app.data.repository.TransferRepository
 import com.example.money_manager_app.data.repository.WalletRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
-import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.Date
-import javax.annotation.meta.When
 import javax.inject.Inject
 
 
@@ -90,36 +83,18 @@ class StatisticViewModel @Inject constructor(
         _wallets.value = wallets
     }
 
-    fun getWallets(id: Long, wallets: List<Wallet>,start_date: Long?, end_date: Long?) {
+    fun getWallets(id: Long, wallets: List<Wallet>, startDate: Long?, endDate: Long?) {
         viewModelScope.launch {
-            combine(
-                // lấy tất cả tiền của các ví từ ngày Bắt đầu
-                walletRepository.getWalletItemsByUserId(id, start_date),
-                // lấy tất cả tiền của các ví từ ngày Kết thúc
-                walletRepository.getWalletItemsByUserId(id, end_date)
-            ) { listWalletStart, listWalletEnd ->
+                walletRepository.getWalletItemsByUserId(id, startDate, endDate).collect{ list ->
                 var openingBalance = 0.0
                 var endingBalance = 0.0
 
-                Log.d("StatisticViewModel", "List wallet start: $listWalletStart")
-                Log.d("StatisticViewModel", "List wallet end: $listWalletEnd")
-
-                // lấy ra số tiền của các ví từ ngày Bắt đầu và kiểm tra cái ví đấy có trong listWallet không thì cộng vào
-                for (wallet in listWalletStart) {
-                    if (wallets.contains(wallet.wallet)) {
-                        openingBalance += wallet.startingAmount
-                    }
-                }
-
-                for (wallet in listWalletEnd) {
-                    if (wallets.contains(wallet.wallet)) {
-                        endingBalance += wallet.startingAmount
-                    }
+                for (wallet in list) {
+                    openingBalance += wallet.startingAmount
+                    endingBalance += wallet.endingAmount
                 }
                 Log.d("StatisticViewModel", "Opening balance: $openingBalance, Ending balance: $endingBalance")
                 Pair(openingBalance, endingBalance)
-            }.collect { pair ->
-                _pairWallet.value = pair
             }
         }
     }

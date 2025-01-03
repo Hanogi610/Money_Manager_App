@@ -197,8 +197,6 @@ class TransferViewModel @Inject constructor(
         }
     }
 
-
-
     fun showDatePickerDialog(context: Context) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -237,20 +235,6 @@ class TransferViewModel @Inject constructor(
                 repository.insertTransferDetail(
                     transfer
                 )
-                if(transfer.typeOfExpenditure == TransferType.Transfer){
-                    var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
-                    var walletTo = toWallet.value.find { it.id == transfer.toWalletId }
-                    walletFrom?.let {
-                        walletRepository.editWallet(it.copy(
-                            amount = it.amount - transfer.amount - transfer.fee
-                        ))
-                    }
-                    walletTo?.let {
-                        walletRepository.editWallet(it.copy(
-                            amount = it.amount + transfer.amount
-                        ))
-                    }
-                }
             }
         }
     }
@@ -261,21 +245,6 @@ class TransferViewModel @Inject constructor(
                 repository.editTransferDetail(
                     transfer
                 )
-                var walletFrom = fromWallet.value.find { it.id == transfer.walletId }
-                var walletTo = toWallet.value.find { it.id == transfer.toWalletId }
-                if(transfer.typeOfExpenditure == TransferType.Transfer){
-                    walletFrom?.let {
-                        walletRepository.editWallet(it.copy(
-                            amount = it.amount - transfer.amount - transfer.fee
-                        ))
-                    }
-                    walletTo?.let {
-                        walletRepository.editWallet(it.copy(
-                            amount = it.amount + transfer.amount
-                        ))
-                    }
-
-                }
             }
         }
     }
