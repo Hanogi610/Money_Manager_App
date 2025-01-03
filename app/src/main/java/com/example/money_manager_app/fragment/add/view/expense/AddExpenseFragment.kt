@@ -258,13 +258,14 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
             fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
 
         } catch (e: Exception) {
-            0L
+            -1L
         }
-        var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.iconId ?: 0
-        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.id ?: 0L
-        Log.d("AddExpenseFragment", "onSaveExpense: $iconId")
-        Log.d("AddExpenseFragment", "onSaveExpense: $id_category")
-        if (amountText.isNotEmpty() && fromWallet != 0L && iconId != 0 && id_category != 0L) {
+        var iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.iconId ?: -1
+        var id_category = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.id ?: -1
+        Log.d("AddExpenseFragment", "iconId: $iconId")
+        Log.d("AddExpenseFragment", "id_category: $id_category")
+        Log.d("AddExpenseFragment", "fromWallet: $fromWallet")
+        if (amountText.isNotEmpty() && fromWallet != -1L && iconId != -1 && id_category != -1L) {
             val amount = amountText.toDouble()
             val description = binding.etDescription.text.toString()
             val time = binding.etTime.text.toString()

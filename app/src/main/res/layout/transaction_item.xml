@@ -7,21 +7,22 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="Transaction Type"
             android:id="@+id/transactionTypeImageView"
+            android:layout_width="@dimen/_36dp"
+            android:layout_height="@dimen/_36dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/ic_monetization_on_24"
-            android:padding="8dp"/>
+            android:src="@drawable/expense_1"/>
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/transactionTypeTextView"
             app:layout_constraintStart_toEndOf="@id/transactionTypeImageView"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="@dimen/_8dp"
             android:textSize="16sp"
             android:textStyle="bold"
             android:text="Repayment"
@@ -33,6 +34,7 @@
             app:layout_constraintStart_toEndOf="@id/transactionTypeImageView"
             app:layout_constraintTop_toBottomOf="@id/transactionTypeTextView"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="@dimen/_8dp"
             android:text="cash"
            />
 

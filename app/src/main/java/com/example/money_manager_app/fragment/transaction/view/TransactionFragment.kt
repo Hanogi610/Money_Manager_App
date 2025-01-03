@@ -1,7 +1,9 @@
 package com.example.money_manager_app.fragment.transaction.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -10,15 +12,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
+import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
+import com.example.money_manager_app.data.model.entity.Debt
+import com.example.money_manager_app.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.databinding.FragmentTransactionBinding
 import com.example.money_manager_app.fragment.statistic.adapter.StaticInterface
 import com.example.money_manager_app.fragment.statistic.view.FilterTimeBottomSheetDialogFragment
 import com.example.money_manager_app.fragment.structure.viewmodel.StructureViewModel
+import com.example.money_manager_app.fragment.transaction.viewmodel.TransactionViewModel
 import com.example.money_manager_app.utils.CalendarHelper
 import com.example.money_manager_app.utils.DateHelper
 import com.example.money_manager_app.utils.TimeType
+import com.example.money_manager_app.utils.groupTransactionsByDate
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,11 +36,11 @@ import java.util.Date
 import java.util.Locale
 
 @AndroidEntryPoint
-class TransactionFragment : BaseFragment<FragmentTransactionBinding, StructureViewModel>(R.layout.fragment_transaction),View.OnClickListener,
+class TransactionFragment : BaseFragment<FragmentTransactionBinding, TransactionViewModel>(R.layout.fragment_transaction),View.OnClickListener,
     StaticInterface {
 
-    override fun getVM(): StructureViewModel {
-        val viewModel: StructureViewModel by activityViewModels()
+    override fun getVM(): TransactionViewModel {
+        val viewModel: TransactionViewModel by activityViewModels()
         return viewModel
     }
 
@@ -40,6 +48,7 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding, StructureVi
     private var time = TimeType.MONTHLY
     private var date = Date()
     private var check = true
+    private var transactionAdapter: TransactionAdapter? = null
     private var wallets: List<Wallet> = ArrayList()
     private val mainViewModel : MainViewModel by activityViewModels()
 
@@ -57,6 +66,29 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding, StructureVi
         if(!wallets.isEmpty()) {
             setBalance()
             observeData()
+        }
+        setAdapter()
+    }
+
+    private fun setAdapter() {
+        transactionAdapter = TransactionAdapter(
+            requireContext(),
+            currencySymbol,
+            wallets,
+            mainViewModel.categories.value
+        ) {
+            if (it is Transfer || it is DebtTransaction) {
+                val bundle = bundleOf(
+                    "transaction" to it
+                )
+                findNavController().navigate(R.id.recordFragment, bundle)
+            }
+            if (it is Debt) {
+                val bundle = bundleOf(
+                    "debt" to it
+                )
+                findNavController().navigate(R.id.debtDetailFragment, bundle)
+            }
         }
     }
 
@@ -83,6 +115,15 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding, StructureVi
                     } else {
                         binding.netLabel.text = context?.getString(R.string.positive_money_amount, currencySymbol, it.income - it.expense)
                     }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                getVM().listTransaction.collect {
+                    transactionAdapter?.submitList(it.groupTransactionsByDate())
+                    binding.recyclerView.adapter = transactionAdapter
                 }
             }
         }

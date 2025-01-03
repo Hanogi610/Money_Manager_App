@@ -58,6 +58,9 @@ class TransactionViewModel @Inject constructor(
     private var _listTransfer = MutableStateFlow<List<Transfer>>(emptyList())
     val listTransfer: StateFlow<List<Transfer>> get() = _listTransfer
 
+    private var _listTransaction = MutableStateFlow<List<Transaction>>(emptyList())
+    val listTransaction: StateFlow<List<Transaction>> get() = _listTransaction
+
 
     fun setStatsIncome(stats: List<Stats>) {
         _listStatsIncome.value = stats
@@ -107,6 +110,7 @@ class TransactionViewModel @Inject constructor(
     }
 
     fun getStats(listTransaction: List<Transaction>){
+        _listTransaction.value = listTransaction
         var categoryList = categoryRepository.getAllCategory()
         var listStatsIncome = mutableListOf<Stats>()
         var listStatsExpense: MutableList<Stats> = mutableListOf()

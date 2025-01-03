@@ -24,7 +24,7 @@ class RecordViewModel @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ): BaseViewModel() {
 
-    private val _transaction : MutableStateFlow<Transaction> = MutableStateFlow(Transaction(0, R.id.ivIcon, "", 0.0, 0L, 0L,0,0))
+    private val _transaction : MutableStateFlow<Transaction> = MutableStateFlow(Transaction(0, 0, "", 0.0, 0L, 0L,0,0))
     val transaction : MutableStateFlow<Transaction> get() = _transaction
 
     fun setTransaction(transaction: Transaction) {

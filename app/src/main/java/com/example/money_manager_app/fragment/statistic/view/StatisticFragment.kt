@@ -74,12 +74,13 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
     private fun observeData() {
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getVM().wallets.collect{
-                    val balance = getVM().getWallets(it)
-                    statisticAdapter.setBalance(balance.first,balance.second)
+                getVM().pairWallet.collect{
+                   statisticAdapter.setBalance(it.first,it.second)
                 }
             }
         }
+
+
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -123,6 +124,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                 putParcelable("type", time)
                 putParcelableArrayList("wallets", ArrayList(wallets))
                 val listTransaction = getVM().listTransaction
+                Log.d("listTransaction",listTransaction.toString())
                 putParcelableArrayList("listTransaction", ArrayList(listTransaction))
             }
         )
@@ -151,27 +153,32 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                     binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
                     var dateStart = DateHelper.getDateMonth(date)
                     getVM().getCalendarSummary(wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp(),idAccount)
+                    getVM().getWallets(idAccount,wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp())
                 }
                 TimeType.DAILY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
                     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     val dateStart = dateFormat.format(date)
                     getVM().getCalendarSummary(wallets,dateStart.toDateTimestamp(),dateStart.toDateTimestamp(), idAccount)
+                    getVM().getWallets(idAccount,wallets,dateStart.toDateTimestamp(),dateStart.toDateTimestamp())
                 }
                 TimeType.WEEKLY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedWeeklyDate(requireContext(),date)
                     val dateStart = DateHelper.getDateWeek(date)
                     getVM().getCalendarSummary(wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp(), idAccount)
+                    getVM().getWallets(idAccount,wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp())
                 }
                 TimeType.YEARLY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedYearlyDate(date)
                     val dateStart = DateHelper.getDateYear(date)
                     getVM().getCalendarSummary(wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp(), idAccount)
+                    getVM().getWallets(idAccount,wallets, dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp())
 
                 }
                 TimeType.ALL -> {
                     binding.dateLabel.text = "All"
                     getVM().getCalendarSummary(wallets, idAccount)
+                    getVM().getWallets(idAccount,wallets, null, null)
 
                 }
                 TimeType.CUSTOM -> {
