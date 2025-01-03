@@ -22,29 +22,30 @@ class FilterTimeBottomSheetDialogFragment : BaseBottomSheet<SheetDialogFragmentB
     }
 
     fun selectTime(){
-        binding.ivAllRadio.setOnClickListener {
+        binding.constraintLayoutall.setOnClickListener {
             staticInterface?.onClickTime(TimeType.ALL)
             dismiss()
         }
-        binding.ivDailyRadio.setOnClickListener {
+        binding.constraintLayoutdaily.setOnClickListener {
             staticInterface?.onClickTime(TimeType.DAILY)
             dismiss()
         }
-        binding.ivWeeklyRadio.setOnClickListener {
+        binding.constraintLayoutweekly.setOnClickListener {
             staticInterface?.onClickTime(TimeType.WEEKLY)
             dismiss()
         }
-        binding.ivMonthlyRadio.setOnClickListener {
+        binding.constraintLayoutmonthly.setOnClickListener {
             staticInterface?.onClickTime(TimeType.MONTHLY)
             dismiss()
         }
-        binding.ivYearlyRadio.setOnClickListener {
+        binding.constraintLayoutyearly.setOnClickListener {
             staticInterface?.onClickTime(TimeType.YEARLY)
             dismiss()
         }
 
-        binding.ivCustomRadio.setOnClickListener {
+        binding.constraintLayoutcustom.setOnClickListener {
             val bottomSheet = SelectDateBottomSheet()
+            bottomSheet.setStaticInterfacce(staticInterface!!)
             bottomSheet.show(childFragmentManager, "SelectDateBottomSheet")
         }
 
@@ -54,7 +55,4 @@ class FilterTimeBottomSheetDialogFragment : BaseBottomSheet<SheetDialogFragmentB
     fun setStaticInterfacce(staticInterface: StaticInterface) {
         this.staticInterface = staticInterface
     }
-
-
-
 }

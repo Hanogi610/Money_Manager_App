@@ -22,6 +22,7 @@
     <string name="max_amount">अधिकतम राशि</string>
     <string name="apply">लागू करें</string>
     <string name="cancel">रद्द करें</string>
+    <string name="custom_date">Custom date</string>
     <string name="add_account">खाता जोड़ें</string>
     <string name="choose_a_name_for_your_account">अपने खाते के लिए नाम चुनें।</string>
     <string name="name">नाम</string>

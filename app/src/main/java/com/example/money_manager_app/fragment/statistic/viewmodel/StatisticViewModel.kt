@@ -86,7 +86,6 @@ class StatisticViewModel @Inject constructor(
     fun getWallets(id: Long, wallets: List<Wallet>, startDate: Long?, endDate: Long?) {
         viewModelScope.launch {
             val flow = if (startDate == null && endDate == null) {
-                // Flow for all wallets
                 walletRepository.getWalletItemsByUserId(id)
             } else {
                 val start = startDate ?: 0
@@ -99,12 +98,13 @@ class StatisticViewModel @Inject constructor(
                 var endingBalance = 0.0
 
                 for (wallet in list) {
-                    openingBalance += wallet.startingAmount
-                    endingBalance += wallet.endingAmount
+                    if(wallets.contains(wallet.wallet)){
+                        openingBalance += wallet.startingAmount
+                        endingBalance += wallet.endingAmount
+                    }
                 }
 
-                Log.d("StatisticViewModel", "Opening balance: $openingBalance, Ending balance: $endingBalance")
-                _pairWallet.value = Pair(openingBalance, endingBalance)
+                _pairWallet.value = Pair(endingBalance,openingBalance)
             }
         }
     }

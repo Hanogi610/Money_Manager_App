@@ -230,7 +230,7 @@
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/deposit" />
+                        app:srcCompat="@drawable/money_recive" />
 
                     <TextView
                         android:id="@+id/depositLabel"
@@ -238,6 +238,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:text="@string/deposit"
+                        android:textSize="@dimen/_14dp"
                         android:textAllCaps="true"
                         android:layout_marginStart="@dimen/_4dp"
                         android:textStyle="bold"
@@ -266,7 +267,7 @@
                         app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/withdraw" />
+                        app:srcCompat="@drawable/money_send" />
 
                     <TextView
                         android:id="@+id/withdrawLabel"
@@ -274,6 +275,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/withdraw"
                         android:textAllCaps="true"
+                        android:textSize="@dimen/_14dp"
                         android:textStyle="bold"
                         android:layout_marginStart="@dimen/_4dp"
                         app:layout_constraintBottom_toBottomOf="parent"

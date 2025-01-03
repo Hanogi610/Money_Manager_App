@@ -276,14 +276,41 @@ class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewMo
                     }
                 }
             }
-            TimeType.CUSTOM -> {}
+            TimeType.CUSTOM -> {
+                when(view.id) {
+                    R.id.backImage -> {
+//                        setUpLayoutContentCustom()
+                    }
+                    R.id.dateLabel -> {
+                        val filterTimeBottomSheetDialogFragment = FilterTimeBottomSheetDialogFragment()
+                        filterTimeBottomSheetDialogFragment.setStaticInterfacce(this)
+                        filterTimeBottomSheetDialogFragment.show(parentFragmentManager, filterTimeBottomSheetDialogFragment.tag)
+                    }
+                    R.id.nextImage -> {
+//                        setUpLayoutContentCustom()
+                    }
+                }
+            }
         }
+    }
+
+    fun setUpLayoutContentCustom(startDate: Date, endDate: Date) {
+        binding.dateLabel.text = CalendarHelper.getFormattedCustomDate(requireContext(),startDate,endDate)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateStart = dateFormat.format(startDate)
+        val dateEnd = dateFormat.format(endDate)
+        getVM().getCalendarSummary(wallets,dateStart.toDateTimestamp(),dateEnd.toDateTimestamp(), mainViewModel.currentAccount.value!!.account.id)
     }
 
     override fun onClickTime(timeType: TimeType) {
         time = timeType
         date = Date()
         setUpLayoutContent(date, mainViewModel.currentAccount.value!!.account.id)
+    }
+
+    override fun onClickTime(startDate: Date, endDate: Date) {
+        time = TimeType.CUSTOM
+        setUpLayoutContentCustom(startDate,endDate)
     }
 
 }
