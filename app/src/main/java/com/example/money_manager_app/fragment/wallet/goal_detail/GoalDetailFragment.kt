@@ -44,11 +44,17 @@ class GoalDetailFragment :
         }
     }
 
+    override fun onBack() {
+        super.onBack()
+
+        appNavigation.navigateUp()
+    }
+
     override fun initToolbar() {
         super.initToolbar()
 
         binding.backButton.setOnSafeClickListener {
-            appNavigation.navigateUp()
+            onBack()
         }
     }
 

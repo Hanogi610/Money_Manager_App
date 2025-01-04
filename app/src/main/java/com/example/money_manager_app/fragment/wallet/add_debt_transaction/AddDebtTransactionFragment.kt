@@ -102,11 +102,17 @@ class AddDebtTransactionFragment :
         binding.etTime.addTextChangedListener(textWatcher)
     }
 
+    override fun onBack() {
+        super.onBack()
+
+        appNavigation.navigateUp()
+    }
+
     override fun initToolbar() {
         super.initToolbar()
 
         binding.backButton.setOnClickListener {
-            appNavigation.navigateUp()
+            onBack()
         }
 
         binding.saveButton.setOnClickListener {

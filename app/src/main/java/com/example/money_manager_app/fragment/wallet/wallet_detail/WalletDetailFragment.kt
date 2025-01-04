@@ -33,6 +33,12 @@ class WalletDetailFragment :
         return viewModel
     }
 
+    override fun onBack() {
+        super.onBack()
+
+        appNavigation.navigateUp()
+    }
+
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
 
@@ -63,7 +69,7 @@ class WalletDetailFragment :
     override fun initToolbar() {
         super.initToolbar()
         binding.backArrowButton.setOnSafeClickListener {
-            appNavigation.navigateUp()
+            onBack()
         }
         binding.editButton.setOnSafeClickListener {
             wallet?.let {

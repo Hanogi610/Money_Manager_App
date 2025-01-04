@@ -54,7 +54,7 @@ class AddWalletFragment :
     override fun initToolbar() {
         super.initToolbar()
         binding.backArrowButton.setOnClickListener {
-            appNavigation.navigateUp()
+            onBack()
         }
     }
 
@@ -231,5 +231,11 @@ class AddWalletFragment :
             }, year, month, day)
 
         datePickerDialog.show()
+    }
+
+    override fun onBack() {
+        super.onBack()
+
+        appNavigation.navigateUp()
     }
 }
