@@ -44,7 +44,7 @@
 
                 <TextView
                     android:id="@+id/etTime"
-                    android:hint="Time"
+                    android:hint="@string/time"
                     android:layout_width="0dp"
                     android:drawableStart="@drawable/timer"
                     android:textSize="@dimen/_12sp"
@@ -70,7 +70,7 @@
                 android:padding="@dimen/_8dp"
                 android:inputType="numberDecimal"
                 android:layout_marginTop="@dimen/_8dp"
-                android:hint="Amount"
+                android:hint="@string/amount"
                 android:textSize="@dimen/_12sp"
                 android:background="@drawable/custom_edit"
                 android:layout_below="@+id/tv_amount"
@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_8dp"
-                android:hint="Short description"
+                android:hint="@string/description"
                 android:textSize="@dimen/_12sp"
                 android:background="@drawable/custom_edit"
                 android:layout_below="@+id/tv_description"/>
@@ -114,7 +114,7 @@
                 android:layout_marginTop="@dimen/_8dp"
                 android:layout_below="@+id/tv_category"
                 android:layout_width="match_parent"
-                android:hint="Select category"
+                android:hint="@string/select_category"
                 android:padding="@dimen/_8dp"
                 android:background="@drawable/custom_edit"
                 android:textSize="@dimen/_12sp"
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_edit"
                 android:padding="@dimen/_8dp"
-                android:hint="Select wallet"
+                android:hint="@string/select_wallet"
                 android:textSize="@dimen/_12sp"
                 android:drawableEnd="@drawable/arrow_right"
                 android:layout_below="@+id/wallet"/>
@@ -170,6 +170,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
+                    android:textSize="@dimen/_12dp"
+                    android:hint="@string/memo"
                     android:background="@null"/>
 
                 <ImageView

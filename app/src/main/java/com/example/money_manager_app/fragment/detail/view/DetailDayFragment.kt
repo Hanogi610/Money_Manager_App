@@ -18,7 +18,7 @@ import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentDetailDayBinding
-import com.example.money_manager_app.fragment.detail.Adapter.DetailDayAdapter
+import com.example.money_manager_app.fragment.detail.adapter.DetailDayAdapter
 import com.example.money_manager_app.fragment.detail.viewmodel.DetailViewModel
 import com.example.money_manager_app.fragment.wallet.WalletViewModel
 import com.example.money_manager_app.utils.CurrencyTypeConverter

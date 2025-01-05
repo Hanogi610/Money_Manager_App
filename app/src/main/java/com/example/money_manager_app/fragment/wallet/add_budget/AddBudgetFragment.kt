@@ -93,21 +93,21 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
             ) {
                 when (position) {
                     0 -> {
-                        binding.dayOfMonthLabel.text = "Day of Week"
+                        binding.dayOfMonthLabel.text = requireContext().getString(R.string.day_of_week)
                         binding.dayOfWeekSpinner.visibility = View.VISIBLE
                         binding.dayOfMonthSpinner.visibility = View.GONE
                         binding.dayOfYearLabel.visibility = View.GONE
                         binding.dayOfYearSpinner.visibility = View.GONE
                     }
                     1 -> {
-                        binding.dayOfMonthLabel.text = "Day of Month"
+                        binding.dayOfMonthLabel.text = requireContext().getString(R.string.day_of_month)
                         binding.dayOfWeekSpinner.visibility = View.GONE
                         binding.dayOfMonthSpinner.visibility = View.VISIBLE
                         binding.dayOfYearLabel.visibility = View.GONE
                         binding.dayOfYearSpinner.visibility = View.GONE
                     }
                     else -> {
-                        binding.dayOfMonthLabel.text = "Day of Month"
+                        binding.dayOfMonthLabel.text = requireContext().getString(R.string.day_of_month)
                         binding.dayOfWeekSpinner.visibility = View.GONE
                         binding.dayOfMonthSpinner.visibility = View.VISIBLE
                         binding.dayOfYearLabel.visibility = View.VISIBLE
@@ -164,6 +164,11 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
         )
         binding.dayOfWeekSpinner.adapter = periodTypeAdapter
         binding.dayOfWeekSpinner.setSelection(0)
+    }
+
+    override fun onBack() {
+        super.onBack()
+        findNavController().popBackStack()
     }
 
 

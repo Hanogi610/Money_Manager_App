@@ -37,7 +37,6 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
     }
 
     var currencySymbol = ""
-    private val addBudgetViewModel: AddBudgetViewModel by activityViewModels()
     private var budget: Budget? = null
     private var category: String = ""
     private val categoryViewModel: CategoryViewModel by activityViewModels()
@@ -112,10 +111,10 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
                     binding.budgetLabel.text = "${getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)}${bwc.budget.amount}"
                     category = bwc.categories.joinToString(", ") { it.name }
                     if (bwc.categories.size == categoryViewModel.listCategory.value.filter { it.type == CategoryType.EXPENSE }.size) {
-                        category = "All Category"
+                        category = requireContext().getString(R.string.all_category)
                     }
                     binding.nameLabel.text = bwc.budget.name
-                    binding.remainTitleLabel.text = if (bwc.budget.spent > bwc.budget.amount) "Overspent" else "Left"
+                    binding.remainTitleLabel.text = if (bwc.budget.spent > bwc.budget.amount) requireContext().getString(R.string.overspent) else requireContext().getString(R.string.left)
                     binding.remainLabel.text = "${currencySymbol}${bwc.budget.amount - bwc.budget.spent}"
                     binding.spentLabel.text = "${currencySymbol}${bwc.budget.spent}"
                     binding.categoryLabel.text = category
@@ -132,6 +131,11 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
 
     }
 
+    override fun onBack() {
+        super.onBack()
+        findNavController().popBackStack()
+    }
+
     override fun initData(savedInstanceState: Bundle?) {
         val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
         val currencySymbol = getString(currentCurrency.symbolRes)
@@ -141,7 +145,7 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
             binding.nameLabel.text = it.name
             binding.spentLabel.text = "${currencySymbol}${it.spent}"
             binding.progressBar.max = it.amount.toInt()
-            binding.remainTitleLabel.text = if (it.spent > it.amount) "Overspent" else "Left"
+            binding.remainTitleLabel.text = if (it.spent > it.amount) requireContext().getString(R.string.overspent) else requireContext().getString(R.string.left)
             binding.progressBar.progress = if (it.spent > it.amount) it.amount.toInt() else it.spent.toInt()
             categoryViewModel.getCategory()
             binding.remainLabel.text = "${currencySymbol}${it.amount - it.spent}"
@@ -156,7 +160,7 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
             val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
             val endDate = LocalDate.parse(end_date, formatter)
             val daysBetween = ChronoUnit.DAYS.between(todayDate, endDate)
-            binding.timeLabel.text = "${daysBetween} left days"
+            binding.timeLabel.text = "${daysBetween} " + requireContext().getString(R.string.left_days)
         }
     }
 

@@ -1,7 +1,6 @@
 package com.example.money_manager_app.fragment.structure.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -16,7 +15,6 @@ import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.databinding.FragmentStructureBinding
 import com.example.money_manager_app.fragment.statistic.adapter.StaticInterface
-import com.example.money_manager_app.fragment.statistic.adapter.StatisticAdapter
 import com.example.money_manager_app.fragment.statistic.view.FilterTimeBottomSheetDialogFragment
 import com.example.money_manager_app.fragment.structure.adapter.StructApdapter
 import com.example.money_manager_app.fragment.structure.viewmodel.StructureViewModel
@@ -87,13 +85,6 @@ class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewMo
     }
 
     private fun observeData() {
-        lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                getVM().wallets.collect{
-                    val balance = getVM().getWallets(it)
-                }
-            }
-        }
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -178,16 +169,20 @@ class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewMo
 
                 }
                 TimeType.ALL -> {
-                    binding.dateLabel.text = "All"
+                    binding.dateLabel.text = context?.getString(R.string.all)
                     getVM().getCalendarSummary(wallets, idAccount)
 
                 }
                 TimeType.CUSTOM -> {
-                    binding.dateLabel.text = "Custom"
 
                 }
             }
         }
+    }
+
+    override fun onBack() {
+        super.onBack()
+        findNavController().popBackStack()
     }
 
     override fun onClick(view: View) {

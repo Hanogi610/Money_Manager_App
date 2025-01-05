@@ -132,6 +132,14 @@ class StructureViewModel @Inject constructor(
                             }
                         }
                     }
+                    if(transaction.typeOfExpenditure == TransferType.Transfer){
+                        for(stats in listStatsExpense) {
+                            if (stats.icon == transaction.categoryId) {
+                                stats.amount += transaction.fee
+                                stats.trans++
+                            }
+                        }
+                    }
 
                 }
 
@@ -333,6 +341,10 @@ class StructureViewModel @Inject constructor(
                     } else {
                         if(transaction.typeOfExpenditure == TransferType.Expense){
                             totalExpense += transaction.amount
+                        } else {
+                            if(transaction.typeOfExpenditure == TransferType.Transfer){
+                                totalExpense += transaction.fee
+                            }
                         }
                     }
                 }

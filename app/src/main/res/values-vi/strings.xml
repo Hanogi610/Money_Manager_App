@@ -13,13 +13,19 @@
     <string name="wallet">Ví</string>
     <string name="category">Danh mục</string>
     <string name="description">Mô tả</string>
+    <string name="overspent">Vượt quá</string>
     <string name="enter_description">Nhập mô tả</string>
+    <string name="left_days">Còn lại ngày</string>
+    <string name="day_of_week">Ngày trong tuần</string>
     <string name="amount">Số tiền</string>
     <string name="enter_amount">Nhập số tiền</string>
     <string name="start_date">Ngày bắt đầu</string>
     <string name="end_date">Ngày kết thúc</string>
     <string name="min_amount">Số tiền nhỏ nhất</string>
     <string name="max_amount">Số tiền lớn nhất</string>
+    <string name="account_name">Tên tài khoản</string>
+    <string name="included_in_total">Đã bao gồm trong tổng</string>
+    <string name="excluded_from_total">Không bao gồm trong tổng</string>
     <string name="apply">Áp dụng</string>
     <string name="custom_date">Ngày tùy chỉnh</string>
     <string name="cancel">Hủy bỏ</string>
@@ -27,6 +33,7 @@
     <string name="choose_a_name_for_your_account">Chọn tên cho tài khoản của bạn.</string>
     <string name="name">Tên</string>
     <string name="next">Tiếp theo</string>
+    <string name="please_reenter">Vui lòng nhập lại</string>
     <string name="all_category">Tất cả các danh mục</string>
     <string name="all_wallet">Chọn danh mục</string>
     <string name="calculator">Nhập số tiền</string>

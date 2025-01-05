@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/rounded_border"
-                android:text="@string/select_category"
+                android:hint="@string/select_category"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:gravity="center_vertical"

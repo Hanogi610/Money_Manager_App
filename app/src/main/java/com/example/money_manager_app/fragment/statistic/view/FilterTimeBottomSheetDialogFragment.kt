@@ -21,7 +21,7 @@ class FilterTimeBottomSheetDialogFragment : BaseBottomSheet<SheetDialogFragmentB
         selectTime()
     }
 
-    fun selectTime(){
+    private fun selectTime(){
         binding.constraintLayoutall.setOnClickListener {
             staticInterface?.onClickTime(TimeType.ALL)
             dismiss()

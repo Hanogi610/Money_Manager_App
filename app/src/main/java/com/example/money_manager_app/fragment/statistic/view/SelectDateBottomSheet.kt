@@ -26,13 +26,13 @@ class SelectDateBottomSheet : BaseBottomSheet<SheetDateTimeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.startDate.setOnClickListener {
             showDatePicker { selectedDate ->
-                binding.startDate.setText(selectedDate)
+                binding.startDate.text = selectedDate
             }
         }
 
         binding.enddate.setOnClickListener {
             showDatePicker { selectedDate ->
-                binding.enddate.setText(selectedDate)
+                binding.enddate.text = selectedDate
             }
         }
 
@@ -41,8 +41,8 @@ class SelectDateBottomSheet : BaseBottomSheet<SheetDateTimeBinding>() {
         }
 
         binding.applyFilterButton.setOnClickListener {
-            var startDate = binding.startDate.text.toString().toDateTimestamp()
-            var endDate = binding.enddate.text.toString().toDateTimestamp()
+            val startDate = binding.startDate.text.toString().toDateTimestamp()
+            val endDate = binding.enddate.text.toString().toDateTimestamp()
             staticInterface?.onClickTime(Date(startDate), Date(endDate))
             dismiss()
         }

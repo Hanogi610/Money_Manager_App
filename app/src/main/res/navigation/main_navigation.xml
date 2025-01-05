@@ -269,6 +269,40 @@
         <action
             android:id="@+id/action_addExpenseFragment_to_framgmentCaculator"
             app:destination="@id/framgmentCaculator" />
+        <action
+            android:id="@+id/action_addExpenseFragment_to_selectIncomeExpenseFragment"
+            app:destination="@id/selectIncomeExpenseFragment" />
+        <action
+            android:id="@+id/action_addExpenseFragment_to_selectWalletFragment"
+            app:destination="@id/selectWalletFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addIncomeFragment"
+        android:name="com.example.money_manager_app.fragment.add.view.income.AddIncomeFragment"
+        android:label="AddIncomeFragment" >
+        <action
+            android:id="@+id/action_addIncomeFragment_to_framgmentCaculator"
+            app:destination="@id/framgmentCaculator" />
+        <action
+            android:id="@+id/action_addIncomeFragment_to_selectIncomeExpenseFragment"
+            app:destination="@id/selectIncomeExpenseFragment" />
+        <action
+            android:id="@+id/action_addIncomeFragment_to_selectWalletFragment"
+            app:destination="@id/selectWalletFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTranferFragment"
+        android:name="com.example.money_manager_app.fragment.add.view.transfer.AddTranferFragment"
+        android:label="AddTranferFragment" >
+        <action
+            android:id="@+id/action_addTranferFragment_to_framgmentCaculator"
+            app:destination="@id/framgmentCaculator" />
+        <action
+            android:id="@+id/action_addTranferFragment_to_selectIncomeExpenseFragment"
+            app:destination="@id/selectIncomeExpenseFragment" />
+        <action
+            android:id="@+id/action_addTranferFragment_to_selectWalletFragment"
+            app:destination="@id/selectWalletFragment" />
     </fragment>
 
 

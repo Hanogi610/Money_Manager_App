@@ -39,6 +39,11 @@ class MultipleSelectioncategoryFragment : BaseFragmentNotRequireViewModel<Fragme
         }
     }
 
+    override fun onBack() {
+        super.onBack()
+        findNavController().popBackStack()
+    }
+
     fun save(){
         binding.tvSave.setOnClickListener {
             categoryViewModel.setCategory(listCategory)

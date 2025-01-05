@@ -38,7 +38,6 @@ class DetailViewModel @Inject constructor(
             val transfers = transferRepository.getAllTransfer(date).first()
             val debts = debtRepository.getDebtsByDateAndAccountId(date, idAccount).first()
             val debtTransactions = DebtTransactionRepository.getDebtTransactionsByDateAndAccountId(date, idAccount).first()
-
             val list = mutableListOf<Transaction>()
             list.addAll(transfers)
             list.addAll(debts)

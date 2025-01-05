@@ -1,6 +1,5 @@
 package com.example.money_manager_app.fragment.calendar.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.data.model.Transaction
@@ -25,7 +24,7 @@ import javax.inject.Inject
 class CalendarViewModel  @Inject constructor(
     private val transferRepository: TransferRepository,
     private val debtRepository: DebtRepository,
-    private val DebtTransactionRepository: DebtTransactionRepository,
+    private val debtTransactionRepository: DebtTransactionRepository,
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -35,7 +34,7 @@ class CalendarViewModel  @Inject constructor(
     private var _calendarRecord : MutableStateFlow<List<CalendarRecord>> = MutableStateFlow(emptyList())
     val calendarRecord : StateFlow<List<CalendarRecord>> get() = _calendarRecord
 
-    fun setDetailDayTransaction(list : List<Transaction>) {
+    private fun setDetailDayTransaction(list : List<Transaction>) {
         _detailTransaction.value = list
     }
 
@@ -45,7 +44,7 @@ class CalendarViewModel  @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             val transfers = transferRepository.getTransferFromDayStartAndDayEnd(firstDayOfMonth.time, lastDayOfMonth.time, idAccount).first()
             val debts = debtRepository.getDebtByDayStartAndDayEnd(idAccount,firstDayOfMonth.time, lastDayOfMonth.time).first()
-            val debtTransactions = DebtTransactionRepository.getDebtTransactionFromDayStartAndDayEnd(idAccount, firstDayOfMonth.time, lastDayOfMonth.time).first()
+            val debtTransactions = debtTransactionRepository.getDebtTransactionFromDayStartAndDayEnd(idAccount, firstDayOfMonth.time, lastDayOfMonth.time).first()
             val list = mutableListOf<Transaction>()
             list.addAll(transfers)
             list.addAll(debts)
@@ -57,20 +56,20 @@ class CalendarViewModel  @Inject constructor(
     }
 
     fun setCalendarRecord(listTransaction : List<Transaction>){
-        var listCalendarRecord = listTransaction.groupRecordsByDate()
+        val listCalendarRecord = listTransaction.groupRecordsByDate()
         _calendarRecord.value = listCalendarRecord
     }
 
 
 
-    fun getStartDayOfMonth(date : Date) : Date {
+    private fun getStartDayOfMonth(date : Date) : Date {
         val calendar = getMidnightCalendar(date)
         calendar.time = date
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         return calendar.time
     }
 
-    fun getEndDayOfMonth(date : Date) : Date {
+    private fun getEndDayOfMonth(date : Date) : Date {
         val calendar = getMidnightCalendar(date)
         calendar.time = date
         val lastDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
@@ -78,7 +77,7 @@ class CalendarViewModel  @Inject constructor(
         return calendar.time
     }
 
-    fun getMidnightCalendar(date: Date): Calendar {
+    private fun getMidnightCalendar(date: Date): Calendar {
         val calendar = Calendar.getInstance()
         calendar.time = date
         calendar.set(Calendar.HOUR_OF_DAY, 0)

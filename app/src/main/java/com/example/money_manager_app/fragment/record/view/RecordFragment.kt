@@ -61,7 +61,7 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
 
     private fun edit() {
         binding.ivEdit.setOnClickListener {
-            if(transaction!= null){
+            if(transaction != null){
                 addViewModel.setCheckEdit(true)
                 if(transaction is Transfer){
                     if((transaction as Transfer).typeOfExpenditure == TransferType.Transfer){
@@ -76,12 +76,17 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                     if((transaction as Transfer).typeOfExpenditure == TransferType.Expense){
                         setIncomeExpense(transaction)
                         expenseViewModel.setAmount(transaction.amount)
-                        findNavController().navigate(R.id.addFragment,)
+                        findNavController().navigate(R.id.addFragment)
                     }
                 }
 
             }
         }
+    }
+
+    override fun onBack() {
+        super.onBack()
+        findNavController().popBackStack()
     }
 
     private fun setIncomeExpense(transaction: Transaction){
@@ -93,11 +98,11 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                 incomeViewModel.setDescriptor(transaction.description)
                 addViewModel.setIdCategory(transaction.categoryId.toInt())
                 addViewModel.setPosition(0)
-                var date = transaction.date.toFormattedDateString()
-                var time = transaction.time.toFormattedTimeString()
+                val date = transaction.date.toFormattedDateString()
+                val time = transaction.time.toFormattedTimeString()
                 incomeViewModel.setDateAndTime(date, time)
                 incomeViewModel.setMomo(transaction.memo)
-                val imgFile: File = File(transaction.linkImg)
+                val imgFile = File(transaction.linkImg)
                 if (imgFile.exists()) {
                     try {
                         val bitmap = BitmapFactory.decodeStream(FileInputStream(imgFile))
@@ -106,12 +111,12 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                         e.printStackTrace()
                     }
                 }
-                var FromWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.walletId }?.toWallet()
-                if(FromWallet != null){
-                    var listWallet = mutableListOf<Wallet>()
-                    listWallet.add(FromWallet)
+                val fromWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.walletId }?.toWallet()
+                if(fromWallet != null){
+                    val listWallet = mutableListOf<Wallet>()
+                    listWallet.add(fromWallet)
                     incomeViewModel.setFromWallet(listWallet)
-                    incomeViewModel.setOldWallet(FromWallet)
+                    incomeViewModel.setOldWallet(fromWallet)
                 }
 
             }
@@ -123,10 +128,10 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                 addViewModel.setIdCategory(transaction.categoryId.toInt()-9)
                 addViewModel.setPosition(1)
                 expenseViewModel.setMomo(transaction.memo)
-                var date = transaction.date.toFormattedDateString()
-                var time = transaction.time.toFormattedTimeString()
+                val date = transaction.date.toFormattedDateString()
+                val time = transaction.time.toFormattedTimeString()
                 expenseViewModel.setDateAndTime(date, time)
-                val imgFile: File = File(transaction.linkImg)
+                val imgFile = File(transaction.linkImg)
                 if (imgFile.exists()) {
                     try {
                         val bitmap = BitmapFactory.decodeStream(FileInputStream(imgFile))
@@ -135,12 +140,12 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                         e.printStackTrace()
                     }
                 }
-                var FromWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.walletId }?.toWallet()
-                if(FromWallet != null){
-                    var listWallet = mutableListOf<Wallet>()
-                    listWallet.add(FromWallet)
+                val fromWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.walletId }?.toWallet()
+                if(fromWallet != null){
+                    val listWallet = mutableListOf<Wallet>()
+                    listWallet.add(fromWallet)
                     expenseViewModel.setFromWallet(listWallet)
-                    expenseViewModel.setOldWallet(FromWallet)
+                    expenseViewModel.setOldWallet(fromWallet)
                 }
             }
 
@@ -152,10 +157,10 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                 addViewModel.setPosition(2)
                 transferViewModel.setMomo(transaction.memo)
                 transferViewModel.setFee(transaction.fee)
-                var date = transaction.date.toFormattedDateString()
-                var time = transaction.time.toFormattedTimeString()
+                val date = transaction.date.toFormattedDateString()
+                val time = transaction.time.toFormattedTimeString()
                 transferViewModel.setDateAndTime(date, time)
-                val imgFile: File = File(transaction.linkImg)
+                val imgFile = File(transaction.linkImg)
                 if (imgFile.exists()) {
                     try {
                         val bitmap = BitmapFactory.decodeStream(FileInputStream(imgFile))
@@ -164,16 +169,16 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                         e.printStackTrace()
                     }
                 }
-                var FromWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.walletId }?.toWallet()
+                val FromWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.walletId }?.toWallet()
                 if(FromWallet != null){
-                    var listWallet = mutableListOf<Wallet>()
+                    val listWallet = mutableListOf<Wallet>()
                     listWallet.add(FromWallet)
                     transferViewModel.setOldWallet(FromWallet)
                     transferViewModel.setFromWallet(listWallet)
                 }
-                var toWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.toWalletId }?.toWallet()
+                val toWallet = mainViewModel.currentAccount.value?.walletItems?.find { it.wallet.id == transaction.toWalletId }?.toWallet()
                 if(toWallet != null){
-                    var listWallet = mutableListOf<Wallet>()
+                    val listWallet = mutableListOf<Wallet>()
                     listWallet.add(toWallet)
                     transferViewModel.setToWallet(listWallet)
                     transferViewModel.setOldToWallet(toWallet)
@@ -187,7 +192,7 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
             if( transaction!= null){
                 val AlertDialogBinding = AlertDialogBinding.inflate(layoutInflater)
 
-                var alert = AlertDialog.Builder(requireContext()).create()
+                val alert = AlertDialog.Builder(requireContext()).create()
                 alert.setView(AlertDialogBinding.root)
                 alert.setCancelable(true)
                 AlertDialogBinding.deleteImageView.setOnClickListener {
@@ -229,18 +234,20 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
     }
 
     private fun showHideLoading(transaction: Transaction){
+        val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
+        val currencySymbol = getString(currentCurrency.symbolRes)
        if(transaction != null) {
            if(transaction.iconId != null){
                transaction.iconId?.let { binding.ivIcon.setImageResource(it) }
            }
-           binding.amountLabel.text = transaction.amount.toString()
+           binding.amountLabel.text = context?.getString(R.string.money_amount,currencySymbol, transaction.amount)
            binding.dateLabel.text = transaction.date.toFormattedDateString() + " " + transaction.time.toFormattedTimeString()
            val wallet = mainViewModel.currentAccount.value?.walletItems
            val fromWallet = wallet?.find { it.wallet.id == transaction.walletId }
            when (transaction) {
                is Transfer -> {
                    binding.categoryLabel.visibility = android.view.View.VISIBLE
-                   binding.categoryLabel.text = mainViewModel.categories.value?.find { it.id == transaction.categoryId }?.name
+                   binding.categoryLabel.text = mainViewModel.categories.value.find { it.id == transaction.categoryId }?.name
                    binding.tvDescription.text = transaction.description
                    if(transaction?.memo != null){
                        binding.memoLabel.text = transaction.memo

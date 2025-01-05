@@ -25,10 +25,10 @@ class BudgetAdapter(
             binding.progressBar.max = budget.amount.toInt()
             if (budget.spent > budget.amount) {
                 binding.progressBar.progress = budget.amount.toInt()
-                binding.amountLabel.text = "Overspent ${currentCurrencySymbol} ${budget.spent-budget.amount}"
+                binding.amountLabel.text =  context.getString(R.string.overspent) + " ${currentCurrencySymbol} ${budget.spent-budget.amount}"
             } else {
                 binding.progressBar.progress =  budget.spent
-                binding.amountLabel.text = "Remain ${currentCurrencySymbol} ${budget.amount-budget.spent}"
+                binding.amountLabel.text = context.getString(R.string.remain) + " ${currentCurrencySymbol} ${budget.amount-budget.spent}"
             }
             binding.root.setOnClickListener { onItemClick(budget) }
         }

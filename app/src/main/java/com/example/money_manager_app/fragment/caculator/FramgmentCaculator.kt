@@ -3,9 +3,7 @@ package com.example.money_manager_app.fragment.caculator
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewModel
@@ -16,6 +14,7 @@ import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
 import com.example.money_manager_app.fragment.add.view.transfer.TransferViewModel
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import net.objecthunter.exp4j.ExpressionBuilder
+import java.util.Locale
 
 class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBinding>(R.layout.fragment_caculator), View.OnClickListener {
 
@@ -29,11 +28,16 @@ class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBind
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-        if(arguments != null){
+        if (arguments != null){
             type = arguments?.getSerializable("type") as TransferType
         } else {
             type = TransferType.Income
         }
+    }
+
+    override fun onBack() {
+        super.onBack()
+        findNavController().popBackStack()
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -66,12 +70,12 @@ class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBind
                 val result = expression.evaluate()
                 val longResult = result.toLong()
                 if (result == longResult.toDouble()) {
-                    binding.total.text = longResult.toString()
+                    binding.total.text = String.format(Locale.US, "%d", longResult)
                     equation = result.toString()
                     setAmount(equation.toDouble())
                     findNavController().popBackStack()
                 } else{
-                    binding.total.text = result.toString()
+                    binding.total.text = String.format(Locale.getDefault(), "%.2f", result)
                     equation = result.toString()
                     setAmount(equation.toDouble())
                     findNavController().popBackStack()
@@ -79,6 +83,7 @@ class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBind
 
 
             } catch (e: Exception) {
+                Log.d("Exception", " message: ${e.message}")
             }
         }
     }
@@ -101,7 +106,7 @@ class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBind
 
     }
 
-    fun setTotal(total: String) {
+    private fun setTotal(total: String) {
         equation  = equation + total
         if(equation.length > 1){
             if(equation[0] == '0' && equation[1] != '.') {
@@ -179,14 +184,15 @@ class FramgmentCaculator : BaseFragmentNotRequireViewModel<FragmentCaculatorBind
                     val result = expression.evaluate()
                     val longResult = result.toLong()
                     if (result == longResult.toDouble()) {
-                        binding.total.text = longResult.toString()
+                        binding.total.text = String.format(Locale.US, "%d", longResult)
                         equation = longResult.toString()
                     } else{
-                        binding.total.text = result.toString()
+                        binding.total.text = String.format(Locale.getDefault(), "%.2f", result)
                         equation = result.toString()
                     }
 
                 } catch (e: Exception) {
+                    Log.d("Exception", " message: ${e.message}")
                 }
 
             }

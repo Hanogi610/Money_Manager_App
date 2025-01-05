@@ -44,13 +44,17 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
         back()
     }
 
+    override fun onBack() {
+        super.onBack()
+        appNavigation.navigateUp()
+    }
+
+
     fun back(){
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
     }
-
-
 
     private fun getData(){
         getVM().getWallets(mainViewModel.currentAccount.value!!.account.id)
@@ -60,8 +64,8 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
                 getVM().wallets.collect {
-                    var listWalletInclude = mutableListOf<Wallet>()
-                    var listWalletExclude = mutableListOf<Wallet>()
+                    val listWalletInclude = mutableListOf<Wallet>()
+                    val listWalletExclude = mutableListOf<Wallet>()
                     for(wallet in it){
                         if(wallet.wallet.isExcluded == false){
                             listWalletInclude.add(wallet.wallet)
@@ -77,7 +81,7 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
     }
 
 
-    fun setAdapter() {
+    private fun setAdapter() {
         val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
         val currencySymbol = getString(currentCurrency.symbolRes)
         selectWalletAdapterInclude = SelectWalletAdapter(listOf(), ::onItemClick, requireContext(), currencySymbol)
@@ -92,10 +96,10 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
 
     fun onItemClick(wallet: Wallet){
         val bundle = arguments
-        var isCheckWallet = bundle?.getBoolean("isCheckWallet")
-        var typeExpense = bundle?.getInt("typeExpense")
+        val isCheckWallet = bundle?.getBoolean("isCheckWallet")
+        val typeExpense = bundle?.getInt("typeExpense")
         if(isCheckWallet == true){
-            var listWallet = mutableListOf<Wallet>()
+            val listWallet = mutableListOf<Wallet>()
             listWallet.add(wallet)
             addViewModel.setPosition(typeExpense?:0)
             when(typeExpense){
@@ -105,7 +109,7 @@ class SelectWalletFragment : BaseFragment<FragmentSelectWalletBinding, WalletVie
             }
             findNavController().popBackStack()
         }else{
-            var listWallet = mutableListOf<Wallet>()
+            val listWallet = mutableListOf<Wallet>()
             listWallet.add(wallet)
             transferViewModel.setToWallet(listWallet)
             addViewModel.setPosition(typeExpense?:0)

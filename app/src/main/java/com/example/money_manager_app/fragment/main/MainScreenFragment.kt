@@ -71,7 +71,7 @@ class MainScreenFragment :
             when (getVM().currentFragmentId.value) {
                 0 -> {
                     // Action for Home Fragment
-                    findNavController().navigate(R.id.addFragment)
+                    appNavigation.openMainScreenToAddFragment()
                 }
 
                 1 -> {

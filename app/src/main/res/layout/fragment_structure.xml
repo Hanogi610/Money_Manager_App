@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="@dimen/_2dp"
+                android:padding="@dimen/_4dp"
                 android:text="@string/income"
                 android:textColor="@color/black"
                 android:textSize="12dp" />
@@ -115,7 +115,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/customer_select_category_expense"
                 android:gravity="center"
-                android:padding="@dimen/_2dp"
+                android:padding="@dimen/_4dp"
                 android:text="@string/add_expense"
                 android:textColor="@color/white"
                 android:textSize="12dp" />

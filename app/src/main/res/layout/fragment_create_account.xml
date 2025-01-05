@@ -20,7 +20,7 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="@dimen/_16dp"
             android:layout_marginStart="@dimen/_16dp"
-            android:src="@drawable/ic_back"
+            android:src="@drawable/arrow_left"
             tools:visibility="visible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

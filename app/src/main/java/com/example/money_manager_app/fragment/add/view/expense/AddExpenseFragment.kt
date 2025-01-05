@@ -7,7 +7,7 @@ import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
@@ -17,18 +17,16 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
-import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.TransferType
-import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentAddExpenseBinding
+import com.example.money_manager_app.fragment.add.view.AddFragment
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
 import com.example.money_manager_app.utils.toDateTimestamp
 import com.example.money_manager_app.utils.toTimeTimestamp
 import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.moneymanager.ui.add.adapter.AddTransferInterface
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -63,11 +61,17 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         getVM().getDateTime()
     }
 
+    override fun onBack() {
+        super.onBack()
+        (parentFragment as? AddFragment)?.onBack()
+    }
+
     fun setAmount(){
-        binding.etAmount.setOnClickListener(View.OnClickListener {
-            var bundle = bundleOf("type" to TransferType.Expense)
-            findNavController().navigate(R.id.framgmentCaculator, bundle)
-        })
+        val navigation = findNavController()
+        binding.etAmount.setOnClickListener{
+            val bundle = bundleOf("type" to TransferType.Expense)
+            navigation.navigate(R.id.framgmentCaculator, bundle)
+        }
     }
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
@@ -96,11 +100,10 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
             takePictureLauncher.launch(null)
-        } else {
         }
     }
 
-    fun setData(){
+    private fun setData(){
         var amount = binding.etAmount.text.toString()
         val description = binding.etDescription.text.toString()
         val momo = binding.etMemo.text.toString()
@@ -112,7 +115,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         getVM().setMomo(momo)
     }
 
-    fun selectCategory(){
+    private fun selectCategory(){
         val navController = findNavController()
         binding.etCategory.setOnClickListener {
             setData()
@@ -121,14 +124,15 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         }
     }
 
-    fun selectWallet(){
+    private fun selectWallet(){
+        val navController = findNavController()
         binding.spWallet.setOnClickListener{
             setData()
             val bundle = bundleOf(
                 "typeExpense" to 1,
                 "isCheckWallet" to true,
             )
-            findNavController().navigate(R.id.selectWalletFragment,bundle)
+            navController.navigate(R.id.selectWalletFragment,bundle)
         }
     }
 
@@ -136,7 +140,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().selectedTime.collect { time ->
-                    binding.etTime.setText(time)
+                    binding.etTime.text = time
                 }
             }
         }
@@ -144,7 +148,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().categoryNameExpense.collect { category ->
-                    binding.etCategory.setText(category.first)
+                    binding.etCategory.text =category.first
                 }
             }
         }
@@ -152,7 +156,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().selectedDate.collect { date ->
-                    binding.etDate.setText(date)
+                    binding.etDate.text = date
                 }
             }
         }
@@ -160,8 +164,8 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().currentDateTime.collect { dateTime ->
-                    binding.etDate.setText(dateTime.first)
-                    binding.etTime.setText(dateTime.second)
+                    binding.etDate.text = dateTime.first
+                    binding.etTime.text = dateTime.second
                 }
             }
         }
@@ -206,7 +210,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().fromWallet.collect { wallet ->
                     if (wallet.isNotEmpty()) {
-                        binding.spWallet.setText(wallet.first().name)
+                        binding.spWallet.text = wallet.first().name
                     }
                 }
             }
@@ -258,10 +262,9 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         val amountText = binding.etAmount.text.toString()
         var fromWallet = 0L
         try {
-            fromWallet = getVM().fromWallet.value.first().id ?: 0
-
+            fromWallet = getVM().fromWallet.value.first().id
         } catch (e: Exception) {
-            0L
+            Log.d("TAG", "onSaveExpense: ${e.message}")
         }
         val iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.iconId ?: 0
         val idCategory = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.id ?: 0
@@ -277,7 +280,6 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
             }
             val memo = binding.etMemo.text.toString()
             val toWallet = fromWallet
-            val fee : Double = 0.0
             val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
             val name = binding.etMemo.text.toString()
 
@@ -287,7 +289,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
                 toWallet,
                 amount,
                 name,
-                fee,
+                0.0,
                 description,
                 accountId,
                 linkimg,
@@ -303,7 +305,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
             addViewModel.onCleared()
             findNavController().popBackStack()
         } else {
-            Log.e("AddExpenseFragment", "Amount is empty")
+            Toast.makeText(requireContext(), context?.getString(R.string.please_reenter), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -315,10 +317,9 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
         val amountText = binding.etAmount.text.toString()
         var fromWallet = 0L
         try {
-            fromWallet = getVM().fromWallet.value?.first()?.id ?: 0
-
+            fromWallet = getVM().fromWallet.value.first().id
         } catch (e: Exception) {
-            0L
+            Log.d("TAG", "onSaveExpense: ${e.message}")
         }
         val iconId : Int = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.iconId ?: 0
         val idCategory = mainViewModel.categories.value.find { it.name == getVM().getCategoryNameExpense().first }?.id ?: 0
@@ -334,7 +335,6 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
             }
             val memo = binding.etMemo.text.toString()
             val toWallet = fromWallet
-            val fee : Double = 0.0
             val accountId = mainViewModel.currentAccount.value?.account?.id ?: 0
             val name = binding.etMemo.text.toString()
 
@@ -344,7 +344,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
                 toWallet,
                 amount,
                 name,
-                fee,
+                0.0,
                 description,
                 accountId,
                 linkimg,
@@ -360,7 +360,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
             addViewModel.onCleared()
             findNavController().popBackStack()
         } else {
-            Log.e("AddExpenseFragment", "Amount is empty")
+            Toast.makeText(requireContext(), context?.getString(R.string.please_reenter), Toast.LENGTH_SHORT).show()
         }
     }
 

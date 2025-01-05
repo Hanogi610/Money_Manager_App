@@ -26,7 +26,11 @@ import com.example.money_manager_app.utils.toFormattedDateString
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @AndroidEntryPoint
 class AddWalletFragment :
@@ -144,7 +148,17 @@ class AddWalletFragment :
                                 Toast.makeText(requireActivity(),getString(R.string.blank_input),
                                     Toast.LENGTH_SHORT).show()
                             }else{
-                                getVM().addWallet(newWallet)
+                                if(newWallet.walletType == WalletType.CREDIT_CARD){
+                                    if(newWallet.statementDate == null || newWallet.dueDate == null){
+                                        Toast.makeText(requireActivity(),getString(R.string.blank_input),
+                                            Toast.LENGTH_SHORT).show()
+                                        return@setOnSafeClickListener
+                                    } else {
+                                        getVM().addWallet(newWallet.copy(isExcluded = true))
+                                    }
+                                } else {
+                                    getVM().addWallet(newWallet)
+                                }
                                 appNavigation.navigateUp()
                             }
                         }
@@ -202,20 +216,35 @@ class AddWalletFragment :
     }
 
     private fun buildWalletFromFields(walletId: Long? = null): Wallet {
+        val walletType = WalletType.valueOf(binding.walletTypeSpinner.selectedItem.toString())
+        val statementDate = if (walletType == WalletType.CREDIT_CARD) {
+            binding.etStatementDate.text.toString().toFormattedDate()?.time
+        } else null
+        val dueDate = if (walletType == WalletType.CREDIT_CARD) {
+            binding.etDueDate.text.toString().toFormattedDate()?.time
+        } else null
+
         return Wallet(
             id = walletId ?: 0,
             name = binding.nameEditText.text.toString(),
             amount = binding.amountEditText.text.toString().toDoubleOrNull() ?: 0.0,
             colorId = ColorUtils.getColors(requireContext())[binding.colorSpinner.selectedItemPosition],
             accountId = mainViewModel.currentAccount.value!!.account.id,
-            walletType = WalletType.valueOf(binding.walletTypeSpinner.selectedItem.toString()),
+            walletType = walletType,
             iconId = getVM().selectedIcon.value ?: R.drawable.wallet_1,
-            isExcluded = if (WalletType.valueOf(binding.walletTypeSpinner.selectedItem.toString()) == WalletType.GENERAL) binding.excludeSwitch.isChecked else null,
-            statementDate = if (WalletType.valueOf(binding.walletTypeSpinner.selectedItem.toString()) == WalletType.CREDIT_CARD) binding.etStatementDate.text.toString()
-                .toLongOrNull() else null,
-            dueDate = if (WalletType.valueOf(binding.walletTypeSpinner.selectedItem.toString()) == WalletType.CREDIT_CARD) binding.etDueDate.text.toString()
-                .toLongOrNull() else null
+            isExcluded = if (walletType == WalletType.GENERAL) binding.excludeSwitch.isChecked else null,
+            statementDate = statementDate,
+            dueDate = dueDate
         )
+    }
+
+    private fun String.toFormattedDate(): Date? {
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        return try {
+            format.parse(this)
+        } catch (e: ParseException) {
+            null
+        }
     }
 
     private fun showDatePickerDialog(onDateSet: (String) -> Unit) {

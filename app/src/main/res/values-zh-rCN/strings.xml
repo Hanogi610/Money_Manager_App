@@ -15,11 +15,15 @@
     <string name="description">描述</string>
     <string name="enter_description">输入描述</string>
     <string name="amount">金额</string>
+    <string name="overspent">超支</string>
     <string name="enter_amount">输入金额</string>
     <string name="all_category">所有类别</string>
+    <string name="left_days">剩余天数</string>
+    <string name="day_of_week">星期几</string>
     <string name="all_wallet">选择类别</string>
     <string name="calculator">输入金额</string>
-
+    <string name="please_reenter">请重新输入</string>
+    <string name="account_name">账户名称</string>
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
     <string name="custom_date">自定义日期</string>
@@ -36,6 +40,8 @@
     <string name="favorite_currency_prompt">您最喜欢的货币是什么？</string>
     <string name="skip">跳过</string>
     <string name="initial_amount">初始金额</string>
+    <string name="included_in_total">包含在总计中</string>
+    <string name="excluded_from_total">不包含在总计中</string>
     <string name="cash_wallet_prompt">你现金钱包里有多少钱？</string>
     <string name="amount_hint" translatable="false">%1$s 0</string>
     <string name="money_amount" translatable="false">%1$s %2$.2f</string>

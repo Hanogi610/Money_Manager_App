@@ -70,6 +70,11 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding, Transaction
         setAdapter()
     }
 
+    override fun onBack() {
+        super.onBack()
+        findNavController().popBackStack()
+    }
+
     private fun setAdapter() {
         transactionAdapter = TransactionAdapter(
             requireContext(),
@@ -182,13 +187,11 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding, Transaction
 
                 }
                 TimeType.ALL -> {
-                    binding.dateLabel.text = "All"
+                    binding.dateLabel.text = context?.getString(R.string.all)
                     getVM().getCalendarSummary(wallets, idAccount)
 
                 }
                 TimeType.CUSTOM -> {
-                    binding.dateLabel.text = "Custom"
-
                 }
             }
         }

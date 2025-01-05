@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.CalendarRecord
@@ -14,6 +15,7 @@ import com.example.money_manager_app.utils.Helper
 import com.example.money_manager_app.utils.SharePreferenceHelper
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class CalendarAdapter(
     private val currencySymbol: String,
@@ -111,7 +113,7 @@ class CalendarAdapter(
         val isSunday = ((SharePreferenceHelper.getFirstDayOfWeek(context) - 1) + position) % 7 == 0
         if (i < dayOfWeek) {
             calendar.add(Calendar.DAY_OF_MONTH, -(dayOfWeek - i))
-            itemViewHolder.dayLabel.text = calendar.get(Calendar.DAY_OF_MONTH).toString()
+            itemViewHolder.dayLabel.text = String.format(Locale.getDefault(), "%d", calendar.get(Calendar.DAY_OF_MONTH))
             itemViewHolder.expenseLabel.text = ""
             itemViewHolder.incomeLabel.text = ""
             itemViewHolder.totalLabel.text = ""
@@ -127,9 +129,13 @@ class CalendarAdapter(
         calendar.add(Calendar.DAY_OF_MONTH, i2)
         if (i2 >= dayOfMonth) {
             if (i2 - dayOfMonth == 0) {
-                itemViewHolder.dayLabel.text = "${calendar.get(Calendar.MONTH) + 1}/${calendar.get(Calendar.DAY_OF_MONTH)}"
+                val month = calendar.get(Calendar.MONTH) + 1
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                itemViewHolder.dayLabel.text = context.getString(R.string.date_format, month, day)
+
             } else {
-                itemViewHolder.dayLabel.text = calendar.get(Calendar.DAY_OF_MONTH).toString()
+                itemViewHolder.dayLabel.text = String.format(Locale.getDefault(), "%d", calendar.get(Calendar.DAY_OF_MONTH))
+
             }
             itemViewHolder.expenseLabel.text = ""
             itemViewHolder.incomeLabel.text = ""
@@ -142,7 +148,8 @@ class CalendarAdapter(
             itemViewHolder.itemView.tag = null
             return
         }
-        itemViewHolder.dayLabel.text = calendar.get(Calendar.DAY_OF_MONTH).toString()
+        itemViewHolder.dayLabel.text = String.format(Locale.getDefault(), "%d", calendar.get(Calendar.DAY_OF_MONTH))
+
         val i3 = i2 + 1
         val isToday = CalendarHelper.isSameMonth(date) == i3
         itemViewHolder.expenseLabel.text = ""
@@ -171,7 +178,8 @@ class CalendarAdapter(
             }
         }
         if (isToday) {
-            itemViewHolder.llItem.setBackground(context.getDrawable(R.drawable.custom_border_1))
+            val drawable = AppCompatResources.getDrawable(context, R.drawable.custom_border_1)
+            itemViewHolder.llItem.background = drawable
             itemViewHolder.dayLabel.setTextColor(context.getColor(R.color.white))
         } else {
             itemViewHolder.dayLabel.background = null

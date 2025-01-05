@@ -4,7 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_56dp"
+        android:layout_marginTop="@dimen/_16dp"
         android:layout_marginLeft="@dimen/_16dp"
         android:layout_marginRight="@dimen/_16dp"
         tools:context=".ui.select_category.SelectIncomeExpenseFragment">
@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="12dp"
-                android:padding="@dimen/_2dp"
+                android:padding="@dimen/_4dp"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/tvExpense"
@@ -54,12 +54,13 @@
                 android:textColor="@color/white"
                 android:background="@drawable/customer_select_category_expense"
                 android:textSize="12dp"
-                android:padding="@dimen/_2dp"
+                android:padding="@dimen/_4dp"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/vpCategory"
+            android:layout_marginTop="@dimen/_12dp"
             android:layout_below="@+id/llIncomeExpense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

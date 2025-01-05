@@ -1,13 +1,11 @@
-package com.example.money_manager_app.fragment.detail.Adapter
+package com.example.money_manager_app.fragment.detail.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.Transaction
-import com.example.money_manager_app.data.model.WalletItem
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
 import com.example.money_manager_app.data.model.entity.GoalTransaction
@@ -17,9 +15,7 @@ import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.data.model.entity.enums.DebtType
 import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 import com.example.money_manager_app.data.model.entity.enums.TransferType
-import com.example.money_manager_app.databinding.ItemTransferBinding
 import com.example.money_manager_app.databinding.TransactionItemBinding
-import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toFormattedTimeString
 
 class DetailDayAdapter(

@@ -29,7 +29,7 @@
         <TextView
             android:fontFamily="@font/sfprodisplay_medium"
             android:layout_margin="@dimen/_16dp"
-            android:text="Included in total"
+            android:text="@string/included_in_total"
             android:textSize="@dimen/_12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -43,7 +43,7 @@
         <TextView
             android:fontFamily="@font/sfprodisplay_medium"
             android:layout_margin="@dimen/_16dp"
-            android:text="Excluded from total"
+            android:text="@string/excluded_from_total"
             android:textSize="@dimen/_12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

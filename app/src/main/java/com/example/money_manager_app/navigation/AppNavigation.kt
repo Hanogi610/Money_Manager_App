@@ -37,4 +37,5 @@ interface AppNavigation : BaseNavigator {
     fun openStatisticScreenToTransactionScreen(bundle: Bundle? = null)
     fun openStatisticScreenToCreateAccountScreen(bundle: Bundle? = null)
     fun openDebtDetailScreenToRecordScreen(bundle: Bundle? = null)
+    fun openMainScreenToAddFragment(bundle: Bundle? = null)
 }

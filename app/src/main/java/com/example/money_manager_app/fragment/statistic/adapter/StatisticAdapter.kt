@@ -5,7 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +16,6 @@ import com.example.money_manager_app.data.model.Stats
 import com.example.money_manager_app.databinding.ListStatisticBalanceBinding
 import com.example.money_manager_app.databinding.ListStatisticOverviewBinding
 import com.example.money_manager_app.databinding.ListStatisticPieBinding
-import com.example.money_manager_app.utils.Helper
-import com.example.money_manager_app.utils.SharePreferenceHelper
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -61,7 +58,7 @@ class StatisticAdapter(
                 R.string.negative_money_amount, currentCurrencySymbol, summary.expense
             )
 
-            var total = summary.income - summary.expense
+            val total = summary.income - summary.expense
             binding.netLabel.text = if (total >= 0) {
                 context.getString(R.string.positive_money_amount, currentCurrencySymbol, total)
             } else {
@@ -104,41 +101,48 @@ class StatisticAdapter(
                 binding.pieStatPercentLabel4,
                 binding.pieStatPercentLabel5
             )
-            if( pieStatsList.size > 0) {
-                var totalAmount: Double = 0.0
-                var listStats = mutableListOf<Stats>()
+            if( pieStatsList.isNotEmpty()) {
+                var totalAmount = 0.0
+                var percent  = 0.0
+                val listStats = mutableListOf<Stats>()
                 if(pieStatsList.size > 4) {
                     for (i in 0 until 4) {
                         listStats.add(pieStatsList[i])
+                        percent += pieStatsList[i].percent
                     }
                     for (i in 4 until pieStatsList.size) {
                         totalAmount += pieStatsList[i].amount
                     }
-                    listStats.add(Stats("Other", Color.GRAY, 0, totalAmount, 0.0, 0, 0, pieStatsList[0].type, 0, false))
+                    listStats.add(Stats("Other", R.color.gray, 0, totalAmount, 100-percent, 0, 0, pieStatsList[0].type, 0, false))
 
                     for (i in listStats.indices) {
                         pieStatViews[i].visibility = View.VISIBLE
-                        pieStatViewColors[i].setBackgroundColor(listStats[i].color)
+                        val color = ContextCompat.getColor(context, listStats[i].color)
+                        pieStatViewColors[i].backgroundTintList = ColorStateList.valueOf(color)
                         pieStatLabels[i].text = listStats[i].name
-                        pieStatPercentLabels[i].text = "${listStats[i].percent}%"
+                        pieStatPercentLabels[i].text = context.getString(R.string.formatted_double_percentage, listStats[i].percent)
                     }
+                    pieChart = binding.pieChart
+                    pieChart!!.setOnChartValueSelectedListener(this@StatisticAdapter)
+                    setPieChart(binding.pieChart,listStats)
                 } else {
                     for (i in 0 until pieStatsList.size) {
                         pieStatViews[i].visibility = View.VISIBLE
                         val color = ContextCompat.getColor(context, pieStatsList[i].color)
                         pieStatViewColors[i].backgroundTintList = ColorStateList.valueOf(color)
                         pieStatLabels[i].text = pieStatsList[i].name
-                        pieStatPercentLabels[i].text = "(${pieStatsList[i].percent}%)"
+                        pieStatPercentLabels[i].text = context.getString(R.string.formatted_double_percentage, pieStatsList[i].percent)
                     }
+                    pieChart = binding.pieChart
+                    pieChart!!.setOnChartValueSelectedListener(this@StatisticAdapter)
+                    setPieChart(binding.pieChart,pieStatsList)
                 }
             } else {
                 for (i in 0 until 5) {
                     pieStatViews[i].visibility = View.GONE
                 }
             }
-            pieChart = binding.pieChart
-            pieChart!!.setOnChartValueSelectedListener(this@StatisticAdapter)
-            setPieChart(binding.pieChart,pieStatsList)
+
             binding.showMore.setOnClickListener {
                 onClickPie()
             }
@@ -229,7 +233,7 @@ class StatisticAdapter(
     }
 
     private fun getCenterAmount(): SpannableString {
-        var totalAmount: Double = 0.0
+        var totalAmount = 0.0
         for (stat in pieStatsList) {
             totalAmount += stat.amount
         }

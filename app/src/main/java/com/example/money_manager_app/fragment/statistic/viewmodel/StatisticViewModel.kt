@@ -1,6 +1,5 @@
 package com.example.money_manager_app.fragment.statistic.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.CalendarSummary
@@ -46,44 +45,35 @@ class StatisticViewModel @Inject constructor(
     val wallets get() = _wallets
 
     private var _listStatsIncome = MutableStateFlow<List<Stats>>(emptyList())
-    val listStatsIncome get() = _listStatsIncome
 
     private var _listStatsExpense = MutableStateFlow<List<Stats>>(emptyList())
     val listStatsExpense get() = _listStatsExpense
 
-    private var _CalendarSummary = MutableStateFlow<CalendarSummary>(CalendarSummary(0.0, 0.0))
-    val calendarSummary get() = _CalendarSummary
+    private var _calendarSummary = MutableStateFlow(CalendarSummary(0.0, 0.0))
+    val calendarSummary get() = _calendarSummary
 
     private var _listCategory = MutableStateFlow<List<Category>>(emptyList())
     val listCategory : StateFlow<List<Category>> get() = _listCategory
 
-    private var _listTransfer = MutableStateFlow<List<Transfer>>(emptyList())
-    val listTransfer: StateFlow<List<Transfer>> get() = _listTransfer
-
     private var _listTransaction = mutableListOf<Transaction>()
     val listTransaction = _listTransaction
 
-    private var _pairWallet = MutableStateFlow<Pair<Double,Double>>(Pair(0.0,0.0))
+    private var _pairWallet = MutableStateFlow(Pair(0.0,0.0))
     val pairWallet get() = _pairWallet
 
-
-    fun getTransaciton () : List<Transaction> {
-        return listTransaction
-    }
-
-    fun setStatsIncome(stats: List<Stats>) {
+    private fun setStatsIncome(stats: List<Stats>) {
         _listStatsIncome.value = stats
-    }
-
-    fun setStatsExpense(stats: List<Stats>) {
-        _listStatsExpense.value = stats
     }
 
     fun setWallets(wallets: List<Wallet>) {
         _wallets.value = wallets
     }
 
-    fun getWallets(id: Long, wallets: List<Wallet>, startDate: Long?, endDate: Long?) {
+    private fun setStatsExpense(stats: List<Stats>) {
+        _listStatsExpense.value = stats
+    }
+
+    fun getWallets(id: Long, wallets: List<Wallet>, startDate: Long ?, endDate: Long ?) {
         viewModelScope.launch {
             val flow = if (startDate == null && endDate == null) {
                 walletRepository.getWalletItemsByUserId(id)
@@ -97,7 +87,11 @@ class StatisticViewModel @Inject constructor(
                 var endingBalance = 0.0
                 for (wallet in list) {
                     if(wallets.contains(wallet.wallet)){
-                        openingBalance += wallet.startingAmount
+                        openingBalance += if(startDate == null && endDate == null){
+                            wallet.wallet.amount
+                        } else {
+                            wallet.startingAmount
+                        }
                         endingBalance += wallet.endingAmount
                     }
                 }
@@ -109,13 +103,14 @@ class StatisticViewModel @Inject constructor(
 
 
 
-    fun setCalendarSummary(calendarSummary: CalendarSummary) {
-        _CalendarSummary.value = calendarSummary
+
+    private fun setCalendarSummary(calendarSummary: CalendarSummary) {
+        _calendarSummary.value = calendarSummary
     }
 
     fun getCalendarSummary(listWallet : List<Wallet>, idAccount : Long){
         viewModelScope.launch(ioDispatcher){
-            var listTrasaction = mutableListOf<Transaction>()
+            val listTrasaction = mutableListOf<Transaction>()
             for(wallet in listWallet){
                 listTrasaction.addAll(getDebtTransaction(wallet.id,idAccount))
                 listTrasaction.addAll(getTransfer(wallet.id,idAccount))
@@ -128,11 +123,11 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    fun getStats(listTransaction: List<Transaction>){
+    private fun getStats(listTransaction: List<Transaction>){
         _listTransaction = listTransaction.toMutableList()
-        var categoryList = categoryRepository.getAllCategory()
-        var listStatsIncome = mutableListOf<Stats>()
-        var listStatsExpense: MutableList<Stats> = mutableListOf<Stats>()
+        val categoryList = categoryRepository.getAllCategory()
+        val listStatsIncome = mutableListOf<Stats>()
+        val listStatsExpense: MutableList<Stats> = mutableListOf()
         var id = 0
         for(category in categoryList){
             id++
@@ -158,6 +153,15 @@ class StatisticViewModel @Inject constructor(
                         for(stats in listStatsExpense) {
                             if (stats.icon == transaction.categoryId) {
                                 stats.amount += transaction.amount
+                                stats.trans++
+                            }
+                        }
+                    }
+
+                    if(transaction.typeOfExpenditure == TransferType.Transfer) {
+                        for (stats in listStatsExpense) {
+                            if (stats.type == CategoryType.TRANSFER && transaction.fee > 0) {
+                                stats.amount += transaction.fee
                                 stats.trans++
                             }
                         }
@@ -269,6 +273,7 @@ class StatisticViewModel @Inject constructor(
                 val percent = (stat.amount / totalAmountIncome) * 100
                 val bigDecimal = BigDecimal(percent).setScale(2, RoundingMode.HALF_UP)
                 val number = bigDecimal.toDouble()
+                stat.percent = number
             }
             listStatsIncome[listStatsIncome.size - 1].percent = 100 - listStatsIncome.sumOf { it.percent }
         } else {
@@ -282,13 +287,13 @@ class StatisticViewModel @Inject constructor(
         setStatsExpense(listStatsExpense)
     }
 
-    fun getCalendarSummary(listWallet : List<Wallet>, start_date : Long, end_date : Long, idAccount : Long){
+    fun getCalendarSummary(listWallet : List<Wallet>, startDate : Long, endDate : Long, idAccount : Long){
         viewModelScope.launch(ioDispatcher){
-            var listTrasaction = mutableListOf<Transaction>()
+            val listTrasaction = mutableListOf<Transaction>()
             for(wallet in listWallet){
-                listTrasaction.addAll(getDebtTransaction(wallet.id,start_date,end_date,idAccount))
-                listTrasaction.addAll(getTransfer(wallet.id,start_date,end_date,idAccount))
-                listTrasaction.addAll(getDebt(wallet.id,start_date,end_date,idAccount))
+                listTrasaction.addAll(getDebtTransaction(wallet.id,startDate,endDate,idAccount))
+                listTrasaction.addAll(getTransfer(wallet.id,startDate,endDate,idAccount))
+                listTrasaction.addAll(getDebt(wallet.id,startDate,endDate,idAccount))
 
             }
             getStats(listTrasaction)
@@ -296,7 +301,7 @@ class StatisticViewModel @Inject constructor(
         }
     }
 
-    fun getDebtTransaction(idWallet : Long, idAccount : Long) : List<Transaction>{
+    private fun getDebtTransaction(idWallet : Long, idAccount : Long) : List<Transaction>{
         val debtTransaction = debtTransacitonRepository.getDebtTransactionsByAccountIdAndWallet(idAccount,idWallet)
         val listTransaction = mutableListOf<Transaction>()
         for(debt in debtTransaction){
@@ -305,27 +310,27 @@ class StatisticViewModel @Inject constructor(
         return listTransaction
     }
 
-    fun getTransfer(idWallet : Long, idAccount : Long) : List<Transaction>{
+    private fun getTransfer(idWallet : Long, idAccount : Long) : List<Transaction>{
         val transfer = transferRepository.getTransferByWalletAndDayStartAndDayEnd(idAccount,idWallet)
         val listTransaction = mutableListOf<Transaction>()
-        for(transfer in transfer){
-            listTransaction.add(transfer)
+        for(item in transfer){
+            listTransaction.add(item)
         }
         return listTransaction
     }
 
-    fun getDebt(idWallet : Long, idAccount : Long) : List<Transaction>{
+    private fun getDebt(idWallet : Long, idAccount : Long) : List<Transaction>{
         val debt = debtRepository.getDebtListByAccountIdAndWallet(idAccount,idWallet)
         val listTransaction = mutableListOf<Transaction>()
-        for(debt in debt){
-            listTransaction.add(debt)
+        for(item in debt){
+            listTransaction.add(item)
         }
         return listTransaction
     }
 
 
-    fun getDebtTransaction(idWallet : Long, start_date : Long, end_date : Long, idAccount : Long) : List<Transaction>{
-        val debtTransaction = debtTransacitonRepository.getDebtTransactionByWalletAndDayStartAndDayEnd(idAccount,idWallet,start_date,end_date)
+    private fun getDebtTransaction(idWallet : Long, startDate : Long, endDate : Long, idAccount : Long) : List<Transaction>{
+        val debtTransaction = debtTransacitonRepository.getDebtTransactionByWalletAndDayStartAndDayEnd(idAccount,idWallet,startDate,endDate)
         val listTransaction = mutableListOf<Transaction>()
         for(debt in debtTransaction){
             listTransaction.add(debt)
@@ -333,25 +338,25 @@ class StatisticViewModel @Inject constructor(
         return listTransaction
     }
 
-    fun getTransfer(idWallet : Long, start_date : Long, end_date : Long, idAccount : Long) :  List<Transaction>{
-        val transfer = transferRepository.getTransferByWalletAndDayStartAndDayEnd(idAccount,idWallet,start_date,end_date)
+    private fun getTransfer(idWallet : Long, startDate : Long, endDate : Long, idAccount : Long) :  List<Transaction>{
+        val transfer = transferRepository.getTransferByWalletAndDayStartAndDayEnd(idAccount,idWallet,startDate,endDate)
         val listTransaction = mutableListOf<Transaction>()
-        for(transfer in transfer){
-            listTransaction.add(transfer)
+        for(item in transfer){
+            listTransaction.add(item)
         }
         return listTransaction
     }
 
-    fun getDebt(idWallet : Long, start_date : Long, end_date : Long, idAccount : Long) :  List<Transaction>{
-        val debt = debtRepository.getDebtByWalletAndDayStartAndDayEnd(idAccount,idWallet,start_date,end_date)
+    private fun getDebt(idWallet : Long, startDate : Long, endDate : Long, idAccount : Long) :  List<Transaction>{
+        val debt = debtRepository.getDebtByWalletAndDayStartAndDayEnd(idAccount,idWallet,startDate,endDate)
         val listTransaction = mutableListOf<Transaction>()
-        for(debt in debt){
-            listTransaction.add(debt)
+        for(item in debt){
+            listTransaction.add(item)
         }
         return listTransaction
     }
 
-    fun totalCalendarSummary(listTransaction : List<Transaction>) : CalendarSummary{
+    private fun totalCalendarSummary(listTransaction : List<Transaction>) : CalendarSummary{
         var totalIncome = 0.0
         var totalExpense = 0.0
         for(transaction in listTransaction){
@@ -362,6 +367,11 @@ class StatisticViewModel @Inject constructor(
                     } else {
                         if(transaction.typeOfExpenditure == TransferType.Expense){
                             totalExpense += transaction.amount
+                        } else
+                        {
+                            if(transaction.typeOfExpenditure == TransferType.Transfer){
+                                totalExpense += transaction.fee
+                            }
                         }
                     }
                 }

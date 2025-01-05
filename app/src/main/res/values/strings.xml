@@ -59,12 +59,17 @@
     <string name="initial_amount">Initial Amount</string>
     <string name="cash_wallet_prompt">How much money do you have in your cash wallet?</string>
     <string name="amount_hint" translatable="false">%1$s 0</string>
+    <string name="overspent">Overspent</string>
+    <string name="left">Left</string>
     <string name="money_amount" translatable="false">%1$s %2$.2f</string>
     <string name="hidden_balance" translatable="false">********</string>
     <string name="transactions_format">%1$d transactions</string>
     <string name="adjust_balance">ADJUST BALANCE</string>
     <string name="make_payment">MAKE PAYMENT</string>
     <string name="days_left">%1$s days left</string>
+    <string name="account_name">Account Name</string>
+    <string name="included_in_total">Included in total</string>
+    <string name="excluded_from_total">Excluded from total</string>
     <string name="amount_number">%1$.2f</string>
     <string name="positive_money_amount" translatable="false">+%1$s %2$.2f</string>
     <string name="negative_money_amount" translatable="false">-%1$s %2$.2f</string>
@@ -122,6 +127,8 @@
     <string name="thu" translatable="false">Thu</string>
     <string name="fri" translatable="false">Fri</string>
     <string name="sat" translatable="false">Sat</string>
+    <string name="date_format" translatable="false">%1$d/%2$d</string>
+
 
 
     <string-array name="wallet_options">
@@ -161,6 +168,7 @@
         <item>Yellow</item>
         <item>Purple</item>
     </string-array>
+    <string name="please_reenter">Please re-enter</string>
     <string name="add_fab" translatable="false">Add FAB</string>
     <string name="manager">Manager (%1$d)</string>
     <string name="add_wallet">Add Wallet</string>
@@ -178,14 +186,15 @@
     <string name="i_lend_s">I lend %1$s</string>
     <string name="debt_transaction_name" translatable="false">%1$s: %2$s</string>
     <string name="subtract">-</string>
-    <string name="left">Left</string>
     <string name="paid">Paid</string>
     <string name="saved">Saved</string>
+    <string name="left_days">Left days</string>
     <string name="remain">Remain</string>
     <string name="goal_date">Goal date</string>
     <string name="deposit">Deposit</string>
     <string name="withdraw">Withdraw</string>
     <string name="spent">Spent</string>
+    <string name="day_of_week">Day of Week</string>
     <string name="period">Period</string>
     <string name="day_of_month">Day of month</string>
     <string name="week_of_month">Week of month</string>

@@ -152,25 +152,26 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
             when(time) {
                 TimeType.MONTHLY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
-                    var dateStart = DateHelper.getDateMonth(date)
+                    val dateStart = DateHelper.getDateMonth(date)
                     getVM().getCalendarSummary(wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp(),idAccount)
                     getVM().getWallets(idAccount,wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp())
                 }
                 TimeType.DAILY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
-                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     val calendar = Calendar.getInstance()
                     calendar.time = date
                     calendar.set(Calendar.HOUR_OF_DAY, 0)
                     calendar.set(Calendar.MINUTE, 0)
                     calendar.set(Calendar.SECOND, 0)
                     calendar.set(Calendar.MILLISECOND, 0)
-                    val startOfDay = calendar.timeInMillis
-                    calendar.add(Calendar.DAY_OF_MONTH, 1)
-                    val endOfDay = calendar.timeInMillis - 1
-                    getVM().getCalendarSummary(wallets, startOfDay,endOfDay, idAccount)
-                    getVM().getWallets(idAccount, wallets, startOfDay, endOfDay)
+                    calendar.add(Calendar.DAY_OF_MONTH, -1)
+                    val startOfPreviousDay = calendar.timeInMillis
+                    calendar.add(Calendar.DAY_OF_MONTH, 2)
+                    val endOfNextDay = calendar.timeInMillis - 1
+                    getVM().getCalendarSummary(wallets, startOfPreviousDay, endOfNextDay, idAccount)
+                    getVM().getWallets(idAccount, wallets, startOfPreviousDay, endOfNextDay)
                 }
+
 
                 TimeType.WEEKLY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedWeeklyDate(requireContext(),date)
@@ -186,7 +187,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
 
                 }
                 TimeType.ALL -> {
-                    binding.dateLabel.text = "All"
+                    binding.dateLabel.text = context?.getString(R.string.all)
                     getVM().getCalendarSummary(wallets, idAccount)
                     getVM().getWallets(idAccount,wallets, null, null)
 
@@ -196,13 +197,27 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
         }
     }
 
-    fun setUpLayoutContentCustom(startDate: Date, endDate: Date) {
+    private fun setUpLayoutContentCustom(startDate: Date, endDate: Date) {
         binding.dateLabel.text = CalendarHelper.getFormattedCustomDate(requireContext(),startDate,endDate)
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val dateStart = dateFormat.format(startDate)
         val dateEnd = dateFormat.format(endDate)
         getVM().getCalendarSummary(wallets,dateStart.toDateTimestamp(),dateEnd.toDateTimestamp(), mainViewModel.currentAccount.value!!.account.id)
-        getVM().getWallets(mainViewModel.currentAccount.value!!.account.id,wallets, dateStart.toDateTimestamp(),dateEnd.toDateTimestamp())
+        if(dateStart.toDateTimestamp() == dateEnd.toDateTimestamp()){
+            val calendar = Calendar.getInstance()
+            calendar.time = startDate
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
+            calendar.add(Calendar.DAY_OF_MONTH, -1)
+            val startOfPreviousDay = calendar.timeInMillis
+            calendar.add(Calendar.DAY_OF_MONTH, 2)
+            val endOfNextDay = calendar.timeInMillis - 1
+            getVM().getWallets(mainViewModel.currentAccount.value!!.account.id , wallets, startOfPreviousDay, endOfNextDay)
+        } else {
+            getVM().getWallets(mainViewModel.currentAccount.value!!.account.id,wallets, dateStart.toDateTimestamp(),dateEnd.toDateTimestamp())
+        }
 
     }
 

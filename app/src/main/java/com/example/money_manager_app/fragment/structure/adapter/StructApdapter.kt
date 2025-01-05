@@ -1,26 +1,17 @@
 package com.example.money_manager_app.fragment.structure.adapter
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
-import com.example.money_manager_app.data.model.CalendarSummary
 import com.example.money_manager_app.data.model.Stats
-import com.example.money_manager_app.databinding.ListStatisticBalanceBinding
-import com.example.money_manager_app.databinding.ListStatisticOverviewBinding
-import com.example.money_manager_app.databinding.ListStatisticPieBinding
 import com.example.money_manager_app.databinding.ListStatisticPieHeaderBinding
 import com.example.money_manager_app.databinding.ListStatisticPieItemBinding
-import com.example.money_manager_app.utils.Helper
-import com.example.money_manager_app.utils.SharePreferenceHelper
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -63,8 +54,8 @@ class StructApdapter(
                     R.string.negative_money_amount, currentCurrencySymbol, stats.amount)
                 binding.amountLabel.setTextColor(ContextCompat.getColor(context, R.color.red))
             }
-            binding.transLabel.text = "${stats.trans} transactions"
-            binding.detailLabel.text = stats.percent.toString() + "%"
+            binding.transLabel.text = "${stats.trans} " + context.getString(R.string.transaction)
+            binding.detailLabel.text = context.getString(R.string.formatted_double_percentage, stats.percent)
         }
     }
 

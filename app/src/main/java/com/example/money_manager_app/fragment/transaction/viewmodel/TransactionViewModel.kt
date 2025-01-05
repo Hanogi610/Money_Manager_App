@@ -328,6 +328,10 @@ class TransactionViewModel @Inject constructor(
                     } else {
                         if(transaction.typeOfExpenditure == TransferType.Expense){
                             totalExpense += transaction.amount
+                        } else {
+                            if(transaction.typeOfExpenditure == TransferType.Transfer){
+                                totalExpense += transaction.fee
+                            }
                         }
                     }
                 }

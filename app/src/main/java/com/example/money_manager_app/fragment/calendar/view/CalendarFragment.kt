@@ -1,7 +1,6 @@
 package com.example.money_manager_app.fragment.calendar.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,13 +15,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.CalendarRecord
-import com.example.money_manager_app.data.model.CalendarSummary
 import com.example.money_manager_app.databinding.FragmentCalendarBinding
 import com.example.money_manager_app.fragment.calendar.viewmodel.CalendarViewModel
 import com.example.money_manager_app.fragment.detail.view.DetailDayFragment
 import com.example.money_manager_app.utils.CalendarHelper
-import com.example.money_manager_app.utils.Helper
-import com.example.money_manager_app.utils.SharePreferenceHelper
 import com.example.money_manager_app.viewmodel.MainViewModel
 import com.example.moneymanager.fragment.calendar.adapter.CalendarAdapter
 import kotlinx.coroutines.launch
@@ -60,13 +56,10 @@ class CalendarFragment : Fragment(), View.OnClickListener, CalendarAdapter.OnIte
     }
 
     private fun fetchDataAndUpdateUI(date: Date) {
-        val summary = CalendarSummary(10000.0, 20000.0)
-        activity?.runOnUiThread {
-            updateUI("nang", summary, 30000.0, date)
-        }
+        updateUI(date)
     }
 
-    private fun updateUI(accountSymbol: String, summary: CalendarSummary, balance: Double, date: Date) {
+    private fun updateUI(date: Date) {
         binding.dateLabel.text = CalendarHelper.getFormattedMonthlyDate(date)
         adapter.setList(calendarViewModel.calendarRecord.value)
         adapter.setDate(date)
@@ -97,13 +90,12 @@ class CalendarFragment : Fragment(), View.OnClickListener, CalendarAdapter.OnIte
     private fun setUpSummary(calendarRecord : List<CalendarRecord>) {
         var income = 0.0
         var expense = 0.0
-        var total = 0.0
 
         for (record in calendarRecord) {
             income += record.income
             expense += record.expense
         }
-        total = income - expense
+        val total = income - expense
 
 
         val currentCurrency = mainViewmodel.currentAccount.value!!.account.currency

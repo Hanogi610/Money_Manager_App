@@ -50,7 +50,7 @@ fun List<Transaction>.totalMoneyDay(listTransaction : List<Transaction>) : Doubl
                     if (transaction.typeOfExpenditure == TransferType.Expense) {
                         -transaction.amount
                     } else {
-                        0.0
+                        -transaction.fee
                     }
                 }
             }
@@ -158,6 +158,9 @@ fun Transaction.totalDailyTransactionIncomeAndExpense(): Pair<Double, Double> {
             dailyTotalIncome += this.amount
         } else if (this.typeOfExpenditure == TransferType.Expense) {
             dailyTotalExpense += this.amount
+        }
+        if (this.typeOfExpenditure == TransferType.Transfer) {
+            dailyTotalExpense += this.fee
         }
     }
 
@@ -318,7 +321,7 @@ fun List<Transaction>.calculateAmount(walletId: Long) : Double{
                     }
                     TransferType.Transfer -> {
                         if(transaction.walletId == walletId){
-                            amount -= transaction.amount
+                            amount -= (transaction.amount+transaction.fee)
                         } else {
                             amount += transaction.amount
                         }

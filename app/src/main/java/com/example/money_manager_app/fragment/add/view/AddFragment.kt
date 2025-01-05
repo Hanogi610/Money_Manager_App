@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -56,18 +55,17 @@ class AddFragment : BaseFragment<FragmentAddBinding, AddViewModel>(R.layout.frag
     }
 
     fun back(){
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().popBackStack()
-                onClear()
-            }
-        })
-
         binding.ivBack.setOnClickListener {
-            findNavController().popBackStack()
+            onBack()
             onClear()
         }
     }
+
+    override fun onBack() {
+        super.onBack()
+        appNavigation.navigateUp()
+    }
+
 
     fun onClear() {
         expenseViewModel.onCleared()

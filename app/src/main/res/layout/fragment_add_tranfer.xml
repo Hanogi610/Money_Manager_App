@@ -46,7 +46,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:drawableStart="@drawable/timer"
-                    android:hint="Time"
+                    android:hint="@string/time"
                     android:textSize="@dimen/_12sp" />
             </LinearLayout>
 
@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_8dp"
-                android:hint="Amount"
+                android:hint="@string/amount"
                 android:inputType="numberDecimal"
                 android:layout_marginTop="@dimen/_8dp"
                 android:textSize="@dimen/_12sp"
@@ -90,7 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_8dp"
-                android:hint="Short description"
+                android:hint="@string/description"
                 android:textSize="@dimen/_12sp"
                 android:background="@drawable/custom_edit"
                 android:layout_below="@+id/tv_description"/>
@@ -110,7 +110,7 @@
                 android:layout_marginTop="@dimen/_8dp"
                 android:layout_below="@+id/tv_category"
                 android:layout_width="match_parent"
-                android:hint="Select category"
+                android:hint="@string/select_wallet"
                 android:padding="@dimen/_8dp"
                 android:background="@drawable/custom_edit"
                 android:textSize="@dimen/_12sp"
@@ -132,7 +132,7 @@
                 android:layout_marginTop="@dimen/_8dp"
                 android:layout_below="@+id/towallet"
                 android:layout_width="match_parent"
-                android:hint="Select category"
+                android:hint="@string/select_wallet"
                 android:padding="@dimen/_8dp"
                 android:background="@drawable/custom_edit"
                 android:textSize="@dimen/_12sp"
@@ -162,8 +162,9 @@
                 android:layout_height="wrap_content">
                 <EditText
                     android:id="@+id/et_fee"
-                    android:hint="Fee"
+                    android:hint="@string/fee"
                     android:layout_weight="9"
+                    android:textSize="@dimen/_14sp"
                     android:background="@null"
                     android:enabled="false"
                     android:layout_width="wrap_content"
@@ -203,10 +204,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="8"
+                    android:hint="@string/memo"
+                    android:textSize="@dimen/_14sp"
                     android:background="@null"/>
 
                 <ImageView
                     android:id="@+id/iv_memo"
+                    android:textSize="@dimen/_12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"

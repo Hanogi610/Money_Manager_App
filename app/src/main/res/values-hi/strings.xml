@@ -14,6 +14,9 @@
     <string name="category">श्रेणी</string>
     <string name="description">विवरण</string>
     <string name="enter_description">विवरण दर्ज करें</string>
+    <string name="account_name">खाता नाम</string>
+    <string name="included_in_total">कुल में शामिल</string>
+    <string name="excluded_from_total">कुल में शामिल नहीं</string>
     <string name="amount">राशि</string>
     <string name="enter_amount">राशि दर्ज करें</string>
     <string name="start_date">आरंभ तिथि</string>
@@ -22,6 +25,7 @@
     <string name="max_amount">अधिकतम राशि</string>
     <string name="apply">लागू करें</string>
     <string name="cancel">रद्द करें</string>
+    <string name="please_reenter">कृपया पुनः दर्ज करें</string>
     <string name="custom_date">Custom date</string>
     <string name="add_account">खाता जोड़ें</string>
     <string name="choose_a_name_for_your_account">अपने खाते के लिए नाम चुनें।</string>
@@ -98,6 +102,7 @@
     <string name="manager">प्रबंधक (%1$d)</string>
     <string name="add_wallet">वॉलेट जोड़ें</string>
     <string name="goal">लक्ष्य</string>
+    <string name="day_of_week">सप्ताह का दिन</string>
     <string name="debt">ऋण</string>
     <string name="add_debt">ऋण जोड़ें</string>
     <string name="add_goal">लक्ष्य जोड़ें</string>
@@ -133,6 +138,8 @@
     <string name="monthly">मासिक</string>
     <string name="yearly">वार्षिक</string>
     <string name="all">सभी</string>
+    <string name="overspent">अधिक खर्च किया</string>
+    <string name="left_days">बचे हुए दिन</string>
     <string name="custom">कस्टम</string>
     <string name="goal_s_name">लक्ष्य का नाम</string>
     <string name="target_date">लक्ष्य तिथि</string>

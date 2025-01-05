@@ -30,7 +30,6 @@ class CategoryTransactionAdapter(
 
     inner class HeaderViewHolder(private val binding: ItemHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            binding.headerTitle.text = "Transaction list"
         }
     }
 

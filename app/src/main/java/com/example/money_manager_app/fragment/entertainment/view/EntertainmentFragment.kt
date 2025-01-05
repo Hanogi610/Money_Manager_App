@@ -1,7 +1,6 @@
 package com.example.money_manager_app.fragment.entertainment.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -32,13 +31,18 @@ class EntertainmentFragment : BaseFragmentNotRequireViewModel<FragmentEntertainm
         }
     }
 
-    fun setAdapter(){
+    override fun onBack() {
+        super.onBack()
+        findNavController().popBackStack()
+    }
+
+    private fun setAdapter(){
         val currencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
         transactionAdapter = TransactionAdapter(
             requireContext(),
             currencySymbol,
-            mainViewModel.currentAccount.value!!.walletItems?.map { it.toWallet() } ?: emptyList(),
+            mainViewModel.currentAccount.value!!.walletItems.map { it.toWallet() } ,
             mainViewModel.categories.value
         ) {
             val bundle = bundleOf("transaction" to it)
@@ -46,9 +50,6 @@ class EntertainmentFragment : BaseFragmentNotRequireViewModel<FragmentEntertainm
         }
         binding.rvEntertainment.adapter = transactionAdapter
         binding.rvEntertainment.layoutManager = LinearLayoutManager(requireContext())
-    }
-
-    fun updateUI(){
     }
 
     override fun initData(savedInstanceState: Bundle?) {

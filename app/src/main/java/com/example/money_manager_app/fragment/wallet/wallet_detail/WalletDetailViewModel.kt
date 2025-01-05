@@ -103,7 +103,9 @@ class WalletDetailViewModel @Inject constructor(
         var transfer = 0
         var expenseAmount = 0.0
         var incomeAmount = 0.0
-        var transferAmount = 0.0
+        var transferInAmount = 0.0
+        var transferOutAmount = 0.0
+        var transferFee = 0.0
 
         transactions.forEach { transaction ->
             when (transaction) {
@@ -141,7 +143,13 @@ class WalletDetailViewModel @Inject constructor(
 
                         TransferType.Transfer -> {
                             transfer += 1
-                            transferAmount += transaction.amount
+                            if(transaction.toWalletId == wallet.wallet.id) {
+                                transferInAmount += transaction.amount
+                            } else {
+                                transferOutAmount += transaction.amount
+                                transferFee += transaction.fee
+
+                            }
                         }
                     }
                 }
@@ -163,7 +171,7 @@ class WalletDetailViewModel @Inject constructor(
                     income = income,
                     expense = expense,
                     transfer = transfer,
-                    currentBalance = wallet.initialBalance + incomeAmount - expenseAmount - transferAmount,
+                    currentBalance = wallet.initialBalance + incomeAmount - expenseAmount + transferInAmount - transferOutAmount - transferFee,
                     transactions = transactions.groupTransactionsByDate(),
                 )
             }
@@ -171,7 +179,7 @@ class WalletDetailViewModel @Inject constructor(
                 wallet.copy(
                     expense = expense,
                     transactions = transactions.groupTransactionsByDate(),
-                    availableCredit = wallet.creditLimit - expenseAmount + transferAmount
+                    availableCredit = wallet.creditLimit - expenseAmount - transferOutAmount - transferFee
                 )
             }
         }
