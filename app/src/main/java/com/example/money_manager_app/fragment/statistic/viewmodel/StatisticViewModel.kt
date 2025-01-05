@@ -102,8 +102,7 @@ class StatisticViewModel @Inject constructor(
                     }
                 }
 
-               _pairWallet.value = Pair(openingBalance, endingBalance)
-
+                _pairWallet.value = Pair(openingBalance,endingBalance)
             }
         }
     }
