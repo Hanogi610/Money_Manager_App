@@ -33,6 +33,9 @@ interface DebtTransactionDao {
     @Query("SELECT * FROM debt_transaction WHERE account_id = :accountId AND wallet_id = :walletId AND date BETWEEN :startDay AND :endDay")
     fun getDebtTransactionByWalletAndDayStartAndDayEnd(accountId: Long, walletId: Long, startDay : Long, endDay : Long): List<DebtTransaction>
 
+    @Query("SELECT * FROM debt_transaction WHERE account_id = :idAccount AND id = :idDebtTransaction")
+    fun getDebtTransactionByIdAccountAndIdDebtTrasaction(idAccount: Long, idDebtTransaction: Long) : Flow<DebtTransaction>
+
     @Query("""
     SELECT * FROM debt_transaction
     WHERE (:startDate IS NULL OR date >= :startDate)

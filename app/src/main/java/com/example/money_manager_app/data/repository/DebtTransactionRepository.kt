@@ -41,6 +41,8 @@ interface DebtTransactionRepository {
         idAccount: Long
     ): List<DebtTransaction>
 
+    fun getDebtTransactionByIdAccountAndIdDebtTrasaction(idAccount: Long, idDebtTransaction: Long) : Flow<DebtTransaction>
+
     suspend fun deleteDebtTransaction(debtTransactionId: Long)
     suspend fun deleteDebtTransaction(debtTransaction: DebtTransaction)
 
@@ -89,6 +91,13 @@ class DebtTransactionRepositoryImpl @Inject constructor(
             fromWallet,
             idAccount
         )
+    }
+
+    override fun getDebtTransactionByIdAccountAndIdDebtTrasaction(
+        idAccount: Long,
+        idDebtTransaction: Long
+    ): Flow<DebtTransaction> {
+        return debtTransactionDao.getDebtTransactionByIdAccountAndIdDebtTrasaction(idAccount, idDebtTransaction)
     }
 
     override fun getDebtTransactionsByDebtId(debtId: Long): Flow<List<DebtTransaction>> {

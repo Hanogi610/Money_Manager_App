@@ -82,7 +82,10 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
         if(addViewModel.getCheckEdit()){
             getVM().getDateTime()
         } else {
-            getVM().updateDateTime()
+            if(!checkEdit){
+                getVM().updateDateTime()
+                checkEdit = true
+            }
         }
         pickDate()
         pickTime()

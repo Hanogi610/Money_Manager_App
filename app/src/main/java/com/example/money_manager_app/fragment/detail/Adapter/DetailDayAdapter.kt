@@ -1,5 +1,6 @@
 package com.example.money_manager_app.fragment.detail.Adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -9,134 +10,129 @@ import com.example.money_manager_app.data.model.Transaction
 import com.example.money_manager_app.data.model.WalletItem
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
+import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.entity.enums.DebtActionType
 import com.example.money_manager_app.data.model.entity.enums.DebtType
+import com.example.money_manager_app.data.model.entity.enums.GoalInputType
 import com.example.money_manager_app.data.model.entity.enums.TransferType
 import com.example.money_manager_app.databinding.ItemTransferBinding
+import com.example.money_manager_app.databinding.TransactionItemBinding
+import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toFormattedTimeString
 
 class DetailDayAdapter(
     private var listTranfer: List<Transaction>,
-    private var listWallet: List<WalletItem>,
+    private val currencySymbol: String,
+    private val context: Context,
+    private var wallets: List<Wallet>?,
     private val onClick: (transaction: Transaction) -> Unit
 ) : RecyclerView.Adapter<DetailDayAdapter.DetailDayViewHolder>() {
 
-    inner class DetailDayViewHolder(private var binding: ItemTransferBinding) :
+    inner class DetailDayViewHolder(private var binding: TransactionItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(transaction: Transaction) {
-            binding.tvTime.text = transaction.time.toFormattedTimeString()
-            if (transaction is Transfer) {
-                when (transaction.typeOfExpenditure) {
-                    TransferType.Expense -> {
-                        binding.ivItem.setImageResource(transaction.iconId ?: 0)
-                        binding.tvAmount.text = "-${transaction.amount}"
-                        binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.red)
-                        )
-                        binding.tvName.text = transaction.description
-                        binding.tvBank.text =
-                            listWallet.find { it.wallet.id == transaction.walletId }?.wallet?.name
-                                ?: ""
-                    }
+            when (transaction) {
+                is GoalTransaction -> {
+                    binding.transactionTypeImageView.setImageResource(transaction.iconId)
+                    binding.transactionTypeTextView.text = context.getString(
+                        R.string.goal_transaction_name,
+                        transaction.type.toString(),
+                        transaction.name
+                    )
+                    binding.transactionAmount.text =
+                        if (transaction.type == GoalInputType.DEPOSIT) {
+                            context.getString(
+                                R.string.negative_money_amount, currencySymbol, transaction.amount
+                            )
+                        } else {
+                            context.getString(
+                                R.string.positive_money_amount, currencySymbol, transaction.amount
+                            )
+                        }
+                }
 
-                    TransferType.Income -> {
-                        binding.ivItem.setImageResource(transaction.iconId ?: 0)
-                        binding.tvAmount.text = "+${transaction.amount}"
-                        binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.blue)
+                is Debt -> {
+                    binding.transactionTypeImageView.setImageResource(transaction.iconId)
+                    if (transaction.type == DebtType.PAYABLE) {
+                        binding.transactionAmount.text = context.getString(
+                            R.string.positive_money_amount, currencySymbol, transaction.amount
                         )
-                        binding.tvName.text = transaction.description
-                        binding.tvBank.text =
-                            listWallet.find { it.wallet.id == transaction.walletId }?.wallet?.name
-                                ?: ""
-                    }
-
-                    else -> {
-                        binding.ivItem.setImageResource(transaction.iconId ?: R.drawable.expense_1)
-                        binding.tvAmount.text = "${transaction.amount}"
-                        binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.black)
+                        binding.transactionAmount.setTextColor(context.getColor(R.color.color_1))
+                        binding.transactionTypeTextView.text =
+                            context.getString(R.string.i_owe_s, transaction.name)
+                    } else {
+                        binding.transactionAmount.text = context.getString(
+                            R.string.negative_money_amount, currencySymbol, transaction.amount
                         )
-                        binding.tvName.text = transaction.description
-                        val bank =
-                            listWallet.find { it.wallet.id == transaction.walletId }?.wallet?.name + " -> " + listWallet.find { it.wallet.id == transaction.walletId }?.wallet?.name
-                        binding.tvBank.text = bank
+                        binding.transactionAmount.setTextColor(context.getColor(R.color.color_17))
+                        binding.transactionTypeTextView.text =
+                            context.getString(R.string.i_lend_s, transaction.name)
                     }
                 }
-            }
-            if (transaction is Debt) {
-                when (transaction.type) {
-                    DebtType.PAYABLE -> {
-                        binding.tvAmount.text = "+${transaction.amount}"
-                        binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.blue)
-                        )
-                        binding.tvName.text = transaction.description
-                        binding.tvBank.text =
-                            listWallet.find { it.wallet.id == transaction.walletId}?.wallet?.name ?: ""
-                    }
 
-                    DebtType.RECEIVABLE -> {
-                        binding.tvAmount.text = "-${transaction.amount}"
-                        binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.red)
+                is DebtTransaction -> {
+                    binding.transactionTypeImageView.setImageResource(transaction.iconId)
+                    binding.transactionTypeTextView.text = context.getString(
+                        R.string.debt_transaction_name,
+                        transaction.action.toString(),
+                        transaction.name
+                    )
+                    if (transaction.action == DebtActionType.DEBT_INCREASE
+                        || transaction.action == DebtActionType.DEBT_COLLECTION
+                        || transaction.action == DebtActionType.LOAN_INTEREST) {
+                        binding.transactionAmount.text = context.getString(
+                            R.string.positive_money_amount, currencySymbol, transaction.amount
                         )
-                        binding.tvName.text = transaction.description
-                        binding.tvBank.text =
-                            listWallet.find { it.wallet.id == transaction.walletId}?.wallet?.name ?: ""
+                        binding.transactionAmount.setTextColor(context.getColor(R.color.color_1))
+                    } else {
+                        binding.transactionAmount.text = context.getString(
+                            R.string.negative_money_amount, currencySymbol, transaction.amount
+                        )
+                        binding.transactionAmount.setTextColor(context.getColor(R.color.color_17))
                     }
                 }
-            }
 
-            if (transaction is DebtTransaction) {
-                when (transaction.action) {
-                    DebtActionType.LOAN_INTEREST -> {
+                is Transfer -> {
+                    binding.transactionTypeTextView.text = transaction.description
+                    if(transaction.typeOfExpenditure == TransferType.Expense || transaction.typeOfExpenditure == TransferType.Income) {
+                        binding.transactionTypeImageView.setImageResource(transaction.iconId ?: 0)
+                    } else {
+                        binding.transactionTypeImageView.setImageResource(R.drawable.transfer)
                     }
 
-                    DebtActionType.DEBT_INCREASE -> {
-                        binding.tvAmount.text = "+${transaction.amount}"
-                        binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.blue)
-                        )
-                        binding.tvName.text = "Debt increase"
-                        binding.tvBank.text =
-                            listWallet.find { it.wallet.id == transaction.walletId}?.wallet?.name ?: ""
-                    }
+                    when (transaction.typeOfExpenditure) {
+                        TransferType.Expense -> {
+                            binding.transactionAmount.text = context.getString(
+                                R.string.negative_money_amount, currencySymbol, transaction.amount
+                            )
+                            binding.transactionAmount.setTextColor(context.getColor(R.color.red))
+                        }
 
-                    DebtActionType.REPAYMENT -> {
-                        binding.tvAmount.text = "-${transaction.amount}"
-                        binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.red)
-                        )
-                        binding.tvName.text = "Repayment"
-                        binding.tvBank.text =
-                            listWallet.find { it.wallet.id == transaction.walletId}?.wallet?.name ?: ""
-                    }
+                        TransferType.Income -> {
+                            binding.transactionAmount.text = context.getString(
+                                R.string.positive_money_amount, currencySymbol, transaction.amount
+                            )
+                            binding.transactionAmount.setTextColor(context.getColor(R.color.color_2))
+                        }
 
-                    DebtActionType.DEBT_COLLECTION -> {
-                        binding.tvAmount.text = "+${transaction.amount}"
-                        binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.blue)
-                        )
-                        binding.tvName.text = "Debt collection"
-                        binding.tvBank.text =
-                            listWallet.find { it.wallet.id == transaction.walletId}?.wallet?.name ?: ""
+                        else -> {
+                            binding.transactionAmount.text = context.getString(
+                                R.string.money_amount, currencySymbol, transaction.amount
+                            )
+                        }
                     }
+                }
 
-                    DebtActionType.LOAN_INCREASE -> {
-                        binding.tvAmount.text = "-${transaction.amount}"
-                        binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.blue)
-                        )
-                        binding.tvName.text = "Loan increase"
-                        binding.tvBank.text =
-                            listWallet.find { it.wallet.id == transaction.walletId}?.wallet?.name ?: ""
-                    }
-
-                    DebtActionType.DEBT_INTEREST -> {}
+                else -> {
+                    binding.transactionTypeTextView.text = transaction.name
+                    binding.transactionAmount.text =
+                        context.getString(R.string.money_amount, currencySymbol, transaction.amount)
                 }
             }
+            binding.transactionTime.text = transaction.time.toFormattedTimeString()
+            binding.walletName.text = wallets?.find { it.id == transaction.walletId }?.name ?: ""
             binding.root.setOnClickListener {
                 onClick(transaction)
             }
@@ -145,7 +141,7 @@ class DetailDayAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailDayViewHolder {
         val binding =
-            ItemTransferBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            TransactionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DetailDayViewHolder(binding)
     }
 
@@ -157,8 +153,8 @@ class DetailDayAdapter(
         holder.bind(listTranfer[position])
     }
 
-    fun setWallets(wallets: List<WalletItem>) {
-        listWallet = wallets
+    fun setWallets(walletList : List<Wallet>) {
+        wallets = walletList
         notifyDataSetChanged()
     }
 

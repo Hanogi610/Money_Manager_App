@@ -341,7 +341,7 @@ class TransactionViewModel @Inject constructor(
                 }
 
                 is DebtTransaction -> {
-                    if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION) {
+                    if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION || transaction.action == DebtActionType.LOAN_INTEREST) {
                         totalIncome += transaction.amount
                     } else {
                         totalExpense += transaction.amount

@@ -30,6 +30,7 @@ import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -158,10 +159,19 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                 TimeType.DAILY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
                     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    val dateStart = dateFormat.format(date)
-                    getVM().getCalendarSummary(wallets,dateStart.toDateTimestamp(),dateStart.toDateTimestamp(), idAccount)
-                    getVM().getWallets(idAccount,wallets,dateStart.toDateTimestamp(),dateStart.toDateTimestamp())
+                    val calendar = Calendar.getInstance()
+                    calendar.time = date
+                    calendar.set(Calendar.HOUR_OF_DAY, 0)
+                    calendar.set(Calendar.MINUTE, 0)
+                    calendar.set(Calendar.SECOND, 0)
+                    calendar.set(Calendar.MILLISECOND, 0)
+                    val startOfDay = calendar.timeInMillis
+                    calendar.add(Calendar.DAY_OF_MONTH, 1)
+                    val endOfDay = calendar.timeInMillis - 1
+                    getVM().getCalendarSummary(wallets, startOfDay,endOfDay, idAccount)
+                    getVM().getWallets(idAccount, wallets, startOfDay, endOfDay)
                 }
+
                 TimeType.WEEKLY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedWeeklyDate(requireContext(),date)
                     val dateStart = DateHelper.getDateWeek(date)

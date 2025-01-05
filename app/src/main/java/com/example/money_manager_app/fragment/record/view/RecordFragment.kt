@@ -229,82 +229,86 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
     }
 
     private fun showHideLoading(transaction: Transaction){
-       if(transaction.iconId != null){
-           transaction.iconId?.let { binding.ivIcon.setImageResource(it) }
+       if(transaction != null) {
+           if(transaction.iconId != null){
+               transaction.iconId?.let { binding.ivIcon.setImageResource(it) }
+           }
+           binding.amountLabel.text = transaction.amount.toString()
+           binding.dateLabel.text = transaction.date.toFormattedDateString() + " " + transaction.time.toFormattedTimeString()
+           val wallet = mainViewModel.currentAccount.value?.walletItems
+           val fromWallet = wallet?.find { it.wallet.id == transaction.walletId }
+           when (transaction) {
+               is Transfer -> {
+                   binding.categoryLabel.visibility = android.view.View.VISIBLE
+                   binding.categoryLabel.text = mainViewModel.categories.value?.find { it.id == transaction.categoryId }?.name
+                   binding.tvDescription.text = transaction.description
+                   if(transaction?.memo != null){
+                       binding.memoLabel.text = transaction.memo
+                       binding.memoLabel.visibility = android.view.View.VISIBLE
+                       binding.memoTitleLabel.visibility = android.view.View.VISIBLE
+                   }
+                   if (transaction.typeOfExpenditure == TransferType.Transfer){
+                       if(transaction?.fee != null){
+                           binding.feeLabel.text = transaction.fee.toString()
+                           binding.feeLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                           binding.feeLabel.visibility = android.view.View.VISIBLE
+                           binding.feeTitleLabel.visibility = android.view.View.VISIBLE
+                       }
+
+                       val toWallet = wallet?.find { it.wallet.id == transaction.toWalletId }
+                       binding.walletLabel.text = fromWallet?.wallet?.name + " -> " + toWallet?.wallet?.name
+                       binding.typeLabel.text = transaction.typeOfExpenditure.name
+                   } else {
+                       if(transaction.typeOfExpenditure == TransferType.Income){
+                           binding.typeLabel.text = getString(R.string.income)
+                           binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_2))
+                       } else {
+                           binding.typeLabel.text = getString(R.string.expense)
+                           binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                       }
+                       binding.walletLabel.text = fromWallet?.wallet?.name
+                   }
+                   binding.ivImg.visibility = android.view.View.VISIBLE
+                   val file = File(transaction.linkImg)
+                   if (file.exists()) {
+                       val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+                       binding.ivImg.setImageBitmap(bitmap)
+                   }
+               }
+
+               is DebtTransaction-> {
+                   binding.categoryLabel.text = transaction.action.name
+                   binding.tvDescription.text = transaction.action.name
+                     binding.walletLabel.text = fromWallet?.wallet?.name
+                   if(transaction.action in listOf(DebtActionType.DEBT_INCREASE, DebtActionType.DEBT_COLLECTION, DebtActionType.LOAN_INTEREST)){
+                       binding.typeLabel.text = getString(R.string.income)
+                       binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_2))
+                   }else{
+                       binding.typeLabel.text = getString(R.string.expense)
+                       binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                   }
+               }
+
+               is GoalTransaction -> {
+                   if(transaction.type == GoalInputType.WITHDRAW){
+                       binding.tvDescription.text = GoalInputType.WITHDRAW.name
+                       binding.typeLabel.text = getString(R.string.withdraw)
+                       binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_2))
+                   }else{
+                       binding.tvDescription.text = GoalInputType.DEPOSIT.name
+                       binding.typeLabel.text = getString(R.string.deposit)
+                       binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                   }
+               }
+           }
        }
-        binding.amountLabel.text = transaction.amount.toString()
-        binding.dateLabel.text = transaction.date.toFormattedDateString() + " " + transaction.time.toFormattedTimeString()
-        val wallet = mainViewModel.currentAccount.value?.walletItems
-        val fromWallet = wallet?.find { it.wallet.id == transaction.walletId }
-        when (transaction) {
-            is Transfer -> {
-                binding.categoryLabel.visibility = android.view.View.VISIBLE
-                binding.categoryLabel.text = mainViewModel.categories.value?.find { it.id == transaction.categoryId }?.name
-                binding.tvDescription.text = transaction.description
-                if(transaction?.memo != null){
-                    binding.memoLabel.text = transaction.memo
-                    binding.memoLabel.visibility = android.view.View.VISIBLE
-                    binding.memoTitleLabel.visibility = android.view.View.VISIBLE
-                }
-                if (transaction.typeOfExpenditure == TransferType.Transfer){
-                    if(transaction?.fee != null){
-                        binding.feeLabel.text = transaction.fee.toString()
-                        binding.feeLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-                        binding.feeLabel.visibility = android.view.View.VISIBLE
-                        binding.feeTitleLabel.visibility = android.view.View.VISIBLE
-                    }
-
-                    val toWallet = wallet?.find { it.wallet.id == transaction.toWalletId }
-                    binding.walletLabel.text = fromWallet?.wallet?.name + " -> " + toWallet?.wallet?.name
-                    binding.typeLabel.text = transaction.typeOfExpenditure.name
-                } else {
-                    if(transaction.typeOfExpenditure == TransferType.Income){
-                        binding.typeLabel.text = getString(R.string.income)
-                        binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_2))
-                    } else {
-                        binding.typeLabel.text = getString(R.string.expense)
-                        binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-                    }
-                    binding.walletLabel.text = fromWallet?.wallet?.name
-                }
-                binding.ivImg.visibility = android.view.View.VISIBLE
-                val file = File(transaction.linkImg)
-                if (file.exists()) {
-                    val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-                    binding.ivImg.setImageBitmap(bitmap)
-                }
-            }
-
-            is DebtTransaction-> {
-                binding.tvDescription.text = transaction.action.name
-                if(transaction.action in listOf(DebtActionType.DEBT_INCREASE, DebtActionType.DEBT_COLLECTION, DebtActionType.LOAN_INTEREST)){
-                    binding.typeLabel.text = getString(R.string.income)
-                    binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_2))
-                }else{
-                    binding.typeLabel.text = getString(R.string.expense)
-                    binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-                }
-            }
-
-            is GoalTransaction -> {
-                if(transaction.type == GoalInputType.WITHDRAW){
-                    binding.tvDescription.text = GoalInputType.WITHDRAW.name
-                    binding.typeLabel.text = getString(R.string.withdraw)
-                    binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_2))
-                }else{
-                    binding.tvDescription.text = GoalInputType.DEPOSIT.name
-                    binding.typeLabel.text = getString(R.string.deposit)
-                    binding.amountLabel.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-                }
-            }
-        }
     }
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
         transaction = arguments?.getParcelable<Transaction>("transaction") as Transaction
         if (transaction != null) {
-            getVM().setTransaction(transaction)
+            getVM().setTransaction(transaction, mainViewModel.currentAccount.value?.account!!.id)
         }
     }
 

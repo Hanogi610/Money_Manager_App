@@ -92,19 +92,16 @@ class StatisticViewModel @Inject constructor(
                 val end = endDate ?: System.currentTimeMillis()
                 walletRepository.getWalletItemsByUserId(id, start, end)
             }
-
             flow.collect { list ->
                 var openingBalance = 0.0
                 var endingBalance = 0.0
-
                 for (wallet in list) {
                     if(wallets.contains(wallet.wallet)){
                         openingBalance += wallet.startingAmount
                         endingBalance += wallet.endingAmount
                     }
                 }
-
-                _pairWallet.value = Pair(endingBalance,openingBalance)
+                _pairWallet.value = Pair(openingBalance,endingBalance)
             }
         }
     }
@@ -138,7 +135,7 @@ class StatisticViewModel @Inject constructor(
         var id = 0
         for(category in categoryList){
             id++
-            if(category.type == CategoryType.INCOME || category.type == CategoryType.PAYABLE || category.type == CategoryType.DEBT_COLLECTION || category.type == CategoryType.DEBT_INCREASE){
+            if(category.type == CategoryType.INCOME || category.type == CategoryType.PAYABLE || category.type == CategoryType.DEBT_COLLECTION || category.type == CategoryType.DEBT_INCREASE || category.type == CategoryType.LOAN_INTEREST){
                 listStatsIncome.add(Stats(category.name,category.colorId,category.id,0.0,0.0,id,0,category.type,category.iconId,false))
             } else {
                 listStatsExpense.add(Stats(category.name,category.colorId,category.id,0.0,0.0,id,0,category.type,category.iconId,false))
@@ -214,6 +211,22 @@ class StatisticViewModel @Inject constructor(
                     if (transaction.action == DebtActionType.REPAYMENT) {
                         for (stats in listStatsExpense) {
                             if (stats.type == CategoryType.PAYABLE) {
+                                stats.amount += transaction.amount
+                                stats.trans++
+                            }
+                        }
+                    }
+                    if (transaction.action == DebtActionType.LOAN_INTEREST) {
+                        for (stats in listStatsIncome) {
+                            if (stats.type == CategoryType.LOAN_INTEREST) {
+                                stats.amount += transaction.amount
+                                stats.trans++
+                            }
+                        }
+                    }
+                    if (transaction.action == DebtActionType.DEBT_INTEREST) {
+                        for (stats in listStatsExpense) {
+                            if (stats.type == CategoryType.DEBT_INTEREST) {
                                 stats.amount += transaction.amount
                                 stats.trans++
                             }
@@ -361,7 +374,7 @@ class StatisticViewModel @Inject constructor(
                 }
 
                 is DebtTransaction -> {
-                    if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION) {
+                    if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION  || transaction.action == DebtActionType.LOAN_INTEREST) {
                         totalIncome += transaction.amount
                     } else {
                         totalExpense += transaction.amount

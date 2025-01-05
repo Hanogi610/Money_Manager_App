@@ -332,7 +332,6 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                         categoryViewModel.categories.value ?: emptyList())
                     findNavController().popBackStack()
                 } else {
-
                     getVM().insertBudget(
                         budget,
                         mainViewModel.categories.value ?: emptyList(),

@@ -106,8 +106,8 @@ class StructureViewModel @Inject constructor(
         var id = 0
         for(category in categoryList){
             id++
-            if(category.type == CategoryType.INCOME || category.type == CategoryType.PAYABLE || category.type == CategoryType.DEBT_COLLECTION || category.type == CategoryType.DEBT_INCREASE){
-                listStatsIncome.add(Stats(category.name,category.colorId,category.id,0.0,0.0,id,0,category.type,category.iconId,false))
+            if(category.type == CategoryType.INCOME || category.type == CategoryType.PAYABLE || category.type == CategoryType.DEBT_COLLECTION || category.type == CategoryType.DEBT_INCREASE || category.type == CategoryType.LOAN_INTEREST){
+                listStatsIncome.add(Stats(category.name,category.colorId,category.id,0.0,0.0,id,0,category.type,category.iconId,true))
             } else {
                 listStatsExpense.add(Stats(category.name,category.colorId,category.id,0.0,0.0,id,0,category.type,category.iconId,false))
             }
@@ -148,6 +148,7 @@ class StructureViewModel @Inject constructor(
                         for (stats in listStatsIncome) {
                             if (stats.type == CategoryType.PAYABLE) {
                                 stats.amount += transaction.amount
+                                stats.trans++
                             }
                         }
                     }
@@ -181,6 +182,22 @@ class StructureViewModel @Inject constructor(
                     if (transaction.action == DebtActionType.REPAYMENT) {
                         for (stats in listStatsExpense) {
                             if (stats.type == CategoryType.PAYABLE) {
+                                stats.amount += transaction.amount
+                                stats.trans++
+                            }
+                        }
+                    }
+                    if (transaction.action == DebtActionType.LOAN_INTEREST) {
+                        for (stats in listStatsIncome) {
+                            if (stats.type == CategoryType.LOAN_INTEREST) {
+                                stats.amount += transaction.amount
+                                stats.trans++
+                            }
+                        }
+                    }
+                    if (transaction.action == DebtActionType.DEBT_INTEREST) {
+                        for (stats in listStatsExpense) {
+                            if (stats.type == CategoryType.DEBT_INTEREST) {
                                 stats.amount += transaction.amount
                                 stats.trans++
                             }
@@ -222,6 +239,7 @@ class StructureViewModel @Inject constructor(
                 val percent = (stat.amount / totalAmountIncome) * 100
                 val bigDecimal = BigDecimal(percent).setScale(2, RoundingMode.HALF_UP)
                 val number = bigDecimal.toDouble()
+                stat.percent = number
             }
             listStatsIncome[listStatsIncome.size - 1].percent = 100 - listStatsIncome.sumOf { it.percent }
         } else {
@@ -328,7 +346,7 @@ class StructureViewModel @Inject constructor(
                 }
 
                 is DebtTransaction -> {
-                    if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION) {
+                    if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION || transaction.action == DebtActionType.LOAN_INTEREST) {
                         totalIncome += transaction.amount
                     } else {
                         totalExpense += transaction.amount

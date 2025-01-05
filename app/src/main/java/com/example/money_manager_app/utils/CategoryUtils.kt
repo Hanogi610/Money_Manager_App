@@ -30,15 +30,16 @@ object CategoryUtils {
         Category(22, "Travel", 1, R.drawable.expense_13, R.color.color_22, CategoryType.EXPENSE),
         Category(23, "Others", 1, R.drawable.expense_14, R.color.color_23, CategoryType.EXPENSE),
         Category(24, "Transfer", 1, R.drawable.transfer_1, R.color.color_24, CategoryType.TRANSFER),
-        Category(25, "Repayment", 1, R.drawable.arrow_left, R.color.color_25, CategoryType.REPAYMENT),
-        Category(26, "Debt Increase", 1, R.drawable.arrow_left, R.color.color_26, CategoryType.DEBT_INCREASE),
-        Category(27, "Interest", 1, R.drawable.arrow_left, R.color.color_27, CategoryType.INTEREST),
-        Category(28, "Debt Collection", 1, R.drawable.arrow_left, R.color.color_28, CategoryType.DEBT_COLLECTION),
-        Category(29, "Loan Increase", 1, R.drawable.arrow_left, R.color.color_29, CategoryType.LOAN_INCREASE),
+        Category(25, "REPAYMENT", 1, R.drawable.wallet_11, R.color.color_25, CategoryType.REPAYMENT),
+        Category(26, "DEBT INCREASE", 1, R.drawable.wallet_11, R.color.color_26, CategoryType.DEBT_INCREASE),
+        Category(27, "LOAN INTEREST", 1, R.drawable.wallet_6, R.color.color_27, CategoryType.LOAN_INTEREST),
+        Category(28, "DEBT COLLECTION", 1, R.drawable.wallet_11, R.color.color_28, CategoryType.DEBT_COLLECTION),
+        Category(29, "LOAN INCREASE", 1, R.drawable.wallet_11, R.color.color_29, CategoryType.LOAN_INCREASE),
         Category(30, "Deposit", 1, R.drawable.deposit, R.color.color_30, CategoryType.DEPOSIT),
         Category(31, "Withdraw", 1, R.drawable.withdraw, R.color.color_31, CategoryType.WITHDRAW),
-        Category(32, "PAYABLE", 1, R.drawable.arrow_left, R.color.color_32, CategoryType.PAYABLE),
-        Category(33, "RECEIVABLE", 1, R.drawable.arrow_left, R.color.color_33, CategoryType.RECEIVABLE)
+        Category(32, "PAYABLE", 1, R.drawable.wallet_6, R.color.color_32, CategoryType.PAYABLE),
+        Category(33, "RECEIVABLE", 1, R.drawable.wallet_11, R.color.color_33, CategoryType.RECEIVABLE),
+        Category(34, "DEBT_INTEREST", 1, R.drawable.wallet_11, R.color.color_34, CategoryType.DEBT_INTEREST),
     )
 
 

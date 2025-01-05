@@ -54,8 +54,15 @@ class StructApdapter(
         fun bind(stats : Stats) {
             binding.imageView.setImageResource(stats.categoryDefault)
             binding.nameLabel.text = stats.name
-            binding.amountLabel.text = context.getString(
-                R.string.negative_money_amount, currentCurrencySymbol, stats.amount)
+            if (stats.isDefault){
+                binding.amountLabel.text = context.getString(
+                    R.string.positive_money_amount, currentCurrencySymbol, stats.amount)
+                binding.amountLabel.setTextColor(ContextCompat.getColor(context, R.color.Brand_Primary))
+            } else {
+                binding.amountLabel.text = context.getString(
+                    R.string.negative_money_amount, currentCurrencySymbol, stats.amount)
+                binding.amountLabel.setTextColor(ContextCompat.getColor(context, R.color.red))
+            }
             binding.transLabel.text = "${stats.trans} transactions"
             binding.detailLabel.text = stats.percent.toString() + "%"
         }

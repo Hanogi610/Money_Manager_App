@@ -74,7 +74,8 @@ class BudgetRepositoryImpl @Inject constructor(
         for (i in budgetCategoryCrossRefs){
             i.budgetId = budgetId
         }
-        budgetDao.editBudgetCategoryCrossRefs(budgetCategoryCrossRefs)
+        budgetDao.deleteBudgetCategoryCrossRefs(budgetId)
+        budgetDao.insertBudgetCategoryCrossRefs(budgetCategoryCrossRefs)
         budgetDao.editBudget(budget)
     }
 

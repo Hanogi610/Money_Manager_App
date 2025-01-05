@@ -13,6 +13,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.Transaction
+import com.example.money_manager_app.data.model.entity.Debt
+import com.example.money_manager_app.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.model.entity.Transfer
+import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentDetailDayBinding
 import com.example.money_manager_app.fragment.detail.Adapter.DetailDayAdapter
 import com.example.money_manager_app.fragment.detail.viewmodel.DetailViewModel
@@ -63,25 +67,31 @@ class DetailDayFragment : Fragment() {
                 binding.tvTotalMoneyDay.text = transaction.totalMoneyDay(transaction).toString()
             }
         }
-        lifecycleScope.launch {
-            walletViewModel.wallets.collect { wallets ->
-                adapter.setWallets(wallets)
-            }
-        }
     }
 
 
     fun setAdapter() {
-        adapter = DetailDayAdapter(listOf(), listOf(), ::onClick)
+        var currencySymbol =
+            getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
+        val wallets = mainViewModel.currentAccount.value!!.walletItems?.map { it.toWallet() }
+        adapter = DetailDayAdapter(listOf(),currencySymbol,requireContext(), wallets, ::onClick)
         binding.rvDetailDay.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvDetailDay.adapter = adapter
     }
 
     fun onClick(transaction: Transaction) {
-        val bundle = bundleOf(
-            "transaction" to transaction
-        )
-        findNavController().navigate(R.id.recordFragment, bundle)
+        if (transaction is Transfer || transaction is DebtTransaction) {
+            val bundle = bundleOf(
+                "transaction" to transaction
+            )
+            findNavController().navigate(R.id.recordFragment, bundle)
+        }
+        if (transaction is Debt) {
+            val bundle = bundleOf(
+                "debt" to transaction
+            )
+            findNavController().navigate(R.id.debtDetailFragment, bundle)
+        }
     }
 
     fun ShowDay(bundle: Bundle) {
