@@ -99,7 +99,7 @@ fun WalletFullDetail.toWalletItem() : WalletItem {
     transactions.addAll(debtTransactions)
     transactions.addAll(transferIns)
     transactions.addAll(transferOuts)
-    Log.d("WalletFullDetail", "toWalletItem: $transactions")
+    Log.d("hoangph", "toWalletItem: $transactions")
     val dateRangeAmount = transactions.toMutableList().calculateCurrentWalletAmount(wallet.id)
     return WalletItem(
         wallet = wallet,

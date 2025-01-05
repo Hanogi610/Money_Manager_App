@@ -48,11 +48,17 @@ class AddGoalFragment :
         }
     }
 
+    override fun onBack() {
+        super.onBack()
+
+        appNavigation.navigateUp()
+    }
+
     override fun initToolbar() {
         super.initToolbar()
 
         binding.backArrowButton.setOnSafeClickListener {
-            appNavigation.navigateUp()
+            onBack()
         }
 
         binding.saveButton.setOnSafeClickListener {
