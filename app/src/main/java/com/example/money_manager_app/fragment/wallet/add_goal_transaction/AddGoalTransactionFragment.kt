@@ -92,11 +92,17 @@ class AddGoalTransactionFragment :
 //        binding.etTime.addTextChangedListener(textWatcher)
     }
 
+    override fun onBack() {
+        super.onBack()
+
+        appNavigation.navigateUp()
+    }
+
     override fun initToolbar() {
         super.initToolbar()
 
         binding.backButton.setOnSafeClickListener {
-            appNavigation.navigateUp()
+            onBack()
         }
 
         binding.saveButton.setOnSafeClickListener {

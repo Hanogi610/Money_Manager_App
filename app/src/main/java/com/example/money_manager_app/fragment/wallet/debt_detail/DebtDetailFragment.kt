@@ -51,8 +51,14 @@ class DebtDetailFragment :
     override fun initToolbar() {
         super.initToolbar()
         binding.backButton.setOnSafeClickListener {
-            appNavigation.navigateUp()
+            onBack()
         }
+    }
+
+    override fun onBack() {
+        super.onBack()
+
+        appNavigation.navigateUp()
     }
 
     override fun initView(savedInstanceState: Bundle?) {

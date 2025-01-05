@@ -57,10 +57,16 @@ class AddDebtFragment :
         }
     }
 
+    override fun onBack() {
+        super.onBack()
+
+        appNavigation.navigateUp()
+    }
+
     override fun initToolbar() {
         super.initToolbar()
         binding.backArrowButton.setOnClickListener {
-            appNavigation.navigateUp()
+            onBack()
         }
     }
 
