@@ -29,6 +29,8 @@
             idAccount : Long
         ): List<Transfer>
 
+        fun getTransfer(accountId: Long, idTransfer: Long): Flow<Transfer>
+
         fun getAllTransfer(date: Long): Flow<List<Transfer>>
 
         fun getTransferWithCategoryByAccountId(accountId: Long, categoryId: Long, dateStart : Long, dateEnd : Long): List<Transfer>
@@ -81,6 +83,10 @@
             return transferDao.searchByDateAndAmountAndDesAndCategoryAndWallet(
                 startDate, endDate, minAmount, maxAmount, description, fromWallet,categoryId, idAccount
             )
+        }
+
+        override fun getTransfer(accountId: Long, idTransfer: Long): Flow<Transfer> {
+            return transferDao.getTransfer(accountId, idTransfer)
         }
 
 

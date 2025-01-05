@@ -206,6 +206,7 @@ class TransferViewModel @Inject constructor(
         val datePickerDialog = DatePickerDialog(context, { _, selectedYear, selectedMonth, selectedDay ->
             val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
             _selectedDate.value = selectedDate
+            _currentDateTime.value = Pair(selectedDate, _currentDateTime.value.second)
         }, year, month, day)
         datePickerDialog.show()
     }
@@ -218,6 +219,7 @@ class TransferViewModel @Inject constructor(
         val timePickerDialog = TimePickerDialog(context, { _, selectedHour, selectedMinute ->
             val selectedTime = "$selectedHour:$selectedMinute"
             _selectedTime.value = selectedTime
+            _currentDateTime.value = Pair(_currentDateTime.value.first, selectedTime)
         }, hour, minute, true)
         timePickerDialog.show()
     }

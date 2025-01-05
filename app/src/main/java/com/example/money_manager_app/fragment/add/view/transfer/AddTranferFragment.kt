@@ -83,7 +83,10 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
         if(addViewModel.getCheckEdit()){
             getVM().getDateTime()
         } else {
-            getVM().updateDateTime()
+            if(!checkEdit){
+                getVM().updateDateTime()
+                checkEdit = true
+            }
         }
         pickDate()
         pickTime()

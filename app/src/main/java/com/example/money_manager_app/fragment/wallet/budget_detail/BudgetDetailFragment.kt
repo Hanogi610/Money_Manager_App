@@ -36,6 +36,7 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
         return viewModel
     }
 
+    var currencySymbol = ""
     private val addBudgetViewModel: AddBudgetViewModel by activityViewModels()
     private var budget: Budget? = null
     private var category: String = ""
@@ -91,7 +92,7 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
 
     private fun setAdapter() {
         val currentCurrency = mainViewModel.currentAccount.value!!.account.currency
-        val currencySymbol = getString(currentCurrency.symbolRes)
+        currencySymbol = getString(currentCurrency.symbolRes)
         categoryTransactionAdapter = CategoryTransactionAdapter(listOf(), currencySymbol, ::onTransactionItemClick)
         binding.transactionRv.adapter = categoryTransactionAdapter
         binding.transactionRv.layoutManager = LinearLayoutManager(requireContext())
@@ -113,6 +114,10 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
                     if (bwc.categories.size == categoryViewModel.listCategory.value.filter { it.type == CategoryType.EXPENSE }.size) {
                         category = "All Category"
                     }
+                    binding.nameLabel.text = bwc.budget.name
+                    binding.remainTitleLabel.text = if (bwc.budget.spent > bwc.budget.amount) "Overspent" else "Left"
+                    binding.remainLabel.text = "${currencySymbol}${bwc.budget.amount - bwc.budget.spent}"
+                    binding.spentLabel.text = "${currencySymbol}${bwc.budget.spent}"
                     binding.categoryLabel.text = category
                     getVM().getCategoryWithTransfer(bwc)
                 }

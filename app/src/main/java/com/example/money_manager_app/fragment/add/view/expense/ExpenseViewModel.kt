@@ -218,6 +218,7 @@ class ExpenseViewModel @Inject constructor(
         val timePickerDialog = TimePickerDialog(context, { _, selectedHour, selectedMinute ->
             val selectedTime = "$selectedHour:$selectedMinute"
             _selectedTime.value = selectedTime
+            _currentDateTime.value = Pair(_currentDateTime.value.first, selectedTime)
         }, hour, minute, true)
         timePickerDialog.show()
     }

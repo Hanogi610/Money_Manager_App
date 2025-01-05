@@ -22,6 +22,9 @@ interface TransferDao {
     @Query("SELECT * FROM transfer WHERE date = :date")
     fun getAllTransfer(date: Long): Flow<List<Transfer>>
 
+    @Query("SELECT * FROM transfer WHERE transfer_id = :idTransfer AND account_id = :accountId")
+    fun getTransfer(accountId: Long, idTransfer: Long): Flow<Transfer>
+
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertTransfer(transfer: Transfer): Long
 

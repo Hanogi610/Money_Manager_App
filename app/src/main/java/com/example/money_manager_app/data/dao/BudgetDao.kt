@@ -38,6 +38,9 @@ interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertBudgetCategoryCrossRefs(crossRefs: List<BudgetCategoryCrossRef>)
 
+    @Query("DELETE FROM budget_category_cross_ref WHERE budget_id = :idBudget")
+    suspend fun deleteBudgetCategoryCrossRefs(idBudget: Long)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun editBudgetCategoryCrossRefs(crossRefs: List<BudgetCategoryCrossRef>)
 

@@ -12,5 +12,7 @@ enum class CategoryType {
     DEBT_COLLECTION,
     LOAN_INCREASE,
     DEPOSIT,
+    DEBT_INTEREST,
+    LOAN_INTEREST,
     WITHDRAW
 }
