@@ -47,10 +47,14 @@ class MainViewModel @Inject constructor(
     private val _hiddenBalance = MutableLiveData<Boolean>(false)
     val hiddenBalance : LiveData<Boolean> get() = _hiddenBalance
 
+    private val _currentLanguage = MutableLiveData<String>()
+    val currentLanguage: LiveData<String> get() = _currentLanguage
+
     init {
         fetchHiddenState()
         fetchAccountsAndSetCurrentAccount()
         observeCurrentAccount()
+        getLanguage()
     }
 
     private fun fetchHiddenState(){
@@ -79,6 +83,19 @@ class MainViewModel @Inject constructor(
             categoryRepository.getCategory().collect {
                 _categories.value = it
             }
+        }
+    }
+
+    private fun getLanguage() {
+        viewModelScope.launch {
+            _currentLanguage.postValue(appPreferences.getLanguage())
+        }
+    }
+
+    fun setLanguage(language: String) {
+        viewModelScope.launch {
+            appPreferences.setLanguage(language)
+            _currentLanguage.postValue(language)
         }
     }
 

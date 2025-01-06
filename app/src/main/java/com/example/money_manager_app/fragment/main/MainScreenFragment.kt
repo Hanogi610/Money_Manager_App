@@ -15,9 +15,11 @@ import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.AccountWithWalletItem
 import com.example.money_manager_app.data.model.entity.AccountWithWallet
 import com.example.money_manager_app.databinding.FragmentMainScreenBinding
+import com.example.money_manager_app.datasource.LanguageDataSource
 import com.example.money_manager_app.fragment.main.adapter.MainPagerAdapter
 import com.example.money_manager_app.fragment.main.fragment.AccountSelectorBottomSheet
 import com.example.money_manager_app.utils.CategoryUtils
+import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -90,23 +92,33 @@ class MainScreenFragment :
                 }
             }
         }
-
-        binding.profileName.setOnClickListener {
-            mainViewModel.accounts.value.let { accounts ->
-                mainViewModel.currentAccount.value?.let { currentAccount ->
-                    openAccountSelector(accounts, currentAccount)
-                }
-            }
-        }
-
-        binding.dropdownIcon.setOnClickListener {
-            mainViewModel.accounts.value.let { accounts ->
-                mainViewModel.currentAccount.value?.let { currentAccount ->
-                    openAccountSelector(accounts, currentAccount)
-                }
-            }
-        }
         checkOnFirstRun()
+    }
+
+    override fun initToolbar() {
+        super.initToolbar()
+
+        binding.profileName.setOnSafeClickListener {
+            mainViewModel.accounts.value.let { accounts ->
+                mainViewModel.currentAccount.value?.let { currentAccount ->
+                    openAccountSelector(accounts, currentAccount)
+                }
+            }
+        }
+
+        binding.dropdownIcon.setOnSafeClickListener {
+            mainViewModel.accounts.value.let { accounts ->
+                mainViewModel.currentAccount.value?.let { currentAccount ->
+                    openAccountSelector(accounts, currentAccount)
+                }
+            }
+        }
+
+        binding.languageIcon.setOnSafeClickListener {
+            appNavigation.openMainScreenToLanguageScreen(Bundle().apply {
+                putBoolean(IS_LANGUAGE_SETTING, true)
+            })
+        }
     }
 
     private fun checkOnFirstRun() {
@@ -131,6 +143,13 @@ class MainScreenFragment :
                     }
                 }
             }
+        }
+        lifecycleScope.launch {
+            mainViewModel.currentLanguage.observe(viewLifecycleOwner, Observer {
+                val languages = LanguageDataSource.getLanguageList()
+                val imgSrc = languages.find { language -> language.locale == it }?.flag
+                binding.languageIcon.setImageResource(imgSrc ?: R.drawable.ic_english)
+            })
         }
     }
 
@@ -161,5 +180,6 @@ class MainScreenFragment :
 
     companion object {
         private const val TAG = "MainScreenFragment"
+        public const val IS_LANGUAGE_SETTING = "IS_LANGUAGE_SETTING"
     }
 }

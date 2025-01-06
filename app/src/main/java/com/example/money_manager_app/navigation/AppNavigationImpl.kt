@@ -147,6 +147,10 @@ class AppNavigationImpl @Inject constructor() : BaseNavigatorImpl(), AppNavigati
         openScreen(R.id.action_mainFragment_to_addFragment, bundle)
     }
 
+    override fun openMainScreenToLanguageScreen(bundle: Bundle?) {
+        openScreen(R.id.action_mainFragment_to_languageFragment, bundle)
+    }
+
     companion object {
         private const val TAG = "AppNavigationImpl"
     }

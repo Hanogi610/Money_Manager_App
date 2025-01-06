@@ -1,4 +1,4 @@
-package com.example.money_manager_app.custom
+package com.example.money_manager_app.fragment.custom
 
 import android.annotation.SuppressLint
 import android.app.Activity

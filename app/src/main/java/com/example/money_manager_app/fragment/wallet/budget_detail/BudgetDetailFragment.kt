@@ -16,7 +16,7 @@ import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentBudgetDetailBinding
 import com.example.money_manager_app.fragment.wallet.adapter.CategoryTransactionAdapter
 import com.example.money_manager_app.fragment.wallet.add_budget.AddBudgetViewModel
-import com.example.money_manager_app.selecticon.viewmodel.CategoryViewModel
+import com.example.money_manager_app.fragment.selecticon.viewmodel.CategoryViewModel
 import com.example.money_manager_app.utils.toFormattedDateString
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint

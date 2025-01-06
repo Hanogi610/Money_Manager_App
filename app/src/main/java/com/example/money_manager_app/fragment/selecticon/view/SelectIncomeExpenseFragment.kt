@@ -17,7 +17,7 @@ import com.example.money_manager_app.databinding.FragmentSelectIncomeExpenseBind
 import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
 import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
 import com.example.money_manager_app.fragment.add.viewmodel.AddViewModel
-import com.example.money_manager_app.selecticon.Adapter.SelectIncomeExpenseAdapter
+import com.example.money_manager_app.fragment.selecticon.Adapter.SelectIncomeExpenseAdapter
 
 class SelectIncomeExpenseFragment : Fragment() {
     private var _binding: FragmentSelectIncomeExpenseBinding? = null

@@ -1,4 +1,4 @@
-package com.example.money_manager_app.model
+package com.example.money_manager_app.data.model
 
 data class LanguageModel (
     val flag: Int,
