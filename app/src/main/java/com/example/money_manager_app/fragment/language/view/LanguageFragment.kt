@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
@@ -11,7 +13,9 @@ import com.example.money_manager_app.base.fragment.BaseFragmentNotRequireViewMod
 import com.example.money_manager_app.databinding.FragmentLanguageBinding
 import com.example.money_manager_app.datasource.LanguageDataSource
 import com.example.money_manager_app.fragment.language.adapter.LanguageAdapter
+import com.example.money_manager_app.fragment.main.MainScreenFragment
 import com.example.money_manager_app.utils.setOnSafeClickListener
+import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -22,6 +26,8 @@ class LanguageFragment : BaseFragmentNotRequireViewModel<FragmentLanguageBinding
     private lateinit var adapter: LanguageAdapter
     private val languages = LanguageDataSource.getLanguageList()
     private lateinit var language: String
+    private var isLanguageSetting : Boolean = false
+    private val mainViewModel : MainViewModel by activityViewModels()
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
@@ -31,6 +37,10 @@ class LanguageFragment : BaseFragmentNotRequireViewModel<FragmentLanguageBinding
             language.isCheck = language.locale == languageName
         }
         language = languageName
+
+        arguments?.let {
+            isLanguageSetting = it.getBoolean(MainScreenFragment.IS_LANGUAGE_SETTING)
+        }
     }
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -42,6 +52,7 @@ class LanguageFragment : BaseFragmentNotRequireViewModel<FragmentLanguageBinding
 
         binding.rvLanguage.layoutManager = LinearLayoutManager(context)
         binding.rvLanguage.adapter = adapter
+        binding.backArrowButton.visibility = if(isLanguageSetting) View.VISIBLE else View.GONE
     }
 
     override fun setOnClick() {
@@ -51,12 +62,30 @@ class LanguageFragment : BaseFragmentNotRequireViewModel<FragmentLanguageBinding
             LocaleHelper.setLocale(requireContext(), language)
 
             lifecycleScope.launch {
-                appPreferences.setLanguage(language)
+                mainViewModel.setLanguage(language)
                 appPreferences.setFirstTimeLaunch(false)
             }
 
-            appNavigation.openLanguageToPasswordScreen()
+            if(isLanguageSetting){
+                onBack()
+            }else{
+                appNavigation.openLanguageToPasswordScreen()
+            }
 
+        }
+
+        binding.backArrowButton.setOnSafeClickListener {
+            onBack()
+        }
+    }
+
+    override fun onBack() {
+        super.onBack()
+
+        if(isLanguageSetting) {
+            appNavigation.navigateUp()
+        }else{
+            requireActivity().finish()
         }
     }
 }

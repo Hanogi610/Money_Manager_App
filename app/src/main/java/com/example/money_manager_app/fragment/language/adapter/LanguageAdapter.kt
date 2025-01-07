@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.money_manager_app.databinding.ItemLanguageBinding
-import com.example.money_manager_app.model.LanguageModel
+import com.example.money_manager_app.data.model.LanguageModel
 import com.example.money_manager_app.utils.loadImage
 
 class LanguageAdapter(

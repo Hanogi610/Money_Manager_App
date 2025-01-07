@@ -237,6 +237,7 @@
     <string name="input_count">You have %1$d chances before the app got dissed xD! </string>
     <string name="debt_type_instruction">Swipe left or right to change debt type.</string>
     <string name="add_debt_transaction">Add Debt Transaction</string>
+    <string name="hi">Hi</string>
 
     <string-array name="spinner_color">
         <item>#34BFFF</item>

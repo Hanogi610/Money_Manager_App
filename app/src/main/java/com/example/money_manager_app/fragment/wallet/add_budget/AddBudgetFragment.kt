@@ -17,7 +17,7 @@ import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.Budget
 import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.databinding.FragmentAddBudgetBinding
-import com.example.money_manager_app.selecticon.viewmodel.CategoryViewModel
+import com.example.money_manager_app.fragment.selecticon.viewmodel.CategoryViewModel
 import com.example.money_manager_app.utils.ColorUtils
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.takeDayOfWeek

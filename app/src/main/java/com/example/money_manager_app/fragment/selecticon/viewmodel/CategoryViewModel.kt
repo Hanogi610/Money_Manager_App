@@ -1,4 +1,4 @@
-package com.example.money_manager_app.selecticon.viewmodel
+package com.example.money_manager_app.fragment.selecticon.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

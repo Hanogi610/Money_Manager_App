@@ -10,7 +10,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.example.money_manager_app.custom.LoadingDialog
+import com.example.money_manager_app.fragment.custom.LoadingDialog
 
 abstract class BaseActivityNotRequireViewModel<BD : ViewDataBinding> : AppCompatActivity() {
 

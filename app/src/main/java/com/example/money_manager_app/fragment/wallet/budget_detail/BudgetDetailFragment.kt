@@ -15,7 +15,8 @@ import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentBudgetDetailBinding
 import com.example.money_manager_app.fragment.wallet.adapter.CategoryTransactionAdapter
-import com.example.money_manager_app.selecticon.viewmodel.CategoryViewModel
+import com.example.money_manager_app.fragment.wallet.add_budget.AddBudgetViewModel
+import com.example.money_manager_app.fragment.selecticon.viewmodel.CategoryViewModel
 import com.example.money_manager_app.utils.toFormattedDateString
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,7 +66,8 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
         binding.deleteButton.setOnClickListener {
             if(budget != null){
                 val AlertDialogBinding = AlertDialogBinding.inflate(layoutInflater)
-                val alert = AlertDialog.Builder(requireContext()).create()
+
+                var alert = AlertDialog.Builder(requireContext()).create()
                 alert.setView(AlertDialogBinding.root)
                 alert.setCancelable(true)
                 AlertDialogBinding.deleteImageView.setOnClickListener {
@@ -149,15 +151,15 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
             binding.remainLabel.text = "${currencySymbol}${it.amount - it.spent}"
             getVM().getBudgets(it.accountId)
             binding.budgetLabel.text = "${currencySymbol}${it.amount}"
-            val startDate = it.startDate.toFormattedDateString()
-            val endDate = it.endDate.toFormattedDateString()
-            binding.periodLabel.text = startDate + " - " + endDate
+            var start_date = it.startDate.toFormattedDateString()
+            var end_date = it.endDate.toFormattedDateString()
+            binding.periodLabel.text = start_date + " - " + end_date
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val calendarToday = Calendar.getInstance()
             val todayDate = LocalDate.parse(dateFormat.format(calendarToday.time), DateTimeFormatter.ofPattern("dd/MM/yyyy"))
             val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            val dateEnd = LocalDate.parse(endDate, formatter)
-            val daysBetween = ChronoUnit.DAYS.between(todayDate, dateEnd)
+            val endDate = LocalDate.parse(end_date, formatter)
+            val daysBetween = ChronoUnit.DAYS.between(todayDate, endDate)
             binding.timeLabel.text = "${daysBetween} " + requireContext().getString(R.string.left_days)
         }
     }
@@ -165,5 +167,9 @@ class BudgetDetailFragment : BaseFragment<FragmentBudgetDetailBinding, BudgetDet
     private fun showData(category: List<CategoryWithTransfer>) {
         val listCategoryTransactionDetail = getVM().toCategoryTransactionDetail(category)
         categoryTransactionAdapter.setDate(listCategoryTransactionDetail)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 }

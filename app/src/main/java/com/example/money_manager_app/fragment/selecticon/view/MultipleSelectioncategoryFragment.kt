@@ -12,8 +12,8 @@ import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.Category
 import com.example.money_manager_app.data.model.entity.enums.CategoryType
 import com.example.money_manager_app.databinding.FragmentCategoryBinding
-import com.example.money_manager_app.selecticon.Adapter.MultipleSelectionCategoryAdapter
-import com.example.money_manager_app.selecticon.viewmodel.CategoryViewModel
+import com.example.money_manager_app.fragment.selecticon.Adapter.MultipleSelectionCategoryAdapter
+import com.example.money_manager_app.fragment.selecticon.viewmodel.CategoryViewModel
 import com.example.money_manager_app.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
