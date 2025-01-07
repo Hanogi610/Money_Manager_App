@@ -36,7 +36,7 @@ fun List<Transaction>.totalMoneyDay(listTransaction : List<Transaction>) : Doubl
             }
 
             is DebtTransaction -> {
-                total += if (transaction.action == DebtActionType.DEBT_INCREASE) {
+                total += if (transaction.action == DebtActionType.DEBT_INCREASE || transaction.action == DebtActionType.DEBT_COLLECTION || transaction.action == DebtActionType.LOAN_INTEREST) {
                     transaction.amount
                 } else {
                     -transaction.amount

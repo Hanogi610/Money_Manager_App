@@ -1,7 +1,6 @@
 package com.example.money_manager_app.fragment.wallet.add_budget
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -20,7 +19,6 @@ import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.databinding.FragmentAddBudgetBinding
 import com.example.money_manager_app.selecticon.viewmodel.CategoryViewModel
 import com.example.money_manager_app.utils.ColorUtils
-import com.example.money_manager_app.utils.formatToDayOfMonth
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.takeDayOfWeek
 import com.example.money_manager_app.utils.takeDayofMonth
@@ -39,9 +37,7 @@ import java.util.Locale
 @AndroidEntryPoint
 class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewModel>(R.layout.fragment_add_budget) {
 
-    private var budget: Budget? = null
     private val mainViewModel: MainViewModel by activityViewModels()
-    private val calendar = Calendar.getInstance()
     private val categoryViewModel: CategoryViewModel by activityViewModels()
     private var budgetEdit: Budget? = null
 
@@ -55,7 +51,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
 
         arguments?.let {
             budgetEdit = it.getParcelable("budget")
-            var category = it.getString("category")
+            val category = it.getString("category")
             if(budgetEdit != null){
                 binding.editTextName.setText(budgetEdit?.name)
                 binding.editTextAmount.setText(budgetEdit?.amount.toString())
@@ -80,7 +76,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
     }
 
 
-    fun option() {
+    private fun option() {
         setSpinnerDayOfWeek(R.array.budget_day_of_week)
         setSpinnerDayOfMonth(R.array.budget_day)
         setSpinnerDayOfYear(R.array.budget_month_of_year)
@@ -122,10 +118,10 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
         if(budgetEdit != null){
             binding.colorSpinner.setSelection(ColorUtils.getColors(requireContext()).indexOf(budgetEdit?.colorId))
             binding.periodSpinner.setSelection(PeriodType.entries.indexOf(budgetEdit?.periodType))
-            var initDate = budgetEdit?.initDate?.toFormattedDateString("dd/MM/yyyy")
+            val initDate = budgetEdit?.initDate?.toFormattedDateString("dd/MM/yyyy")
             when (PeriodType.entries.indexOf(budgetEdit?.periodType)) {
                 0 -> {
-                    var dayOfWeek = initDate?.takeDayOfWeek("dd/MM/yyyy")
+                    val dayOfWeek = initDate?.takeDayOfWeek("dd/MM/yyyy")
                     binding.dayOfWeekSpinner.setSelection(dayOfWeek!! - 1)
                     binding.dayOfWeekSpinner.visibility = View.VISIBLE
                     binding.dayOfMonthSpinner.visibility = View.GONE
@@ -133,7 +129,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                     binding.dayOfYearSpinner.visibility = View.GONE
                 }
                 1 -> {
-                    var dayOfMonth = initDate?.takeDayofMonth("dd/MM/yyyy")
+                    val dayOfMonth = initDate?.takeDayofMonth("dd/MM/yyyy")
                     binding.dayOfMonthSpinner.setSelection(dayOfMonth!! - 1)
                     binding.dayOfWeekSpinner.visibility = View.GONE
                     binding.dayOfMonthSpinner.visibility = View.VISIBLE
@@ -141,8 +137,8 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                     binding.dayOfYearSpinner.visibility = View.GONE
                 }
                 else -> {
-                    var dayOfMonth = initDate?.takeDayofMonth("dd/MM/yyyy")
-                    var month = initDate?.takeMonthYear("dd/MM/yyyy")
+                    val dayOfMonth = initDate?.takeDayofMonth("dd/MM/yyyy")
+                    val month = initDate?.takeMonthYear("dd/MM/yyyy")
                     binding.dayOfMonthSpinner.setSelection(dayOfMonth!! - 1)
                     binding.dayOfYearSpinner.setSelection(month!! - 1)
                     binding.dayOfWeekSpinner.visibility = View.GONE
@@ -154,7 +150,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
         }
     }
 
-    fun setSpinnerDayOfWeek(array: Int){
+    private fun setSpinnerDayOfWeek(array: Int){
         val selectPeriod = resources.getStringArray(array)
 
         val periodTypeAdapter = ArrayAdapter(
@@ -172,7 +168,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
     }
 
 
-    fun setSpinnerDayOfMonth(array: Int){
+    private fun setSpinnerDayOfMonth(array: Int){
         val selectPeriod = resources.getStringArray(array)
 
         val periodTypeAdapter = ArrayAdapter(
@@ -184,7 +180,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
         binding.dayOfMonthSpinner.setSelection(0)
     }
 
-    fun setSpinnerDayOfYear(array: Int){
+    private fun setSpinnerDayOfYear(array: Int){
         val selectPeriod = resources.getStringArray(array)
 
         val periodTypeAdapter = ArrayAdapter(
@@ -202,7 +198,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
         }
     }
 
-    fun selectPeriod(){
+    private fun selectPeriod(){
         val selectPeriod = resources.getStringArray(R.array.budget_period)
         val periodTypeAdapter = ArrayAdapter(
             requireContext(),
@@ -213,13 +209,13 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
         binding.periodSpinner.setSelection(0)
     }
 
-    fun selectColor(){
+    private fun selectColor(){
         val colorAdapter = ColorSpinnerAdapter(requireContext(), ColorUtils.getColors(requireContext()))
         binding.colorSpinner.adapter = colorAdapter
         binding.colorSpinner.setSelection(0)
     }
 
-    fun obseverData(){
+    private fun obseverData(){
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 categoryViewModel.categories.observe(viewLifecycleOwner){
@@ -229,7 +225,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
         }
     }
 
-    fun showCategory(category : List<CategoryData.Category>){
+    private fun showCategory(category : List<CategoryData.Category>){
         var nameCategory =""
         if(category[0].isCheck == true){
             nameCategory= context?.getString(R.string.all_category) ?:""
@@ -241,7 +237,7 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
             }
             nameCategory.removeSuffix(", ")
         }
-        binding.selectCategory.setText(if(nameCategory.isEmpty()) context?.getString(R.string.select_category) else nameCategory)
+        binding.selectCategory.text = (if(nameCategory.isEmpty()) context?.getString(R.string.select_category) else nameCategory)
     }
 
     private fun selectCategory() {
@@ -258,9 +254,9 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
         var endDate = 0L
         when(periodType){
             PeriodType.WEEKLY -> {
-                var listDayOfWeek = resources.getStringArray(R.array.budget_day_of_week)
-                var dayOfWeek = binding.dayOfWeekSpinner.selectedItemPosition
-                var dayselect = getVM().getDateFromDayOfWeek(listDayOfWeek[dayOfWeek])
+                val listDayOfWeek = resources.getStringArray(R.array.budget_day_of_week)
+                val dayOfWeek = binding.dayOfWeekSpinner.selectedItemPosition
+                val dayselect = getVM().getDateFromDayOfWeek(listDayOfWeek[dayOfWeek])
                 if(todayDate < dayselect.toDateTimestamp()){
                     endDate = dayselect.toDateTimestamp()
                     todayDate = endDate - 7*24*60*60*1000
@@ -270,9 +266,9 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                 }
             }
             PeriodType.MONTHLY -> {
-                var listDayOfMonth = resources.getStringArray(R.array.budget_day)
-                var dayOfMonth = binding.dayOfMonthSpinner.selectedItemPosition
-                var dayselect = getVM().getDateFromDayOfMonth(listDayOfMonth[dayOfMonth])
+                val listDayOfMonth = resources.getStringArray(R.array.budget_day)
+                val dayOfMonth = binding.dayOfMonthSpinner.selectedItemPosition
+                val dayselect = getVM().getDateFromDayOfMonth(listDayOfMonth[dayOfMonth])
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = dayselect.toDateTimestamp()
                 if(todayDate < dayselect.toDateTimestamp()){
@@ -287,11 +283,11 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
                 }
             }
             PeriodType.YEARLY -> {
-                var listDayOfMonth = resources.getStringArray(R.array.budget_day)
-                var dayOfMonth = binding.dayOfMonthSpinner.selectedItemPosition
-                var listDayOfYear = resources.getStringArray(R.array.budget_month_of_year)
-                var dayOfYear = binding.dayOfYearSpinner.selectedItemPosition
-                var dayselect = getVM().getDateFromDayOfMonth(listDayOfMonth[dayOfMonth],listDayOfYear[dayOfYear])
+                val listDayOfMonth = resources.getStringArray(R.array.budget_day)
+                val dayOfMonth = binding.dayOfMonthSpinner.selectedItemPosition
+                val listDayOfYear = resources.getStringArray(R.array.budget_month_of_year)
+                val dayOfYear = binding.dayOfYearSpinner.selectedItemPosition
+                val dayselect = getVM().getDateFromDayOfMonth(listDayOfMonth[dayOfMonth],listDayOfYear[dayOfYear])
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = dayselect.toDateTimestamp()
 
@@ -312,12 +308,11 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
 
     private fun save() {
         binding.saveButton.setOnSafeClickListener {
-            var dateCurrent = System.currentTimeMillis()
-            var date = checkngay()
+            val dateCurrent = System.currentTimeMillis()
+            val date = checkngay()
             val amountText = binding.editTextAmount.text.toString()
             val amount = if (amountText.isNotEmpty()) amountText.toDouble() else 0.0
             if (amount > 0) {
-                val periodType = PeriodType.values()[binding.periodSpinner.selectedItemPosition]
                 val budget = Budget(
                     name = binding.editTextName.text.toString(),
                     amount = amount,
@@ -347,15 +342,5 @@ class AddBudgetFragment : BaseFragment<FragmentAddBudgetBinding, AddBudgetViewMo
 
             }
         }
-    }
-
-
-    override fun initToolbar() {
-        super.initToolbar()
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }

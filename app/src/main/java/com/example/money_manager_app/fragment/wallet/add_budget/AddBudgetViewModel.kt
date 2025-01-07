@@ -1,9 +1,6 @@
 package com.example.money_manager_app.fragment.wallet.add_budget
 
-import android.content.res.Resources
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.example.money_manager_app.R
 import com.example.money_manager_app.base.BaseViewModel
 import com.example.money_manager_app.data.model.CategoryData
 import com.example.money_manager_app.data.model.entity.Budget
@@ -14,8 +11,6 @@ import com.example.money_manager_app.data.model.entity.enums.PeriodType
 import com.example.money_manager_app.data.repository.BudgetRepository
 import com.example.money_manager_app.di.AppDispatchers
 import com.example.money_manager_app.di.Dispatcher
-import com.example.money_manager_app.utils.CategoryUtils.listCategory
-import com.example.money_manager_app.utils.toFormattedDateString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,7 +18,6 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import java.util.ResourceBundle
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,16 +29,8 @@ class AddBudgetViewModel @Inject constructor(
     private val _budget = MutableStateFlow(Budget(0L, "", 0.0, 0, 0, 0, PeriodType.YEARLY, 0, 0,0))
     val budget get() = _budget
 
-    fun setBudget(budget: Budget){
-        _budget.value = budget
-    }
-
-    fun getBudget(): Budget {
-        return budget.value
-    }
-
     fun insertBudget(budget: Budget, listCategory: List<Category>, listCategoryData: List<CategoryData.Category>) {
-        var budgetCategoryCrossRefs = mutableListOf<BudgetCategoryCrossRef>()
+        val budgetCategoryCrossRefs = mutableListOf<BudgetCategoryCrossRef>()
         if(listCategoryData[0].isCheck){
             for(i in listCategory.indices){
                 if(listCategory[i].type == CategoryType.EXPENSE){
@@ -64,7 +50,7 @@ class AddBudgetViewModel @Inject constructor(
     }
 
     fun editBudget(budget: Budget, listCategory: List<Category>,listCategoryData: List<CategoryData.Category>){
-        var budgetCategoryCrossRefs = mutableListOf<BudgetCategoryCrossRef>()
+        val budgetCategoryCrossRefs = mutableListOf<BudgetCategoryCrossRef>()
         if(listCategoryData[0].isCheck){
             for(i in listCategory.indices){
                 if(listCategory[i].type == CategoryType.EXPENSE){
@@ -115,7 +101,7 @@ class AddBudgetViewModel @Inject constructor(
         return dateFormat.format(calendar.time)
     }
 
-    fun getMonthIndexFromName(monthName: String): Int {
+    private fun getMonthIndexFromName(monthName: String): Int {
         val months = arrayOf("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
         return months.indexOf(monthName)
     }
