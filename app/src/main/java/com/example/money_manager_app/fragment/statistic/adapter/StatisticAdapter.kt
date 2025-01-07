@@ -142,6 +142,9 @@ class StatisticAdapter(
                     pieStatViews[i].visibility = View.GONE
                 }
             }
+            pieChart = binding.pieChart
+            pieChart!!.setOnChartValueSelectedListener(this@StatisticAdapter)
+            setPieChart(binding.pieChart,pieStatsList)
 
             binding.showMore.setOnClickListener {
                 onClickPie()
