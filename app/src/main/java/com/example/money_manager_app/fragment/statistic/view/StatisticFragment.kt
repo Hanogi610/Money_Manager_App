@@ -411,6 +411,13 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        date = Date()
+        time = TimeType.MONTHLY
+        setUpLayoutContent(date, mainViewModel.currentAccount.value!!.account.id)
+    }
+
     private fun addAccount() {
         appNavigation.openStatisticScreenToCreateAccountScreen(Bundle().apply {
             putBoolean("isAddAccount", true)

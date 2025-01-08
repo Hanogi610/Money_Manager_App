@@ -32,6 +32,7 @@
             android:id="@+id/llIncomeExpense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8dp"
             android:weightSum="2"
             android:background="@drawable/customer_select_category"
             android:layout_below="@+id/rlHeader">
