@@ -18,7 +18,7 @@
                 android:padding="@dimen/_8dp"/>
             <TextView
                 android:textSize="@dimen/_20sp"
-                android:text="Select wallet"
+                android:text="@string/select_wallet"
                 android:textStyle="bold"
                 android:fontFamily="@font/sfprodisplay_medium"
                 android:layout_centerInParent="true"
