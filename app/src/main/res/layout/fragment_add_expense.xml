@@ -149,6 +149,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/black"
+                android:layout_marginTop="@dimen/_8dp"
                 android:text="@string/memo"
                 android:layout_below="@+id/sp_wallet"/>
 
@@ -159,6 +160,7 @@
                 android:orientation="horizontal"
                 android:background="@drawable/custom_edit"
                 android:layout_below="@+id/tv_memo"
+                android:layout_marginTop="@dimen/_8dp"
                 android:padding="@dimen/_8dp"
                 android:weightSum="10">
 

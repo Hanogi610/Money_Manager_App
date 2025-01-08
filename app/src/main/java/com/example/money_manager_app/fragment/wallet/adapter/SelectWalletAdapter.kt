@@ -20,7 +20,7 @@ class SelectWalletAdapter(private var listWallet: List<Wallet>,
             fun bind (wallet: Wallet){
                 binding.tvWallet.text = wallet.name.toString()
                 binding.ivItem.setImageResource(wallet.iconId)
-                binding.tvMoney.text = context.getString(R.string.money_amount, currencySymbol, wallet.amount)
+//                binding.tvMoney.text = ""
                 binding.root.setOnClickListener {
                     onItemClick(wallet)
                 }

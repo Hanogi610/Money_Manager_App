@@ -195,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@+id/tv_memo"
+                android:layout_marginTop="@dimen/_8dp"
                 android:padding="@dimen/_8dp"
                 android:background="@drawable/custom_edit"
                 android:weightSum="10">
