@@ -62,8 +62,8 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
     private fun edit() {
         binding.ivEdit.setOnClickListener {
             if(transaction != null){
-                addViewModel.setCheckEdit(true)
                 if(transaction is Transfer){
+                    addViewModel.setCheckEdit(true)
                     if((transaction as Transfer).typeOfExpenditure == TransferType.Transfer){
                         setIncomeExpense(transaction)
                         findNavController().navigate(R.id.addFragment)
@@ -79,7 +79,11 @@ class RecordFragment  : BaseFragment<FragmentRecordBinding, RecordViewModel>(R.l
                         findNavController().navigate(R.id.addFragment)
                     }
                 }
-
+                if(transaction is DebtTransaction){
+                    findNavController().navigate(R.id.addDebtTransactionFragment, Bundle().apply {
+                        putParcelable("debtTransaction", transaction)
+                    })
+                }
             }
         }
     }

@@ -42,7 +42,6 @@ class AddDebtTransactionFragment :
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-
         arguments?.let {
             debt = it.getParcelable("debt")
             debTransaction = it.getParcelable("debtTransaction")

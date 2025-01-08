@@ -87,11 +87,12 @@ class SearchTransactionAdapter (
             }
 
             if (transaction is DebtTransaction){
+                binding.ivItem.setImageResource(transaction.iconId)
                 when (transaction.action) {
                     DebtActionType.DEBT_INTEREST -> {
-                        binding.tvAmount.text = "+${currencySymbol}${transaction.amount}"
+                        binding.tvAmount.text = "-${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.blue)
+                            ContextCompat.getColor(binding.root.context, R.color.red)
                         )
                         binding.tvName.text = transaction.name
                         binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
@@ -136,7 +137,7 @@ class SearchTransactionAdapter (
                     DebtActionType.LOAN_INCREASE -> {
                         binding.tvAmount.text = "-${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.blue)
+                            ContextCompat.getColor(binding.root.context, R.color.red)
                         )
                         binding.tvName.text = transaction.name
                         binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name

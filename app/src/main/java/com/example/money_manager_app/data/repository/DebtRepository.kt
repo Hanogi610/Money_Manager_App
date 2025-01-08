@@ -31,6 +31,7 @@ interface DebtRepository {
     suspend fun deleteDebt(debt: Debt)
     fun getDebtListByAccountIdAndWalletId(userId: Long, walletId: Long): Flow<List<Debt>>
     fun getDebtListByAccountIdAndWallet(userId: Long, walletId: Long): List<Debt>
+    fun getDebt(id: Long): Debt
 }
 
 class DebtRepositoryImpl @Inject constructor(
@@ -108,5 +109,9 @@ class DebtRepositoryImpl @Inject constructor(
 
     override fun getDebtListByAccountIdAndWallet(userId: Long, walletId: Long): List<Debt> {
         return debtDao.getDebtListByAccountIdAndWallet(userId, walletId)
+    }
+
+    override fun getDebt(id: Long): Debt {
+        return debtDao.getDebtById(id)
     }
 }
