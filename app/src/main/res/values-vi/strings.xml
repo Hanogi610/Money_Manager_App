@@ -32,27 +32,23 @@
     <string name="add_account">Thêm tài khoản</string>
     <string name="choose_a_name_for_your_account">Chọn tên cho tài khoản của bạn.</string>
     <string name="name">Tên</string>
+    <string name="enter_name">Nhập tên</string>
     <string name="next">Tiếp theo</string>
     <string name="please_reenter">Vui lòng nhập lại</string>
     <string name="all_category">Tất cả các danh mục</string>
     <string name="all_wallet">Chọn danh mục</string>
     <string name="calculator">Nhập số tiền</string>
-    <string name="Memo">Ghi chú</string>
 
     <string name="select_currency">Chọn tiền tệ</string>
     <string name="favorite_currency_prompt">Đơn vị tiền tệ yêu thích của bạn là gì?</string>
     <string name="skip">Bỏ qua</string>
     <string name="initial_amount">Số tiền ban đầu</string>
     <string name="cash_wallet_prompt">Bạn có bao nhiêu tiền trong ví tiền mặt?</string>
-    <string name="amount_hint" translatable="false">%1$s 0</string>
-    <string name="money_amount" translatable="false">%1$s %2$.2f</string>
     <string name="transactions_format">%1$d giao dịch</string>
     <string name="adjust_balance">Điều chỉnh số dư</string>
     <string name="make_payment">Thanh toán</string>
     <string name="days_left">Còn %1$s ngày</string>
     <string name="amount_number">%1$.2f</string>
-    <string name="positive_money_amount" translatable="false">+%1$s %2$.2f</string>
-    <string name="negative_money_amount" translatable="false">-%1$s %2$.2f</string>
     <string name="goal_transaction_name">%1$s đến %2$s</string>
     <string name="balance">Số dư</string>
     <string name="add_expense">Chi tiêu</string>
@@ -68,14 +64,9 @@
     <string name="to_wallet">Đến ví</string>
     <string name="fee">Phí</string>
     <string name="currency_cny">CNY</string>
-    <string name="currency_cny_symbol" translatable="false">¥</string>
     <string name="currency_inr">INR</string>
-    <string name="currency_inr_symbol" translatable="false">₹</string>
     <string name="currency_vnd">VND</string>
-    <string name="currency_vnd_symbol" translatable="false">₫</string>
     <string name="currency_usd">USD</string>
-    <string name="currency_usd_symbol" translatable="false">$</string>
-    <string name="vn_language_code" translatable="false">vi</string>
     <string name="enter_your_pass_code">Nhập mã pin</string>
     <string name="incorrect_pass_code">Mã pin không đúng</string>
     <string name="passcode_does_not_match">Mã pin không khớp</string>
@@ -116,7 +107,6 @@
     <string name="what_was_it_for">Dùng để làm gì?</string>
     <string name="i_owe_s">Tôi nợ %1$s</string>
     <string name="i_lend_s">Tôi cho vay %1$s</string>
-    <string name="debt_transaction_name">%1$s: %2$s</string>
     <string name="subtract">-</string>
     <string name="left">Còn lại</string>
     <string name="paid">Đã thanh toán</string>
@@ -164,5 +154,7 @@
     <string name="expense">Chi phí</string>
     <string name="received">Đã nhận</string>
     <string name="input_count">Bạn có %1$d cơ hội trước khi ứng dụng bị loại bỏ xD!</string>
-
+    <string name="debt_type_instruction">Vuốt sang trái hoặc phải để thay đổi loại nợ.</string>
+    <string name="add_debt_transaction">Thêm giao dịch nợ</string>
+    <string name="hi">Chào</string>
 </resources>

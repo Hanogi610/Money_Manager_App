@@ -35,6 +35,7 @@
     <string name="blank_input">某些字段无效，请在保存前输入有效值</string>
     <string name="choose_a_name_for_your_account">为您的账户选择一个名称。</string>
     <string name="name">名称</string>
+    <string name="enter_name">输入姓名</string>
     <string name="next">下一步</string>
     <string name="select_currency">选择货币</string>
     <string name="favorite_currency_prompt">您最喜欢的货币是什么？</string>
@@ -43,15 +44,11 @@
     <string name="included_in_total">包含在总计中</string>
     <string name="excluded_from_total">不包含在总计中</string>
     <string name="cash_wallet_prompt">你现金钱包里有多少钱？</string>
-    <string name="amount_hint" translatable="false">%1$s 0</string>
-    <string name="money_amount" translatable="false">%1$s %2$.2f</string>
     <string name="transactions_format">%1$d 笔交易</string>
     <string name="adjust_balance">调整余额</string>
     <string name="make_payment">付款</string>
     <string name="days_left">剩余 %1$s 天</string>
     <string name="amount_number">%1$.2f</string>
-    <string name="positive_money_amount" translatable="false">+%1$s %2$.2f</string>
-    <string name="negative_money_amount" translatable="false">-%1$s %2$.2f</string>
     <string name="goal_transaction_name">%1$s 到 %2$s</string>
     <string name="balance">余额</string>
     <string name="add_expense">支出</string>
@@ -67,14 +64,9 @@
     <string name="to_wallet">到钱包</string>
     <string name="fee">费用</string>
     <string name="currency_cny">人民币</string>
-    <string name="currency_cny_symbol" translatable="false">¥</string>
     <string name="currency_inr">印度卢比</string>
-    <string name="currency_inr_symbol" translatable="false">₹</string>
     <string name="currency_vnd">越南盾</string>
-    <string name="currency_vnd_symbol" translatable="false">₫</string>
     <string name="currency_usd">美元</string>
-    <string name="currency_usd_symbol" translatable="false">$</string>
-    <string name="vn_language_code" translatable="false">vi</string>
     <string name="enter_your_pass_code">输入您的密码</string>
     <string name="incorrect_pass_code">密码错误</string>
     <string name="passcode_does_not_match">密码不匹配</string>
@@ -114,7 +106,6 @@
     <string name="what_was_it_for">它是为了什么？</string>
     <string name="i_owe_s">我欠%1$s</string>
     <string name="i_lend_s">我借给%1$s</string>
-    <string name="debt_transaction_name" translatable="false">%1$s：%2$s</string>
     <string name="subtract">-</string>
     <string name="left">剩余</string>
     <string name="paid">已支付</string>
@@ -151,7 +142,6 @@
     <string name="add_category">添加类别</string>
     <string name="balance_visibility_toggle">余额可见性切换</string>
     <string name="record">记录</string>
-    <string name="Memo">备忘</string>
     <string name="icon">图标</string>
     <string name="exclude">排除</string>
     <string name="ignore_the_balance_of_this_wallet_on_the_total_balance">忽略此钱包的余额在总余额中的影响</string>
@@ -163,4 +153,7 @@
     <string name="expense">开支</string>
     <string name="received">已收到</string>
     <string name="input_count">在应用程序被解雇之前，您有 %1$d 次机会 xD!</string>
+    <string name="debt_type_instruction">向左或向右滑动以更改债务类型。</string>
+    <string name="add_debt_transaction">添加债务交易</string>
+    <string name="hi">嗨</string>
 </resources>
