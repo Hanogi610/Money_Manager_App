@@ -125,7 +125,7 @@ class StatisticAdapter(
                         pieStatViews[i].visibility = View.VISIBLE
                         val color = ContextCompat.getColor(context, listStats[i].color)
                         pieStatViewColors[i].backgroundTintList = ColorStateList.valueOf(color)
-                        pieStatLabels[i].text = listStats[i].name
+                        pieStatLabels[i].text = getCategoryName(currentLanguage, pieStatsList[i].icon)
                         pieStatPercentLabels[i].text = context.getString(R.string.formatted_double_percentage, listStats[i].percent)
                     }
                     pieChart = binding.pieChart
@@ -147,10 +147,10 @@ class StatisticAdapter(
                 for (i in 0 until 5) {
                     pieStatViews[i].visibility = View.GONE
                 }
+                pieChart = binding.pieChart
+                pieChart!!.setOnChartValueSelectedListener(this@StatisticAdapter)
+                setPieChart(binding.pieChart,pieStatsList)
             }
-            pieChart = binding.pieChart
-            pieChart!!.setOnChartValueSelectedListener(this@StatisticAdapter)
-            setPieChart(binding.pieChart,pieStatsList)
 
             binding.showMore.setOnClickListener {
                 onClickPie()
