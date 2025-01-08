@@ -64,6 +64,7 @@ class SearchTransactionAdapter (
                 }
             }
             if (transaction is Debt){
+                binding.ivItem.setImageResource(transaction.iconId)
                 when (transaction.type) {
                     DebtType.PAYABLE -> {
                         binding.tvAmount.text = "+${currencySymbol}${transaction.amount}"
@@ -88,9 +89,21 @@ class SearchTransactionAdapter (
             if (transaction is DebtTransaction){
                 when (transaction.action) {
                     DebtActionType.DEBT_INTEREST -> {
+                        binding.tvAmount.text = "+${currencySymbol}${transaction.amount}"
+                        binding.tvAmount.setTextColor(
+                            ContextCompat.getColor(binding.root.context, R.color.blue)
+                        )
+                        binding.tvName.text = transaction.name
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
 
                     DebtActionType.LOAN_INTEREST -> {
+                        binding.tvAmount.text = "+${currencySymbol}${transaction.amount}"
+                        binding.tvAmount.setTextColor(
+                            ContextCompat.getColor(binding.root.context, R.color.blue)
+                        )
+                        binding.tvName.text = transaction.name
+                        binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
 
                     DebtActionType.DEBT_INCREASE-> {
@@ -98,16 +111,16 @@ class SearchTransactionAdapter (
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
-                        binding.tvName.text = "Debt increase"
+                        binding.tvName.text = transaction.name
                         binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
 
                     DebtActionType.REPAYMENT -> {
-                        binding.tvAmount.text = "-${currencySymbol}{transaction.amount}"
+                        binding.tvAmount.text = "-${currencySymbol}${transaction.amount}"
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.red)
                         )
-                        binding.tvName.text = "Repayment"
+                        binding.tvName.text = transaction.name
                         binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
 
@@ -116,7 +129,7 @@ class SearchTransactionAdapter (
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
-                        binding.tvName.text = "Debt collection"
+                        binding.tvName.text = transaction.name
                         binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
 
@@ -125,7 +138,7 @@ class SearchTransactionAdapter (
                         binding.tvAmount.setTextColor(
                             ContextCompat.getColor(binding.root.context, R.color.blue)
                         )
-                        binding.tvName.text = "Loan increase"
+                        binding.tvName.text = transaction.name
                         binding.tvBank.text = listWallet.find { it.id == transaction.walletId}?.name
                     }
                 }

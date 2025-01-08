@@ -38,6 +38,7 @@ import java.util.Locale
 class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewModel>(R.layout.fragment_statistic),View.OnClickListener,StaticInterface{
     private var wallets: List<Wallet> = ArrayList()
     private var date: Date? = null
+    private var dateEnd : Date? = null
     private var time : TimeType = TimeType.MONTHLY
     private lateinit var statisticAdapter: StatisticAdapter
     private var currentLanguage = "en"
@@ -129,6 +130,10 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val dateStart = dateFormat.format(date)
                 putString("dateStart",dateStart)
+                if(TimeType.CUSTOM == time){
+                    time = TimeType.MONTHLY
+                    date = Date()
+                }
                 putParcelable("type", time)
                 putParcelableArrayList("wallets", ArrayList(wallets))
                 val listTransaction = getVM().listTransaction
@@ -145,6 +150,10 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                 val dateStart = dateFormat.format(date)
                 putString("dateStart",dateStart)
                 putParcelable("type", time)
+                if(TimeType.CUSTOM == time){
+                    time = TimeType.MONTHLY
+                    date = Date()
+                }
                 putParcelableArrayList("wallets", ArrayList(wallets))
             }
         )
@@ -165,6 +174,10 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                 }
                 TimeType.DAILY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
+                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val dateStart = dateFormat.format(date)
+                    getVM().getCalendarSummary(wallets,dateStart.toDateTimestamp(),dateStart.toDateTimestamp(), idAccount)
+                    getVM().getWallets(idAccount,wallets,dateStart.toDateTimestamp(),dateStart.toDateTimestamp())
                     val calendar = Calendar.getInstance()
                     calendar.time = date
                     calendar.set(Calendar.HOUR_OF_DAY, 0)
@@ -175,7 +188,6 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                     val startOfPreviousDay = calendar.timeInMillis
                     calendar.add(Calendar.DAY_OF_MONTH, 2)
                     val endOfNextDay = calendar.timeInMillis - 1
-                    getVM().getCalendarSummary(wallets, startOfPreviousDay, endOfNextDay, idAccount)
                     getVM().getWallets(idAccount, wallets, startOfPreviousDay, endOfNextDay)
                 }
 
@@ -340,6 +352,8 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
 
     override fun onClickTime(startDate: Date, endDate: Date) {
         time = TimeType.CUSTOM
+        date = startDate
+        dateEnd = endDate
         setUpLayoutContentCustom(startDate,endDate)
     }
 
