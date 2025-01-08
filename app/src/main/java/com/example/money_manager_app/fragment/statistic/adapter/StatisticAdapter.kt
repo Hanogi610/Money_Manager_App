@@ -16,6 +16,11 @@ import com.example.money_manager_app.data.model.Stats
 import com.example.money_manager_app.databinding.ListStatisticBalanceBinding
 import com.example.money_manager_app.databinding.ListStatisticOverviewBinding
 import com.example.money_manager_app.databinding.ListStatisticPieBinding
+import com.example.money_manager_app.utils.CategoryUtils.getCategoryName
+import com.example.money_manager_app.utils.CategoryUtils.listCategory
+import com.example.money_manager_app.utils.CategoryUtils.listCategoryHI
+import com.example.money_manager_app.utils.CategoryUtils.listCategoryVI
+import com.example.money_manager_app.utils.CategoryUtils.listCategoryZH
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -36,6 +41,7 @@ class StatisticAdapter(
     private var endingBalance : Double =0.0
     private var pieChart: PieChart? = null
     private var title: String = "Title"
+    private var currentLanguage = "en"
     private var summary: CalendarSummary = CalendarSummary(0.0, 0.0)
     private var pieStatsList: List<Stats> = ArrayList()
 
@@ -130,7 +136,7 @@ class StatisticAdapter(
                         pieStatViews[i].visibility = View.VISIBLE
                         val color = ContextCompat.getColor(context, pieStatsList[i].color)
                         pieStatViewColors[i].backgroundTintList = ColorStateList.valueOf(color)
-                        pieStatLabels[i].text = pieStatsList[i].name
+                        pieStatLabels[i].text = getCategoryName(currentLanguage, pieStatsList[i].icon)
                         pieStatPercentLabels[i].text = context.getString(R.string.formatted_double_percentage, pieStatsList[i].percent)
                     }
                     pieChart = binding.pieChart
@@ -151,6 +157,8 @@ class StatisticAdapter(
             }
         }
     }
+
+
 
 
     override fun getItemViewType(position: Int): Int {
@@ -192,6 +200,11 @@ class StatisticAdapter(
 
     fun setOverviewSummary(calendarSummary: CalendarSummary) {
         this.summary = calendarSummary
+        notifyDataSetChanged()
+    }
+
+    fun setCurrentLanguage(language: String) {
+        this.currentLanguage = language
         notifyDataSetChanged()
     }
 

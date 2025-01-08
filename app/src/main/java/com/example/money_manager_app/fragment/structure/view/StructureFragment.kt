@@ -88,6 +88,14 @@ class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewMo
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.currentLanguage.observe(viewLifecycleOwner) {
+                    structApdapter.setCurrentLanguage(it)
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().calendarSummary.collect {
                     if(check == true){
                         structApdapter.setPieStatsList(getVM().listStatsExpense.value)

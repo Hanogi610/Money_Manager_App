@@ -40,13 +40,13 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
     private var date: Date? = null
     private var time : TimeType = TimeType.MONTHLY
     private lateinit var statisticAdapter: StatisticAdapter
+    private var currentLanguage = "en"
     private val mainViewModel : MainViewModel by activityViewModels()
 
     override fun initView(savedInstanceState: Bundle?) {
         super.initView(savedInstanceState)
         date = CalendarHelper.getInitialDate()
         setUpLayoutContent(date, mainViewModel.currentAccount.value!!.account.id)
-
     }
 
     override fun getVM(): StatisticViewModel {
@@ -81,7 +81,14 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
             }
         }
 
-
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.currentLanguage.observe(viewLifecycleOwner) {
+                    currentLanguage = it
+                    statisticAdapter.setCurrentLanguage(it)
+                }
+            }
+        }
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

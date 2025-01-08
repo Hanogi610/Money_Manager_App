@@ -43,6 +43,18 @@ android {
     room {
         schemaDirectory("$projectDir/schemas")
     }
+    flavorDimensions.add("version")
+    productFlavors {
+        create("dev") {
+            dimension = "version"
+            applicationId = "com.example.money_manager_app"
+        }
+        create("demo") {
+            dimension = "version"
+            applicationId = "com.example.demo"
+        }
+    }
+
 }
 dependencies {
     implementation(libs.androidx.core.ktx)
