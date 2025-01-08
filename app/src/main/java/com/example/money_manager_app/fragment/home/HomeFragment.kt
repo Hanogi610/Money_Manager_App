@@ -88,7 +88,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().transactions.collect {
-                    Log.d(Constants.TAG, "bindingStateView() called: $it")
                     transactionAdapter.submitList(it)
                 }
             }

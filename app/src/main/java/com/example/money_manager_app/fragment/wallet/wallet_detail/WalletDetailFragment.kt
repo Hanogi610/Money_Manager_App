@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.money_manager_app.R
 import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
@@ -17,6 +18,7 @@ import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentWalletDetailBinding
+import com.example.money_manager_app.utils.Constants
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toFormattedDateString
 import com.example.money_manager_app.viewmodel.MainViewModel
@@ -68,20 +70,22 @@ class WalletDetailFragment :
             wallets,
             listOf()
         )
+        binding.transactionRecyclerView.adapter = transactionAdapter
+        binding.transactionRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
 
         binding.delete.setOnSafeClickListener {
             if(wallet != null){
-                val AlertDialogBinding = AlertDialogBinding.inflate(layoutInflater)
+                val alertDialogBinding = AlertDialogBinding.inflate(layoutInflater)
 
-                var alert = AlertDialog.Builder(requireContext()).create()
-                alert.setView(AlertDialogBinding.root)
+                val alert = AlertDialog.Builder(requireContext()).create()
+                alert.setView(alertDialogBinding.root)
                 alert.setCancelable(true)
-                AlertDialogBinding.deleteImageView.setOnClickListener {
+                alertDialogBinding.deleteImageView.setOnClickListener {
                     getVM().deleteWallet(wallet!!.id)
                     alert.dismiss()
                     findNavController().popBackStack()
                 }
-                AlertDialogBinding.cannelImageView.setOnClickListener {
+                alertDialogBinding.cannelImageView.setOnClickListener {
                     alert.dismiss()
                 }
                 alert.show()
@@ -122,7 +126,7 @@ class WalletDetailFragment :
                             walletIconImageView.setBackgroundResource(it.colorId)
                             nameLabel.text = it.name
                             transactionAdapter.submitList(it.transactions)
-                            Log.d("hoangph", "bindingStateView() called: ${it.transactions}")
+                            Log.d(Constants.TAG, "wallet detail: ${it.transactions}")
                             fab.setBackgroundColor(it.colorId)
                             when (it) {
                                 is WalletDetailItem.CreditItem -> {
