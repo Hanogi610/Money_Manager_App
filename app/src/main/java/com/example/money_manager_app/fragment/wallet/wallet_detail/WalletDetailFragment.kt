@@ -1,6 +1,7 @@
 package com.example.money_manager_app.fragment.wallet.wallet_detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -99,6 +100,7 @@ class WalletDetailFragment :
                             walletIconImageView.setBackgroundResource(it.colorId)
                             nameLabel.text = it.name
                             transactionAdapter.submitList(it.transactions)
+                            Log.d("hoangph", "bindingStateView() called: ${it.transactions}")
                             fab.setBackgroundColor(it.colorId)
                             when (it) {
                                 is WalletDetailItem.CreditItem -> {

@@ -169,28 +169,21 @@ fun Transaction.totalDailyTransactionIncomeAndExpense(): Pair<Double, Double> {
 
 fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
     val groupedList = mutableListOf<TransactionListItem>()
-    var lastDate: String? = null
+    var lastDate: Long? = null
     var dailyTotal = 0.0
 
-    val sortedList = this.sortedByDescending { it.date }
+    val sortedList = this.sortedBy { it.date }
 
     for (transaction in sortedList) {
-        val dayOfMonth = transaction.date.formatToDayOfMonth()
-        val dayOfWeek = transaction.date.formatToDayOfWeek()
-        val monthYear = transaction.date.formatToMonthYear()
-
-        if (dayOfMonth != lastDate) {
-            if (lastDate != null) {
-                groupedList.add(
-                    TransactionListItem.DateHeader(
-                        lastDate, dayOfWeek, monthYear, dailyTotal
-                    )
-                )
-            }
-            lastDate = dayOfMonth
+        lastDate = lastDate ?: transaction.date
+        if(!isSameDay(transaction.date, lastDate)){
+            val dayOfMonth = lastDate.formatToDayOfMonth()
+            val dayOfWeek = lastDate.formatToDayOfWeek()
+            val monthYear = lastDate.formatToMonthYear()
+            groupedList.add(TransactionListItem.DateHeader(lastDate, dayOfMonth, dayOfWeek, monthYear, dailyTotal))
+            lastDate = transaction.date
             dailyTotal = 0.0
         }
-
         when (transaction) {
             is GoalTransaction -> {
                 dailyTotal += if (transaction.type == GoalInputType.WITHDRAW) {
@@ -224,24 +217,21 @@ fun List<Transaction>.groupTransactionsByDate(): List<TransactionListItem> {
                     if (transaction.typeOfExpenditure == TransferType.Expense) {
                         -transaction.amount
                     } else {
-                        -transaction.amount
+                        -transaction.fee
                     }
                 }
             }
         }
-
         groupedList.add(TransactionListItem.TransactionItem(transaction))
     }
 
-    if (lastDate != null) {
-        groupedList.add(
-            TransactionListItem.DateHeader(
-                lastDate,
-                this.last().date.formatToDayOfWeek(),
-                this.last().date.formatToMonthYear(),
-                dailyTotal
-            )
-        )
+    val lastItem = groupedList.lastOrNull()
+    if(lastItem is TransactionListItem.TransactionItem){
+        val date = lastItem.transaction.date
+        val dayOfMonth = date.formatToDayOfMonth()
+        val dayOfWeek = date.formatToDayOfWeek()
+        val monthYear = date.formatToMonthYear()
+        groupedList.add(TransactionListItem.DateHeader(date, dayOfMonth, dayOfWeek, monthYear, dailyTotal))
     }
 
     return groupedList.reversed()

@@ -70,6 +70,16 @@ fun String.takeMonthYear(format: String = "dd/MM/yyyy"): Int {
     return calendar.get(Calendar.MONTH) + 1
 }
 
+fun isSameDay(timestamp1: Long, timestamp2: Long): Boolean {
+    val calendar1 = Calendar.getInstance().apply {
+        timeInMillis = timestamp1
+    }
+    val calendar2 = Calendar.getInstance().apply {
+        timeInMillis = timestamp2
+    }
+    return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
+            calendar1.get(Calendar.DAY_OF_YEAR) == calendar2.get(Calendar.DAY_OF_YEAR)
+}
 
 
 

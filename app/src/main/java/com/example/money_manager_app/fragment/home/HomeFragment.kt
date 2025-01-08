@@ -15,11 +15,13 @@ import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Debt
 import com.example.money_manager_app.data.model.entity.DebtTransaction
+import com.example.money_manager_app.data.model.entity.GoalTransaction
 import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.data.model.entity.enums.Currency
 import com.example.money_manager_app.data.model.entity.enums.WalletType
 import com.example.money_manager_app.data.model.toWallet
 import com.example.money_manager_app.databinding.FragmentHomeBinding
+import com.example.money_manager_app.utils.Constants
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,14 +44,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
 
         currencySymbol =
             getString(mainViewModel.currentAccount.value!!.account.currency.symbolRes)
-        val wallets = mainViewModel.currentAccount.value!!.walletItems?.map { it.toWallet() }
+        val wallets = mainViewModel.currentAccount.value!!.walletItems.map { it.toWallet() }
         transactionAdapter = TransactionAdapter(
             requireContext(),
             currencySymbol,
             wallets,
             mainViewModel.categories.value
         ) {
-            if (it is Transfer || it is DebtTransaction) {
+            if (it is Transfer || it is DebtTransaction || it is GoalTransaction) {
                 val bundle = bundleOf(
                     "transaction" to it
                 )
@@ -86,6 +88,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(R.layout.f
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 getVM().transactions.collect {
+                    Log.d(Constants.TAG, "bindingStateView() called: $it")
                     transactionAdapter.submitList(it)
                 }
             }
