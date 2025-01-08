@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -119,13 +120,13 @@ class StatisticAdapter(
                     for (i in 4 until pieStatsList.size) {
                         totalAmount += pieStatsList[i].amount
                     }
-                    listStats.add(Stats("Other", R.color.gray, 0, totalAmount, 100-percent, 0, 0, pieStatsList[0].type, 0, false))
+                    listStats.add(Stats("Other", R.color.gray, 23, totalAmount, 100-percent, 0, 0, pieStatsList[0].type, 0, false))
 
                     for (i in listStats.indices) {
                         pieStatViews[i].visibility = View.VISIBLE
                         val color = ContextCompat.getColor(context, listStats[i].color)
                         pieStatViewColors[i].backgroundTintList = ColorStateList.valueOf(color)
-                        pieStatLabels[i].text = getCategoryName(currentLanguage, pieStatsList[i].icon)
+                        pieStatLabels[i].text = getCategoryName(currentLanguage, listStats[i].icon)
                         pieStatPercentLabels[i].text = context.getString(R.string.formatted_double_percentage, listStats[i].percent)
                     }
                     pieChart = binding.pieChart
