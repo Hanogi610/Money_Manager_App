@@ -156,7 +156,7 @@ class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewMo
             binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
             when(time) {
                 TimeType.MONTHLY -> {
-                    binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
+                    binding.dateLabel.text = CalendarHelper.getFormattedMonthlyDate(date)
                     var dateStart = DateHelper.getDateMonth(date)
                     getVM().getCalendarSummary(wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp(),idAccount)
                 }

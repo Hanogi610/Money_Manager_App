@@ -133,6 +133,9 @@ class StatisticAdapter(
                     pieChart!!.setOnChartValueSelectedListener(this@StatisticAdapter)
                     setPieChart(binding.pieChart,listStats)
                 } else {
+                    for (i in 0 until 5) {
+                        pieStatViews[i].visibility = View.GONE
+                    }
                     for (i in 0 until pieStatsList.size) {
                         pieStatViews[i].visibility = View.VISIBLE
                         val color = ContextCompat.getColor(context, pieStatsList[i].color)

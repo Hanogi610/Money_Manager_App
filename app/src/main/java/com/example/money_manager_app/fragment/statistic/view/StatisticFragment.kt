@@ -167,7 +167,7 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
             binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
             when(time) {
                 TimeType.MONTHLY -> {
-                    binding.dateLabel.text = CalendarHelper.getFormattedDailyDate(date)
+                    binding.dateLabel.text = CalendarHelper.getFormattedMonthlyDate(date)
                     val dateStart = DateHelper.getDateMonth(date)
                     getVM().getCalendarSummary(wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp(),idAccount)
                     getVM().getWallets(idAccount,wallets,dateStart.first.toDateTimestamp(),dateStart.second.toDateTimestamp())
@@ -177,7 +177,6 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     val dateStart = dateFormat.format(date)
                     getVM().getCalendarSummary(wallets,dateStart.toDateTimestamp(),dateStart.toDateTimestamp(), idAccount)
-                    getVM().getWallets(idAccount,wallets,dateStart.toDateTimestamp(),dateStart.toDateTimestamp())
                     val calendar = Calendar.getInstance()
                     calendar.time = date
                     calendar.set(Calendar.HOUR_OF_DAY, 0)
@@ -190,8 +189,6 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
                     val endOfNextDay = calendar.timeInMillis - 1
                     getVM().getWallets(idAccount, wallets, startOfPreviousDay, endOfNextDay)
                 }
-
-
                 TimeType.WEEKLY -> {
                     binding.dateLabel.text = CalendarHelper.getFormattedWeeklyDate(requireContext(),date)
                     val dateStart = DateHelper.getDateWeek(date)
@@ -411,12 +408,6 @@ class StatisticFragment : BaseFragment<FragmentStatisticBinding, StatisticViewMo
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        date = Date()
-        time = TimeType.MONTHLY
-        setUpLayoutContent(date, mainViewModel.currentAccount.value!!.account.id)
-    }
 
     private fun addAccount() {
         appNavigation.openStatisticScreenToCreateAccountScreen(Bundle().apply {
