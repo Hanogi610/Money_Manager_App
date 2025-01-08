@@ -51,6 +51,7 @@ class AddTranferFragment : BaseFragment<FragmentAddTranferBinding,TransferViewMo
 
     override fun onBack() {
         super.onBack()
+        getVM().onCleared()
         (parentFragment as? AddFragment)?.onBack()
     }
 

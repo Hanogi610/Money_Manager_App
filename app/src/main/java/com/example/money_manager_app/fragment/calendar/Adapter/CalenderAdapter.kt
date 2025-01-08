@@ -150,9 +150,7 @@ class CalendarAdapter(
             return
         }
         itemViewHolder.dayLabel.text = String.format(Locale.getDefault(), "%d", calendar.get(Calendar.DAY_OF_MONTH))
-        Log.d("CalendarAdapter", "dayOfWeek: $dayOfWeek, dayOfMonth: $dayOfMonth, i2: $i2")
         val i3 = i2 + 1
-        Log.d("CalendarAdapter", "dayOfWeek: $dayOfWeek, dayOfMonth: $dayOfMonth, i3: $i3")
         val isToday = CalendarHelper.isSameMonth(date) == i3
         itemViewHolder.expenseLabel.text = ""
         itemViewHolder.incomeLabel.text = ""

@@ -262,6 +262,9 @@ class IncomeViewModel @Inject constructor(
         _addTransfer.value = AddTransfer()
         _toWallet.value = emptyList()
         _fromWallet.value = emptyList()
+        for(item in _categoryListIncome.value){
+            item.isCheck = false
+        }
     }
 
 }
