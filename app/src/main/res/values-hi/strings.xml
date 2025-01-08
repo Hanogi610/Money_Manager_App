@@ -30,14 +30,13 @@
     <string name="add_account">खाता जोड़ें</string>
     <string name="choose_a_name_for_your_account">अपने खाते के लिए नाम चुनें।</string>
     <string name="name">नाम</string>
+    <string name="enter_name">नाम दर्ज करें</string>
     <string name="next">आगे</string>
     <string name="select_currency">मुद्रा चुनें</string>
     <string name="favorite_currency_prompt">आपकी पसंदीदा मुद्रा क्या है?</string>
     <string name="skip">छोड़ें</string>
     <string name="initial_amount">प्रारंभिक राशि</string>
     <string name="cash_wallet_prompt">आपके नकद वॉलेट में कितने पैसे हैं?</string>
-    <string name="amount_hint" translatable="false">%1$s 0</string>
-    <string name="money_amount" translatable="false">%1$s %2$.2f</string>
     <string name="transactions_format">%1$d लेनदेन</string>
     <string name="adjust_balance">शेष राशि समायोजित करें</string>
     <string name="all_category">सभी श्रेणियाँ</string>
@@ -48,8 +47,6 @@
     <string name="make_payment">भुगतान करें</string>
     <string name="days_left">%1$s दिन बचे</string>
     <string name="amount_number">%1$.2f</string>
-    <string name="positive_money_amount" translatable="false">+%1$s %2$.2f</string>
-    <string name="negative_money_amount" translatable="false">-%1$s %2$.2f</string>
     <string name="goal_transaction_name">%1$s से %2$s</string>
     <string name="balance">शेष राशि</string>
     <string name="add_expense">व्यय</string>
@@ -65,14 +62,9 @@
     <string name="to_wallet">वॉलेट में</string>
     <string name="fee">शुल्क</string>
     <string name="currency_cny">CNY</string>
-    <string name="currency_cny_symbol" translatable="false">¥</string>
     <string name="currency_inr">INR</string>
-    <string name="currency_inr_symbol" translatable="false">₹</string>
     <string name="currency_vnd">VND</string>
-    <string name="currency_vnd_symbol" translatable="false">₫</string>
     <string name="currency_usd">USD</string>
-    <string name="currency_usd_symbol" translatable="false">$</string>
-    <string name="vn_language_code" translatable="false">vi</string>
     <string name="enter_your_pass_code">अपना पासकोड दर्ज करें</string>
     <string name="incorrect_pass_code">गलत पासकोड</string>
     <string name="passcode_does_not_match">पासकोड मेल नहीं खाता</string>
@@ -110,12 +102,10 @@
     <string name="budget">बजट</string>
     <string name="who_do_you_lend_from">आपने किससे उधार लिया?</string>
     <string name="who_do_you_borrow_to">आपने किसे उधार दिया?</string>
-    <string name="Memo">स्मृति</string>
     <string name="blank_input">कुछ फ़ील्ड अमान्य हैं, कृपया सहेजने से पहले मान्य मान दर्ज करें</string>
     <string name="what_was_it_for">यह किसके लिए था?</string>
     <string name="i_owe_s">मैं %1$s का ऋणी हूं</string>
     <string name="i_lend_s">मैंने %1$s को उधार दिया</string>
-    <string name="debt_transaction_name">%1$s: %2$s</string>
     <string name="subtract">-</string>
     <string name="left">शेष</string>
     <string name="paid">भुगतान किया</string>
@@ -165,5 +155,8 @@
     <string name="expense">व्यय</string>
     <string name="received">प्राप्त किया</string>
     <string name="input_count">ऐप के खारिज होने से पहले आपके पास %1$d मौके हैं xD!</string>
+    <string name="debt_type_instruction">बाएं या दाएं स्वाइप करें ताकि ऋण का प्रकार बदल सकें।</string>
+    <string name="add_debt_transaction">ऋण लेनदेन जोड़ें</string>
+    <string name="hi">नमस्ते</string>
 
 </resources>
