@@ -4,6 +4,7 @@ import com.example.money_manager_app.R
 
 object Constants {
     const val PREF_FILE_NAME = "Preferences"
+    const val TAG = "hoangph"
 
     object Preferences {
         const val PREF_FILE_NAME = "Preferences"
