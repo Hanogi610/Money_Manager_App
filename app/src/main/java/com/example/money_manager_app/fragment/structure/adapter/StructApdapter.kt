@@ -12,6 +12,7 @@ import com.example.money_manager_app.R
 import com.example.money_manager_app.data.model.Stats
 import com.example.money_manager_app.databinding.ListStatisticPieHeaderBinding
 import com.example.money_manager_app.databinding.ListStatisticPieItemBinding
+import com.example.money_manager_app.utils.CategoryUtils.getCategoryName
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -29,6 +30,7 @@ class StructApdapter(
 
     private var pieChart: PieChart? = null
     private var pieStatsList: List<Stats> = ArrayList()
+    private var currentLanguage = "en"
 
 
     inner class PieHolder(private val binding: ListStatisticPieHeaderBinding) :
@@ -44,7 +46,7 @@ class StructApdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(stats : Stats) {
             binding.imageView.setImageResource(stats.categoryDefault)
-            binding.nameLabel.text = stats.name
+            binding.nameLabel.text = getCategoryName(currentLanguage, stats.icon)
             if (stats.isDefault){
                 binding.amountLabel.text = context.getString(
                     R.string.positive_money_amount, currentCurrencySymbol, stats.amount)
@@ -99,6 +101,10 @@ class StructApdapter(
     fun setPieStatsList(list: List<Stats>) {
         this.pieStatsList = list
         notifyDataSetChanged()
+    }
+
+    fun setCurrentLanguage(language: String) {
+        currentLanguage = language
     }
 
     private fun setPieChart(pieChart: PieChart, statsList : List<Stats>) {

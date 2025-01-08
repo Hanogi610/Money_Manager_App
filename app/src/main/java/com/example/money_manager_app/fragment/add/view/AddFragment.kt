@@ -1,22 +1,13 @@
 package com.example.money_manager_app.fragment.add.view
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.money_manager_app.R
 import com.example.money_manager_app.base.fragment.BaseFragment
-import com.example.money_manager_app.data.model.Transaction
-import com.example.money_manager_app.data.model.entity.Transfer
 import com.example.money_manager_app.databinding.FragmentAddBinding
 import com.example.money_manager_app.fragment.add.view.expense.ExpenseViewModel
 import com.example.money_manager_app.fragment.add.view.income.IncomeViewModel
@@ -63,6 +54,9 @@ class AddFragment : BaseFragment<FragmentAddBinding, AddViewModel>(R.layout.frag
 
     override fun onBack() {
         super.onBack()
+        onClear()
+        expenseViewModel.onCleared()
+        incomeViewModel.onCleared()
         appNavigation.navigateUp()
     }
 

@@ -3,16 +3,19 @@ package com.example.money_manager_app.fragment.wallet.wallet_detail
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.money_manager_app.R
 import com.example.money_manager_app.adapter.TransactionAdapter
 import com.example.money_manager_app.base.fragment.BaseFragment
 import com.example.money_manager_app.data.model.entity.Wallet
 import com.example.money_manager_app.data.model.toWallet
+import com.example.money_manager_app.databinding.AlertDialogBinding
 import com.example.money_manager_app.databinding.FragmentWalletDetailBinding
 import com.example.money_manager_app.utils.setOnSafeClickListener
 import com.example.money_manager_app.utils.toFormattedDateString
@@ -65,6 +68,25 @@ class WalletDetailFragment :
             wallets,
             listOf()
         )
+
+        binding.delete.setOnSafeClickListener {
+            if(wallet != null){
+                val AlertDialogBinding = AlertDialogBinding.inflate(layoutInflater)
+
+                var alert = AlertDialog.Builder(requireContext()).create()
+                alert.setView(AlertDialogBinding.root)
+                alert.setCancelable(true)
+                AlertDialogBinding.deleteImageView.setOnClickListener {
+                    getVM().deleteWallet(wallet!!.id)
+                    alert.dismiss()
+                    findNavController().popBackStack()
+                }
+                AlertDialogBinding.cannelImageView.setOnClickListener {
+                    alert.dismiss()
+                }
+                alert.show()
+            }
+        }
     }
 
     override fun initToolbar() {

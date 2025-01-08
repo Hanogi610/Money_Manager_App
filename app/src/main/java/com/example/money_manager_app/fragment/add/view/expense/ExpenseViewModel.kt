@@ -268,6 +268,9 @@ class ExpenseViewModel @Inject constructor(
         _toWallet.value = emptyList()
         _fromWallet.value = emptyList()
         _oldwallet.value = Wallet(0,0.0,0, WalletType.GENERAL,"",0,0,true)
+        for(item in _categoryListExpense.value){
+            item.isCheck = false
+        }
     }
 
 }

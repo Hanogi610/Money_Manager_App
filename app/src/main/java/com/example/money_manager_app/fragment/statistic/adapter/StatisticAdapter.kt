@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,11 @@ import com.example.money_manager_app.data.model.Stats
 import com.example.money_manager_app.databinding.ListStatisticBalanceBinding
 import com.example.money_manager_app.databinding.ListStatisticOverviewBinding
 import com.example.money_manager_app.databinding.ListStatisticPieBinding
+import com.example.money_manager_app.utils.CategoryUtils.getCategoryName
+import com.example.money_manager_app.utils.CategoryUtils.listCategory
+import com.example.money_manager_app.utils.CategoryUtils.listCategoryHI
+import com.example.money_manager_app.utils.CategoryUtils.listCategoryVI
+import com.example.money_manager_app.utils.CategoryUtils.listCategoryZH
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
@@ -36,6 +42,7 @@ class StatisticAdapter(
     private var endingBalance : Double =0.0
     private var pieChart: PieChart? = null
     private var title: String = "Title"
+    private var currentLanguage = "en"
     private var summary: CalendarSummary = CalendarSummary(0.0, 0.0)
     private var pieStatsList: List<Stats> = ArrayList()
 
@@ -113,13 +120,13 @@ class StatisticAdapter(
                     for (i in 4 until pieStatsList.size) {
                         totalAmount += pieStatsList[i].amount
                     }
-                    listStats.add(Stats("Other", R.color.gray, 0, totalAmount, 100-percent, 0, 0, pieStatsList[0].type, 0, false))
+                    listStats.add(Stats("Other", R.color.gray, 23, totalAmount, 100-percent, 0, 0, pieStatsList[0].type, 0, false))
 
                     for (i in listStats.indices) {
                         pieStatViews[i].visibility = View.VISIBLE
                         val color = ContextCompat.getColor(context, listStats[i].color)
                         pieStatViewColors[i].backgroundTintList = ColorStateList.valueOf(color)
-                        pieStatLabels[i].text = listStats[i].name
+                        pieStatLabels[i].text = getCategoryName(currentLanguage, listStats[i].icon)
                         pieStatPercentLabels[i].text = context.getString(R.string.formatted_double_percentage, listStats[i].percent)
                     }
                     pieChart = binding.pieChart
@@ -130,7 +137,7 @@ class StatisticAdapter(
                         pieStatViews[i].visibility = View.VISIBLE
                         val color = ContextCompat.getColor(context, pieStatsList[i].color)
                         pieStatViewColors[i].backgroundTintList = ColorStateList.valueOf(color)
-                        pieStatLabels[i].text = pieStatsList[i].name
+                        pieStatLabels[i].text = getCategoryName(currentLanguage, pieStatsList[i].icon)
                         pieStatPercentLabels[i].text = context.getString(R.string.formatted_double_percentage, pieStatsList[i].percent)
                     }
                     pieChart = binding.pieChart
@@ -141,6 +148,9 @@ class StatisticAdapter(
                 for (i in 0 until 5) {
                     pieStatViews[i].visibility = View.GONE
                 }
+                pieChart = binding.pieChart
+                pieChart!!.setOnChartValueSelectedListener(this@StatisticAdapter)
+                setPieChart(binding.pieChart,pieStatsList)
             }
 
             binding.showMore.setOnClickListener {
@@ -148,6 +158,8 @@ class StatisticAdapter(
             }
         }
     }
+
+
 
 
     override fun getItemViewType(position: Int): Int {
@@ -189,6 +201,11 @@ class StatisticAdapter(
 
     fun setOverviewSummary(calendarSummary: CalendarSummary) {
         this.summary = calendarSummary
+        notifyDataSetChanged()
+    }
+
+    fun setCurrentLanguage(language: String) {
+        this.currentLanguage = language
         notifyDataSetChanged()
     }
 

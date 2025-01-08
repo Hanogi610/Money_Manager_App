@@ -43,6 +43,16 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/delete"
+                android:layout_width="@dimen/_25dp"
+                android:layout_height="@dimen/_20dp"
+                android:layout_marginRight="@dimen/_12dp"
+                android:src="@drawable/delete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
                 android:id="@+id/editButton"
                 android:layout_width= "@dimen/_20dp"
                 android:layout_height="@dimen/_20dp"

@@ -1,6 +1,7 @@
 package com.example.moneymanager.fragment.calendar.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -93,6 +94,7 @@ class CalendarAdapter(
             headerViewHolder.weekLabel.text = weekdays[firstDayOfWeek]
             return
         }
+        // tinh chieu cao
         val itemViewHolder = holder as ItemViewHolder
         var height = (itemViewHolder.parent.height - Helper.convertDpToPixel(context, 30f)) / ((itemCount - 7) / 7f)
         val layoutParams = itemViewHolder.itemView.layoutParams as RecyclerView.LayoutParams
@@ -101,6 +103,7 @@ class CalendarAdapter(
         }
         layoutParams.height = height.toInt()
         itemViewHolder.itemView.layoutParams = layoutParams
+        var a = CalendarHelper.getDayOfWeek(date)
         var dayOfWeek = CalendarHelper.getDayOfWeek(date) - SharePreferenceHelper.getFirstDayOfWeek(context)
         if (dayOfWeek < 0) {
             dayOfWeek += 7
@@ -132,10 +135,8 @@ class CalendarAdapter(
                 val month = calendar.get(Calendar.MONTH) + 1
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
                 itemViewHolder.dayLabel.text = context.getString(R.string.date_format, month, day)
-
             } else {
                 itemViewHolder.dayLabel.text = String.format(Locale.getDefault(), "%d", calendar.get(Calendar.DAY_OF_MONTH))
-
             }
             itemViewHolder.expenseLabel.text = ""
             itemViewHolder.incomeLabel.text = ""
@@ -149,7 +150,6 @@ class CalendarAdapter(
             return
         }
         itemViewHolder.dayLabel.text = String.format(Locale.getDefault(), "%d", calendar.get(Calendar.DAY_OF_MONTH))
-
         val i3 = i2 + 1
         val isToday = CalendarHelper.isSameMonth(date) == i3
         itemViewHolder.expenseLabel.text = ""

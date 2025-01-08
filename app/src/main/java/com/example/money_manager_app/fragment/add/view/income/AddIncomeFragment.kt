@@ -43,6 +43,7 @@ class AddIncomeFragment : BaseFragment<FragmentAddIncomeBinding, IncomeViewModel
 
     override fun onBack() {
         super.onBack()
+        getVM().onCleared()
         (parentFragment as? AddFragment)?.onBack()
     }
 

@@ -40,6 +40,7 @@ class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewMo
 
     private var time = TimeType.MONTHLY
     private var date = Date()
+    private var dateEnd = Date()
     private var check = true
     private var wallets: List<Wallet> = ArrayList()
     private lateinit var structApdapter : StructApdapter
@@ -85,6 +86,14 @@ class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewMo
     }
 
     private fun observeData() {
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mainViewModel.currentLanguage.observe(viewLifecycleOwner) {
+                    structApdapter.setCurrentLanguage(it)
+                }
+            }
+        }
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -174,7 +183,11 @@ class StructureFragment : BaseFragment<FragmentStructureBinding, StructureViewMo
 
                 }
                 TimeType.CUSTOM -> {
-
+                    binding.dateLabel.text = CalendarHelper.getFormattedCustomDate(requireContext(),date,dateEnd)
+                    val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val dateStart = dateFormat.format(date)
+                    val dateEnd = dateFormat.format(dateEnd)
+                    getVM().getCalendarSummary(wallets,dateStart.toDateTimestamp(),dateEnd.toDateTimestamp(), idAccount)
                 }
             }
         }

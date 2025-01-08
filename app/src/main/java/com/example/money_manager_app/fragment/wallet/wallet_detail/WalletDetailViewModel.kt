@@ -74,6 +74,12 @@ class WalletDetailViewModel @Inject constructor(
         }
     }
 
+    fun deleteWallet(walletId: Long) {
+        viewModelScope.launch {
+            walletRepository.deleteWallet(walletId)
+        }
+    }
+
     fun getTransactionByAccountIdAndWalletId(accountId: Long, walletId: Long) {
         val goalsFlow =
             goalTransactionRepository.getGoalTransactionsByAccountIdAndWalletId(accountId, walletId)

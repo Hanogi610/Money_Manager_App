@@ -63,6 +63,7 @@ class AddExpenseFragment : BaseFragment<FragmentAddExpenseBinding, ExpenseViewMo
 
     override fun onBack() {
         super.onBack()
+        getVM().onCleared()
         (parentFragment as? AddFragment)?.onBack()
     }
 
